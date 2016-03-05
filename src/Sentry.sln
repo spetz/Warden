@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentry", "Sentry\Sentry.csproj", "{EABC1132-32EA-4A2C-8129-60E20B74A546}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentry.Tests", "Sentry.Tests\Sentry.Tests.csproj", "{940D3766-9DF2-4448-AB66-C3F71EC044B3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EABC1132-32EA-4A2C-8129-60E20B74A546}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EABC1132-32EA-4A2C-8129-60E20B74A546}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EABC1132-32EA-4A2C-8129-60E20B74A546}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EABC1132-32EA-4A2C-8129-60E20B74A546}.Release|Any CPU.Build.0 = Release|Any CPU
+		{940D3766-9DF2-4448-AB66-C3F71EC044B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{940D3766-9DF2-4448-AB66-C3F71EC044B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{940D3766-9DF2-4448-AB66-C3F71EC044B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{940D3766-9DF2-4448-AB66-C3F71EC044B3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
