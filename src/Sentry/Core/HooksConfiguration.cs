@@ -7,26 +7,26 @@ namespace Sentry.Core
     {
         public Action OnStart { get; protected set; }
         public Func<Task> OnStartAsync { get; protected set; }
-        public Action OnSuccess { get; protected set; }
-        public Func<Task> OnSuccessAsync { get; protected set; }
-        public Action<Exception> OnFailure { get; protected set; }
-        public Func<Exception, Task> OnFailureAsync { get; protected set; }
-        public Action OnCompleted { get; protected set; }
-        public Func<Task> OnCompletedAsync { get; protected set; }
+        public Action<ISentryOutcome> OnSuccess { get; protected set; }
+        public Func<ISentryOutcome, Task> OnSuccessAsync { get; protected set; }
+        public Action<ISentryOutcome> OnFailure { get; protected set; }
+        public Func<ISentryOutcome, Task> OnFailureAsync { get; protected set; }
+        public Action<ISentryOutcome> OnCompleted { get; protected set; }
+        public Func<ISentryOutcome,Task> OnCompletedAsync { get; protected set; }
 
         public static HooksConfiguration Empty => new HooksConfiguration();
-        public static Builder Configure() => new Builder();
+        public static Builder Create() => new Builder();
 
         protected internal HooksConfiguration()
         {
             OnStart = () => { };
             OnStartAsync = () => Task.CompletedTask;
-            OnSuccess = () => { };
-            OnSuccessAsync = () => Task.CompletedTask;
-            OnFailure = ex => { };
-            OnFailureAsync = ex => Task.CompletedTask;
-            OnCompleted = () => { };
-            OnCompletedAsync = () => Task.CompletedTask;
+            OnSuccess = _ => { };
+            OnSuccessAsync = _ => Task.CompletedTask;
+            OnFailure = _ => { };
+            OnFailureAsync = _ => Task.CompletedTask;
+            OnCompleted = _ => { };
+            OnCompletedAsync = _ => Task.CompletedTask;
         }
 
         public class Builder
@@ -49,37 +49,37 @@ namespace Sentry.Core
                 return this;
             }
 
-            public Builder OnSuccess(Action hook)
+            public Builder OnSuccess(Action<ISentryOutcome> hook)
             {
                 _configuration.OnSuccess = hook;
                 return this;
             }
 
-            public Builder OnSuccessAsync(Func<Task> hook)
+            public Builder OnSuccessAsync(Func<ISentryOutcome, Task> hook)
             {
                 _configuration.OnSuccessAsync = hook;
                 return this;
             }
 
-            public Builder OnFailure(Action<Exception> hook)
+            public Builder OnFailure(Action<ISentryOutcome> hook)
             {
                 _configuration.OnFailure = hook;
                 return this;
             }
 
-            public Builder OnFailureAsync(Func<Exception, Task> hook)
+            public Builder OnFailureAsync(Func<ISentryOutcome, Task> hook)
             {
                 _configuration.OnFailureAsync = hook;
                 return this;
             }
 
-            public Builder OnCompleted(Action hook)
+            public Builder OnCompleted(Action<ISentryOutcome> hook)
             {
                 _configuration.OnCompleted = hook;
                 return this;
             }
 
-            public Builder OnCompletedAsync(Func<Task> hook)
+            public Builder OnCompletedAsync(Func<ISentryOutcome, Task> hook)
             {
                 _configuration.OnCompletedAsync = hook;
                 return this;

@@ -7,7 +7,7 @@ namespace Sentry.Core
         public IWatcher Watcher { get; protected set; }
         public HooksConfiguration Hooks { get; protected set; }
 
-        public static Builder Configure(IWatcher watcher) => new Builder(watcher);
+        public static Builder Create(IWatcher watcher) => new Builder(watcher);
 
         protected WatcherConfiguration(IWatcher watcher)
         {

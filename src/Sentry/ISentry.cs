@@ -8,7 +8,7 @@ namespace Sentry
 {
     public interface ISentry
     {
-        Task ExecuteAsync();
+        Task<IEnumerable<ISentryOutcome>>  ExecuteAsync();
     }
 
     public class Sentry : ISentry
@@ -23,37 +23,41 @@ namespace Sentry
             _configuration = configuration;
         }
 
-        public async Task ExecuteAsync()
+        public async Task<IEnumerable<ISentryOutcome>> ExecuteAsync()
         {
-            var innerExceptions = new List<Exception>();
+            var outcomes = new List<ISentryOutcome>();
             var tasks = _configuration.Watchers.Select(async watcherConfiguration =>
             {
+                var startedAt = DateTime.UtcNow;
                 var watcher = watcherConfiguration.Watcher;
+                ISentryOutcome sentryOutcome = null;
                 try
                 {
                     await InvokeOnStartHooksAsync(watcherConfiguration);
-                    await watcher.ExecuteAsync();
-                    await InvokeOnSuccessHooksAsync(watcherConfiguration);
+                    var watcherOutcome = await watcher.ExecuteAsync();
+                    sentryOutcome = SentryOutcome.Valid(watcherOutcome, startedAt, DateTime.UtcNow);
+                    outcomes.Add(sentryOutcome);
+                    await InvokeOnSuccessHooksAsync(watcherConfiguration, sentryOutcome);
                 }
                 catch (Exception exception)
                 {
-                    await InvokeOnFailureHooksAsync(watcherConfiguration, exception);
                     var sentryException = new SentryException("There was an error while executing Sentry " +
-                                              $"caused by watcher: '{watcher.GetType().Name}'", exception);
-                    innerExceptions.Add(sentryException);
-                    if (_configuration.UseAggregateException)
-                        return;
-
-                    throw sentryException;
+                                                              $"caused by watcher: '{watcher.Name}'", exception);
+                    var watcherOutcome = WatcherOutcome.Create(watcher.Name);
+                    sentryOutcome = SentryOutcome.Invalid(watcherOutcome, startedAt, DateTime.UtcNow,
+                        sentryException);
+                    outcomes.Add(sentryOutcome);
+                    await InvokeOnFailureHooksAsync(watcherConfiguration, sentryOutcome);
                 }
                 finally
                 {
-                    await InvokeOnCompletedHooksAsync(watcherConfiguration);
+                    await InvokeOnCompletedHooksAsync(watcherConfiguration, sentryOutcome);
                 }
+
             });
             await Task.WhenAll(tasks);
-            if(_configuration.UseAggregateException)
-                throw new AggregateException(innerExceptions);
+
+            return outcomes;
         }
 
         private async Task InvokeOnStartHooksAsync(WatcherConfiguration watcherConfiguration)
@@ -64,28 +68,28 @@ namespace Sentry
             await _configuration.Hooks.OnStartAsync();
         }
 
-        private async Task InvokeOnSuccessHooksAsync(WatcherConfiguration watcherConfiguration)
+        private async Task InvokeOnSuccessHooksAsync(WatcherConfiguration watcherConfiguration, ISentryOutcome outcome)
         {
-            watcherConfiguration.Hooks.OnSuccess.Invoke();
-            await watcherConfiguration.Hooks.OnSuccessAsync();
-            _configuration.Hooks.OnSuccess.Invoke();
-            await _configuration.Hooks.OnSuccessAsync();
+            watcherConfiguration.Hooks.OnSuccess.Invoke(outcome);
+            await watcherConfiguration.Hooks.OnSuccessAsync(outcome);
+            _configuration.Hooks.OnSuccess.Invoke(outcome);
+            await _configuration.Hooks.OnSuccessAsync(outcome);
         }
 
-        private async Task InvokeOnFailureHooksAsync(WatcherConfiguration watcherConfiguration, Exception exception)
+        private async Task InvokeOnFailureHooksAsync(WatcherConfiguration watcherConfiguration, ISentryOutcome outcome)
         {
-            watcherConfiguration.Hooks.OnFailure.Invoke(exception);
-            await watcherConfiguration.Hooks.OnFailureAsync(exception);
-            _configuration.Hooks.OnFailure.Invoke(exception);
-            await _configuration.Hooks.OnFailureAsync(exception);
+            watcherConfiguration.Hooks.OnFailure.Invoke(outcome);
+            await watcherConfiguration.Hooks.OnFailureAsync(outcome);
+            _configuration.Hooks.OnFailure.Invoke(outcome);
+            await _configuration.Hooks.OnFailureAsync(outcome);
         }
 
-        private async Task InvokeOnCompletedHooksAsync(WatcherConfiguration watcherConfiguration)
+        private async Task InvokeOnCompletedHooksAsync(WatcherConfiguration watcherConfiguration, ISentryOutcome outcome)
         {
-            watcherConfiguration.Hooks.OnCompleted.Invoke();
-            await watcherConfiguration.Hooks.OnCompletedAsync();
-            _configuration.Hooks.OnCompleted.Invoke();
-            await _configuration.Hooks.OnCompletedAsync();
+            watcherConfiguration.Hooks.OnCompleted.Invoke(outcome);
+            await watcherConfiguration.Hooks.OnCompletedAsync(outcome);
+            _configuration.Hooks.OnCompleted.Invoke(outcome);
+            await _configuration.Hooks.OnCompletedAsync(outcome);
         }
     }
 }

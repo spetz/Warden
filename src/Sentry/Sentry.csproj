@@ -46,7 +46,9 @@
     <Compile Include="Core\WatcherConfiguration.cs" />
     <Compile Include="Core\WatcherException.cs" />
     <Compile Include="ISentry.cs" />
+    <Compile Include="ISentryOutcome.cs" />
     <Compile Include="IWatcher.cs" />
+    <Compile Include="IWatcherOutcome.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

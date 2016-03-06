@@ -9,6 +9,7 @@ namespace Sentry.Watchers.Website
     {
         private readonly WebsiteWatcherConfiguration _configuration;
         private readonly HttpClient _httpClient;
+        public string Name => _configuration.Name;
 
         public WebsiteWatcher(WebsiteWatcherConfiguration configuration)
         {
@@ -19,16 +20,17 @@ namespace Sentry.Watchers.Website
             _httpClient = new HttpClient();
         }
 
-        public async Task ExecuteAsync()
+
+        public async Task<IWatcherOutcome> ExecuteAsync()
         {
             try
             {
                 var response = await _httpClient.GetAsync(_configuration.Uri);
                 if (response.IsSuccessStatusCode)
-                    return;
+                    return WatcherOutcome.Create(Name, "Website has returned valid content.");
 
                 throw new WatcherException($"The server has returned invalid response while trying to access URL: '{_configuration.Uri}' " +
-                                           $"(status code: {response.StatusCode}). {response.ReasonPhrase}");
+                                           $"(status code: {response.StatusCode}). Reason phrase: {response.ReasonPhrase}");
             }
             catch (HttpRequestException ex)
             {

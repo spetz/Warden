@@ -4,6 +4,7 @@ namespace Sentry.Watchers.Website
 {
     public class WebsiteWatcherConfiguration
     {
+        public string Name { get; protected set; }
         public Uri Uri { get; protected set; }
 
         protected internal WebsiteWatcherConfiguration()
@@ -11,11 +12,19 @@ namespace Sentry.Watchers.Website
         }
 
         public static WebsiteWatcherConfiguration Empty => new WebsiteWatcherConfiguration();
-        public static WebsiteWatcherConfigurationBuilder Configure() => new WebsiteWatcherConfigurationBuilder();
+        public static WebsiteWatcherConfigurationBuilder Create(string name) => new WebsiteWatcherConfigurationBuilder(name);
 
         public class WebsiteWatcherConfigurationBuilder
         {
             private readonly WebsiteWatcherConfiguration _configuration = new WebsiteWatcherConfiguration();
+
+            public WebsiteWatcherConfigurationBuilder(string name)
+            {
+                if (string.IsNullOrEmpty(name))
+                    throw new ArgumentException("Watcher name can not be empty.");
+
+                _configuration.Name = name;
+            }
 
             public WebsiteWatcherConfigurationBuilder WithUrl(string url)
             {
