@@ -42,7 +42,7 @@ namespace Sentry
                 catch (Exception exception)
                 {
                     var sentryException = new SentryException("There was an error while executing Sentry " +
-                                                              $"caused by watcher: '{watcher.Name}'", exception);
+                                                              $"caused by watcher: '{watcher.Name}'.", exception);
                     var watcherOutcome = WatcherOutcome.Create(watcher.Name);
                     sentryOutcome = SentryOutcome.Invalid(watcherOutcome, startedAt, DateTime.UtcNow,
                         sentryException);
