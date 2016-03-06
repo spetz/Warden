@@ -6,14 +6,14 @@ using Sentry.Watchers.Website;
 namespace Sentry.Tests.EndToEnd
 {
     [Specification]
-    public class WebsiteWatcherEndToEnd_specs : SpecificationBase
+    public class WebsiteWatcher_specs : SpecificationBase
     {
         protected WebsiteWatcher WebsiteWatcher { get; set; }
         protected WebsiteWatcherConfiguration WebsiteWatcherConfiguration { get; set; }
     }
 
     [Specification]
-    public class when_trying_to_access_invalid_url : WebsiteWatcherEndToEnd_specs
+    public class when_trying_to_access_invalid_url : WebsiteWatcher_specs
     {
         protected override async Task EstablishContext()
         {
@@ -40,7 +40,7 @@ namespace Sentry.Tests.EndToEnd
     }
 
     [Specification]
-    public class when_website_returns_invalid_status_code : WebsiteWatcherEndToEnd_specs
+    public class when_website_returns_invalid_status_code : WebsiteWatcher_specs
     {
         protected override async Task EstablishContext()
         {
@@ -67,12 +67,11 @@ namespace Sentry.Tests.EndToEnd
     }
 
     [Specification]
-    public class when_website_returns_valid_status_code : WebsiteWatcherEndToEnd_specs
+    public class when_website_returns_valid_status_code : WebsiteWatcher_specs
     {
         protected override async Task EstablishContext()
         {
             await base.EstablishContext();
-            ExceptionExpected = true;
         }
 
         protected override async Task BecauseOf()

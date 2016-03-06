@@ -40,7 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\HooksConfiguration.cs" />
     <Compile Include="Core\SentryConfiguration.cs" />
+    <Compile Include="Core\SentryException.cs" />
+    <Compile Include="Core\WatcherConfiguration.cs" />
     <Compile Include="Core\WatcherException.cs" />
     <Compile Include="ISentry.cs" />
     <Compile Include="IWatcher.cs" />

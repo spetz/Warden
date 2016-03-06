@@ -1,28 +1,61 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Sentry.Core
 {
     public class SentryConfiguration
     {
-        public IEnumerable<IWatcher> Watchers { get; } = new List<IWatcher>();
+        public ICollection<WatcherConfiguration> Watchers { get; protected set; }
+        public HooksConfiguration Hooks { get; protected set; }
 
         protected internal SentryConfiguration()
         {
+            Watchers = new List<WatcherConfiguration>();
+            Hooks = HooksConfiguration.Empty;
         }
 
         public static SentryConfiguration Empty => new SentryConfiguration();
-        public static SentryConfigurationBuilder Configure() => new SentryConfigurationBuilder();
+        public static Builder Configure() => new Builder(Empty);
 
-        public class SentryConfigurationBuilder
+        public class Builder
         {
-            private readonly SentryConfigurationFluent _configuration = new SentryConfigurationFluent();
+            private readonly SentryConfiguration _configuration;
 
-            public SentryConfigurationFluent Setup() => _configuration;
-
-            public class SentryConfigurationFluent
+            protected internal Builder(SentryConfiguration configuration)
             {
-                public SentryConfiguration Build() => new SentryConfiguration();
+                _configuration = configuration;
             }
+
+            public Builder AddWatcher(IWatcher watcher, Action<HooksConfiguration.Builder> hooks = null)
+            {
+                var hooksConfiguration = HooksConfiguration.Empty;
+                if (hooks != null)
+                {
+                    var hooksConfigurationBuilder = new HooksConfiguration.Builder();
+                    hooks(hooksConfigurationBuilder);
+                    hooksConfiguration = hooksConfigurationBuilder.Build();
+                }
+
+                var watcherConfiguration = WatcherConfiguration.Configure(watcher)
+                    .WithHooks(hooksConfiguration)
+                    .Build();
+
+                _configuration.Watchers.Add(watcherConfiguration);
+
+                return this;
+            }
+
+
+            public Builder WithHooks(Action<HooksConfiguration.Builder> hooks)
+            {
+                var hooksConfigurationBuilder = new HooksConfiguration.Builder();
+                hooks(hooksConfigurationBuilder);
+                _configuration.Hooks = hooksConfigurationBuilder.Build();
+
+                return this;
+            }
+
+            public SentryConfiguration Build() => _configuration;
         }
     }
 }

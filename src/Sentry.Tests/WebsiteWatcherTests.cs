@@ -42,7 +42,6 @@ namespace Sentry.Tests
         protected override async Task EstablishContext()
         {
             await base.EstablishContext();
-            ExceptionExpected = true;
         }
 
         protected override async Task BecauseOf()
