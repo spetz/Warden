@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Sentry.Core;
 
@@ -15,6 +16,9 @@ namespace Sentry
 
         public Sentry(SentryConfiguration configuration)
         {
+            if (configuration == null)
+                throw new ArgumentNullException(nameof(configuration), "Sentry configuration has not been provided.");
+
             _configuration = configuration;
         }
 
