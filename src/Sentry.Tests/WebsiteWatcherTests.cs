@@ -66,7 +66,7 @@ namespace Sentry.Tests
     }
 
     [Specification]
-    public class when_website_watcher_configuration_is_being_initialized : WebsiteWatcherConfiguration_specs
+    public class when_website_watcher_configuration_is_being_initialized_with_invalid_url : WebsiteWatcherConfiguration_specs
     {
         protected override async Task EstablishContext()
         {
@@ -78,15 +78,14 @@ namespace Sentry.Tests
         {
             await base.BecauseOf();
             WebsiteWatcherConfiguration = WebsiteWatcherConfiguration.Configure()
-                .WithUrl(string.Empty)
+                .WithUrl("test")
                 .Build();
         }
 
         [Then]
-        public void then_exception_should_be_thrown_for_empty_url()
+        public void then_exception_should_be_thrown()
         {
-            ExceptionThrown.Should().BeAssignableTo<ArgumentException>();
-            ExceptionThrown.Message.Should().StartWithEquivalent("URL can not be empty.");
+            ExceptionThrown.Should().BeAssignableTo<UriFormatException>();
         }
     }
 }

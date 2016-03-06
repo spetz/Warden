@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\SentryConfiguration.cs" />
+    <Compile Include="Core\WatcherException.cs" />
     <Compile Include="ISentry.cs" />
     <Compile Include="IWatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

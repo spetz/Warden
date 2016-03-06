@@ -4,7 +4,7 @@ namespace Sentry.Watchers.Website
 {
     public class WebsiteWatcherConfiguration
     {
-        public string Url { get; protected set; }
+        public Uri Uri { get; protected set; }
 
         protected internal WebsiteWatcherConfiguration()
         {
@@ -22,7 +22,7 @@ namespace Sentry.Watchers.Website
                 if (string.IsNullOrEmpty(url))
                     throw new ArgumentException("URL can not be empty.");
 
-                _configuration.Url = url;
+                _configuration.Uri = new Uri(url);
 
                 return this;
             }
