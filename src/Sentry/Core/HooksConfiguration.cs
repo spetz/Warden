@@ -17,6 +17,12 @@ namespace Sentry.Core
 
         protected internal HooksConfiguration()
         {
+            OnFailure = ex => { };
+            OnSuccess = () => { };
+            OnCompleted = () => { };
+            OnFailureAsync = ex => Task.CompletedTask;
+            OnSuccessAsync = () => Task.CompletedTask;
+            OnCompletedAsync = () => Task.CompletedTask;
         }
 
         public class Builder

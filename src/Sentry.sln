@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentry.Watchers.Website", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentry.Tests.EndToEnd", "Sentry.Tests.EndToEnd\Sentry.Tests.EndToEnd.csproj", "{909AD16B-5C49-4E57-BC77-96448732595A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Watchers", "Watchers", "{A2DFC5AE-3A65-4723-9B32-5FD5B2586606}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{6391CE0E-3081-4C81-8335-677F2386783F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +40,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{940D3766-9DF2-4448-AB66-C3F71EC044B3} = {6391CE0E-3081-4C81-8335-677F2386783F}
+		{BA630713-7F82-4CC7-9B42-46B4DCE7A36D} = {A2DFC5AE-3A65-4723-9B32-5FD5B2586606}
+		{909AD16B-5C49-4E57-BC77-96448732595A} = {6391CE0E-3081-4C81-8335-677F2386783F}
 	EndGlobalSection
 EndGlobal

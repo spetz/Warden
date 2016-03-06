@@ -24,31 +24,51 @@ namespace Sentry
 
         public async Task ExecuteAsync()
         {
-            var tasks = _configuration.Watchers.Select(x => x.Watcher.ExecuteAsync());
-            try
+            var tasks = _configuration.Watchers.Select(async watcherConfiguration =>
             {
-                await Task.WhenAll(tasks);
-            }
-            catch (Exception ex)
-            {
-                throw new SentryException("There was an error while executing Sentry.", ex);
-            }
+                var watcher = watcherConfiguration.Watcher;
+                try
+                {
+                    await watcher.ExecuteAsync();
+                    await InvokeOnSuccessHooksAsync(watcherConfiguration);
 
-            var onCompletedHooks = _configuration.Watchers
-                .Select(x => x.Hooks.OnCompleted)
-                .Where(x => x != null);
+                }
+                catch (Exception exception)
+                {
+                    await InvokeOnFailureHooksAsync(watcherConfiguration, exception);
+                    throw new SentryException("There was an error while executing Sentry " +
+                                              $"caused by watcher: '{watcher.GetType().Name}'", exception);
+                }
+                finally
+                {
+                    await InvokeOnCompletedHooksAsync(watcherConfiguration);
+                }
+            });
+            await Task.WhenAll(tasks);
+        }
 
-            foreach (var hook in onCompletedHooks)
-            {
-                hook();
-            }
+        private async Task InvokeOnSuccessHooksAsync(WatcherConfiguration watcherConfiguration)
+        {
+            watcherConfiguration.Hooks.OnSuccess.Invoke();
+            await watcherConfiguration.Hooks.OnSuccessAsync();
+            _configuration.Hooks.OnSuccess.Invoke();
+            await _configuration.Hooks.OnSuccessAsync();
+        }
 
-            var onCompletedHooksAsync = _configuration.Watchers
-                .Select(x => x.Hooks.OnCompletedAsync)
-                .Where(x => x != null)
-                .Select(task => task());
+        private async Task InvokeOnFailureHooksAsync(WatcherConfiguration watcherConfiguration, Exception exception)
+        {
+            watcherConfiguration.Hooks.OnFailure.Invoke(exception);
+            await watcherConfiguration.Hooks.OnFailureAsync(exception);
+            _configuration.Hooks.OnFailure.Invoke(exception);
+            await _configuration.Hooks.OnFailureAsync(exception);
+        }
 
-            await Task.WhenAll(onCompletedHooksAsync);
+        private async Task InvokeOnCompletedHooksAsync(WatcherConfiguration watcherConfiguration)
+        {
+            watcherConfiguration.Hooks.OnCompleted.Invoke();
+            await watcherConfiguration.Hooks.OnCompletedAsync();
+            _configuration.Hooks.OnCompleted.Invoke();
+            await _configuration.Hooks.OnCompletedAsync();
         }
     }
 }

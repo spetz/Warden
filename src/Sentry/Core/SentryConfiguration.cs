@@ -46,7 +46,7 @@ namespace Sentry.Core
             }
 
 
-            public Builder WithHooks(Action<HooksConfiguration.Builder> hooks)
+            public Builder SetGlobalHooks(Action<HooksConfiguration.Builder> hooks)
             {
                 var hooksConfigurationBuilder = new HooksConfiguration.Builder();
                 hooks(hooksConfigurationBuilder);

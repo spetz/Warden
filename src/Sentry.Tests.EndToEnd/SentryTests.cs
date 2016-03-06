@@ -39,7 +39,7 @@ namespace Sentry.Tests.EndToEnd
                     hooks.OnCompleted(() => { });
                     hooks.OnCompletedAsync(() => Task.FromResult(0));
                 })
-                .WithHooks(hooks =>
+                .SetGlobalHooks(hooks =>
                 {
                     hooks.OnFailure(ex => { });
                     hooks.OnFailureAsync(ex => Task.FromResult(0));
@@ -87,7 +87,7 @@ namespace Sentry.Tests.EndToEnd
         public void then_exception_should_be_thrown()
         {
             ExceptionThrown.Should().BeAssignableTo<SentryException>();
-            ExceptionThrown.Message.ShouldBeEquivalentTo("There was an error while executing Sentry.");
+            ExceptionThrown.Message.Should().StartWithEquivalent("There was an error while executing Sentry caused by watcher");
         }
     }
 }
