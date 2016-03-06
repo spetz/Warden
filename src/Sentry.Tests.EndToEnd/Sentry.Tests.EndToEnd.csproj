@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{940D3766-9DF2-4448-AB66-C3F71EC044B3}</ProjectGuid>
+    <ProjectGuid>{909AD16B-5C49-4E57-BC77-96448732595A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Sentry.Tests</RootNamespace>
-    <AssemblyName>Sentry.Tests</AssemblyName>
+    <RootNamespace>Sentry.Tests.EndToEnd</RootNamespace>
+    <AssemblyName>Sentry.Tests.EndToEnd</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -57,9 +57,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WebsiteWatcherTests.cs" />
-    <Compile Include="SentryTests.cs" />
     <Compile Include="SpecificationBase.cs" />
+    <Compile Include="WebsiteWatcherTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

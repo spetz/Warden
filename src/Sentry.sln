@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentry.Tests", "Sentry.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentry.Watchers.Website", "Sentry.Watchers.Website\Sentry.Watchers.Website.csproj", "{BA630713-7F82-4CC7-9B42-46B4DCE7A36D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentry.Tests.EndToEnd", "Sentry.Tests.EndToEnd\Sentry.Tests.EndToEnd.csproj", "{909AD16B-5C49-4E57-BC77-96448732595A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{BA630713-7F82-4CC7-9B42-46B4DCE7A36D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA630713-7F82-4CC7-9B42-46B4DCE7A36D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA630713-7F82-4CC7-9B42-46B4DCE7A36D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{909AD16B-5C49-4E57-BC77-96448732595A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{909AD16B-5C49-4E57-BC77-96448732595A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{909AD16B-5C49-4E57-BC77-96448732595A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{909AD16B-5C49-4E57-BC77-96448732595A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
