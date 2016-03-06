@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Sentry.Core;
 using Sentry.Watchers.Website;
@@ -32,21 +33,25 @@ namespace Sentry.Tests.EndToEnd
             SentryConfiguration = SentryConfiguration.Configure()
                 .AddWatcher(WebsiteWatcher, hooks =>
                 {
+                    hooks.OnStart(() => { });
+                    hooks.OnStartAsync(() => Task.CompletedTask);
                     hooks.OnFailure(ex => { });
-                    hooks.OnFailureAsync(ex => Task.FromResult(0));
+                    hooks.OnFailureAsync(ex => Task.CompletedTask);
                     hooks.OnSuccess(() => { });
-                    hooks.OnSuccessAsync(() => Task.FromResult(0));
+                    hooks.OnSuccessAsync(() => Task.CompletedTask);
                     hooks.OnCompleted(() => { });
-                    hooks.OnCompletedAsync(() => Task.FromResult(0));
+                    hooks.OnCompletedAsync(() => Task.CompletedTask);
                 })
                 .SetGlobalHooks(hooks =>
                 {
+                    hooks.OnStart(() => { });
+                    hooks.OnStartAsync(() => Task.CompletedTask);
                     hooks.OnFailure(ex => { });
-                    hooks.OnFailureAsync(ex => Task.FromResult(0));
+                    hooks.OnFailureAsync(ex => Task.CompletedTask);
                     hooks.OnSuccess(() => { });
-                    hooks.OnSuccessAsync(() => Task.FromResult(0));
+                    hooks.OnSuccessAsync(() => Task.CompletedTask);
                     hooks.OnCompleted(() => { });
-                    hooks.OnCompletedAsync(() => Task.FromResult(0));
+                    hooks.OnCompletedAsync(() => Task.CompletedTask);
                 })
                 .Build();
             Sentry = new Sentry(SentryConfiguration);
@@ -88,6 +93,39 @@ namespace Sentry.Tests.EndToEnd
         {
             ExceptionThrown.Should().BeAssignableTo<SentryException>();
             ExceptionThrown.Message.Should().StartWithEquivalent("There was an error while executing Sentry caused by watcher");
+        }
+    }
+
+    [Specification]
+    public class when_any_watcher_has_an_invalid_resource_uri_and_sentry_uses_aggregate_exception : Sentry_specs
+    {
+        protected override async Task EstablishContext()
+        {
+            await base.EstablishContext();
+            ExceptionExpected = true;
+        }
+
+        protected override async Task BecauseOf()
+        {
+            await base.BecauseOf();
+            WebsiteWatcherConfiguration = WebsiteWatcherConfiguration.Configure()
+                .WithUrl("http://httpstat.us/400")
+                .Build();
+            WebsiteWatcher = new WebsiteWatcher(WebsiteWatcherConfiguration);
+            SentryConfiguration = SentryConfiguration.Configure()
+                .AddWatcher(WebsiteWatcher)
+                .UseAggregateException()
+                .Build();
+            Sentry = new Sentry(SentryConfiguration);
+            await Sentry.ExecuteAsync();
+        }
+
+        [Then]
+        public void then_aggregate_exception_should_be_thrown()
+        {
+            ExceptionThrown.Should().BeAssignableTo<AggregateException>();
+            var aggregateException = (AggregateException) ExceptionThrown;
+            aggregateException.InnerExceptions.Count.ShouldBeEquivalentTo(1);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Sentry.Core;
@@ -24,20 +25,26 @@ namespace Sentry
 
         public async Task ExecuteAsync()
         {
+            var innerExceptions = new List<Exception>();
             var tasks = _configuration.Watchers.Select(async watcherConfiguration =>
             {
                 var watcher = watcherConfiguration.Watcher;
                 try
                 {
+                    await InvokeOnStartHooksAsync(watcherConfiguration);
                     await watcher.ExecuteAsync();
                     await InvokeOnSuccessHooksAsync(watcherConfiguration);
-
                 }
                 catch (Exception exception)
                 {
                     await InvokeOnFailureHooksAsync(watcherConfiguration, exception);
-                    throw new SentryException("There was an error while executing Sentry " +
+                    var sentryException = new SentryException("There was an error while executing Sentry " +
                                               $"caused by watcher: '{watcher.GetType().Name}'", exception);
+                    innerExceptions.Add(sentryException);
+                    if (_configuration.UseAggregateException)
+                        return;
+
+                    throw sentryException;
                 }
                 finally
                 {
@@ -45,6 +52,16 @@ namespace Sentry
                 }
             });
             await Task.WhenAll(tasks);
+            if(_configuration.UseAggregateException)
+                throw new AggregateException(innerExceptions);
+        }
+
+        private async Task InvokeOnStartHooksAsync(WatcherConfiguration watcherConfiguration)
+        {
+            watcherConfiguration.Hooks.OnStart.Invoke();
+            await watcherConfiguration.Hooks.OnStartAsync();
+            _configuration.Hooks.OnStart.Invoke();
+            await _configuration.Hooks.OnStartAsync();
         }
 
         private async Task InvokeOnSuccessHooksAsync(WatcherConfiguration watcherConfiguration)

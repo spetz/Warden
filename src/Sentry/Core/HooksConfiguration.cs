@@ -5,11 +5,13 @@ namespace Sentry.Core
 {
     public class HooksConfiguration
     {
-        public Action<Exception> OnFailure { get; protected set; }
+        public Action OnStart { get; protected set; }
+        public Func<Task> OnStartAsync { get; protected set; }
         public Action OnSuccess { get; protected set; }
-        public Action OnCompleted { get; protected set; }
-        public Func<Exception, Task> OnFailureAsync { get; protected set; }
         public Func<Task> OnSuccessAsync { get; protected set; }
+        public Action<Exception> OnFailure { get; protected set; }
+        public Func<Exception, Task> OnFailureAsync { get; protected set; }
+        public Action OnCompleted { get; protected set; }
         public Func<Task> OnCompletedAsync { get; protected set; }
 
         public static HooksConfiguration Empty => new HooksConfiguration();
@@ -17,11 +19,13 @@ namespace Sentry.Core
 
         protected internal HooksConfiguration()
         {
-            OnFailure = ex => { };
+            OnStart = () => { };
+            OnStartAsync = () => Task.CompletedTask;
             OnSuccess = () => { };
-            OnCompleted = () => { };
-            OnFailureAsync = ex => Task.CompletedTask;
             OnSuccessAsync = () => Task.CompletedTask;
+            OnFailure = ex => { };
+            OnFailureAsync = ex => Task.CompletedTask;
+            OnCompleted = () => { };
             OnCompletedAsync = () => Task.CompletedTask;
         }
 
@@ -33,39 +37,51 @@ namespace Sentry.Core
             {
             }
 
-            public Builder OnFailure(Action<Exception> action)
+            public Builder OnStart(Action hook)
             {
-                _configuration.OnFailure = action;
+                _configuration.OnStart = hook;
                 return this;
             }
 
-            public Builder OnSuccess(Action action)
+            public Builder OnStartAsync(Func<Task> hook)
             {
-                _configuration.OnSuccess = action;
+                _configuration.OnStartAsync = hook;
                 return this;
             }
 
-            public Builder OnCompleted(Action action)
+            public Builder OnSuccess(Action hook)
             {
-                _configuration.OnCompleted = action;
+                _configuration.OnSuccess = hook;
                 return this;
             }
 
-            public Builder OnFailureAsync(Func<Exception, Task> action)
+            public Builder OnSuccessAsync(Func<Task> hook)
             {
-                _configuration.OnFailureAsync = action;
+                _configuration.OnSuccessAsync = hook;
                 return this;
             }
 
-            public Builder OnSuccessAsync(Func<Task> action)
+            public Builder OnFailure(Action<Exception> hook)
             {
-                _configuration.OnSuccessAsync = action;
+                _configuration.OnFailure = hook;
                 return this;
             }
 
-            public Builder OnCompletedAsync(Func<Task> action)
+            public Builder OnFailureAsync(Func<Exception, Task> hook)
             {
-                _configuration.OnCompletedAsync = action;
+                _configuration.OnFailureAsync = hook;
+                return this;
+            }
+
+            public Builder OnCompleted(Action hook)
+            {
+                _configuration.OnCompleted = hook;
+                return this;
+            }
+
+            public Builder OnCompletedAsync(Func<Task> hook)
+            {
+                _configuration.OnCompletedAsync = hook;
                 return this;
             }
 

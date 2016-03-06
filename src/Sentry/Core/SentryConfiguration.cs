@@ -7,6 +7,7 @@ namespace Sentry.Core
     {
         public ICollection<WatcherConfiguration> Watchers { get; protected set; }
         public HooksConfiguration Hooks { get; protected set; }
+        public bool UseAggregateException { get; protected set; }
 
         protected internal SentryConfiguration()
         {
@@ -45,12 +46,18 @@ namespace Sentry.Core
                 return this;
             }
 
-
             public Builder SetGlobalHooks(Action<HooksConfiguration.Builder> hooks)
             {
                 var hooksConfigurationBuilder = new HooksConfiguration.Builder();
                 hooks(hooksConfigurationBuilder);
                 _configuration.Hooks = hooksConfigurationBuilder.Build();
+
+                return this;
+            }
+
+            public Builder UseAggregateException()
+            {
+                _configuration.UseAggregateException = true;
 
                 return this;
             }
