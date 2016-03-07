@@ -36,8 +36,8 @@ namespace Sentry.Tests.EndToEnd
             SentryConfiguration = SentryConfiguration.Create()
                 .AddWatcher(WebsiteWatcher, hooks =>
                 {
-                    hooks.OnStart(() => { });
-                    hooks.OnStartAsync(() => Task.CompletedTask);
+                    hooks.OnStart(check => { });
+                    hooks.OnStartAsync(check => Task.CompletedTask);
                     hooks.OnFailure(result => { });
                     hooks.OnFailureAsync(result => Task.CompletedTask);
                     hooks.OnSuccess(result => { });
@@ -47,8 +47,8 @@ namespace Sentry.Tests.EndToEnd
                 })
                 .SetGlobalHooks(hooks =>
                 {
-                    hooks.OnStart(() => { });
-                    hooks.OnStartAsync(() => Task.CompletedTask);
+                    hooks.OnStart(check => { });
+                    hooks.OnStartAsync(check => Task.CompletedTask);
                     hooks.OnFailure(result => { });
                     hooks.OnFailureAsync(result => Task.CompletedTask);
                     hooks.OnSuccess(result => { });

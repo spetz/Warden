@@ -33,7 +33,7 @@ namespace Sentry
                 ISentryCheckResult sentryCheckResult = null;
                 try
                 {
-                    await InvokeOnStartHooksAsync(watcherConfiguration);
+                    await InvokeOnStartHooksAsync(watcherConfiguration, WatcherCheck.Create(watcher));
                     var watcherCheckResult = await watcher.ExecuteAsync();
                     sentryCheckResult = SentryCheckResult.Valid(watcherCheckResult, startedAt, DateTime.UtcNow);
                     results.Add(sentryCheckResult);
@@ -60,12 +60,12 @@ namespace Sentry
             return results;
         }
 
-        private async Task InvokeOnStartHooksAsync(WatcherConfiguration watcherConfiguration)
+        private async Task InvokeOnStartHooksAsync(WatcherConfiguration watcherConfiguration, IWatcherCheck check)
         {
-            watcherConfiguration.Hooks.OnStart.Invoke();
-            await watcherConfiguration.Hooks.OnStartAsync();
-            _configuration.Hooks.OnStart.Invoke();
-            await _configuration.Hooks.OnStartAsync();
+            watcherConfiguration.Hooks.OnStart.Invoke(check);
+            await watcherConfiguration.Hooks.OnStartAsync(check);
+            _configuration.Hooks.OnStart.Invoke(check);
+            await _configuration.Hooks.OnStartAsync(check);
         }
 
         private async Task InvokeOnSuccessHooksAsync(WatcherConfiguration watcherConfiguration, ISentryCheckResult checkResult)

@@ -9,6 +9,7 @@ namespace Sentry
         DateTime CompletedAtUtc { get; }
         TimeSpan ExecutionTime { get; }
         Exception Exception { get; }
+        bool IsValid { get; }
     }
 
     public class SentryCheckResult : ISentryCheckResult
@@ -18,6 +19,7 @@ namespace Sentry
         public DateTime CompletedAtUtc { get; }
         public Exception Exception { get; }
         public TimeSpan ExecutionTime => CompletedAtUtc - StartedAtUtc;
+        public bool IsValid => Exception == null;
 
         protected SentryCheckResult(IWatcherCheckResult watcherCheckResult, DateTime startedAtUtc, DateTime completedAtUtc,
             Exception exception = null)

@@ -5,8 +5,8 @@ namespace Sentry.Core
 {
     public class HooksConfiguration
     {
-        public Action OnStart { get; protected set; }
-        public Func<Task> OnStartAsync { get; protected set; }
+        public Action<IWatcherCheck> OnStart { get; protected set; }
+        public Func<IWatcherCheck, Task> OnStartAsync { get; protected set; }
         public Action<ISentryCheckResult> OnSuccess { get; protected set; }
         public Func<ISentryCheckResult, Task> OnSuccessAsync { get; protected set; }
         public Action<ISentryCheckResult> OnFailure { get; protected set; }
@@ -19,8 +19,8 @@ namespace Sentry.Core
 
         protected internal HooksConfiguration()
         {
-            OnStart = () => { };
-            OnStartAsync = () => Task.CompletedTask;
+            OnStart = _ => { };
+            OnStartAsync = _ => Task.CompletedTask;
             OnSuccess = _ => { };
             OnSuccessAsync = _ => Task.CompletedTask;
             OnFailure = _ => { };
@@ -37,13 +37,13 @@ namespace Sentry.Core
             {
             }
 
-            public Builder OnStart(Action hook)
+            public Builder OnStart(Action<IWatcherCheck> hook)
             {
                 _configuration.OnStart = hook;
                 return this;
             }
 
-            public Builder OnStartAsync(Func<Task> hook)
+            public Builder OnStartAsync(Func<IWatcherCheck, Task> hook)
             {
                 _configuration.OnStartAsync = hook;
                 return this;
