@@ -5,6 +5,6 @@ namespace Sentry
     public interface IWatcher
     {
         string Name { get; }
-        Task<IWatcherOutcome> ExecuteAsync();
+        Task<IWatcherCheckResult> ExecuteAsync();
     }
 }

@@ -15,7 +15,7 @@ namespace Sentry.Tests.EndToEnd
         protected SentryConfiguration SentryConfiguration { get; set; }
         protected WebsiteWatcher WebsiteWatcher { get; set; }
         protected WebsiteWatcherConfiguration WebsiteWatcherConfiguration { get; set; }
-        protected IEnumerable<ISentryOutcome> SentryOutcomes { get; set; } 
+        protected IEnumerable<ISentryCheckResult> Sentryresults { get; set; } 
     }
 
     [Specification]
@@ -38,23 +38,23 @@ namespace Sentry.Tests.EndToEnd
                 {
                     hooks.OnStart(() => { });
                     hooks.OnStartAsync(() => Task.CompletedTask);
-                    hooks.OnFailure(outcome => { });
-                    hooks.OnFailureAsync(outcome => Task.CompletedTask);
-                    hooks.OnSuccess(outcome => { });
-                    hooks.OnSuccessAsync(outcome => Task.CompletedTask);
-                    hooks.OnCompleted(outcome => { });
-                    hooks.OnCompletedAsync(outcome => Task.CompletedTask);
+                    hooks.OnFailure(result => { });
+                    hooks.OnFailureAsync(result => Task.CompletedTask);
+                    hooks.OnSuccess(result => { });
+                    hooks.OnSuccessAsync(result => Task.CompletedTask);
+                    hooks.OnCompleted(result => { });
+                    hooks.OnCompletedAsync(result => Task.CompletedTask);
                 })
                 .SetGlobalHooks(hooks =>
                 {
                     hooks.OnStart(() => { });
                     hooks.OnStartAsync(() => Task.CompletedTask);
-                    hooks.OnFailure(outcome => { });
-                    hooks.OnFailureAsync(outcome => Task.CompletedTask);
-                    hooks.OnSuccess(outcome => { });
-                    hooks.OnSuccessAsync(outcome => Task.CompletedTask);
-                    hooks.OnCompleted(outcome => { });
-                    hooks.OnCompletedAsync(outcome => Task.CompletedTask);
+                    hooks.OnFailure(result => { });
+                    hooks.OnFailureAsync(result => Task.CompletedTask);
+                    hooks.OnSuccess(result => { });
+                    hooks.OnSuccessAsync(result => Task.CompletedTask);
+                    hooks.OnCompleted(result => { });
+                    hooks.OnCompletedAsync(result => Task.CompletedTask);
                 })
                 .Build();
             Sentry = new Sentry(SentryConfiguration);
@@ -87,13 +87,13 @@ namespace Sentry.Tests.EndToEnd
                 .AddWatcher(WebsiteWatcher)
                 .Build();
             Sentry = new Sentry(SentryConfiguration);
-            SentryOutcomes = await Sentry.ExecuteAsync();
+            Sentryresults = await Sentry.ExecuteAsync();
         }
 
         [Then]
-        public void then_sentry_outcome_should_contain_an_entry_with_exception_set()
+        public void then_sentry_result_should_contain_an_entry_with_exception_set()
         {
-            SentryOutcomes.All(x => x.Exception != null).ShouldBeEquivalentTo(true);
+            Sentryresults.All(x => x.Exception != null).ShouldBeEquivalentTo(true);
         }
     }
 }

@@ -7,12 +7,12 @@ namespace Sentry.Core
     {
         public Action OnStart { get; protected set; }
         public Func<Task> OnStartAsync { get; protected set; }
-        public Action<ISentryOutcome> OnSuccess { get; protected set; }
-        public Func<ISentryOutcome, Task> OnSuccessAsync { get; protected set; }
-        public Action<ISentryOutcome> OnFailure { get; protected set; }
-        public Func<ISentryOutcome, Task> OnFailureAsync { get; protected set; }
-        public Action<ISentryOutcome> OnCompleted { get; protected set; }
-        public Func<ISentryOutcome,Task> OnCompletedAsync { get; protected set; }
+        public Action<ISentryCheckResult> OnSuccess { get; protected set; }
+        public Func<ISentryCheckResult, Task> OnSuccessAsync { get; protected set; }
+        public Action<ISentryCheckResult> OnFailure { get; protected set; }
+        public Func<ISentryCheckResult, Task> OnFailureAsync { get; protected set; }
+        public Action<ISentryCheckResult> OnCompleted { get; protected set; }
+        public Func<ISentryCheckResult,Task> OnCompletedAsync { get; protected set; }
 
         public static HooksConfiguration Empty => new HooksConfiguration();
         public static Builder Create() => new Builder();
@@ -49,37 +49,37 @@ namespace Sentry.Core
                 return this;
             }
 
-            public Builder OnSuccess(Action<ISentryOutcome> hook)
+            public Builder OnSuccess(Action<ISentryCheckResult> hook)
             {
                 _configuration.OnSuccess = hook;
                 return this;
             }
 
-            public Builder OnSuccessAsync(Func<ISentryOutcome, Task> hook)
+            public Builder OnSuccessAsync(Func<ISentryCheckResult, Task> hook)
             {
                 _configuration.OnSuccessAsync = hook;
                 return this;
             }
 
-            public Builder OnFailure(Action<ISentryOutcome> hook)
+            public Builder OnFailure(Action<ISentryCheckResult> hook)
             {
                 _configuration.OnFailure = hook;
                 return this;
             }
 
-            public Builder OnFailureAsync(Func<ISentryOutcome, Task> hook)
+            public Builder OnFailureAsync(Func<ISentryCheckResult, Task> hook)
             {
                 _configuration.OnFailureAsync = hook;
                 return this;
             }
 
-            public Builder OnCompleted(Action<ISentryOutcome> hook)
+            public Builder OnCompleted(Action<ISentryCheckResult> hook)
             {
                 _configuration.OnCompleted = hook;
                 return this;
             }
 
-            public Builder OnCompletedAsync(Func<ISentryOutcome, Task> hook)
+            public Builder OnCompletedAsync(Func<ISentryCheckResult, Task> hook)
             {
                 _configuration.OnCompletedAsync = hook;
                 return this;

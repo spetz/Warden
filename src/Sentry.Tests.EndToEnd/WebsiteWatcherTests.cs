@@ -10,6 +10,7 @@ namespace Sentry.Tests.EndToEnd
     {
         protected WebsiteWatcher WebsiteWatcher { get; set; }
         protected WebsiteWatcherConfiguration WebsiteWatcherConfiguration { get; set; }
+        protected IWatcherCheckResult WebsiteWatcherCheckResult { get; set; }
     }
 
     [Specification]
@@ -28,7 +29,7 @@ namespace Sentry.Tests.EndToEnd
                 .WithUrl("http://www.testwebsitethatdoesnotexist.com")
                 .Build();
             WebsiteWatcher = new WebsiteWatcher(WebsiteWatcherConfiguration);
-            await WebsiteWatcher.ExecuteAsync();
+            WebsiteWatcherCheckResult = await WebsiteWatcher.ExecuteAsync();
         }
 
         [Then]
@@ -55,14 +56,14 @@ namespace Sentry.Tests.EndToEnd
                 .WithUrl("http://httpstat.us/400")
                 .Build();
             WebsiteWatcher = new WebsiteWatcher(WebsiteWatcherConfiguration);
-            await WebsiteWatcher.ExecuteAsync();
+            WebsiteWatcherCheckResult = await WebsiteWatcher.ExecuteAsync();
         }
 
         [Then]
         public void then_exception_should_be_thrown()
         {
             ExceptionThrown.Should().BeAssignableTo<WatcherException>();
-            ExceptionThrown.Message.Should().StartWithEquivalent("The server has returned invalid response while trying to access URL");
+            ExceptionThrown.Message.Should().StartWithEquivalent("The server has returned an invalid response while trying to access URL");
         }
     }
 
@@ -81,13 +82,17 @@ namespace Sentry.Tests.EndToEnd
                 .WithUrl("http://httpstat.us/200")
                 .Build();
             WebsiteWatcher = new WebsiteWatcher(WebsiteWatcherConfiguration);
-            await WebsiteWatcher.ExecuteAsync();
+            WebsiteWatcherCheckResult = await WebsiteWatcher.ExecuteAsync();
         }
 
         [Then]           
-        public void then_everything_should_be_just_fine() // :)
+        public void then_website_watcher_check_result_should_be_returned()
         {
-            true.ShouldBeEquivalentTo(true);
+            WebsiteWatcherCheckResult.Should().BeAssignableTo<WebsiteWatcherCheckResult>();
+            var result = (WebsiteWatcherCheckResult) WebsiteWatcherCheckResult;
+            result.Uri.Should().NotBeNull();
+            result.RequestHeaders.Should().NotBeNull();
+            result.Response.Should().NotBeNull();
         }
     }
 }

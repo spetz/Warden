@@ -6,12 +6,14 @@ namespace Sentry.Watchers.Website
     {
         public string Name { get; protected set; }
         public Uri Uri { get; protected set; }
+        public bool SkipStatusCodeValidation { get; protected set; }
 
         protected internal WebsiteWatcherConfiguration()
         {
         }
 
         public static WebsiteWatcherConfiguration Empty => new WebsiteWatcherConfiguration();
+
         public static WebsiteWatcherConfigurationBuilder Create(string name) => new WebsiteWatcherConfigurationBuilder(name);
 
         public class WebsiteWatcherConfigurationBuilder
@@ -32,6 +34,14 @@ namespace Sentry.Watchers.Website
                     throw new ArgumentException("URL can not be empty.");
 
                 _configuration.Uri = new Uri(url);
+
+                return this;
+            }
+
+
+            public WebsiteWatcherConfigurationBuilder SkipStatusCodeValidation()
+            {
+                _configuration.SkipStatusCodeValidation = true;
 
                 return this;
             }

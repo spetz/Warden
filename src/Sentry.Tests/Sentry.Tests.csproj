@@ -57,8 +57,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WebsiteWatcherTests.cs" />
-    <Compile Include="SentryTests.cs" />
+    <Compile Include="Integration\WebsiteWatcherTests.cs" />
+    <Compile Include="Integration\SentryTests.cs" />
     <Compile Include="SpecificationBase.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -73,6 +73,9 @@
       <Project>{EABC1132-32EA-4A2C-8129-60E20B74A546}</Project>
       <Name>Sentry</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Unit\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

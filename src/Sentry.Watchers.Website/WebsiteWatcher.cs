@@ -20,17 +20,21 @@ namespace Sentry.Watchers.Website
             _httpClient = new HttpClient();
         }
 
-
-        public async Task<IWatcherOutcome> ExecuteAsync()
+        public async Task<IWatcherCheckResult> ExecuteAsync()
         {
             try
             {
                 var response = await _httpClient.GetAsync(_configuration.Uri);
-                if (response.IsSuccessStatusCode)
-                    return WatcherOutcome.Create(Name, "Website has returned valid content.");
+                if (response.IsSuccessStatusCode || _configuration.SkipStatusCodeValidation)
+                {
+                    return WebsiteWatcherCheckResult.Create(this, _configuration.Uri,
+                        _httpClient.DefaultRequestHeaders, response,
+                        $"Websiste for URL: '{_configuration.Uri}' has returned a response with status code: {response.StatusCode}.");
+                }
 
-                throw new WatcherException($"The server has returned invalid response while trying to access URL: '{_configuration.Uri}' " +
-                                           $"(status code: {response.StatusCode}). Reason phrase: {response.ReasonPhrase}");
+                throw new WatcherException(
+                    $"The server has returned an invalid response while trying to access URL: '{_configuration.Uri}' " +
+                    $"(status code: {response.StatusCode}). Reason phrase: {response.ReasonPhrase}");
             }
             catch (HttpRequestException ex)
             {

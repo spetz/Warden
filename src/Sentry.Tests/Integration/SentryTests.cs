@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Sentry.Core;
 
-namespace Sentry.Tests
+namespace Sentry.Tests.Integration
 {
     [Specification]
     public class Sentry_specs : SpecificationBase
