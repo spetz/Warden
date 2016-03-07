@@ -6,12 +6,17 @@ namespace Sentry.Core
     public class SentryConfiguration
     {
         public ICollection<WatcherConfiguration> Watchers { get; protected set; }
-        public HooksConfiguration Hooks { get; protected set; }
+        public SentryHooksConfiguration Hooks { get; protected set; }
+        public WatcherHooksConfiguration GlobalWatcherHooks { get; protected set; }
+        public TimeSpan IterationDelay { get; protected set; }
+        public long? TotalNumberOfIterations { get; protected set; }
 
         protected internal SentryConfiguration()
         {
+            Hooks = SentryHooksConfiguration.Empty;
+            GlobalWatcherHooks = WatcherHooksConfiguration.Empty;
             Watchers = new List<WatcherConfiguration>();
-            Hooks = HooksConfiguration.Empty;
+            IterationDelay = new TimeSpan(0, 0, 5);
         }
 
         public static SentryConfiguration Empty => new SentryConfiguration();
@@ -26,12 +31,12 @@ namespace Sentry.Core
                 _configuration = configuration;
             }
 
-            public Builder AddWatcher(IWatcher watcher, Action<HooksConfiguration.Builder> hooks = null)
+            public Builder AddWatcher(IWatcher watcher, Action<WatcherHooksConfiguration.Builder> hooks = null)
             {
-                var hooksConfiguration = HooksConfiguration.Empty;
+                var hooksConfiguration = WatcherHooksConfiguration.Empty;
                 if (hooks != null)
                 {
-                    var hooksConfigurationBuilder = new HooksConfiguration.Builder();
+                    var hooksConfigurationBuilder = new WatcherHooksConfiguration.Builder();
                     hooks(hooksConfigurationBuilder);
                     hooksConfiguration = hooksConfigurationBuilder.Build();
                 }
@@ -45,11 +50,47 @@ namespace Sentry.Core
                 return this;
             }
 
-            public Builder SetGlobalHooks(Action<HooksConfiguration.Builder> hooks)
+            public Builder SetHooks(Action<SentryHooksConfiguration.Builder> hooks)
             {
-                var hooksConfigurationBuilder = new HooksConfiguration.Builder();
+                var hooksConfigurationBuilder = new SentryHooksConfiguration.Builder();
                 hooks(hooksConfigurationBuilder);
                 _configuration.Hooks = hooksConfigurationBuilder.Build();
+
+                return this;
+            }
+
+            public Builder SetGlobalWatcherHooks(Action<WatcherHooksConfiguration.Builder> hooks)
+            {
+                var hooksConfigurationBuilder = new WatcherHooksConfiguration.Builder();
+                hooks(hooksConfigurationBuilder);
+                _configuration.GlobalWatcherHooks = hooksConfigurationBuilder.Build();
+
+                return this;
+            }
+
+            public Builder SetIterationDelay(TimeSpan delay)
+            {
+                _configuration.IterationDelay = delay;
+
+                return this;
+            }
+
+            public Builder SetTotalNumberOfIterations(long iterationsCount)
+            {
+                if (iterationsCount < 0)
+                {
+                    throw new ArgumentException($"Sentry iterations count must be greater than 0 ({iterationsCount}).",
+                        nameof(iterationsCount));
+                }
+
+                _configuration.TotalNumberOfIterations = iterationsCount;
+
+                return this;
+            }
+
+            public Builder RunOnlyOnce()
+            {
+                _configuration.TotalNumberOfIterations = 1;
 
                 return this;
             }

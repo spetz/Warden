@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Sentry.Core;
@@ -15,7 +13,7 @@ namespace Sentry.Tests.EndToEnd
         protected SentryConfiguration SentryConfiguration { get; set; }
         protected WebsiteWatcher WebsiteWatcher { get; set; }
         protected WebsiteWatcherConfiguration WebsiteWatcherConfiguration { get; set; }
-        protected IEnumerable<ISentryCheckResult> Sentryresults { get; set; } 
+        protected ISentryIteration SentryIteration { get; set; } 
     }
 
     [Specification]
@@ -45,7 +43,7 @@ namespace Sentry.Tests.EndToEnd
                     hooks.OnCompleted(result => { });
                     hooks.OnCompletedAsync(result => Task.CompletedTask);
                 })
-                .SetGlobalHooks(hooks =>
+                .SetGlobalWatcherHooks(hooks =>
                 {
                     hooks.OnStart(check => { });
                     hooks.OnStartAsync(check => Task.CompletedTask);
@@ -56,9 +54,10 @@ namespace Sentry.Tests.EndToEnd
                     hooks.OnCompleted(result => { });
                     hooks.OnCompletedAsync(result => Task.CompletedTask);
                 })
+                .RunOnlyOnce()
                 .Build();
             Sentry = new Sentry(SentryConfiguration);
-            await Sentry.ExecuteAsync();
+            await Sentry.StartAsync();
         }
 
         [Then]
@@ -84,16 +83,21 @@ namespace Sentry.Tests.EndToEnd
                 .Build();
             WebsiteWatcher = new WebsiteWatcher(WebsiteWatcherConfiguration);
             SentryConfiguration = SentryConfiguration.Create()
+                .SetHooks(hooks =>
+                {
+                    hooks.OnIterationCompleted(iteration => SentryIteration = iteration);
+                })
                 .AddWatcher(WebsiteWatcher)
+                .RunOnlyOnce()
                 .Build();
             Sentry = new Sentry(SentryConfiguration);
-            Sentryresults = await Sentry.ExecuteAsync();
+            await Sentry.StartAsync();
         }
 
         [Then]
         public void then_sentry_result_should_contain_an_entry_with_exception_set()
         {
-            Sentryresults.All(x => x.Exception != null).ShouldBeEquivalentTo(true);
+            SentryIteration.Results.All(x => x.Exception != null).ShouldBeEquivalentTo(true);
         }
     }
 }

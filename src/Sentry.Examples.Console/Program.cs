@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using NLog;
 using Sentry.Core;
@@ -11,29 +9,11 @@ namespace Sentry.Examples.Console
     class Program
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static readonly ISentry Sentry = ConfigureSentry();
 
         private static void Main(string[] args)
         {
-            Task.WaitAll(StartSentry());
-        }
-
-        private static async Task StartSentry()
-        {
-            var sentry = ConfigureSentry();
-            while (true)
-            {
-                try
-                {
-                    var sentryCheckResults = await sentry.ExecuteAsync();
-                    FormatSentryResult(sentryCheckResults.ToList());
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex);
-                }
-
-                await Task.Delay(5000);
-            }
+            Task.WaitAll(Sentry.StartAsync());
         }
 
         private static ISentry ConfigureSentry()
@@ -43,6 +23,11 @@ namespace Sentry.Examples.Console
                 .Build();
             var websiteWatcher = new WebsiteWatcher(websiteWatcherConfiguration);
             var sentryConfiguration = SentryConfiguration.Create()
+                .SetHooks(hooks =>
+                {
+                    hooks.OnError(Logger.Error);
+                    hooks.OnIterationCompleted(OnIterationCompleted);
+                })
                 .AddWatcher(websiteWatcher, hooks =>
                 {
                     hooks.OnStartAsync(WebsiteHookOnStartAsync);
@@ -50,7 +35,7 @@ namespace Sentry.Examples.Console
                     hooks.OnSuccessAsync(WebsiteHookOnSuccessAsync);
                     hooks.OnCompletedAsync(WebsiteHookOnCompletedAsync);
                 })
-                .SetGlobalHooks(hooks =>
+                .SetGlobalWatcherHooks(hooks =>
                 {
                     hooks.OnStart(GlobalHookOnStart);
                     hooks.OnFailure(GlobalHookOnFailure);
@@ -109,11 +94,11 @@ namespace Sentry.Examples.Console
             Logger.Info($"Invoking the global hook OnFailure() by watcher: '{check.WatcherCheckResult.WatcherName}'.");
         }
 
-        private static void FormatSentryResult(ICollection<ISentryCheckResult> sentryCheckResults)
+        private static void OnIterationCompleted(ISentryIteration sentryIteration)
         {
             var newLine = Environment.NewLine;
-            Logger.Info($"Received {sentryCheckResults.Count} Sentry check results.");
-            foreach (var result in sentryCheckResults)
+            Logger.Info($"Sentry iteration {sentryIteration.Ordinal} has completed.");
+            foreach (var result in sentryIteration.Results)
             {
                 Logger.Info($"Watcher: '{result.WatcherCheckResult.WatcherName}'{newLine}" +
                             $"Description: {result.WatcherCheckResult.Description}{newLine}" +

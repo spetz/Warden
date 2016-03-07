@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Sentry.Core
 {
-    public class HooksConfiguration
+    public class WatcherHooksConfiguration
     {
         public Action<IWatcherCheck> OnStart { get; protected set; }
         public Func<IWatcherCheck, Task> OnStartAsync { get; protected set; }
@@ -14,10 +14,10 @@ namespace Sentry.Core
         public Action<ISentryCheckResult> OnCompleted { get; protected set; }
         public Func<ISentryCheckResult,Task> OnCompletedAsync { get; protected set; }
 
-        public static HooksConfiguration Empty => new HooksConfiguration();
+        public static WatcherHooksConfiguration Empty => new WatcherHooksConfiguration();
         public static Builder Create() => new Builder();
 
-        protected internal HooksConfiguration()
+        protected internal WatcherHooksConfiguration()
         {
             OnStart = _ => { };
             OnStartAsync = _ => Task.CompletedTask;
@@ -31,7 +31,7 @@ namespace Sentry.Core
 
         public class Builder
         {
-            private readonly HooksConfiguration _configuration = new HooksConfiguration();
+            private readonly WatcherHooksConfiguration _configuration = new WatcherHooksConfiguration();
 
             protected internal Builder()
             {
@@ -85,7 +85,7 @@ namespace Sentry.Core
                 return this;
             }
 
-            public HooksConfiguration Build() => _configuration;
+            public WatcherHooksConfiguration Build() => _configuration;
         }
     }
 }

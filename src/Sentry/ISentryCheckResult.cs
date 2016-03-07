@@ -2,12 +2,9 @@
 
 namespace Sentry
 {
-    public interface ISentryCheckResult
+    public interface ISentryCheckResult : ITimestampable
     {
         IWatcherCheckResult WatcherCheckResult { get; }
-        DateTime StartedAtUtc { get; }
-        DateTime CompletedAtUtc { get; }
-        TimeSpan ExecutionTime { get; }
         Exception Exception { get; }
         bool IsValid { get; }
     }

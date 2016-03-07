@@ -5,7 +5,7 @@ namespace Sentry.Core
     public class WatcherConfiguration
     {
         public IWatcher Watcher { get; protected set; }
-        public HooksConfiguration Hooks { get; protected set; }
+        public WatcherHooksConfiguration Hooks { get; protected set; }
 
         public static Builder Create(IWatcher watcher) => new Builder(watcher);
 
@@ -14,7 +14,7 @@ namespace Sentry.Core
             if (watcher == null)
                 throw new ArgumentNullException(nameof(watcher));
             Watcher = watcher;
-            Hooks = HooksConfiguration.Empty;
+            Hooks = WatcherHooksConfiguration.Empty;
         }
 
         public class Builder
@@ -26,7 +26,7 @@ namespace Sentry.Core
                 _configuration = new WatcherConfiguration(watcher);
             }
 
-            public Builder WithHooks(HooksConfiguration hooks)
+            public Builder WithHooks(WatcherHooksConfiguration hooks)
             {
                 _configuration.Hooks = hooks;
 

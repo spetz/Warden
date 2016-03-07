@@ -40,13 +40,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\HooksConfiguration.cs" />
+    <Compile Include="Core\SentryHooksConfiguration.cs" />
+    <Compile Include="Core\WatcherHooksConfiguration.cs" />
     <Compile Include="Core\SentryConfiguration.cs" />
     <Compile Include="Core\SentryException.cs" />
     <Compile Include="Core\WatcherConfiguration.cs" />
     <Compile Include="Core\WatcherException.cs" />
     <Compile Include="ISentry.cs" />
     <Compile Include="ISentryCheckResult.cs" />
+    <Compile Include="ISentryIteration.cs" />
+    <Compile Include="ITimestampable.cs" />
     <Compile Include="IWatcher.cs" />
     <Compile Include="IWatcherCheckResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -8,12 +8,15 @@ namespace Sentry
 {
     public interface ISentry
     {
-        Task<IEnumerable<ISentryCheckResult>>  ExecuteAsync();
+        Task StartAsync();
+        Task StopAsync();
     }
 
     public class Sentry : ISentry
     {
         private readonly SentryConfiguration _configuration;
+        private long _iterationOrdinal = 1;
+        private bool _started = false;
 
         public Sentry(SentryConfiguration configuration)
         {
@@ -23,8 +26,54 @@ namespace Sentry
             _configuration = configuration;
         }
 
-        public async Task<IEnumerable<ISentryCheckResult>> ExecuteAsync()
+        public async Task StartAsync()
         {
+            _started = true;
+            _configuration.Hooks.OnStart();
+            await _configuration.Hooks.OnStartAsync();
+
+            try
+            {
+                while (CanExecuteIteration(_iterationOrdinal))
+                {
+                    _configuration.Hooks.OnIterationStart(_iterationOrdinal);
+                    await _configuration.Hooks.OnIterationStartAsync(_iterationOrdinal);
+                    var iteration = await ExecuteIterationAsync(_iterationOrdinal);
+                    _configuration.Hooks.OnIterationCompleted(iteration);
+                    await _configuration.Hooks.OnIterationCompletedAsync(iteration);
+                    await Task.Delay(_configuration.IterationDelay);
+                    _iterationOrdinal++;
+                }
+            }
+            catch (Exception exception)
+            {
+                _configuration.Hooks.OnError(exception);
+                await _configuration.Hooks.OnErrorAsync(exception);
+            }
+        }
+
+        private bool CanExecuteIteration(long ordinal)
+        {
+            if (!_started)
+                return false;
+            if (!_configuration.TotalNumberOfIterations.HasValue)
+                return true;
+            if (ordinal <= _configuration.TotalNumberOfIterations)
+                return true;
+
+            return false;
+        }
+
+        public async Task StopAsync()
+        {
+            _started = false;
+            _configuration.Hooks.OnStop();
+            await _configuration.Hooks.OnStopAsync();
+        }
+
+        private async Task<ISentryIteration> ExecuteIterationAsync(long ordinal)
+        {
+            var iterationStartedAtUtc = DateTime.UtcNow;
             var results = new List<ISentryCheckResult>();
             var tasks = _configuration.Watchers.Select(async watcherConfiguration =>
             {
@@ -55,41 +104,44 @@ namespace Sentry
                 }
 
             });
-            await Task.WhenAll(tasks);
 
-            return results;
+            await Task.WhenAll(tasks);
+            var iterationCompleteddAtUtc = DateTime.UtcNow;
+            var iteration = SentryIteration.Create(ordinal, results, iterationStartedAtUtc, iterationCompleteddAtUtc);
+
+            return iteration;
         }
 
         private async Task InvokeOnStartHooksAsync(WatcherConfiguration watcherConfiguration, IWatcherCheck check)
         {
             watcherConfiguration.Hooks.OnStart.Invoke(check);
             await watcherConfiguration.Hooks.OnStartAsync(check);
-            _configuration.Hooks.OnStart.Invoke(check);
-            await _configuration.Hooks.OnStartAsync(check);
+            _configuration.GlobalWatcherHooks.OnStart.Invoke(check);
+            await _configuration.GlobalWatcherHooks.OnStartAsync(check);
         }
 
         private async Task InvokeOnSuccessHooksAsync(WatcherConfiguration watcherConfiguration, ISentryCheckResult checkResult)
         {
             watcherConfiguration.Hooks.OnSuccess.Invoke(checkResult);
             await watcherConfiguration.Hooks.OnSuccessAsync(checkResult);
-            _configuration.Hooks.OnSuccess.Invoke(checkResult);
-            await _configuration.Hooks.OnSuccessAsync(checkResult);
+            _configuration.GlobalWatcherHooks.OnSuccess.Invoke(checkResult);
+            await _configuration.GlobalWatcherHooks.OnSuccessAsync(checkResult);
         }
 
         private async Task InvokeOnFailureHooksAsync(WatcherConfiguration watcherConfiguration, ISentryCheckResult checkResult)
         {
             watcherConfiguration.Hooks.OnFailure.Invoke(checkResult);
             await watcherConfiguration.Hooks.OnFailureAsync(checkResult);
-            _configuration.Hooks.OnFailure.Invoke(checkResult);
-            await _configuration.Hooks.OnFailureAsync(checkResult);
+            _configuration.GlobalWatcherHooks.OnFailure.Invoke(checkResult);
+            await _configuration.GlobalWatcherHooks.OnFailureAsync(checkResult);
         }
 
         private async Task InvokeOnCompletedHooksAsync(WatcherConfiguration watcherConfiguration, ISentryCheckResult checkResult)
         {
             watcherConfiguration.Hooks.OnCompleted.Invoke(checkResult);
             await watcherConfiguration.Hooks.OnCompletedAsync(checkResult);
-            _configuration.Hooks.OnCompleted.Invoke(checkResult);
-            await _configuration.Hooks.OnCompletedAsync(checkResult);
+            _configuration.GlobalWatcherHooks.OnCompleted.Invoke(checkResult);
+            await _configuration.GlobalWatcherHooks.OnCompletedAsync(checkResult);
         }
     }
 }
