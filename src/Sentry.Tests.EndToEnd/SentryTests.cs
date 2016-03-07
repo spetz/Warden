@@ -27,11 +27,13 @@ namespace Sentry.Tests.EndToEnd
         protected override async Task BecauseOf()
         {
             await base.BecauseOf();
-            WebsiteWatcherConfiguration = WebsiteWatcherConfiguration.Create("Valid website watcher")
+            WebsiteWatcherConfiguration = WebsiteWatcherConfiguration
+                .Create("Valid website watcher")
                 .WithUrl("http://httpstat.us/200")
                 .Build();
             WebsiteWatcher = new WebsiteWatcher(WebsiteWatcherConfiguration);
-            SentryConfiguration = SentryConfiguration.Create()
+            SentryConfiguration = SentryConfiguration
+                .Create()
                 .AddWatcher(WebsiteWatcher, hooks =>
                 {
                     hooks.OnStart(check => { });
@@ -78,11 +80,13 @@ namespace Sentry.Tests.EndToEnd
         protected override async Task BecauseOf()
         {
             await base.BecauseOf();
-            WebsiteWatcherConfiguration = WebsiteWatcherConfiguration.Create("Invalid website watcher")
+            WebsiteWatcherConfiguration = WebsiteWatcherConfiguration
+                .Create("Invalid website watcher")
                 .WithUrl("http://httpstat.us/400")
                 .Build();
             WebsiteWatcher = new WebsiteWatcher(WebsiteWatcherConfiguration);
-            SentryConfiguration = SentryConfiguration.Create()
+            SentryConfiguration = SentryConfiguration
+                .Create()
                 .SetHooks(hooks =>
                 {
                     hooks.OnIterationCompleted(iteration => SentryIteration = iteration);
@@ -97,7 +101,7 @@ namespace Sentry.Tests.EndToEnd
         [Then]
         public void then_sentry_result_should_contain_an_entry_with_exception_set()
         {
-            SentryIteration.Results.All(x => x.Exception != null).ShouldBeEquivalentTo(true);
+            SentryIteration.Results.All(x => !x.IsValid).ShouldBeEquivalentTo(true);
         }
     }
 }

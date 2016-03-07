@@ -76,7 +76,8 @@ namespace Sentry.Tests.Integration
         protected override async Task BecauseOf()
         {
             await base.BecauseOf();
-            WebsiteWatcherConfiguration = WebsiteWatcherConfiguration.Create("Invalid website watcher")
+            WebsiteWatcherConfiguration = WebsiteWatcherConfiguration
+                .Create("Invalid website watcher")
                 .WithUrl("test")
                 .Build();
         }

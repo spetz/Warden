@@ -18,11 +18,13 @@ namespace Sentry.Examples.Console
 
         private static ISentry ConfigureSentry()
         {
-            var websiteWatcherConfiguration = WebsiteWatcherConfiguration.Create("httpstat.us website watcher")
+            var websiteWatcherConfiguration = WebsiteWatcherConfiguration
+                .Create("httpstat.us website watcher")
                 .WithUrl("http://httpstat.us/200")
                 .Build();
             var websiteWatcher = new WebsiteWatcher(websiteWatcherConfiguration);
-            var sentryConfiguration = SentryConfiguration.Create()
+            var sentryConfiguration = SentryConfiguration
+                .Create()
                 .SetHooks(hooks =>
                 {
                     hooks.OnError(Logger.Error);
@@ -41,6 +43,7 @@ namespace Sentry.Examples.Console
                     hooks.OnFailure(GlobalHookOnFailure);
                     hooks.OnSuccess(GlobalHookOnSuccess);
                     hooks.OnCompleted(GlobalHookOnCompleted);
+                    hooks.OnError(Logger.Error);
                 })
                 .Build();
 

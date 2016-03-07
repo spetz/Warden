@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Sentry.Core;
 using Sentry.Watchers.Website;
@@ -25,7 +26,8 @@ namespace Sentry.Tests.EndToEnd
         protected override async Task BecauseOf()
         {
             await base.BecauseOf();
-            WebsiteWatcherConfiguration = WebsiteWatcherConfiguration.Create("Invalid website watcher")
+            WebsiteWatcherConfiguration = WebsiteWatcherConfiguration.
+                Create("Invalid website watcher")
                 .WithUrl("http://www.testwebsitethatdoesnotexist.com")
                 .Build();
             WebsiteWatcher = new WebsiteWatcher(WebsiteWatcherConfiguration);
@@ -46,13 +48,13 @@ namespace Sentry.Tests.EndToEnd
         protected override async Task EstablishContext()
         {
             await base.EstablishContext();
-            ExceptionExpected = true;
         }
 
         protected override async Task BecauseOf()
         {
             await base.BecauseOf();
-            WebsiteWatcherConfiguration = WebsiteWatcherConfiguration.Create("Valid website watcher")
+            WebsiteWatcherConfiguration = WebsiteWatcherConfiguration
+                .Create("Valid website watcher")
                 .WithUrl("http://httpstat.us/400")
                 .Build();
             WebsiteWatcher = new WebsiteWatcher(WebsiteWatcherConfiguration);
@@ -62,8 +64,7 @@ namespace Sentry.Tests.EndToEnd
         [Then]
         public void then_exception_should_be_thrown()
         {
-            ExceptionThrown.Should().BeAssignableTo<WatcherException>();
-            ExceptionThrown.Message.Should().StartWithEquivalent("The server has returned an invalid response while trying to access URL");
+            WebsiteWatcherCheckResult.IsValid.ShouldBeEquivalentTo(false);
         }
     }
 
@@ -78,7 +79,8 @@ namespace Sentry.Tests.EndToEnd
         protected override async Task BecauseOf()
         {
             await base.BecauseOf();
-            WebsiteWatcherConfiguration = WebsiteWatcherConfiguration.Create("Valid website watcher")
+            WebsiteWatcherConfiguration = WebsiteWatcherConfiguration
+                .Create("Valid website watcher")
                 .WithUrl("http://httpstat.us/200")
                 .Build();
             WebsiteWatcher = new WebsiteWatcher(WebsiteWatcherConfiguration);
@@ -88,6 +90,7 @@ namespace Sentry.Tests.EndToEnd
         [Then]           
         public void then_website_watcher_check_result_should_be_returned()
         {
+            WebsiteWatcherCheckResult.IsValid.ShouldBeEquivalentTo(true);
             WebsiteWatcherCheckResult.Should().BeAssignableTo<WebsiteWatcherCheckResult>();
             var result = (WebsiteWatcherCheckResult) WebsiteWatcherCheckResult;
             result.Uri.Should().NotBeNull();

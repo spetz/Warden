@@ -26,18 +26,13 @@ namespace Sentry.Watchers.Website
             try
             {
                 var response = await _httpClient.GetAsync(_configuration.Uri);
-                if (HasValidRespons(response))
-                {
-                    return WebsiteWatcherCheckResult.Create(this, _configuration.Uri,
-                        _httpClient.DefaultRequestHeaders, response,
-                        $"Websiste for URL: '{_configuration.Uri}' has returned a response with status code: {response.StatusCode}.");
-                }
+                var isValid = HasValidRespons(response);
 
-                throw new WatcherException(
-                    $"The server has returned an invalid response while trying to access URL: '{_configuration.Uri}' " +
-                    $"(status code: {response.StatusCode}). Reason phrase: {response.ReasonPhrase}");
+                return WebsiteWatcherCheckResult.Create(this, isValid, _configuration.Uri,
+                    _httpClient.DefaultRequestHeaders, response,
+                    $"Websiste for URL: '{_configuration.Uri}' has returned a response with status code: {response.StatusCode}.");
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex)
             {
                 throw new WatcherException($"There was an error while trying to access URL: '{_configuration.Uri}'.", ex);
             }

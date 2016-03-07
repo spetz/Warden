@@ -14,6 +14,8 @@ namespace Sentry.Core
         private readonly HashSet<Func<ISentryCheckResult, Task>> _onFailureAsync = new HashSet<Func<ISentryCheckResult, Task>>();
         private readonly HashSet<Action<ISentryCheckResult>> _onCompleted = new HashSet<Action<ISentryCheckResult>>();
         private readonly HashSet<Func<ISentryCheckResult, Task>> _onCompletedAsync = new HashSet<Func<ISentryCheckResult, Task>>();
+        private readonly HashSet<Action<Exception>> _onError = new HashSet<Action<Exception>>();
+        private readonly HashSet<Func<Exception, Task>> _onErrorAsync = new HashSet<Func<Exception, Task>>();
 
         public IEnumerable<Action<IWatcherCheck>> OnStart => _onStart;
         public IEnumerable<Func<IWatcherCheck, Task>> OnStartAsync => _onStartAsync;
@@ -23,6 +25,8 @@ namespace Sentry.Core
         public IEnumerable<Func<ISentryCheckResult, Task>> OnFailureAsync => _onFailureAsync;
         public IEnumerable<Action<ISentryCheckResult>> OnCompleted => _onCompleted;
         public IEnumerable<Func<ISentryCheckResult, Task>> OnCompletedAsync => _onCompletedAsync;
+        public IEnumerable<Action<Exception>> OnError => _onError;
+        public IEnumerable<Func<Exception, Task>> OnErrorAsync => _onErrorAsync;
 
         protected internal WatcherHooksConfiguration()
         {
@@ -84,6 +88,18 @@ namespace Sentry.Core
             public Builder OnCompletedAsync(params Func<ISentryCheckResult, Task>[] hooks)
             {
                 _configuration._onCompletedAsync.UnionWith(hooks);
+                return this;
+            }
+
+            public Builder OnError(params Action<Exception>[] hooks)
+            {
+                _configuration._onError.UnionWith(hooks);
+                return this;
+            }
+
+            public Builder OnErrorAsync(params Func<Exception, Task>[] hooks)
+            {
+                _configuration._onErrorAsync.UnionWith(hooks);
                 return this;
             }
 
