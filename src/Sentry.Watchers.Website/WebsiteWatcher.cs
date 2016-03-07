@@ -14,7 +14,8 @@ namespace Sentry.Watchers.Website
         public WebsiteWatcher(WebsiteWatcherConfiguration configuration)
         {
             if (configuration == null)
-                throw new ArgumentNullException(nameof(configuration), "WebsiteWatcher configuration has not been provided.");
+                throw new ArgumentNullException(nameof(configuration),
+                    "WebsiteWatcher configuration has not been provided.");
 
             _configuration = configuration;
             _httpClient = new HttpClient();
@@ -25,7 +26,7 @@ namespace Sentry.Watchers.Website
             try
             {
                 var response = await _httpClient.GetAsync(_configuration.Uri);
-                if (response.IsSuccessStatusCode || _configuration.SkipStatusCodeValidation)
+                if (HasValidRespons(response))
                 {
                     return WebsiteWatcherCheckResult.Create(this, _configuration.Uri,
                         _httpClient.DefaultRequestHeaders, response,
@@ -41,5 +42,9 @@ namespace Sentry.Watchers.Website
                 throw new WatcherException($"There was an error while trying to access URL: '{_configuration.Uri}'.", ex);
             }
         }
+
+        private bool HasValidRespons(HttpResponseMessage response)
+            => (_configuration.WhereValidResponseIs?.Invoke(response) ?? true) &&
+               (response.IsSuccessStatusCode || _configuration.SkipStatusCodeValidation);
     }
 }

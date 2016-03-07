@@ -1,4 +1,5 @@
 using System;
+using System.Net.Http;
 
 namespace Sentry.Watchers.Website
 {
@@ -7,6 +8,7 @@ namespace Sentry.Watchers.Website
         public string Name { get; protected set; }
         public Uri Uri { get; protected set; }
         public bool SkipStatusCodeValidation { get; protected set; }
+        public Func<HttpResponseMessage, bool> WhereValidResponseIs { get; protected set; }
 
         protected internal WebsiteWatcherConfiguration()
         {
@@ -38,10 +40,16 @@ namespace Sentry.Watchers.Website
                 return this;
             }
 
-
             public WebsiteWatcherConfigurationBuilder SkipStatusCodeValidation()
             {
                 _configuration.SkipStatusCodeValidation = true;
+
+                return this;
+            }
+
+            public WebsiteWatcherConfigurationBuilder WhereValidResponseIs(Func<HttpResponseMessage, bool> predicate)
+            {
+                _configuration.WhereValidResponseIs = predicate;
 
                 return this;
             }
