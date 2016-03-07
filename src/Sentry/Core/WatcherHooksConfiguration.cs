@@ -1,33 +1,35 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Sentry.Core
 {
     public class WatcherHooksConfiguration
     {
-        public Action<IWatcherCheck> OnStart { get; protected set; }
-        public Func<IWatcherCheck, Task> OnStartAsync { get; protected set; }
-        public Action<ISentryCheckResult> OnSuccess { get; protected set; }
-        public Func<ISentryCheckResult, Task> OnSuccessAsync { get; protected set; }
-        public Action<ISentryCheckResult> OnFailure { get; protected set; }
-        public Func<ISentryCheckResult, Task> OnFailureAsync { get; protected set; }
-        public Action<ISentryCheckResult> OnCompleted { get; protected set; }
-        public Func<ISentryCheckResult,Task> OnCompletedAsync { get; protected set; }
+        private readonly HashSet<Action<IWatcherCheck>> _onStart = new HashSet<Action<IWatcherCheck>>();
+        private readonly HashSet<Func<IWatcherCheck, Task>> _onStartAsync = new HashSet<Func<IWatcherCheck, Task>>();
+        private readonly HashSet<Action<ISentryCheckResult>> _onSuccess = new HashSet<Action<ISentryCheckResult>>();
+        private readonly HashSet<Func<ISentryCheckResult, Task>> _onSuccessAsync = new HashSet<Func<ISentryCheckResult, Task>>();
+        private readonly HashSet<Action<ISentryCheckResult>> _onFailure = new HashSet<Action<ISentryCheckResult>>();
+        private readonly HashSet<Func<ISentryCheckResult, Task>> _onFailureAsync = new HashSet<Func<ISentryCheckResult, Task>>();
+        private readonly HashSet<Action<ISentryCheckResult>> _onCompleted = new HashSet<Action<ISentryCheckResult>>();
+        private readonly HashSet<Func<ISentryCheckResult, Task>> _onCompletedAsync = new HashSet<Func<ISentryCheckResult, Task>>();
 
-        public static WatcherHooksConfiguration Empty => new WatcherHooksConfiguration();
-        public static Builder Create() => new Builder();
+        public IEnumerable<Action<IWatcherCheck>> OnStart => _onStart;
+        public IEnumerable<Func<IWatcherCheck, Task>> OnStartAsync => _onStartAsync;
+        public IEnumerable<Action<ISentryCheckResult>> OnSuccess => _onSuccess;
+        public IEnumerable<Func<ISentryCheckResult, Task>> OnSuccessAsync => _onSuccessAsync;
+        public IEnumerable<Action<ISentryCheckResult>> OnFailure => _onFailure;
+        public IEnumerable<Func<ISentryCheckResult, Task>> OnFailureAsync => _onFailureAsync;
+        public IEnumerable<Action<ISentryCheckResult>> OnCompleted => _onCompleted;
+        public IEnumerable<Func<ISentryCheckResult, Task>> OnCompletedAsync => _onCompletedAsync;
 
         protected internal WatcherHooksConfiguration()
         {
-            OnStart = _ => { };
-            OnStartAsync = _ => Task.CompletedTask;
-            OnSuccess = _ => { };
-            OnSuccessAsync = _ => Task.CompletedTask;
-            OnFailure = _ => { };
-            OnFailureAsync = _ => Task.CompletedTask;
-            OnCompleted = _ => { };
-            OnCompletedAsync = _ => Task.CompletedTask;
         }
+
+        public static WatcherHooksConfiguration Empty => new WatcherHooksConfiguration();
+        public static Builder Create() => new Builder();
 
         public class Builder
         {
@@ -37,51 +39,51 @@ namespace Sentry.Core
             {
             }
 
-            public Builder OnStart(Action<IWatcherCheck> hook)
+            public Builder OnStart(params Action<IWatcherCheck>[] hooks)
             {
-                _configuration.OnStart = hook;
+                _configuration._onStart.UnionWith(hooks);
                 return this;
             }
 
-            public Builder OnStartAsync(Func<IWatcherCheck, Task> hook)
+            public Builder OnStartAsync(params Func<IWatcherCheck, Task>[] hooks)
             {
-                _configuration.OnStartAsync = hook;
+                _configuration._onStartAsync.UnionWith(hooks);
                 return this;
             }
 
-            public Builder OnSuccess(Action<ISentryCheckResult> hook)
+            public Builder OnSuccess(params Action<ISentryCheckResult>[] hooks)
             {
-                _configuration.OnSuccess = hook;
+                _configuration._onSuccess.UnionWith(hooks);
                 return this;
             }
 
-            public Builder OnSuccessAsync(Func<ISentryCheckResult, Task> hook)
+            public Builder OnSuccessAsync(params Func<ISentryCheckResult, Task>[] hooks)
             {
-                _configuration.OnSuccessAsync = hook;
+                _configuration._onSuccessAsync.UnionWith(hooks);
                 return this;
             }
 
-            public Builder OnFailure(Action<ISentryCheckResult> hook)
+            public Builder OnFailure(params Action<ISentryCheckResult>[] hooks)
             {
-                _configuration.OnFailure = hook;
+                _configuration._onFailure.UnionWith(hooks);
                 return this;
             }
 
-            public Builder OnFailureAsync(Func<ISentryCheckResult, Task> hook)
+            public Builder OnFailureAsync(params Func<ISentryCheckResult, Task>[] hooks)
             {
-                _configuration.OnFailureAsync = hook;
+                _configuration._onFailureAsync.UnionWith(hooks);
                 return this;
             }
 
-            public Builder OnCompleted(Action<ISentryCheckResult> hook)
+            public Builder OnCompleted(params Action<ISentryCheckResult>[] hooks)
             {
-                _configuration.OnCompleted = hook;
+                _configuration._onCompleted.UnionWith(hooks);
                 return this;
             }
 
-            public Builder OnCompletedAsync(Func<ISentryCheckResult, Task> hook)
+            public Builder OnCompletedAsync(params Func<ISentryCheckResult, Task>[] hooks)
             {
-                _configuration.OnCompletedAsync = hook;
+                _configuration._onCompletedAsync.UnionWith(hooks);
                 return this;
             }
 

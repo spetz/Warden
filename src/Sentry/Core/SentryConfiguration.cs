@@ -9,7 +9,7 @@ namespace Sentry.Core
         public SentryHooksConfiguration Hooks { get; protected set; }
         public WatcherHooksConfiguration GlobalWatcherHooks { get; protected set; }
         public TimeSpan IterationDelay { get; protected set; }
-        public long? TotalNumberOfIterations { get; protected set; }
+        public long? IterationsCount { get; protected set; }
 
         protected internal SentryConfiguration()
         {
@@ -75,7 +75,7 @@ namespace Sentry.Core
                 return this;
             }
 
-            public Builder SetTotalNumberOfIterations(long iterationsCount)
+            public Builder SetIterationsCount(long iterationsCount)
             {
                 if (iterationsCount < 0)
                 {
@@ -83,14 +83,14 @@ namespace Sentry.Core
                         nameof(iterationsCount));
                 }
 
-                _configuration.TotalNumberOfIterations = iterationsCount;
+                _configuration.IterationsCount = iterationsCount;
 
                 return this;
             }
 
             public Builder RunOnlyOnce()
             {
-                _configuration.TotalNumberOfIterations = 1;
+                _configuration.IterationsCount = 1;
 
                 return this;
             }

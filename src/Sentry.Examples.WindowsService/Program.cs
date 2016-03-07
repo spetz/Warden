@@ -12,7 +12,7 @@ namespace Sentry.Examples.WindowsService
                 {
                     s.ConstructUsing(name => new SentryService());
                     s.WhenStarted(async tc => await tc.StartAsync());
-                    s.WhenStopped(tc => tc.StopAsync());
+                    s.WhenStopped(async tc => await tc.StopAsync());
                 });
                 x.RunAsLocalSystem();
                 x.SetDescription("Sentry");

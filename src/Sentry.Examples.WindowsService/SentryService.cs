@@ -69,15 +69,13 @@ namespace Sentry.Examples.WindowsService
 
         private static async Task WebsiteHookOnCompletedAsync(ISentryCheckResult check)
         {
-            var websiteWatcherCheckResult = (WebsiteWatcherCheckResult) check.WatcherCheckResult;
-            Logger.Info($"Invoking the hook OnCompletedAsync() by watcher: '{websiteWatcherCheckResult.WatcherName}'.");
+            Logger.Info($"Invoking the hook OnCompletedAsync() by watcher: '{check.WatcherCheckResult.WatcherName}'.");
             await Task.CompletedTask;
         }
 
         private static async Task WebsiteHookOnFailureAsync(ISentryCheckResult check)
         {
-            var websiteWatcherCheckResult = (WebsiteWatcherCheckResult) check.WatcherCheckResult;
-            Logger.Info($"Invoking the hook OnFailureAsync() by watcher: '{websiteWatcherCheckResult.WatcherName}'.");
+            Logger.Info($"Invoking the hook OnFailureAsync() by watcher: '{check.WatcherCheckResult.WatcherName}'.");
             await Task.CompletedTask;
         }
 
