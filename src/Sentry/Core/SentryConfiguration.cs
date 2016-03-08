@@ -50,7 +50,7 @@ namespace Sentry.Core
                 return this;
             }
 
-            public Builder SetHooks(Action<SentryHooksConfiguration.Builder> hooks)
+            public Builder SetIterationHooks(Action<SentryHooksConfiguration.Builder> hooks)
             {
                 var hooksConfigurationBuilder = new SentryHooksConfiguration.Builder();
                 hooks(hooksConfigurationBuilder);

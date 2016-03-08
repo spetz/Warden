@@ -29,26 +29,26 @@ namespace Sentry
         public async Task StartAsync()
         {
             _started = true;
-            _configuration.Hooks.OnStart.ToList().ForEach(x => x());
-            await Task.WhenAll(_configuration.Hooks.OnStartAsync.ToList().Select(x => x()));
+            _configuration.Hooks.OnStart.Execute();
+            await _configuration.Hooks.OnStartAsync.ExecuteAsync();
 
             try
             {
                 while (CanExecuteIteration(_iterationOrdinal))
                 {
-                    _configuration.Hooks.OnIterationStart.ToList().ForEach(x => x(_iterationOrdinal));
-                    await Task.WhenAll(_configuration.Hooks.OnIterationStartAsync.ToList().Select(x => x(_iterationOrdinal)));
+                    _configuration.Hooks.OnIterationStart.Execute(_iterationOrdinal);
+                    await _configuration.Hooks.OnIterationStartAsync.ExecuteAsync(_iterationOrdinal);
                     var iteration = await ExecuteIterationAsync(_iterationOrdinal);
-                    _configuration.Hooks.OnIterationCompleted.ToList().ForEach(x => x(iteration));
-                    await Task.WhenAll(_configuration.Hooks.OnIterationCompletedAsync.ToList().Select(x => x(iteration)));
+                    _configuration.Hooks.OnIterationCompleted.Execute(iteration);
+                    await _configuration.Hooks.OnIterationCompletedAsync.ExecuteAsync(iteration);
                     await Task.Delay(_configuration.IterationDelay);
                     _iterationOrdinal++;
                 }
             }
             catch (Exception exception)
             {
-                _configuration.Hooks.OnError.ToList().ForEach(x => x(exception));
-                await Task.WhenAll(_configuration.Hooks.OnErrorAsync.ToList().Select(x => x(exception)));
+                _configuration.Hooks.OnError.Execute(exception);
+                await _configuration.Hooks.OnErrorAsync.ExecuteAsync(exception);
             }
         }
 
@@ -67,8 +67,8 @@ namespace Sentry
         public async Task StopAsync()
         {
             _started = false;
-            _configuration.Hooks.OnStop.ToList().ForEach(x => x());
-            await Task.WhenAll(_configuration.Hooks.OnStopAsync.ToList().Select(x => x()));
+            _configuration.Hooks.OnStop.Execute();
+            await _configuration.Hooks.OnStopAsync.ExecuteAsync();
         }
 
         private async Task<ISentryIteration> ExecuteIterationAsync(long ordinal)
@@ -118,42 +118,42 @@ namespace Sentry
 
         private async Task InvokeOnStartHooksAsync(WatcherConfiguration watcherConfiguration, IWatcherCheck check)
         {
-            watcherConfiguration.Hooks.OnStart.ToList().ForEach(x => x(check));
-            await Task.WhenAll(watcherConfiguration.Hooks.OnStartAsync.ToList().Select(x => x(check)));
-            _configuration.GlobalWatcherHooks.OnStart.ToList().ForEach(x => x(check));
-            await Task.WhenAll(_configuration.GlobalWatcherHooks.OnStartAsync.ToList().Select(x => x(check)));
+            watcherConfiguration.Hooks.OnStart.Execute(check);
+            await watcherConfiguration.Hooks.OnStartAsync.ExecuteAsync(check);
+            _configuration.GlobalWatcherHooks.OnStart.Execute(check);
+            await _configuration.GlobalWatcherHooks.OnStartAsync.ExecuteAsync(check);
         }
 
         private async Task InvokeOnSuccessHooksAsync(WatcherConfiguration watcherConfiguration, ISentryCheckResult checkResult)
         {
-            watcherConfiguration.Hooks.OnSuccess.ToList().ForEach(x => x(checkResult));
-            await Task.WhenAll(watcherConfiguration.Hooks.OnSuccessAsync.ToList().Select(x => x(checkResult)));
-            _configuration.GlobalWatcherHooks.OnSuccess.ToList().ForEach(x => x(checkResult));
-            await Task.WhenAll(_configuration.GlobalWatcherHooks.OnSuccessAsync.ToList().Select(x => x(checkResult)));
+            watcherConfiguration.Hooks.OnSuccess.Execute(checkResult);
+            await watcherConfiguration.Hooks.OnSuccessAsync.ExecuteAsync(checkResult);
+            _configuration.GlobalWatcherHooks.OnSuccess.Execute(checkResult);
+            await _configuration.GlobalWatcherHooks.OnSuccessAsync.ExecuteAsync(checkResult);
         }
 
         private async Task InvokeOnErrorHooksAsync(WatcherConfiguration watcherConfiguration, Exception exception)
         {
-            watcherConfiguration.Hooks.OnError.ToList().ForEach(x => x(exception));
-            await Task.WhenAll(watcherConfiguration.Hooks.OnErrorAsync.ToList().Select(x => x(exception)));
-            _configuration.GlobalWatcherHooks.OnError.ToList().ForEach(x => x(exception));
-            await Task.WhenAll(_configuration.GlobalWatcherHooks.OnErrorAsync.ToList().Select(x => x(exception)));
+            watcherConfiguration.Hooks.OnError.Execute(exception);
+            await watcherConfiguration.Hooks.OnErrorAsync.ExecuteAsync(exception);
+            _configuration.GlobalWatcherHooks.OnError.Execute(exception);
+            await _configuration.GlobalWatcherHooks.OnErrorAsync.ExecuteAsync(exception);
         }
 
         private async Task InvokeOnFailureHooksAsync(WatcherConfiguration watcherConfiguration, ISentryCheckResult checkResult)
         {
-            watcherConfiguration.Hooks.OnFailure.ToList().ForEach(x => x(checkResult));
-            await Task.WhenAll(watcherConfiguration.Hooks.OnFailureAsync.ToList().Select(x => x(checkResult)));
-            _configuration.GlobalWatcherHooks.OnFailure.ToList().ForEach(x => x(checkResult));
-            await Task.WhenAll(_configuration.GlobalWatcherHooks.OnFailureAsync.ToList().Select(x => x(checkResult)));
+            watcherConfiguration.Hooks.OnFailure.Execute(checkResult);
+            await watcherConfiguration.Hooks.OnFailureAsync.ExecuteAsync(checkResult);
+            _configuration.GlobalWatcherHooks.OnFailure.Execute(checkResult);
+            await _configuration.GlobalWatcherHooks.OnFailureAsync.ExecuteAsync(checkResult);
         }
 
         private async Task InvokeOnCompletedHooksAsync(WatcherConfiguration watcherConfiguration, ISentryCheckResult checkResult)
         {
-            watcherConfiguration.Hooks.OnCompleted.ToList().ForEach(x => x(checkResult));
-            await Task.WhenAll(watcherConfiguration.Hooks.OnCompletedAsync.ToList().Select(x => x(checkResult)));
-            _configuration.GlobalWatcherHooks.OnCompleted.ToList().ForEach(x => x(checkResult));
-            await Task.WhenAll(_configuration.GlobalWatcherHooks.OnCompletedAsync.ToList().Select(x => x(checkResult)));
+            watcherConfiguration.Hooks.OnCompleted.Execute(checkResult);
+            await watcherConfiguration.Hooks.OnCompletedAsync.ExecuteAsync(checkResult);
+            _configuration.GlobalWatcherHooks.OnCompleted.Execute(checkResult);
+            await _configuration.GlobalWatcherHooks.OnCompletedAsync.ExecuteAsync(checkResult);
         }
     }
 }

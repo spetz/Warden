@@ -32,7 +32,7 @@ namespace Sentry.Examples.WindowsService
             var websiteWatcher = new WebsiteWatcher(websiteWatcherConfiguration);
             var sentryConfiguration = SentryConfiguration
                 .Create()
-                .SetHooks(hooks =>
+                .SetIterationHooks(hooks =>
                 {
                     hooks.OnError(Logger.Error);
                     hooks.OnIterationCompleted(OnIterationCompleted);
