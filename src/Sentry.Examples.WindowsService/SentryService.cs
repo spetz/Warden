@@ -34,23 +34,23 @@ namespace Sentry.Examples.WindowsService
                 .Create()
                 .SetIterationHooks(hooks =>
                 {
-                    hooks.OnError(Logger.Error);
-                    hooks.OnIterationCompleted(OnIterationCompleted);
+                    hooks.OnError(exception => Logger.Error(exception));
+                    hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration));
                 })
                 .AddWatcher(websiteWatcher, hooks =>
                 {
-                    hooks.OnStartAsync(WebsiteHookOnStartAsync);
-                    hooks.OnFailureAsync(WebsiteHookOnFailureAsync);
-                    hooks.OnSuccessAsync(WebsiteHookOnSuccessAsync);
-                    hooks.OnCompletedAsync(WebsiteHookOnCompletedAsync);
+                    hooks.OnStartAsync(check => WebsiteHookOnStartAsync(check));
+                    hooks.OnFailureAsync(result => WebsiteHookOnFailureAsync(result));
+                    hooks.OnSuccessAsync(result => WebsiteHookOnSuccessAsync(result));
+                    hooks.OnCompletedAsync(result => WebsiteHookOnCompletedAsync(result));
                 })
                 .SetGlobalWatcherHooks(hooks =>
                 {
-                    hooks.OnStart(GlobalHookOnStart);
-                    hooks.OnFailure(GlobalHookOnFailure);
-                    hooks.OnSuccess(GlobalHookOnSuccess);
-                    hooks.OnCompleted(GlobalHookOnCompleted);
-                    hooks.OnError(Logger.Error);
+                    hooks.OnStart(check => GlobalHookOnStart(check));
+                    hooks.OnFailure(result => GlobalHookOnFailure(result));
+                    hooks.OnSuccess(result => GlobalHookOnSuccess(result));
+                    hooks.OnCompleted(result => GlobalHookOnCompleted(result));
+                    hooks.OnError(exception => Logger.Error(exception));
                 })
                 .Build();
 
