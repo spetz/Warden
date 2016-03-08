@@ -66,7 +66,7 @@ namespace Sentry.Tests.EndToEnd
             WebsiteWatcher = new WebsiteWatcher(WebsiteWatcherConfiguration);
             SentryConfiguration = SentryConfiguration
                 .Create()
-                .SetIterationHooks(hooks =>
+                .SetHooks(hooks =>
                 {
                     hooks.OnIterationCompleted(iteration => UpdateSentryIteration(iteration));
                 })

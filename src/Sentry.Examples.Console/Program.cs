@@ -25,7 +25,7 @@ namespace Sentry.Examples.Console
             var websiteWatcher = new WebsiteWatcher(websiteWatcherConfiguration);
             var sentryConfiguration = SentryConfiguration
                 .Create()
-                .SetIterationHooks(hooks =>
+                .SetHooks(hooks =>
                 {
                     hooks.OnError(exception => Logger.Error(exception));
                     hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration));

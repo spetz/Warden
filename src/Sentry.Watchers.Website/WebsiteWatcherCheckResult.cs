@@ -10,7 +10,7 @@ namespace Sentry.Watchers.Website
         public HttpRequestHeaders RequestHeaders { get; }
         public HttpResponseMessage Response { get; }
 
-        public WebsiteWatcherCheckResult(IWatcher watcher, bool isValid, string description, Uri uri,
+        protected WebsiteWatcherCheckResult(IWatcher watcher, bool isValid, string description, Uri uri,
             HttpRequestHeaders requestHeaders, HttpResponseMessage response) : base(watcher, isValid, description)
         {
             Uri = uri;

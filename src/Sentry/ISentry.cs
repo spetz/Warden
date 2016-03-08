@@ -41,6 +41,10 @@ namespace Sentry
                     var iteration = await ExecuteIterationAsync(_iterationOrdinal);
                     _configuration.Hooks.OnIterationCompleted.Execute(iteration);
                     await _configuration.Hooks.OnIterationCompletedAsync.ExecuteAsync(iteration);
+                    var canExecuteNextIteration = CanExecuteIteration(_iterationOrdinal + 1);
+                    if (!canExecuteNextIteration)
+                        break;
+
                     await Task.Delay(_configuration.IterationDelay);
                     _iterationOrdinal++;
                 }

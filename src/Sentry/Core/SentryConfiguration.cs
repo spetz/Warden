@@ -50,7 +50,7 @@ namespace Sentry.Core
                 return this;
             }
 
-            public Builder SetIterationHooks(Action<SentryHooksConfiguration.Builder> hooks)
+            public Builder SetHooks(Action<SentryHooksConfiguration.Builder> hooks)
             {
                 var hooksConfigurationBuilder = new SentryHooksConfiguration.Builder();
                 hooks(hooksConfigurationBuilder);
@@ -71,6 +71,13 @@ namespace Sentry.Core
             public Builder SetIterationDelay(TimeSpan delay)
             {
                 _configuration.IterationDelay = delay;
+
+                return this;
+            }
+
+            public Builder WithoutIterationDelay()
+            {
+                _configuration.IterationDelay = TimeSpan.Zero;
 
                 return this;
             }
