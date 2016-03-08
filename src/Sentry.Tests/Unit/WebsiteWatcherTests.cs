@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Sentry.Watchers.Website;
 
-namespace Sentry.Tests.Integration
+namespace Sentry.Tests.Unit
 {
     [Specification]
     public class WebsiteWatcher_specs : SpecificationBase

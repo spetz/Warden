@@ -34,28 +34,7 @@ namespace Sentry.Tests.EndToEnd
             WebsiteWatcher = new WebsiteWatcher(WebsiteWatcherConfiguration);
             SentryConfiguration = SentryConfiguration
                 .Create()
-                .AddWatcher(WebsiteWatcher, hooks =>
-                {
-                    hooks.OnStart(check => { });
-                    hooks.OnStartAsync(check => Task.CompletedTask);
-                    hooks.OnFailure(result => { });
-                    hooks.OnFailureAsync(result => Task.CompletedTask);
-                    hooks.OnSuccess(result => { });
-                    hooks.OnSuccessAsync(result => Task.CompletedTask);
-                    hooks.OnCompleted(result => { });
-                    hooks.OnCompletedAsync(result => Task.CompletedTask);
-                })
-                .SetGlobalWatcherHooks(hooks =>
-                {
-                    hooks.OnStart(check => { });
-                    hooks.OnStartAsync(check => Task.CompletedTask);
-                    hooks.OnFailure(result => { });
-                    hooks.OnFailureAsync(result => Task.CompletedTask);
-                    hooks.OnSuccess(result => { });
-                    hooks.OnSuccessAsync(result => Task.CompletedTask);
-                    hooks.OnCompleted(result => { });
-                    hooks.OnCompletedAsync(result => Task.CompletedTask);
-                })
+                .AddWatcher(WebsiteWatcher)
                 .RunOnlyOnce()
                 .Build();
             Sentry = new Sentry(SentryConfiguration);
@@ -89,7 +68,7 @@ namespace Sentry.Tests.EndToEnd
                 .Create()
                 .SetIterationHooks(hooks =>
                 {
-                    hooks.OnIterationCompleted(iteration => SentryIteration = iteration);
+                    hooks.OnIterationCompleted(iteration => UpdateSentryIteration(iteration));
                 })
                 .AddWatcher(WebsiteWatcher)
                 .RunOnlyOnce()
@@ -99,9 +78,14 @@ namespace Sentry.Tests.EndToEnd
         }
 
         [Then]
-        public void then_sentry_result_should_contain_an_entry_with_exception_set()
+        public void then_sentry_iteration_results_should_not_be_valid()
         {
             SentryIteration.Results.All(x => !x.IsValid).ShouldBeEquivalentTo(true);
+        }
+
+        private void UpdateSentryIteration(ISentryIteration sentryIteration)
+        {
+            SentryIteration = sentryIteration;
         }
     }
 }
