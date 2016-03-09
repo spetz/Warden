@@ -25,7 +25,7 @@ namespace Sentry
             WatcherType = watcher.GetType();
         }
 
-        public static WatcherCheck Create(IWatcher watcher)
+        public static IWatcherCheck Create(IWatcher watcher)
             => new WatcherCheck(watcher);
     }
 }

@@ -27,7 +27,7 @@ namespace Sentry
             CompletedAt = completedAt;
         }
 
-        public static SentryCheckResult Create(IWatcherCheckResult watcherCheckResult, DateTime startedAt,
+        public static ISentryCheckResult Create(IWatcherCheckResult watcherCheckResult, DateTime startedAt,
             DateTime completedAt)
             => new SentryCheckResult(watcherCheckResult, startedAt, completedAt);
     }

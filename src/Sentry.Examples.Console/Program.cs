@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
 using System.Threading.Tasks;
 using NLog;
 using Sentry.Core;
+using Sentry.Watchers.MsSql;
 using Sentry.Watchers.Website;
 
 namespace Sentry.Examples.Console
@@ -23,6 +27,15 @@ namespace Sentry.Examples.Console
                 .WithUrl("http://httpstat.us/200")
                 .Build();
             var websiteWatcher = new WebsiteWatcher(websiteWatcherConfiguration);
+
+            var mssqlWatcherConfiguration = MsSqlWatcherConfiguration
+                .Create("MSSQL watcher")
+                .WithConnectionString(ConfigurationManager.ConnectionStrings["MyDatabase"].ConnectionString)
+                .WithQuery("select * from users where id = @id", new Dictionary<string, object> {["id"] = 1 })
+                .EnsureThat(users => users.Any(user => user.Name == "admin"))
+                .Build();
+            var mssqlWatcher = new MsSqlWatcher(mssqlWatcherConfiguration);
+
             var sentryConfiguration = SentryConfiguration
                 .Create()
                 .SetHooks(hooks =>
@@ -30,6 +43,7 @@ namespace Sentry.Examples.Console
                     hooks.OnError(exception => Logger.Error(exception));
                     hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration));
                 })
+                .AddWatcher(mssqlWatcher)
                 .AddWatcher(websiteWatcher, hooks =>
                 {
                     hooks.OnStartAsync(check => WebsiteHookOnStartAsync(check));

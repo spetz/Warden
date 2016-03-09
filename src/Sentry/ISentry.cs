@@ -102,15 +102,17 @@ namespace Sentry
                     results.Add(sentryCheckResult);
                     if (watcherCheckResult.IsValid)
                     {
+                        var result = sentryCheckResult;
                         await UpdateWatcherResultStateAndExecuteHooksPossibleAsync(watcher, WatcherResultState.Success,
-                            () => InvokeOnFirstSuccessHooksAsync(watcherConfiguration, sentryCheckResult),
+                            () => InvokeOnFirstSuccessHooksAsync(watcherConfiguration, result),
                             executeIfLatestStateIsNotSet: false);
                         await InvokeOnSuccessHooksAsync(watcherConfiguration, sentryCheckResult);
                     }
                     else
                     {
+                        var result = sentryCheckResult;
                         await UpdateWatcherResultStateAndExecuteHooksPossibleAsync(watcher, WatcherResultState.Failure,
-                            () => InvokeOnFirstFailureHooksAsync(watcherConfiguration, sentryCheckResult));
+                            () => InvokeOnFirstFailureHooksAsync(watcherConfiguration, result));
                         await InvokeOnFailureHooksAsync(watcherConfiguration, sentryCheckResult);
                     }
                 }
@@ -125,6 +127,12 @@ namespace Sentry
                 }
                 finally
                 {
+                    if (sentryCheckResult == null)
+                    {
+                        sentryCheckResult = SentryCheckResult.Create(WatcherCheckResult.Create(watcher, false), startedAt, _configuration.DateTimeProvider());
+                        results.Add(sentryCheckResult);
+                    }
+
                     await InvokeOnCompletedHooksAsync(watcherConfiguration, sentryCheckResult);
                 }
             });

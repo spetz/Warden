@@ -38,6 +38,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -60,6 +61,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Sentry.Watchers.MsSql\Sentry.Watchers.MsSql.csproj">
+      <Project>{5ED102ED-B897-4B97-AE8C-A1E4AA37CCFC}</Project>
+      <Name>Sentry.Watchers.MsSql</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sentry.Watchers.Website\Sentry.Watchers.Website.csproj">
       <Project>{BA630713-7F82-4CC7-9B42-46B4DCE7A36D}</Project>
       <Name>Sentry.Watchers.Website</Name>

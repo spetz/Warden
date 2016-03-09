@@ -18,7 +18,7 @@
             IsValid = isValid;
         }
 
-        public static WatcherCheckResult Create(IWatcher watcher, bool isValid, string description = "")
+        public static IWatcherCheckResult Create(IWatcher watcher, bool isValid, string description = "")
             => new WatcherCheckResult(watcher, isValid, description);
     }
 }
