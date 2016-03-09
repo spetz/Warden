@@ -23,18 +23,16 @@ namespace Sentry.Examples.Console
         private static ISentry ConfigureSentry()
         {
             var websiteWatcherConfiguration = WebsiteWatcherConfiguration
-                .Create("httpstat.us website watcher")
-                .WithUrl("http://httpstat.us/200")
+                .Create("http://httpstat.us/200")
                 .Build();
-            var websiteWatcher = new WebsiteWatcher(websiteWatcherConfiguration);
+            var websiteWatcher = WebsiteWatcher.Create("My website watcher", websiteWatcherConfiguration);
 
             var mssqlWatcherConfiguration = MsSqlWatcherConfiguration
-                .Create("MSSQL watcher")
-                .WithConnectionString(ConfigurationManager.ConnectionStrings["MyDatabase"].ConnectionString)
+                .Create(ConfigurationManager.ConnectionStrings["MyDatabase"].ConnectionString)
                 .WithQuery("select * from users where id = @id", new Dictionary<string, object> {["id"] = 1 })
                 .EnsureThat(users => users.Any(user => user.Name == "admin"))
                 .Build();
-            var mssqlWatcher = new MsSqlWatcher(mssqlWatcherConfiguration);
+            var mssqlWatcher = MsSqlWatcher.Create("My database watcher", mssqlWatcherConfiguration);
 
             var sentryConfiguration = SentryConfiguration
                 .Create()

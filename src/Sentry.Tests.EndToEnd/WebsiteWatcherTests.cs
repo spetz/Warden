@@ -27,10 +27,9 @@ namespace Sentry.Tests.EndToEnd
         {
             await base.BecauseOf();
             WebsiteWatcherConfiguration = WebsiteWatcherConfiguration.
-                Create("Invalid website watcher")
-                .WithUrl("http://www.testwebsitethatdoesnotexist.com")
+                Create("http://www.testwebsitethatdoesnotexist.com")
                 .Build();
-            WebsiteWatcher = new WebsiteWatcher(WebsiteWatcherConfiguration);
+            WebsiteWatcher = WebsiteWatcher.Create("Invalid website watcher", WebsiteWatcherConfiguration);
             WebsiteWatcherCheckResult = await WebsiteWatcher.ExecuteAsync();
         }
 
@@ -54,10 +53,9 @@ namespace Sentry.Tests.EndToEnd
         {
             await base.BecauseOf();
             WebsiteWatcherConfiguration = WebsiteWatcherConfiguration
-                .Create("Valid website watcher")
-                .WithUrl("http://httpstat.us/400")
+                .Create("http://httpstat.us/400")
                 .Build();
-            WebsiteWatcher = new WebsiteWatcher(WebsiteWatcherConfiguration);
+            WebsiteWatcher = WebsiteWatcher.Create("Valid website watcher", WebsiteWatcherConfiguration);
             WebsiteWatcherCheckResult = await WebsiteWatcher.ExecuteAsync();
         }
 
@@ -80,10 +78,9 @@ namespace Sentry.Tests.EndToEnd
         {
             await base.BecauseOf();
             WebsiteWatcherConfiguration = WebsiteWatcherConfiguration
-                .Create("Valid website watcher")
-                .WithUrl("http://httpstat.us/200")
+                .Create("http://httpstat.us/200")
                 .Build();
-            WebsiteWatcher = new WebsiteWatcher(WebsiteWatcherConfiguration);
+            WebsiteWatcher = WebsiteWatcher.Create("Valid website watcher", WebsiteWatcherConfiguration);
             WebsiteWatcherCheckResult = await WebsiteWatcher.ExecuteAsync();
         }
 

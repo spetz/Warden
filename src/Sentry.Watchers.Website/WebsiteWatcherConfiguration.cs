@@ -5,49 +5,37 @@ namespace Sentry.Watchers.Website
 {
     public class WebsiteWatcherConfiguration
     {
-        public string Name { get; protected set; }
         public Uri Uri { get; protected set; }
         public bool SkipStatusCodeValidation { get; protected set; }
         public Func<HttpResponseMessage, bool> WhereValidResponseIs { get; protected set; }
 
-        protected internal WebsiteWatcherConfiguration()
+        protected internal WebsiteWatcherConfiguration(string url)
         {
+            if (string.IsNullOrEmpty(url))
+                throw new ArgumentException("URL can not be empty.");
+
+            Uri = new Uri(url);
         }
 
-        public static WebsiteWatcherConfiguration Empty => new WebsiteWatcherConfiguration();
+        public static Builder Create(string url) => new Builder(url);
 
-        public static WebsiteWatcherConfigurationBuilder Create(string name) => new WebsiteWatcherConfigurationBuilder(name);
-
-        public class WebsiteWatcherConfigurationBuilder
+        public class Builder
         {
-            private readonly WebsiteWatcherConfiguration _configuration = new WebsiteWatcherConfiguration();
+            private readonly WebsiteWatcherConfiguration _configuration;
 
-            public WebsiteWatcherConfigurationBuilder(string name)
+            public Builder(string url)
             {
-                if (string.IsNullOrEmpty(name))
-                    throw new ArgumentException("Watcher name can not be empty.");
-
-                _configuration.Name = name;
+                _configuration = new WebsiteWatcherConfiguration(url);
             }
 
-            public WebsiteWatcherConfigurationBuilder WithUrl(string url)
-            {
-                if (string.IsNullOrEmpty(url))
-                    throw new ArgumentException("URL can not be empty.");
-
-                _configuration.Uri = new Uri(url);
-
-                return this;
-            }
-
-            public WebsiteWatcherConfigurationBuilder SkipStatusCodeValidation()
+            public Builder SkipStatusCodeValidation()
             {
                 _configuration.SkipStatusCodeValidation = true;
 
                 return this;
             }
 
-            public WebsiteWatcherConfigurationBuilder WhereValidResponseIs(Func<HttpResponseMessage, bool> predicate)
+            public Builder WhereValidResponseIs(Func<HttpResponseMessage, bool> predicate)
             {
                 _configuration.WhereValidResponseIs = predicate;
 

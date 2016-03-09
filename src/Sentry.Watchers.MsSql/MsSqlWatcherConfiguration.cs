@@ -5,43 +5,31 @@ namespace Sentry.Watchers.MsSql
 {
     public class MsSqlWatcherConfiguration
     {
-        public string Name { get; protected set; }
         public string ConnectionString { get; protected set; }
         public string Query { get; protected set; }
         public IDictionary<string, object> QueryParameters { get; protected set; }
         public Func<IEnumerable<dynamic>, bool> EnsureThat { get; protected set; }
 
-        protected internal MsSqlWatcherConfiguration()
+        protected internal MsSqlWatcherConfiguration(string connectionString)
         {
+            if (string.IsNullOrEmpty(connectionString))
+                throw new ArgumentException("Connection string can not be empty.", nameof(connectionString));
+
+            ConnectionString = connectionString;
         }
 
-        public static MsSqlWatcherConfiguration Empty => new MsSqlWatcherConfiguration();
+        public static Builder Create(string connectionString) => new Builder(connectionString);
 
-        public static MsSqlWatcherConfigurationBuilder Create(string name) => new MsSqlWatcherConfigurationBuilder(name);
-
-        public class MsSqlWatcherConfigurationBuilder
+        public class Builder
         {
-            private readonly MsSqlWatcherConfiguration _configuration = new MsSqlWatcherConfiguration();
+            private readonly MsSqlWatcherConfiguration _configuration;
 
-            public MsSqlWatcherConfigurationBuilder(string name)
+            public Builder(string connectionString)
             {
-                if (string.IsNullOrEmpty(name))
-                    throw new ArgumentException("Watcher name can not be empty.", nameof(name));
-
-                _configuration.Name = name;
+                _configuration = new MsSqlWatcherConfiguration(connectionString);
             }
 
-            public MsSqlWatcherConfigurationBuilder WithConnectionString(string connectionString)
-            {
-                if (string.IsNullOrEmpty(connectionString))
-                    throw new ArgumentException("Connection string can not be empty.", nameof(connectionString));
-
-                _configuration.ConnectionString = connectionString;
-
-                return this;
-            }
-
-            public MsSqlWatcherConfigurationBuilder WithQuery(string query, IDictionary<string, object> parameters)
+            public Builder WithQuery(string query, IDictionary<string, object> parameters)
             {
                 if (string.IsNullOrEmpty(query))
                     throw new ArgumentException("SQL query can not be empty.", nameof(query));
@@ -52,7 +40,7 @@ namespace Sentry.Watchers.MsSql
                 return this;
             }
 
-            public MsSqlWatcherConfigurationBuilder EnsureThat(Func<IEnumerable<dynamic>, bool> ensureThat)
+            public Builder EnsureThat(Func<IEnumerable<dynamic>, bool> ensureThat)
             {
                 if (ensureThat == null)
                     throw new ArgumentException("Ensure that predicate can not be null.", nameof(ensureThat));
