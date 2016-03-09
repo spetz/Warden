@@ -103,7 +103,8 @@ namespace Sentry
                     if (watcherCheckResult.IsValid)
                     {
                         await UpdateWatcherResultStateAndExecuteHooksPossibleAsync(watcher, WatcherResultState.Success,
-                            () => InvokeOnFirstSuccessHooksAsync(watcherConfiguration, sentryCheckResult));
+                            () => InvokeOnFirstSuccessHooksAsync(watcherConfiguration, sentryCheckResult),
+                            executeIfLatestStateIsNotSet: false);
                         await InvokeOnSuccessHooksAsync(watcherConfiguration, sentryCheckResult);
                     }
                     else
@@ -135,13 +136,21 @@ namespace Sentry
             return iteration;
         }
 
-        private async Task UpdateWatcherResultStateAndExecuteHooksPossibleAsync(IWatcher watcher, WatcherResultState state, Func<Task> hooks)
+        private async Task UpdateWatcherResultStateAndExecuteHooksPossibleAsync(IWatcher watcher, WatcherResultState state, 
+            Func<Task> hooks, bool executeIfLatestStateIsNotSet = true)
         {
-            if (!_latestWatcherResultStates.ContainsKey(watcher))
-                return;
+            if (_latestWatcherResultStates.ContainsKey(watcher))
+            {
+                var latestState = _latestWatcherResultStates[watcher];
+                if (latestState == state)
+                    return;
 
-            var latestState = _latestWatcherResultStates[watcher];
-            if (latestState == state)
+                _latestWatcherResultStates[watcher] = state;
+                await hooks();
+            }
+
+
+            if (!executeIfLatestStateIsNotSet)
                 return;
 
             _latestWatcherResultStates[watcher] = state;
