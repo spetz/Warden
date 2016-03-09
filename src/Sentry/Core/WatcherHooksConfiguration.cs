@@ -11,23 +11,35 @@ namespace Sentry.Core
         private readonly HashSet<Expression<Func<IWatcherCheck, Task>>> _onStartAsync = new HashSet<Expression<Func<IWatcherCheck, Task>>>();
         private readonly HashSet<Expression<Action<ISentryCheckResult>>> _onSuccess = new HashSet<Expression<Action<ISentryCheckResult>>>();
         private readonly HashSet<Expression<Func<ISentryCheckResult, Task>>> _onSuccessAsync = new HashSet<Expression<Func<ISentryCheckResult, Task>>>();
+        private readonly HashSet<Expression<Action<ISentryCheckResult>>> _onFirstSuccess = new HashSet<Expression<Action<ISentryCheckResult>>>();
+        private readonly HashSet<Expression<Func<ISentryCheckResult, Task>>> _onFirstSuccessAsync = new HashSet<Expression<Func<ISentryCheckResult, Task>>>();
         private readonly HashSet<Expression<Action<ISentryCheckResult>>> _onFailure = new HashSet<Expression<Action<ISentryCheckResult>>>();
         private readonly HashSet<Expression<Func<ISentryCheckResult, Task>>> _onFailureAsync = new HashSet<Expression<Func<ISentryCheckResult, Task>>>();
+        private readonly HashSet<Expression<Action<ISentryCheckResult>>> _onFirstFailure = new HashSet<Expression<Action<ISentryCheckResult>>>();
+        private readonly HashSet<Expression<Func<ISentryCheckResult, Task>>> _onFirstFailureAsync = new HashSet<Expression<Func<ISentryCheckResult, Task>>>();
         private readonly HashSet<Expression<Action<ISentryCheckResult>>> _onCompleted = new HashSet<Expression<Action<ISentryCheckResult>>>();
         private readonly HashSet<Expression<Func<ISentryCheckResult, Task>>> _onCompletedAsync = new HashSet<Expression<Func<ISentryCheckResult, Task>>>();
         private readonly HashSet<Expression<Action<Exception>>> _onError = new HashSet<Expression<Action<Exception>>>();
         private readonly HashSet<Expression<Func<Exception, Task>>> _onErrorAsync = new HashSet<Expression<Func<Exception, Task>>>();
+        private readonly HashSet<Expression<Action<Exception>>> _onFirstError = new HashSet<Expression<Action<Exception>>>();
+        private readonly HashSet<Expression<Func<Exception, Task>>> _onFirstErrorAsync = new HashSet<Expression<Func<Exception, Task>>>();
 
         public IEnumerable<Expression<Action<IWatcherCheck>>> OnStart => _onStart;
         public IEnumerable<Expression<Func<IWatcherCheck, Task>>> OnStartAsync => _onStartAsync;
         public IEnumerable<Expression<Action<ISentryCheckResult>>> OnSuccess => _onSuccess;
         public IEnumerable<Expression<Func<ISentryCheckResult, Task>>> OnSuccessAsync => _onSuccessAsync;
+        public IEnumerable<Expression<Action<ISentryCheckResult>>> OnFirstSuccess => _onFirstSuccess;
+        public IEnumerable<Expression<Func<ISentryCheckResult, Task>>> OnFirstSuccessAsync => _onFirstSuccessAsync;
         public IEnumerable<Expression<Action<ISentryCheckResult>>> OnFailure => _onFailure;
         public IEnumerable<Expression<Func<ISentryCheckResult, Task>>> OnFailureAsync => _onFailureAsync;
+        public IEnumerable<Expression<Action<ISentryCheckResult>>> OnFirstFailure => _onFirstFailure;
+        public IEnumerable<Expression<Func<ISentryCheckResult, Task>>> OnFirstFailureAsync => _onFirstFailureAsync;
         public IEnumerable<Expression<Action<ISentryCheckResult>>> OnCompleted => _onCompleted;
         public IEnumerable<Expression<Func<ISentryCheckResult, Task>>> OnCompletedAsync => _onCompletedAsync;
         public IEnumerable<Expression<Action<Exception>>> OnError => _onError;
         public IEnumerable<Expression<Func<Exception, Task>>> OnErrorAsync => _onErrorAsync;
+        public IEnumerable<Expression<Action<Exception>>> OnFirstError => _onFirstError;
+        public IEnumerable<Expression<Func<Exception, Task>>> OnFirstErrorAsync => _onFirstErrorAsync;
 
         protected internal WatcherHooksConfiguration()
         {
@@ -68,6 +80,18 @@ namespace Sentry.Core
                 return this;
             }
 
+            public Builder OnFirstSuccess(params Expression<Action<ISentryCheckResult>>[] hooks)
+            {
+                _configuration._onFirstSuccess.UnionWith(hooks);
+                return this;
+            }
+
+            public Builder OnFirstSuccessAsync(params Expression<Func<ISentryCheckResult, Task>>[] hooks)
+            {
+                _configuration._onFirstSuccessAsync.UnionWith(hooks);
+                return this;
+            }
+
             public Builder OnFailure(params Expression<Action<ISentryCheckResult>>[] hooks)
             {
                 _configuration._onFailure.UnionWith(hooks);
@@ -77,6 +101,18 @@ namespace Sentry.Core
             public Builder OnFailureAsync(params Expression<Func<ISentryCheckResult, Task>>[] hooks)
             {
                 _configuration._onFailureAsync.UnionWith(hooks);
+                return this;
+            }
+
+            public Builder OnFirstFailure(params Expression<Action<ISentryCheckResult>>[] hooks)
+            {
+                _configuration._onFirstFailure.UnionWith(hooks);
+                return this;
+            }
+
+            public Builder OnFirstFailureAsync(params Expression<Func<ISentryCheckResult, Task>>[] hooks)
+            {
+                _configuration._onFirstFailureAsync.UnionWith(hooks);
                 return this;
             }
 
@@ -101,6 +137,18 @@ namespace Sentry.Core
             public Builder OnErrorAsync(params Expression<Func<Exception, Task>>[] hooks)
             {
                 _configuration._onErrorAsync.UnionWith(hooks);
+                return this;
+            }
+
+            public Builder OnFirstError(params Expression<Action<Exception>>[] hooks)
+            {
+                _configuration._onFirstError.UnionWith(hooks);
+                return this;
+            }
+
+            public Builder OnFirstErrorAsync(params Expression<Func<Exception, Task>>[] hooks)
+            {
+                _configuration._onFirstErrorAsync.UnionWith(hooks);
                 return this;
             }
 

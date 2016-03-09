@@ -14,9 +14,18 @@ namespace Sentry
 
     public class Sentry : ISentry
     {
+        private enum WatcherResultState
+        {
+            NotSet = 0,
+            Success = 1,
+            Failure = 2,
+            Error = 3
+        }
+
         private readonly SentryConfiguration _configuration;
         private long _iterationOrdinal = 1;
         private bool _started = false;
+        private readonly Dictionary<IWatcher, WatcherResultState> _latestWatcherResultStates = new Dictionary<IWatcher, WatcherResultState>();
 
         public Sentry(SentryConfiguration configuration)
         {
@@ -93,15 +102,21 @@ namespace Sentry
                     results.Add(sentryCheckResult);
                     if (watcherCheckResult.IsValid)
                     {
+                        await UpdateWatcherResultStateAndExecuteHooksPossibleAsync(watcher, WatcherResultState.Success,
+                            () => InvokeOnFirstSuccessHooksAsync(watcherConfiguration, sentryCheckResult));
                         await InvokeOnSuccessHooksAsync(watcherConfiguration, sentryCheckResult);
                     }
                     else
                     {
+                        await UpdateWatcherResultStateAndExecuteHooksPossibleAsync(watcher, WatcherResultState.Failure,
+                            () => InvokeOnFirstFailureHooksAsync(watcherConfiguration, sentryCheckResult));
                         await InvokeOnFailureHooksAsync(watcherConfiguration, sentryCheckResult);
                     }
                 }
                 catch (Exception exception)
                 {
+                    await UpdateWatcherResultStateAndExecuteHooksPossibleAsync(watcher, WatcherResultState.Error,
+                        () => InvokeOnFirstErrorHooksAsync(watcherConfiguration, exception));
                     var sentryException = new SentryException("There was an error while executing Sentry " +
                                                               $"caused by watcher: '{watcher.Name}'.", exception);
 
@@ -120,6 +135,19 @@ namespace Sentry
             return iteration;
         }
 
+        private async Task UpdateWatcherResultStateAndExecuteHooksPossibleAsync(IWatcher watcher, WatcherResultState state, Func<Task> hooks)
+        {
+            if (!_latestWatcherResultStates.ContainsKey(watcher))
+                return;
+
+            var latestState = _latestWatcherResultStates[watcher];
+            if (latestState == state)
+                return;
+
+            _latestWatcherResultStates[watcher] = state;
+            await hooks();
+        }
+
         private async Task InvokeOnStartHooksAsync(WatcherConfiguration watcherConfiguration, IWatcherCheck check)
         {
             watcherConfiguration.Hooks.OnStart.Execute(check);
@@ -136,12 +164,12 @@ namespace Sentry
             await _configuration.GlobalWatcherHooks.OnSuccessAsync.ExecuteAsync(checkResult);
         }
 
-        private async Task InvokeOnErrorHooksAsync(WatcherConfiguration watcherConfiguration, Exception exception)
+        private async Task InvokeOnFirstSuccessHooksAsync(WatcherConfiguration watcherConfiguration, ISentryCheckResult checkResult)
         {
-            watcherConfiguration.Hooks.OnError.Execute(exception);
-            await watcherConfiguration.Hooks.OnErrorAsync.ExecuteAsync(exception);
-            _configuration.GlobalWatcherHooks.OnError.Execute(exception);
-            await _configuration.GlobalWatcherHooks.OnErrorAsync.ExecuteAsync(exception);
+            watcherConfiguration.Hooks.OnFirstSuccess.Execute(checkResult);
+            await watcherConfiguration.Hooks.OnFirstSuccessAsync.ExecuteAsync(checkResult);
+            _configuration.GlobalWatcherHooks.OnFirstSuccess.Execute(checkResult);
+            await _configuration.GlobalWatcherHooks.OnFirstSuccessAsync.ExecuteAsync(checkResult);
         }
 
         private async Task InvokeOnFailureHooksAsync(WatcherConfiguration watcherConfiguration, ISentryCheckResult checkResult)
@@ -152,12 +180,36 @@ namespace Sentry
             await _configuration.GlobalWatcherHooks.OnFailureAsync.ExecuteAsync(checkResult);
         }
 
+        private async Task InvokeOnFirstFailureHooksAsync(WatcherConfiguration watcherConfiguration, ISentryCheckResult checkResult)
+        {
+            watcherConfiguration.Hooks.OnFirstFailure.Execute(checkResult);
+            await watcherConfiguration.Hooks.OnFirstFailureAsync.ExecuteAsync(checkResult);
+            _configuration.GlobalWatcherHooks.OnFirstFailure.Execute(checkResult);
+            await _configuration.GlobalWatcherHooks.OnFirstFailureAsync.ExecuteAsync(checkResult);
+        }
+
         private async Task InvokeOnCompletedHooksAsync(WatcherConfiguration watcherConfiguration, ISentryCheckResult checkResult)
         {
             watcherConfiguration.Hooks.OnCompleted.Execute(checkResult);
             await watcherConfiguration.Hooks.OnCompletedAsync.ExecuteAsync(checkResult);
             _configuration.GlobalWatcherHooks.OnCompleted.Execute(checkResult);
             await _configuration.GlobalWatcherHooks.OnCompletedAsync.ExecuteAsync(checkResult);
+        }
+
+        private async Task InvokeOnErrorHooksAsync(WatcherConfiguration watcherConfiguration, Exception exception)
+        {
+            watcherConfiguration.Hooks.OnError.Execute(exception);
+            await watcherConfiguration.Hooks.OnErrorAsync.ExecuteAsync(exception);
+            _configuration.GlobalWatcherHooks.OnError.Execute(exception);
+            await _configuration.GlobalWatcherHooks.OnErrorAsync.ExecuteAsync(exception);
+        }
+
+        private async Task InvokeOnFirstErrorHooksAsync(WatcherConfiguration watcherConfiguration, Exception exception)
+        {
+            watcherConfiguration.Hooks.OnFirstError.Execute(exception);
+            await watcherConfiguration.Hooks.OnFirstErrorAsync.ExecuteAsync(exception);
+            _configuration.GlobalWatcherHooks.OnFirstError.Execute(exception);
+            await _configuration.GlobalWatcherHooks.OnFirstErrorAsync.ExecuteAsync(exception);
         }
     }
 }
