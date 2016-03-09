@@ -104,6 +104,8 @@ namespace Sentry.Examples.Console
                 Logger.Info($"Watcher: '{result.WatcherCheckResult.WatcherName}'{newLine}" +
                             $"Description: {result.WatcherCheckResult.Description}{newLine}" +
                             $"Is valid: {result.IsValid}{newLine}" +
+                            $"Started at: {result.StartedAt}{newLine}" +
+                            $"Completed at: {result.CompletedAt}{newLine}" +
                             $"Execution time: {result.ExecutionTime}{newLine}");
             }
         }

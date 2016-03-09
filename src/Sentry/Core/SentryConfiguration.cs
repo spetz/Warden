@@ -10,6 +10,7 @@ namespace Sentry.Core
         public WatcherHooksConfiguration GlobalWatcherHooks { get; protected set; }
         public TimeSpan IterationDelay { get; protected set; }
         public long? IterationsCount { get; protected set; }
+        public Func<DateTime> DateTimeProvider { get; protected set; }
 
         protected internal SentryConfiguration()
         {
@@ -17,6 +18,7 @@ namespace Sentry.Core
             GlobalWatcherHooks = WatcherHooksConfiguration.Empty;
             Watchers = new List<WatcherConfiguration>();
             IterationDelay = new TimeSpan(0, 0, 5);
+            DateTimeProvider = () => DateTime.UtcNow;
         }
 
         public static SentryConfiguration Empty => new SentryConfiguration();
@@ -46,6 +48,16 @@ namespace Sentry.Core
                     .Build();
 
                 _configuration.Watchers.Add(watcherConfiguration);
+
+                return this;
+            }
+
+            public Builder WithCustomDateTimeProvider(Func<DateTime> dateTimeProvider)
+            {
+                if(dateTimeProvider == null)
+                    throw new ArgumentNullException(nameof(dateTimeProvider), "DateTime provider can not be null.");
+
+                _configuration.DateTimeProvider = dateTimeProvider;
 
                 return this;
             }

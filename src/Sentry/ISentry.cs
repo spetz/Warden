@@ -86,19 +86,19 @@ namespace Sentry
 
         private async Task<ISentryIteration> ExecuteIterationAsync(long ordinal)
         {
-            var iterationStartedAtUtc = DateTime.UtcNow;
+            var iterationStartedAt = _configuration.DateTimeProvider();
             var results = new List<ISentryCheckResult>();
             var tasks = _configuration.Watchers.Select(async watcherConfiguration =>
             {
-                var startedAtUtc = DateTime.UtcNow;
+                var startedAt = _configuration.DateTimeProvider();
                 var watcher = watcherConfiguration.Watcher;
                 ISentryCheckResult sentryCheckResult = null;
                 try
                 {
                     await InvokeOnStartHooksAsync(watcherConfiguration, WatcherCheck.Create(watcher));
                     var watcherCheckResult = await watcher.ExecuteAsync();
-                    var completedAtUtc = DateTime.UtcNow;
-                    sentryCheckResult = SentryCheckResult.Create(watcherCheckResult, startedAtUtc, completedAtUtc);
+                    var completedAt = _configuration.DateTimeProvider();
+                    sentryCheckResult = SentryCheckResult.Create(watcherCheckResult, startedAt, completedAt);
                     results.Add(sentryCheckResult);
                     if (watcherCheckResult.IsValid)
                     {
@@ -130,8 +130,8 @@ namespace Sentry
             });
 
             await Task.WhenAll(tasks);
-            var iterationCompleteddAtUtc = DateTime.UtcNow;
-            var iteration = SentryIteration.Create(ordinal, results, iterationStartedAtUtc, iterationCompleteddAtUtc);
+            var iterationCompletedAt = _configuration.DateTimeProvider();
+            var iteration = SentryIteration.Create(ordinal, results, iterationStartedAt, iterationCompletedAt);
 
             return iteration;
         }

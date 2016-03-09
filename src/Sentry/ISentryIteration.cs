@@ -15,13 +15,13 @@ namespace Sentry
     {
         public long Ordinal { get; }
         public IEnumerable<ISentryCheckResult> Results { get; }
-        public DateTime StartedAtUtc { get; }
-        public DateTime CompletedAtUtc { get; }
-        public TimeSpan ExecutionTime => CompletedAtUtc - StartedAtUtc;
+        public DateTime StartedAt { get; }
+        public DateTime CompletedAt { get; }
+        public TimeSpan ExecutionTime => CompletedAt - StartedAt;
         public bool IsValid => Results.All(x => x.IsValid);
 
-        protected SentryIteration(long ordinal, IEnumerable<ISentryCheckResult> results, DateTime startedAtUtc,
-            DateTime completedAtUtc)
+        protected SentryIteration(long ordinal, IEnumerable<ISentryCheckResult> results, DateTime startedAt,
+            DateTime completedAt)
         {
             if (ordinal < 0)
             {
@@ -30,12 +30,12 @@ namespace Sentry
             }
             Ordinal = ordinal;
             Results = results;
-            StartedAtUtc = startedAtUtc;
-            CompletedAtUtc = completedAtUtc;
+            StartedAt = startedAt;
+            CompletedAt = completedAt;
         }
 
         public static SentryIteration Create(long ordinal, IEnumerable<ISentryCheckResult> results,
-            DateTime startedAtUtc, DateTime completedAtUtc)
-            => new SentryIteration(ordinal, results, startedAtUtc, completedAtUtc);
+            DateTime startedAt, DateTime completedAt)
+            => new SentryIteration(ordinal, results, startedAt, completedAt);
     }
 }

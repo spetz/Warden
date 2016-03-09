@@ -4,8 +4,8 @@ namespace Sentry
 {
     public interface ITimestampable
     {
-        DateTime StartedAtUtc { get; }
-        DateTime CompletedAtUtc { get; }
+        DateTime StartedAt { get; }
+        DateTime CompletedAt { get; }
         TimeSpan ExecutionTime { get; }
     }
 }
