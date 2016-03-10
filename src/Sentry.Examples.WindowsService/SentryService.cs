@@ -31,6 +31,7 @@ namespace Sentry.Examples.WindowsService
         {
             var websiteWatcherConfiguration = WebsiteWatcherConfiguration
                 .Create("http://httpstat.us/200")
+                .EnsureThat(response => response.Headers.Location != null)
                 .Build();
             var websiteWatcher = WebsiteWatcher.Create("My website watcher", websiteWatcherConfiguration);
 

@@ -48,7 +48,7 @@ namespace Sentry.Tests.Unit
         protected override async Task BecauseOf()
         {
             await base.BecauseOf();
-            SentryConfiguration = SentryConfiguration.Empty;
+            SentryConfiguration = SentryConfiguration.Create().Build();
             Sentry = new Sentry(SentryConfiguration);
         }
 

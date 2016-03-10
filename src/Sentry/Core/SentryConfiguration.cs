@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Sentry.Core
 {
@@ -11,6 +12,7 @@ namespace Sentry.Core
         public TimeSpan IterationDelay { get; protected set; }
         public long? IterationsCount { get; protected set; }
         public Func<DateTime> DateTimeProvider { get; protected set; }
+        public IIterationProcessor IterationProcessor { get; protected set; }
 
         protected internal SentryConfiguration()
         {
@@ -21,17 +23,11 @@ namespace Sentry.Core
             DateTimeProvider = () => DateTime.UtcNow;
         }
 
-        public static SentryConfiguration Empty => new SentryConfiguration();
-        public static Builder Create() => new Builder(Empty);
+        public static Builder Create() => new Builder();
 
         public class Builder
         {
-            private readonly SentryConfiguration _configuration;
-
-            protected internal Builder(SentryConfiguration configuration)
-            {
-                _configuration = configuration;
-            }
+            private readonly SentryConfiguration _configuration = new SentryConfiguration();
 
             public Builder AddWatcher(IWatcher watcher, Action<WatcherHooksConfiguration.Builder> hooks = null)
             {
@@ -54,7 +50,7 @@ namespace Sentry.Core
 
             public Builder SetCustomDateTimeProvider(Func<DateTime> dateTimeProvider)
             {
-                if(dateTimeProvider == null)
+                if (dateTimeProvider == null)
                     throw new ArgumentNullException(nameof(dateTimeProvider), "DateTime provider can not be null.");
 
                 _configuration.DateTimeProvider = dateTimeProvider;
@@ -107,6 +103,16 @@ namespace Sentry.Core
                 return this;
             }
 
+            public Builder SetIterationProcessor(IIterationProcessor iterationProcessor)
+            {
+                if (iterationProcessor == null)
+                    throw new ArgumentNullException(nameof(iterationProcessor), "Iteration processor can not be null.");
+
+                _configuration.IterationProcessor = iterationProcessor;
+
+                return this;
+            }
+
             public Builder RunOnlyOnce()
             {
                 _configuration.IterationsCount = 1;
@@ -114,7 +120,27 @@ namespace Sentry.Core
                 return this;
             }
 
-            public SentryConfiguration Build() => _configuration;
+            private void InitializeDefaultSentryIterationProcessorIfRequired()
+            {
+                if (_configuration.IterationProcessor != null)
+                    return;
+
+                var iterationProcessorConfiguration = IterationProcessorConfiguration
+                    .Create()
+                    .SetWatchers(_configuration.Watchers.ToArray())
+                    .SetGlobalWatcherHooks(_configuration.GlobalWatcherHooks)
+                    .SetDateTimeProvider(_configuration.DateTimeProvider)
+                    .Build();
+
+                _configuration.IterationProcessor = new IterationProcessor(iterationProcessorConfiguration);
+            }
+
+            public SentryConfiguration Build()
+            {
+                InitializeDefaultSentryIterationProcessorIfRequired();
+
+                return _configuration;
+            }
         }
     }
 }

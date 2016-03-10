@@ -35,7 +35,7 @@ namespace Sentry.Watchers.Website
                 return this;
             }
 
-            public Builder WhereValidResponseIs(Func<HttpResponseMessage, bool> predicate)
+            public Builder EnsureThat(Func<HttpResponseMessage, bool> predicate)
             {
                 _configuration.WhereValidResponseIs = predicate;
 

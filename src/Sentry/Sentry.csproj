@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Extensions.cs" />
+    <Compile Include="Core\IterationProcessorConfiguration.cs" />
     <Compile Include="Core\SentryHooksConfiguration.cs" />
     <Compile Include="Core\WatcherHooksConfiguration.cs" />
     <Compile Include="Core\SentryConfiguration.cs" />
@@ -50,6 +51,7 @@
     <Compile Include="ISentry.cs" />
     <Compile Include="ISentryCheckResult.cs" />
     <Compile Include="ISentryIteration.cs" />
+    <Compile Include="IIterationProcessor.cs" />
     <Compile Include="ITimestampable.cs" />
     <Compile Include="IWatcher.cs" />
     <Compile Include="IWatcherCheckResult.cs" />
