@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Sentry.Core;
@@ -25,6 +26,9 @@ namespace Sentry.Watchers.Website
             Name = name;
             _configuration = configuration;
             _httpClient = new HttpClient();
+            SetRequestHeaders();
+            if (_configuration.Timeout > TimeSpan.Zero)
+                _httpClient.Timeout = _configuration.Timeout;
         }
 
         public async Task<IWatcherCheckResult> ExecuteAsync()
@@ -32,19 +36,38 @@ namespace Sentry.Watchers.Website
             try
             {
                 var response = await _httpClient.GetAsync(_configuration.Uri);
-                var isValid = HasValidRespons(response);
+                var isValid = HasValidResponse(response);
 
                 return WebsiteWatcherCheckResult.Create(this, isValid, _configuration.Uri,
                     _httpClient.DefaultRequestHeaders, response,
                     $"Websiste for URL: '{_configuration.Uri}' has returned a response with status code: {response.StatusCode}.");
             }
-            catch (Exception ex)
+            catch (TaskCanceledException exception)
             {
-                throw new WatcherException($"There was an error while trying to access URL: '{_configuration.Uri}'.", ex);
+                return WebsiteWatcherCheckResult.Create(this, false, _configuration.Uri,
+                    _httpClient.DefaultRequestHeaders, null,
+                    $"A connection timeout occurred while trying to access website for URL: '{_configuration.Uri}'");
+            }
+            catch (Exception exception)
+            {
+                throw new WatcherException($"There was an error while trying to access URL: '{_configuration.Uri}'.", exception);
             }
         }
 
-        private bool HasValidRespons(HttpResponseMessage response)
+        private void SetRequestHeaders()
+        {
+            foreach (var header in _configuration.Headers)
+            {
+                var existingHeader = _httpClient.DefaultRequestHeaders
+                    .FirstOrDefault(x => string.Equals(x.Key, header.Key, StringComparison.InvariantCultureIgnoreCase));
+                if (existingHeader.Key != null)
+                    _httpClient.DefaultRequestHeaders.Remove(existingHeader.Key);
+
+                _httpClient.DefaultRequestHeaders.Add(header.Key, header.Value);
+            }
+        }
+
+        private bool HasValidResponse(HttpResponseMessage response)
             => (_configuration.WhereValidResponseIs?.Invoke(response) ?? true) &&
                (response.IsSuccessStatusCode || _configuration.SkipStatusCodeValidation);
 
