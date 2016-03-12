@@ -9,6 +9,7 @@ namespace Sentry.Watchers.MsSql
         public string Query { get; protected set; }
         public IDictionary<string, object> QueryParameters { get; protected set; }
         public Func<IEnumerable<dynamic>, bool> EnsureThat { get; protected set; }
+        public TimeSpan Timeout { get; protected set; }
 
         protected internal MsSqlWatcherConfiguration(string connectionString)
         {
@@ -36,6 +37,19 @@ namespace Sentry.Watchers.MsSql
 
                 _configuration.Query = query;
                 _configuration.QueryParameters = parameters;
+
+                return this;
+            }
+
+            public Builder WithTimeout(TimeSpan timeout)
+            {
+                if (timeout == null)
+                    throw new ArgumentNullException(nameof(timeout), "Timeout can not be null.");
+
+                if (timeout == TimeSpan.Zero)
+                    throw new ArgumentException("Timeout can not be equal to zero.", nameof(timeout));
+
+                _configuration.Timeout = timeout;
 
                 return this;
             }

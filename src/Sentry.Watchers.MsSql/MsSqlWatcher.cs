@@ -47,7 +47,8 @@ namespace Sentry.Watchers.MsSql
                     if (string.IsNullOrWhiteSpace(_configuration.Query))
                         return WatcherCheckResult.Create(this, true);
 
-                    var result = await connection.QueryAsync<dynamic>(_configuration.Query, _queryParameters);
+                    var result = await connection.QueryAsync<dynamic>(_configuration.Query, _queryParameters,
+                        commandTimeout: (int) _configuration.Timeout.TotalSeconds);
                     var isValid = _configuration.EnsureThat?.Invoke(result) ?? true;
 
                     return WatcherCheckResult.Create(this, isValid);
