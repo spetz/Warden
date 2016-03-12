@@ -9,6 +9,8 @@ namespace Sentry.Core
     {
         private readonly HashSet<Expression<Action>> _onStart = new HashSet<Expression<Action>>();
         private readonly HashSet<Expression<Func<Task>>> _onStartAsync = new HashSet<Expression<Func<Task>>>();
+        private readonly HashSet<Expression<Action>> _onPause = new HashSet<Expression<Action>>();
+        private readonly HashSet<Expression<Func<Task>>> _onPauseAsync = new HashSet<Expression<Func<Task>>>();
         private readonly HashSet<Expression<Action>> _onStop = new HashSet<Expression<Action>>();
         private readonly HashSet<Expression<Func<Task>>> _onStopAsync = new HashSet<Expression<Func<Task>>>();
         private readonly HashSet<Expression<Action<Exception>>> _onError = new HashSet<Expression<Action<Exception>>>();
@@ -20,6 +22,8 @@ namespace Sentry.Core
 
         public IEnumerable<Expression<Action>> OnStart => _onStart;
         public IEnumerable<Expression<Func<Task>>> OnStartAsync => _onStartAsync;
+        public IEnumerable<Expression<Action>> OnPause => _onPause;
+        public IEnumerable<Expression<Func<Task>>> OnPauseAsync => _onPauseAsync;
         public IEnumerable<Expression<Action>> OnStop => _onStop;
         public IEnumerable<Expression<Func<Task>>> OnStopAsync => _onStopAsync;
         public IEnumerable<Expression<Action<Exception>>> OnError => _onError;
@@ -53,6 +57,18 @@ namespace Sentry.Core
             public Builder OnStartAsync(params Expression<Func<Task>>[] hooks)
             {
                 _configuration._onStartAsync.UnionWith(hooks);
+                return this;
+            }
+
+            public Builder OnPause(params Expression<Action>[] hooks)
+            {
+                _configuration._onPause.UnionWith(hooks);
+                return this;
+            }
+
+            public Builder OnPauseAsync(params Expression<Func<Task>>[] hooks)
+            {
+                _configuration._onPauseAsync.UnionWith(hooks);
                 return this;
             }
 

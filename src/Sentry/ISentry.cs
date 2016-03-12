@@ -7,6 +7,7 @@ namespace Sentry
     public interface ISentry
     {
         Task StartAsync();
+        Task PauseAsync();
         Task StopAsync();
     }
 
@@ -14,7 +15,7 @@ namespace Sentry
     {
         private readonly SentryConfiguration _configuration;
         private long _iterationOrdinal = 1;
-        private bool _started = false;
+        private bool _running = false;
 
         public Sentry(SentryConfiguration configuration)
         {
@@ -26,7 +27,7 @@ namespace Sentry
 
         public async Task StartAsync()
         {
-            _started = true;
+            _running = true;
             _configuration.Hooks.OnStart.Execute();
             await _configuration.Hooks.OnStartAsync.ExecuteAsync();
 
@@ -56,7 +57,7 @@ namespace Sentry
 
         private bool CanExecuteIteration(long ordinal)
         {
-            if (!_started)
+            if (!_running)
                 return false;
             if (!_configuration.IterationsCount.HasValue)
                 return true;
@@ -66,9 +67,17 @@ namespace Sentry
             return false;
         }
 
+        public async Task PauseAsync()
+        {
+            _running = false;
+            _configuration.Hooks.OnPause.Execute();
+            await _configuration.Hooks.OnPauseAsync.ExecuteAsync();
+        }
+
         public async Task StopAsync()
         {
-            _started = false;
+            _running = false;
+            _iterationOrdinal = 0;
             _configuration.Hooks.OnStop.Execute();
             await _configuration.Hooks.OnStopAsync.ExecuteAsync();
         }
