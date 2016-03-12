@@ -1,9 +1,8 @@
 ﻿namespace Sentry
 {
 
-    public interface IWatcherCheckResult : IWatcherCheck
+    public interface IWatcherCheckResult : IValidatable, IWatcherCheck
     {
-        bool IsValid { get; }
         string Description { get; }
     }
 

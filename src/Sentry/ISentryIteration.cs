@@ -4,11 +4,10 @@ using System.Linq;
 
 namespace Sentry
 {
-    public interface ISentryIteration : ITimestampable
+    public interface ISentryIteration : IValidatable, ITimestampable
     {
         long Ordinal { get; }
         IEnumerable<ISentryCheckResult> Results { get; }
-        bool IsValid { get; }
     }
 
     public class SentryIteration : ISentryIteration

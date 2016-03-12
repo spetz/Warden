@@ -53,6 +53,7 @@
     <Compile Include="ISentryIteration.cs" />
     <Compile Include="IIterationProcessor.cs" />
     <Compile Include="ITimestampable.cs" />
+    <Compile Include="IValidatable.cs" />
     <Compile Include="IWatcher.cs" />
     <Compile Include="IWatcherCheckResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

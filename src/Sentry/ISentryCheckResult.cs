@@ -2,10 +2,9 @@
 
 namespace Sentry
 {
-    public interface ISentryCheckResult : ITimestampable
+    public interface ISentryCheckResult : IValidatable, ITimestampable
     {
         IWatcherCheckResult WatcherCheckResult { get; }
-        bool IsValid { get; }
     }
 
     public class SentryCheckResult : ISentryCheckResult
