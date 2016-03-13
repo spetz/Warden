@@ -77,7 +77,7 @@ namespace Sentry
         public async Task StopAsync()
         {
             _running = false;
-            _iterationOrdinal = 0;
+            _iterationOrdinal = 1;
             _configuration.Hooks.OnStop.Execute();
             await _configuration.Hooks.OnStopAsync.ExecuteAsync();
         }
