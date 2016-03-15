@@ -1,14 +1,12 @@
 # Sentry
 
 > Define "health checks" for your applications, resources and
-> infrastructure. Keep your **sentry** on the watch.
+> infrastructure. Keep your **Sentry** on the watch.
 
 **Quick start**:
 ----------------
 
-----------
-
- Define the **watchers** that will monitor your resources. You may choose between the website, API, MSSQL watchers - many more is coming soon!
+Define the **watchers** that will monitor your resources. You may choose between the website, API and MSSQL watchers - many more are coming soon (MongoDB, Redis, File etc.)!
 ```csharp
 //Define a watcher for the website 
 var myWebsiteUrl = "http://my-website.com";
@@ -39,8 +37,6 @@ var mssqlWatcherConfiguration = MsSqlWatcherConfiguration
 var mssqlWatcher = MsSqlWatcher.Create("My database watcher", mssqlWatcherConfiguration);
 ```
 
-----------
-
 Configure the **Sentry** by adding the previously defined **watchers**, setting up **hooks** (callbacks) to get notified about failures, successful checks, exceptions etc. - use that information e.g. in order to let your system administrator know when something goes wrong or to build your custom metrics.
 ```csharp
 var sentryConfiguration = SentryConfiguration
@@ -69,8 +65,6 @@ var sentryConfiguration = SentryConfiguration
     })
     .Build();
 ```
-
-----------
 
 Start the **Sentry** and let him do his job - now **you have the full control** over your system monitoring!
 ```csharp
