@@ -61,6 +61,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Sentry.Watchers.Api\Sentry.Watchers.Api.csproj">
+      <Project>{CA4FDDBA-7458-498E-93A2-A272F7D4BCF7}</Project>
+      <Name>Sentry.Watchers.Api</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sentry.Watchers.MsSql\Sentry.Watchers.MsSql.csproj">
       <Project>{5ED102ED-B897-4B97-AE8C-A1E4AA37CCFC}</Project>
       <Name>Sentry.Watchers.MsSql</Name>

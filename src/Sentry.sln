@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentry.Examples.WindowsServ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentry.Watchers.MsSql", "Sentry.Watchers.MsSql\Sentry.Watchers.MsSql.csproj", "{5ED102ED-B897-4B97-AE8C-A1E4AA37CCFC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentry.Watchers.Api", "Sentry.Watchers.Api\Sentry.Watchers.Api.csproj", "{CA4FDDBA-7458-498E-93A2-A272F7D4BCF7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{5ED102ED-B897-4B97-AE8C-A1E4AA37CCFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5ED102ED-B897-4B97-AE8C-A1E4AA37CCFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5ED102ED-B897-4B97-AE8C-A1E4AA37CCFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA4FDDBA-7458-498E-93A2-A272F7D4BCF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA4FDDBA-7458-498E-93A2-A272F7D4BCF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA4FDDBA-7458-498E-93A2-A272F7D4BCF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA4FDDBA-7458-498E-93A2-A272F7D4BCF7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,5 +74,6 @@ Global
 		{92F2FBC7-5A0C-44BE-9325-744FE2CD1574} = {F87D6A46-C118-4B43-B2CE-A9CF082AF1AB}
 		{F86BEBB3-D560-4A00-A2FB-4FC91476169E} = {F87D6A46-C118-4B43-B2CE-A9CF082AF1AB}
 		{5ED102ED-B897-4B97-AE8C-A1E4AA37CCFC} = {A2DFC5AE-3A65-4723-9B32-5FD5B2586606}
+		{CA4FDDBA-7458-498E-93A2-A272F7D4BCF7} = {A2DFC5AE-3A65-4723-9B32-5FD5B2586606}
 	EndGlobalSection
 EndGlobal

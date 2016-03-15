@@ -2,35 +2,40 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 
-namespace Sentry.Watchers.Website
+namespace Sentry.Watchers.Api
 {
-    public class WebsiteWatcherConfiguration
+    public class ApiWatcherConfiguration
     {
         public Uri Uri { get; protected set; }
+        public HttpRequest Request { get; protected set; }
         public bool SkipStatusCodeValidation { get; protected set; }
         public IDictionary<string, string> Headers { get; protected set; }
         public TimeSpan Timeout { get; protected set; }
         public Func<HttpResponseMessage, bool> WhereValidResponseIs { get; protected set; }
 
-        protected internal WebsiteWatcherConfiguration(string url)
+        protected internal ApiWatcherConfiguration(string url, HttpRequest request)
         {
             if (string.IsNullOrEmpty(url))
                 throw new ArgumentException("URL can not be empty.", nameof(url));
 
+            if (request == null)
+                throw new ArgumentNullException(nameof(request), "Request can not be null.");
+
             Uri = new Uri(url);
             Headers = new Dictionary<string, string>();
             Timeout = TimeSpan.Zero;
+            Request = request;
         }
 
-        public static Builder Create(string url) => new Builder(url);
+        public static Builder Create(string url, HttpRequest request) => new Builder(url, request);
 
         public class Builder
         {
-            private readonly WebsiteWatcherConfiguration _configuration;
+            private readonly ApiWatcherConfiguration _configuration;
 
-            public Builder(string url)
+            public Builder(string url, HttpRequest request)
             {
-                _configuration = new WebsiteWatcherConfiguration(url);
+                _configuration = new ApiWatcherConfiguration(url, request);
             }
 
             public Builder WithHeaders(IDictionary<string, string> headers)
@@ -49,6 +54,16 @@ namespace Sentry.Watchers.Website
             public Builder WithHeader(KeyValuePair<string, string> header)
             {
                 _configuration.Headers.Add(header);
+
+                return this;
+            }
+
+            public Builder WithRequest(HttpRequest request)
+            {
+                if (request == null)
+                    throw new ArgumentNullException(nameof(request), "HTTP request can not be null.");
+
+                _configuration.Request = request;
 
                 return this;
             }
@@ -80,7 +95,7 @@ namespace Sentry.Watchers.Website
                 return this;
             }
 
-            public WebsiteWatcherConfiguration Build() => _configuration;
+            public ApiWatcherConfiguration Build() => _configuration;
         }
     }
 }

@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 
 namespace Sentry.Core
 {
-    public class SentryHooksConfiguration
+    public class 
+        SentryHooksConfiguration
     {
         private readonly HashSet<Expression<Action>> _onStart = new HashSet<Expression<Action>>();
         private readonly HashSet<Expression<Func<Task>>> _onStartAsync = new HashSet<Expression<Func<Task>>>();

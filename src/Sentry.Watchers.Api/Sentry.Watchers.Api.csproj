@@ -4,17 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{92F2FBC7-5A0C-44BE-9325-744FE2CD1574}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{CA4FDDBA-7458-498E-93A2-A272F7D4BCF7}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Sentry.Examples.Console</RootNamespace>
-    <AssemblyName>Sentry.Examples.Console</AssemblyName>
+    <RootNamespace>Sentry.Watchers.Api</RootNamespace>
+    <AssemblyName>Sentry.Watchers.Api</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -33,13 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,28 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="HttpRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ApiWatcher.cs" />
+    <Compile Include="ApiWatcherCheckResult.cs" />
+    <Compile Include="ApiWatcherConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Sentry.Watchers.Api\Sentry.Watchers.Api.csproj">
-      <Project>{CA4FDDBA-7458-498E-93A2-A272F7D4BCF7}</Project>
-      <Name>Sentry.Watchers.Api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Sentry.Watchers.MsSql\Sentry.Watchers.MsSql.csproj">
-      <Project>{5ED102ED-B897-4B97-AE8C-A1E4AA37CCFC}</Project>
-      <Name>Sentry.Watchers.MsSql</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Sentry.Watchers.Website\Sentry.Watchers.Website.csproj">
-      <Project>{ba630713-7f82-4cc7-9b42-46b4dce7a36d}</Project>
-      <Name>Sentry.Watchers.Website</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Sentry\Sentry.csproj">
-      <Project>{eabc1132-32ea-4a2c-8129-60e20b74a546}</Project>
+      <Project>{EABC1132-32EA-4A2C-8129-60E20B74A546}</Project>
       <Name>Sentry</Name>
     </ProjectReference>
   </ItemGroup>

@@ -25,7 +25,10 @@ namespace Sentry.Watchers.Website
 
             Name = name;
             _configuration = configuration;
-            _httpClient = new HttpClient();
+            _httpClient = new HttpClient
+            {
+                BaseAddress = _configuration.Uri
+            };
             SetRequestHeaders();
             if (_configuration.Timeout > TimeSpan.Zero)
                 _httpClient.Timeout = _configuration.Timeout;
@@ -35,7 +38,7 @@ namespace Sentry.Watchers.Website
         {
             try
             {
-                var response = await _httpClient.GetAsync(_configuration.Uri);
+                var response = await _httpClient.GetAsync(string.Empty);
                 var isValid = HasValidResponse(response);
 
                 return WebsiteWatcherCheckResult.Create(this, isValid, _configuration.Uri,
@@ -46,11 +49,11 @@ namespace Sentry.Watchers.Website
             {
                 return WebsiteWatcherCheckResult.Create(this, false, _configuration.Uri,
                     _httpClient.DefaultRequestHeaders, null,
-                    $"A connection timeout occurred while trying to access website for URL: '{_configuration.Uri}'");
+                    $"A connection timeout occurred while trying to access the website for URL: '{_configuration.Uri}'");
             }
             catch (Exception exception)
             {
-                throw new WatcherException($"There was an error while trying to access URL: '{_configuration.Uri}'.", exception);
+                throw new WatcherException($"There was an error while trying to access the URL: '{_configuration.Uri}'.", exception);
             }
         }
 

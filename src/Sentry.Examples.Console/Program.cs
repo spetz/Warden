@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using NLog;
 using Sentry.Core;
+using Sentry.Watchers.Api;
 using Sentry.Watchers.MsSql;
 using Sentry.Watchers.Website;
 
@@ -34,6 +35,15 @@ namespace Sentry.Examples.Console
                 .Build();
             var mssqlWatcher = MsSqlWatcher.Create("My database watcher", mssqlWatcherConfiguration);
 
+            var apiWatcherConfiguration = ApiWatcherConfiguration
+                .Create("http://httpstat.us", HttpRequest.Get("200"))
+                .WithHeaders(new Dictionary<string, string>
+                {
+                    ["Accept"] = "application/json"
+                })
+                .Build();
+            var apiWatcher = ApiWatcher.Create("My API watcher", apiWatcherConfiguration);
+
             var sentryConfiguration = SentryConfiguration
                 .Create()
                 .SetHooks(hooks =>
@@ -41,6 +51,7 @@ namespace Sentry.Examples.Console
                     hooks.OnError(exception => Logger.Error(exception));
                     hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration));
                 })
+                .AddWatcher(apiWatcher)
                 .AddWatcher(mssqlWatcher)
                 .AddWatcher(websiteWatcher, hooks =>
                 {

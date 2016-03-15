@@ -37,7 +37,7 @@ namespace Sentry.Tests.EndToEnd
         public void then_exception_should_be_thrown()
         {
             ExceptionThrown.Should().BeAssignableTo<WatcherException>();
-            ExceptionThrown.Message.Should().StartWithEquivalent("There was an error while trying to access URL");
+            ExceptionThrown.Message.Should().StartWithEquivalent("There was an error while trying to access the URL");
         }
     }
 

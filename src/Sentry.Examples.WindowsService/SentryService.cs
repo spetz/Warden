@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using NLog;
 using Sentry.Core;
+using Sentry.Watchers.Api;
 using Sentry.Watchers.MsSql;
 using Sentry.Watchers.Website;
 
@@ -19,6 +20,12 @@ namespace Sentry.Examples.WindowsService
         {
             Logger.Info("Sentry service has been started.");
             await Sentry.StartAsync();
+        }
+
+        public async Task PauseAsync()
+        {
+            await Sentry.PauseAsync();
+            Logger.Info("Sentry service has been paused.");
         }
 
         public async Task StopAsync()
@@ -36,10 +43,19 @@ namespace Sentry.Examples.WindowsService
 
             var mssqlWatcherConfiguration = MsSqlWatcherConfiguration
                 .Create(ConfigurationManager.ConnectionStrings["MyDatabase"].ConnectionString)
-                .WithQuery("select * from users where id = @id", new Dictionary<string, object> {["id"] = 1 })
+                .WithQuery("select * from users where id = @id", new Dictionary<string, object> {["id"] = 1})
                 .EnsureThat(users => users.Any(user => user.Name == "admin"))
                 .Build();
             var mssqlWatcher = MsSqlWatcher.Create("My database watcher", mssqlWatcherConfiguration);
+
+            var apiWatcherConfiguration = ApiWatcherConfiguration
+                .Create("http://httpstat.us", HttpRequest.Get("200"))
+                .WithHeaders(new Dictionary<string, string>
+                {
+                    ["Accept"] = "application/json"
+                })
+                .Build();
+            var apiWatcher = ApiWatcher.Create("My API watcher", apiWatcherConfiguration);
 
             var sentryConfiguration = SentryConfiguration
                 .Create()
@@ -48,6 +64,7 @@ namespace Sentry.Examples.WindowsService
                     hooks.OnError(exception => Logger.Error(exception));
                     hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration));
                 })
+                .AddWatcher(apiWatcher)
                 .AddWatcher(mssqlWatcher)
                 .AddWatcher(websiteWatcher, hooks =>
                 {

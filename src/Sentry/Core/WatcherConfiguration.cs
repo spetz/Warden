@@ -13,6 +13,7 @@ namespace Sentry.Core
         {
             if (watcher == null)
                 throw new ArgumentNullException(nameof(watcher), "Watcher can not be null.");
+
             Watcher = watcher;
             Hooks = WatcherHooksConfiguration.Empty;
         }

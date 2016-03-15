@@ -8,11 +8,13 @@ namespace Sentry.Examples.WindowsService
         {
             HostFactory.Run(x =>
             {
-                x.Service<SentryService>(s =>
+                x.Service<SentryService>(service =>
                 {
-                    s.ConstructUsing(name => new SentryService());
-                    s.WhenStarted(async tc => await tc.StartAsync());
-                    s.WhenStopped(async tc => await tc.StopAsync());
+                    service.ConstructUsing(name => new SentryService());
+                    service.WhenStarted(async sentry => await sentry.StartAsync());
+                    service.WhenPaused(async sentry => await sentry.PauseAsync());
+                    service.WhenContinued(async sentry => await sentry.StartAsync());
+                    service.WhenStopped(async sentry => await sentry.StopAsync());
                 });
                 x.RunAsLocalSystem();
                 x.SetDescription("Sentry");
