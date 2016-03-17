@@ -92,7 +92,7 @@ namespace Sentry.Watchers.Api
         }
 
         private bool HasValidResponse(HttpResponseMessage response)
-            => (_configuration.WhereValidResponseIs?.Invoke(response) ?? true) &&
+            => (_configuration.EnsureThat?.Invoke(response) ?? true) &&
                (response.IsSuccessStatusCode || _configuration.SkipStatusCodeValidation);
 
         public static ApiWatcher Create(string name, string url, HttpRequest request, Action<ApiWatcherConfiguration.Builder> configuration = null)

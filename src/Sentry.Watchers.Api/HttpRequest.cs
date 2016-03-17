@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Sentry.Watchers.Api
+﻿namespace Sentry.Watchers.Api
 {
     public class HttpRequest
     {
@@ -10,17 +8,19 @@ namespace Sentry.Watchers.Api
 
         protected HttpRequest(MethodType type, string endpoint, object data = null)
         {
-            if(string.IsNullOrWhiteSpace(endpoint))
-                throw new ArgumentException("Endpoint can not be empty.", nameof(endpoint));
 
             Type = type;
             Endpoint = endpoint;
             Data = data;
         }
 
+        public static HttpRequest Get() => new HttpRequest(MethodType.Get, string.Empty);
         public static HttpRequest Get(string endpoint) => new HttpRequest(MethodType.Get, endpoint);
+        public static HttpRequest Put(object data) => new HttpRequest(MethodType.Put, string.Empty, data);
         public static HttpRequest Put(string endpoint, object data = null) => new HttpRequest(MethodType.Put, endpoint, data);
+        public static HttpRequest Post(object data) => new HttpRequest(MethodType.Post, string.Empty, data);
         public static HttpRequest Post(string endpoint, object data = null) => new HttpRequest(MethodType.Post, endpoint, data);
+        public static HttpRequest Delete() => new HttpRequest(MethodType.Delete, string.Empty);
         public static HttpRequest Delete(string endpoint) => new HttpRequest(MethodType.Delete, endpoint);
 
         public enum MethodType

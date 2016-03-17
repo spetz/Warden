@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Sentry.Watchers.Api
 {
@@ -11,7 +12,8 @@ namespace Sentry.Watchers.Api
         public bool SkipStatusCodeValidation { get; protected set; }
         public IDictionary<string, string> Headers { get; protected set; }
         public TimeSpan Timeout { get; protected set; }
-        public Func<HttpResponseMessage, bool> WhereValidResponseIs { get; protected set; }
+        public Func<HttpResponseMessage, bool> EnsureThat { get; protected set; }
+        public Func<HttpResponseMessage, Task<bool>> EnsureThatAsync { get; protected set; }
 
         protected internal ApiWatcherConfiguration(string url, HttpRequest request)
         {
@@ -88,9 +90,22 @@ namespace Sentry.Watchers.Api
                 return this;
             }
 
-            public Builder EnsureThat(Func<HttpResponseMessage, bool> predicate)
+            public Builder EnsureThat(Func<HttpResponseMessage, bool> ensureThat)
             {
-                _configuration.WhereValidResponseIs = predicate;
+                if (ensureThat == null)
+                    throw new ArgumentException("Ensure that predicate can not be null.", nameof(ensureThat));
+
+                _configuration.EnsureThat = ensureThat;
+
+                return this;
+            }
+
+            public Builder EnsureThatAsync(Func<HttpResponseMessage, Task<bool>> ensureThat)
+            {
+                if (ensureThat == null)
+                    throw new ArgumentException("Ensure that async predicate can not be null.", nameof(ensureThat));
+
+                _configuration.EnsureThatAsync = ensureThat;
 
                 return this;
             }
