@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
+using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using NLog;
 using Sentry.Core;
 using Sentry.Watchers.Api;
+using Sentry.Watchers.MongoDb;
 using Sentry.Watchers.MsSql;
 using Sentry.Watchers.Website;
 
@@ -41,6 +44,18 @@ namespace Sentry.Examples.WindowsService
                 .Build();
             var websiteWatcher = WebsiteWatcher.Create("My website watcher", websiteWatcherConfiguration);
 
+            var mongoDbWatcherConfiguration = MongoDbWatcherConfiguration
+                .Create("mongodb://localhost:27017", "MyDatabase")
+                .WithTimeout(TimeSpan.FromSeconds(5))
+                .EnsureThatAsync(async db =>
+                {
+                    return await db.GetCollection<dynamic>("MyCollection")
+                        .AsQueryable()
+                        .AnyAsync(_ => true);
+                })
+                .Build();
+            var mongoDbWatcher = MongoDbWatcher.Create("My MongoDB watcher", mongoDbWatcherConfiguration);
+
             var mssqlWatcherConfiguration = MsSqlWatcherConfiguration
                 .Create(ConfigurationManager.ConnectionStrings["MyDatabase"].ConnectionString)
                 .WithQuery("select * from users where id = @id", new Dictionary<string, object> {["id"] = 1})
@@ -66,6 +81,7 @@ namespace Sentry.Examples.WindowsService
                 })
                 .AddWatcher(apiWatcher)
                 .AddWatcher(mssqlWatcher)
+                .AddWatcher(mongoDbWatcher)
                 .AddWatcher(websiteWatcher, hooks =>
                 {
                     hooks.OnStartAsync(check => WebsiteHookOnStartAsync(check));

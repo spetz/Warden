@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
+using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using NLog;
 using Sentry.Core;
 using Sentry.Watchers.Api;
+using Sentry.Watchers.MongoDb;
 using Sentry.Watchers.MsSql;
 using Sentry.Watchers.Website;
+
 
 namespace Sentry.Examples.Console
 {
@@ -27,6 +31,18 @@ namespace Sentry.Examples.Console
                 .Create("http://httpstat.us/200")
                 .Build();
             var websiteWatcher = WebsiteWatcher.Create("My website watcher", websiteWatcherConfiguration);
+
+            var mongoDbWatcherConfiguration = MongoDbWatcherConfiguration
+                .Create("mongodb://localhost:27017", "MyDatabase")
+                .WithTimeout(TimeSpan.FromSeconds(5))
+                .EnsureThatAsync(async db =>
+                {
+                    return await db.GetCollection<dynamic>("MyCollection")
+                        .AsQueryable()
+                        .AnyAsync(_ => true);
+                })
+                .Build();
+            var mongoDbWatcher = MongoDbWatcher.Create("My MongoDB watcher", mongoDbWatcherConfiguration);
 
             var mssqlWatcherConfiguration = MsSqlWatcherConfiguration
                 .Create(ConfigurationManager.ConnectionStrings["MyDatabase"].ConnectionString)
@@ -53,6 +69,7 @@ namespace Sentry.Examples.Console
                 })
                 .AddWatcher(apiWatcher)
                 .AddWatcher(mssqlWatcher)
+                .AddWatcher(mongoDbWatcher)
                 .AddWatcher(websiteWatcher, hooks =>
                 {
                     hooks.OnStartAsync(check => WebsiteHookOnStartAsync(check));
