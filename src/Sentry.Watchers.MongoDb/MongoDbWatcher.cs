@@ -26,18 +26,27 @@ namespace Sentry.Watchers.MongoDb
 
             Name = name;
             _configuration = configuration;
+            _client = new MongoClient(InitializeSettings());
+        }
 
-            //TODO: Fix timeouts
-            var clientSettings = new MongoClientSettings
+        private MongoClientSettings InitializeSettings()
+        {
+            var settings = _configuration.Settings ?? new MongoClientSettings
             {
-                Server = GetServerAddress(),
-                ConnectTimeout = _configuration.Timeout,
-                MaxConnectionIdleTime = _configuration.Timeout,
-                WaitQueueTimeout = _configuration.Timeout,
-                SocketTimeout = _configuration.Timeout,
-                ServerSelectionTimeout = _configuration.Timeout
+                Server = GetServerAddress()
             };
-            _client = new MongoClient(clientSettings);
+            settings.ConnectTimeout = _configuration.ConnectTimeout;
+            settings.ServerSelectionTimeout = _configuration.ServerSelectionTimeout;
+
+            return settings;
+        }
+
+        private MongoServerAddress GetServerAddress()
+        {
+            var cleanedConnectionString = _configuration.ConnectionString.Substring(10);
+            var hostAndPort = cleanedConnectionString.Split(':');
+
+            return new MongoServerAddress(hostAndPort[0], int.Parse(hostAndPort[1]));
         }
 
         public async Task<IWatcherCheckResult> ExecuteAsync()
@@ -68,16 +77,8 @@ namespace Sentry.Watchers.MongoDb
             }
             catch (Exception ex)
             {
-                throw new WatcherException("There was an error while trying to access MongoDB database.", ex);
+                throw new WatcherException("There was an error while trying to access the MongoDB.", ex);
             }
-        }
-
-        private MongoServerAddress GetServerAddress()
-        {
-            var cleanedConnectionString = _configuration.ConnectionString.Substring(10);
-            var hostAndPort = cleanedConnectionString.Split(':');
-
-            return new MongoServerAddress(hostAndPort[0], int.Parse(hostAndPort[1]));
         }
 
         public static MongoDbWatcher Create(string name, string connectionString, string database,

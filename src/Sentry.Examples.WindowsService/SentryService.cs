@@ -45,8 +45,7 @@ namespace Sentry.Examples.WindowsService
             var websiteWatcher = WebsiteWatcher.Create("My website watcher", websiteWatcherConfiguration);
 
             var mongoDbWatcherConfiguration = MongoDbWatcherConfiguration
-                .Create("mongodb://localhost:27017", "MyDatabase")
-                .WithTimeout(TimeSpan.FromSeconds(5))
+                .Create("MyDatabase", "mongodb://localhost:27017")
                 .EnsureThatAsync(async db =>
                 {
                     return await db.GetCollection<dynamic>("MyCollection")
