@@ -21,6 +21,8 @@ namespace Sentry.Watchers.MongoDb
 
             ValidateAndSetDatabase(database);
             ConnectionString = connectionString;
+            ServerSelectionTimeout = TimeSpan.FromSeconds(10);
+            ConnectTimeout = TimeSpan.FromSeconds(10);
         }
 
         protected internal MongoDbWatcherConfiguration(string database, MongoClientSettings settings)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Sentry.Core;
@@ -11,7 +12,6 @@ namespace Sentry.Watchers.MsSql
     {
         private readonly MsSqlWatcherConfiguration _configuration;
         private readonly DynamicParameters _queryParameters = new DynamicParameters();
-
         public string Name { get; }
 
         protected MsSqlWatcher(string name, MsSqlWatcherConfiguration configuration)
@@ -49,7 +49,13 @@ namespace Sentry.Watchers.MsSql
 
                     var result = await connection.QueryAsync<dynamic>(_configuration.Query, _queryParameters,
                         commandTimeout: (int) _configuration.Timeout.TotalSeconds);
-                    var isValid = _configuration.EnsureThat?.Invoke(result) ?? true;
+
+                    var collection = result.ToList();
+                    var isValid = true;
+                    if (_configuration.EnsureThatAsync != null)
+                        isValid = await _configuration.EnsureThatAsync?.Invoke(collection);
+
+                    isValid = isValid && (_configuration.EnsureThat?.Invoke(collection) ?? true);
 
                     return WatcherCheckResult.Create(this, isValid);
                 }

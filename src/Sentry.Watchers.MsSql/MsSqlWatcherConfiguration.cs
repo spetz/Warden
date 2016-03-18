@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Sentry.Watchers.MsSql
 {
@@ -9,6 +10,7 @@ namespace Sentry.Watchers.MsSql
         public string Query { get; protected set; }
         public IDictionary<string, object> QueryParameters { get; protected set; }
         public Func<IEnumerable<dynamic>, bool> EnsureThat { get; protected set; }
+        public Func<IEnumerable<dynamic>, Task<bool>> EnsureThatAsync { get; protected set; }
         public TimeSpan Timeout { get; protected set; }
 
         protected internal MsSqlWatcherConfiguration(string connectionString)
@@ -60,6 +62,16 @@ namespace Sentry.Watchers.MsSql
                     throw new ArgumentException("Ensure that predicate can not be null.", nameof(ensureThat));
 
                 _configuration.EnsureThat = results => ensureThat(results);
+
+                return this;
+            }
+
+            public Builder EnsureThatAsync(Func<IEnumerable<dynamic>, Task<bool>> ensureThat)
+            {
+                if (ensureThat == null)
+                    throw new ArgumentException("Ensure that async predicate can not be null.", nameof(ensureThat));
+
+                _configuration.EnsureThatAsync = ensureThat;
 
                 return this;
             }

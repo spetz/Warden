@@ -40,6 +40,16 @@ namespace Sentry.Watchers.Website
             {
                 var response = await _httpClient.GetAsync(string.Empty);
                 var isValid = HasValidResponse(response);
+                if (!isValid)
+                {
+                    return WatcherCheckResult.Create(this, false,
+                        $"Websiste for URL: '{_configuration.Uri}' has returned an invalid response with status code: {response.StatusCode}.");
+                }
+
+                if (_configuration.EnsureThatAsync != null)
+                    isValid = await _configuration.EnsureThatAsync?.Invoke(response);
+
+                isValid = isValid && (_configuration.EnsureThat?.Invoke(response) ?? true);
 
                 return WebsiteWatcherCheckResult.Create(this, isValid, _configuration.Uri,
                     _httpClient.DefaultRequestHeaders, response,
@@ -71,8 +81,7 @@ namespace Sentry.Watchers.Website
         }
 
         private bool HasValidResponse(HttpResponseMessage response)
-            => (_configuration.WhereValidResponseIs?.Invoke(response) ?? true) &&
-               (response.IsSuccessStatusCode || _configuration.SkipStatusCodeValidation);
+            => response.IsSuccessStatusCode || _configuration.SkipStatusCodeValidation;
 
         public static WebsiteWatcher Create(string name, string url, Action<WebsiteWatcherConfiguration.Builder> configuration = null)
         {

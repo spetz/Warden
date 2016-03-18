@@ -10,7 +10,6 @@ namespace Sentry.Watchers.MongoDb
     {
         private readonly MongoDbWatcherConfiguration _configuration;
         private readonly MongoClient _client;
-
         public string Name { get; }
 
         protected MongoDbWatcher(string name, MongoDbWatcherConfiguration configuration)
@@ -43,6 +42,7 @@ namespace Sentry.Watchers.MongoDb
 
         private MongoServerAddress GetServerAddress()
         {
+            //Remove the "mongodb://" substring
             var cleanedConnectionString = _configuration.ConnectionString.Substring(10);
             var hostAndPort = cleanedConnectionString.Split(':');
 
@@ -61,13 +61,16 @@ namespace Sentry.Watchers.MongoDb
                     isValid = databases.Current.Any(x => x["name"] == _configuration.Database);
                 }
 
-                if(!isValid)
-                    return WatcherCheckResult.Create(this, false, $"Database: '{_configuration.Database}' has not been found.");
+                if (!isValid)
+                {
+                    return WatcherCheckResult.Create(this, false,
+                        $"Database: '{_configuration.Database}' has not been found.");
+                }
 
                 if (_configuration.EnsureThatAsync != null)
                     isValid = await _configuration.EnsureThatAsync?.Invoke(database);
 
-                isValid = (_configuration.EnsureThat?.Invoke(database) ?? true) && isValid;
+                isValid = isValid && (_configuration.EnsureThat?.Invoke(database) ?? true);
 
                 return WatcherCheckResult.Create(this, isValid);
             }

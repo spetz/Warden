@@ -59,7 +59,18 @@ namespace Sentry.Watchers.Api
                         break;
                     default: throw new ArgumentException($"Invalid HTTP method: {method}.", nameof(method));
                 }
+
                 var isValid = HasValidResponse(response);
+                if (!isValid)
+                {
+                    return WatcherCheckResult.Create(this, false,
+                        $"API endpoint: '{fullUrl}' has returned an invalid response with status code: {response.StatusCode}.");
+                }
+
+                if (_configuration.EnsureThatAsync != null)
+                    isValid = await _configuration.EnsureThatAsync?.Invoke(response);
+
+                isValid = isValid && (_configuration.EnsureThat?.Invoke(response) ?? true);
 
                 return ApiWatcherCheckResult.Create(this, isValid, _configuration.Uri, _configuration.Request,
                     _httpClient.DefaultRequestHeaders, response,
@@ -92,8 +103,7 @@ namespace Sentry.Watchers.Api
         }
 
         private bool HasValidResponse(HttpResponseMessage response)
-            => (_configuration.EnsureThat?.Invoke(response) ?? true) &&
-               (response.IsSuccessStatusCode || _configuration.SkipStatusCodeValidation);
+            => response.IsSuccessStatusCode || _configuration.SkipStatusCodeValidation;
 
         public static ApiWatcher Create(string name, string url, HttpRequest request, Action<ApiWatcherConfiguration.Builder> configuration = null)
         {
