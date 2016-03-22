@@ -70,10 +70,11 @@ namespace Sentry.Watchers.MsSql
             }
         }
 
-        public static MsSqlWatcher Create(string name, string connectionString, Action<MsSqlWatcherConfiguration.Builder> configuration = null)
+        public static MsSqlWatcher Create(string name, string connectionString,
+            Action<MsSqlWatcherConfiguration.Default> configurator = null)
         {
             var config = new MsSqlWatcherConfiguration.Builder(connectionString);
-            configuration?.Invoke(config);
+            configurator?.Invoke((MsSqlWatcherConfiguration.Default)config);
 
             return Create(name, config.Build());
         }

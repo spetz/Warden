@@ -29,7 +29,9 @@ namespace Sentry.Examples.Console
         {
             var websiteWatcherConfiguration = WebsiteWatcherConfiguration
                 .Create("http://httpstat.us/200")
+                .EnsureThat(x => x.IsSuccessStatusCode)
                 .Build();
+
             var websiteWatcher = WebsiteWatcher.Create("My website watcher", websiteWatcherConfiguration);
 
             var mongoDbWatcherConfiguration = MongoDbWatcherConfiguration

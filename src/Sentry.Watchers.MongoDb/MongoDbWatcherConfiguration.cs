@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using MongoDB.Driver;
+using Sentry.Core;
 
 namespace Sentry.Watchers.MongoDb
 {
@@ -48,54 +49,56 @@ namespace Sentry.Watchers.MongoDb
 
         public static Builder Create(string database, string connectionString) => new Builder(database, connectionString);
 
-        public class Builder
+        public abstract class Configurator<T> : WatcherConfigurator<T,MongoDbWatcherConfiguration> where T : Configurator<T>
         {
-            private readonly MongoDbWatcherConfiguration _configuration;
-
-            public Builder(string database, MongoClientSettings settings)
+            protected Configurator(string database, MongoClientSettings settings)
             {
-                _configuration = new MongoDbWatcherConfiguration(database, settings);
+                Configuration = new MongoDbWatcherConfiguration(database, settings);
             }
 
-            public Builder(string database, string connectionString)
+            protected Configurator(string database, string connectionString)
             {
-                _configuration = new MongoDbWatcherConfiguration(database, connectionString);
+                Configuration = new MongoDbWatcherConfiguration(database, connectionString);
             }
 
-            public Builder WithServerSelectionTimeout(TimeSpan timeout)
+            protected Configurator(MongoDbWatcherConfiguration configuration) : base(configuration)
             {
-                ValidateTimeout(timeout);
-                _configuration.ServerSelectionTimeout = timeout;
-
-                return this;
             }
 
-            public Builder WithConnectTimeout(TimeSpan timeout)
+            public T WithServerSelectionTimeout(TimeSpan timeout)
             {
                 ValidateTimeout(timeout);
-                _configuration.ConnectTimeout = timeout;
+                Configuration.ServerSelectionTimeout = timeout;
 
-                return this;
+                return Configurator;
             }
 
-            public Builder EnsureThat(Func<IMongoDatabase, bool> ensureThat)
+            public T WithConnectTimeout(TimeSpan timeout)
+            {
+                ValidateTimeout(timeout);
+                Configuration.ConnectTimeout = timeout;
+
+                return Configurator;
+            }
+
+            public T EnsureThat(Func<IMongoDatabase, bool> ensureThat)
             {
                 if (ensureThat == null)
                     throw new ArgumentException("Ensure that predicate can not be null.", nameof(ensureThat));
 
-                _configuration.EnsureThat = ensureThat;
+                Configuration.EnsureThat = ensureThat;
 
-                return this;
+                return Configurator;
             }
 
-            public Builder EnsureThatAsync(Func<IMongoDatabase, Task<bool>> ensureThat)
+            public T EnsureThatAsync(Func<IMongoDatabase, Task<bool>> ensureThat)
             {
                 if (ensureThat == null)
                     throw new ArgumentException("Ensure that async predicate can not be null.", nameof(ensureThat));
 
-                _configuration.EnsureThatAsync = ensureThat;
+                Configuration.EnsureThatAsync = ensureThat;
 
-                return this;
+                return Configurator;
             }
 
             protected void ValidateTimeout(TimeSpan timeout)
@@ -106,8 +109,31 @@ namespace Sentry.Watchers.MongoDb
                 if (timeout == TimeSpan.Zero)
                     throw new ArgumentException("Timeout can not be equal to zero.", nameof(timeout));
             }
+        }
 
-            public MongoDbWatcherConfiguration Build() => _configuration;
+        public class Default : Configurator<Default>
+        {
+            public Default(MongoDbWatcherConfiguration configuration) : base(configuration)
+            {
+                SetInstance(this);
+            }
+        }
+
+        public class Builder : Configurator<Builder>
+        {
+            public Builder(string database, string connectionString) : base(database, connectionString)
+            {
+                SetInstance(this);
+            }
+
+            public Builder(string database, MongoClientSettings settings) : base(database, settings)
+            {
+                SetInstance(this);
+            }
+
+            public MongoDbWatcherConfiguration Build() => Configuration;
+
+            public static explicit operator Default(Builder builder) => new Default(builder.Configuration);
         }
     }
 }

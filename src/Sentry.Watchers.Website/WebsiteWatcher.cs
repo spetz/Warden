@@ -83,10 +83,11 @@ namespace Sentry.Watchers.Website
         private bool HasValidResponse(HttpResponseMessage response)
             => response.IsSuccessStatusCode || _configuration.SkipStatusCodeValidation;
 
-        public static WebsiteWatcher Create(string name, string url, Action<WebsiteWatcherConfiguration.Builder> configuration = null)
+        public static WebsiteWatcher Create(string name, string url,
+            Action<WebsiteWatcherConfiguration.Default> configurator = null)
         {
-            var config = new WebsiteWatcherConfiguration.Builder(url);
-            configuration?.Invoke(config);
+            var config = WebsiteWatcherConfiguration.Create(url);
+            configurator?.Invoke((WebsiteWatcherConfiguration.Default)config);
 
             return Create(name, config.Build());
         }

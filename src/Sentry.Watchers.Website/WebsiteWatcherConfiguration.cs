@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Sentry.Core;
 
 namespace Sentry.Watchers.Website
 {
@@ -26,16 +27,18 @@ namespace Sentry.Watchers.Website
 
         public static Builder Create(string url) => new Builder(url);
 
-        public class Builder
+        public abstract class Configurator<T> : WatcherConfigurator<T, WebsiteWatcherConfiguration> where T : Configurator<T>
         {
-            private readonly WebsiteWatcherConfiguration _configuration;
-
-            public Builder(string url)
+            protected Configurator(string url)
             {
-                _configuration = new WebsiteWatcherConfiguration(url);
+                Configuration = new WebsiteWatcherConfiguration(url);
             }
 
-            public Builder WithHeaders(IDictionary<string, string> headers)
+            protected Configurator(WebsiteWatcherConfiguration configuration) : base(configuration)
+            {
+            }
+
+            public T WithHeaders(IDictionary<string, string> headers)
             {
                 if (headers == null)
                     throw new ArgumentNullException(nameof(headers), "Headers can not be null.");
@@ -45,57 +48,75 @@ namespace Sentry.Watchers.Website
                     WithHeader(header);
                 }
 
-                return this;
+                return Configurator;
             }
 
-            public Builder WithHeader(KeyValuePair<string, string> header)
+            public T WithHeader(KeyValuePair<string, string> header)
             {
-                _configuration.Headers.Add(header);
+                Configuration.Headers.Add(header);
 
-                return this;
+                return Configurator;
             }
 
-            public Builder WithTimeout(TimeSpan timeout)
+            public T WithTimeout(TimeSpan timeout)
             {
                 if (timeout == null)
                     throw new ArgumentNullException(nameof(timeout), "Timeout can not be null.");
 
-                if(timeout == TimeSpan.Zero)
+                if (timeout == TimeSpan.Zero)
                     throw new ArgumentException("Timeout can not be equal to zero.", nameof(timeout));
 
-                _configuration.Timeout = timeout;
+                Configuration.Timeout = timeout;
 
-                return this;
+                return Configurator;
             }
 
-            public Builder SkipStatusCodeValidation()
+            public T SkipStatusCodeValidation()
             {
-                _configuration.SkipStatusCodeValidation = true;
+                Configuration.SkipStatusCodeValidation = true;
 
-                return this;
+                return Configurator;
             }
 
-            public Builder EnsureThat(Func<HttpResponseMessage, bool> ensureThat)
+            public T EnsureThat(Func<HttpResponseMessage, bool> ensureThat)
             {
                 if (ensureThat == null)
                     throw new ArgumentException("Ensure that predicate can not be null.", nameof(ensureThat));
 
-                _configuration.EnsureThat = ensureThat;
+                Configuration.EnsureThat = ensureThat;
 
-                return this;
+                return Configurator;
             }
 
-            public Builder EnsureThatAsync(Func<HttpResponseMessage, Task<bool>> ensureThat)
+            public T EnsureThatAsync(Func<HttpResponseMessage, Task<bool>> ensureThat)
             {
                 if (ensureThat == null)
                     throw new ArgumentException("Ensure that async predicate can not be null.", nameof(ensureThat));
 
-                _configuration.EnsureThatAsync = ensureThat;
+                Configuration.EnsureThatAsync = ensureThat;
 
-                return this;
+                return Configurator;
             }
+        }
 
-            public WebsiteWatcherConfiguration Build() => _configuration;
+        public class Default : Configurator<Default>
+        {
+            public Default(WebsiteWatcherConfiguration configuration) : base(configuration)
+            {
+                SetInstance(this);
+            }
+        }
+
+        public class Builder : Configurator<Builder>
+        {
+            public Builder(string url) : base(url)
+            {
+                SetInstance(this);
+            }
+        
+            public WebsiteWatcherConfiguration Build() => Configuration;
+
+            public static explicit operator Default(Builder builder) => new Default(builder.Configuration);
         }
     }
 }

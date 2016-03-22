@@ -105,10 +105,11 @@ namespace Sentry.Watchers.Api
         private bool HasValidResponse(HttpResponseMessage response)
             => response.IsSuccessStatusCode || _configuration.SkipStatusCodeValidation;
 
-        public static ApiWatcher Create(string name, string url, HttpRequest request, Action<ApiWatcherConfiguration.Builder> configuration = null)
+        public static ApiWatcher Create(string name, string url, HttpRequest request,
+            Action<ApiWatcherConfiguration.Default> configurator = null)
         {
             var config = new ApiWatcherConfiguration.Builder(url, request);
-            configuration?.Invoke(config);
+            configurator?.Invoke((ApiWatcherConfiguration.Default)config);
 
             return Create(name, config.Build());
         }

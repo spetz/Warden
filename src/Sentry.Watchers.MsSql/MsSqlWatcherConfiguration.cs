@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Sentry.Core;
 
 namespace Sentry.Watchers.MsSql
 {
@@ -23,27 +24,29 @@ namespace Sentry.Watchers.MsSql
 
         public static Builder Create(string connectionString) => new Builder(connectionString);
 
-        public class Builder
+        public abstract class Configurator<T> : WatcherConfigurator<T,MsSqlWatcherConfiguration> where T : Configurator<T>
         {
-            private readonly MsSqlWatcherConfiguration _configuration;
-
-            public Builder(string connectionString)
+            protected Configurator(string connectionString)
             {
-                _configuration = new MsSqlWatcherConfiguration(connectionString);
+                Configuration = new MsSqlWatcherConfiguration(connectionString);
             }
 
-            public Builder WithQuery(string query, IDictionary<string, object> parameters)
+            protected Configurator(MsSqlWatcherConfiguration configuration) : base(configuration)
+            {
+            }
+
+            public T WithQuery(string query, IDictionary<string, object> parameters)
             {
                 if (string.IsNullOrEmpty(query))
                     throw new ArgumentException("SQL query can not be empty.", nameof(query));
 
-                _configuration.Query = query;
-                _configuration.QueryParameters = parameters;
+                Configuration.Query = query;
+                Configuration.QueryParameters = parameters;
 
-                return this;
+                return Configurator;
             }
 
-            public Builder WithTimeout(TimeSpan timeout)
+            public T WithTimeout(TimeSpan timeout)
             {
                 if (timeout == null)
                     throw new ArgumentNullException(nameof(timeout), "Timeout can not be null.");
@@ -51,32 +54,50 @@ namespace Sentry.Watchers.MsSql
                 if (timeout == TimeSpan.Zero)
                     throw new ArgumentException("Timeout can not be equal to zero.", nameof(timeout));
 
-                _configuration.Timeout = timeout;
+                Configuration.Timeout = timeout;
 
-                return this;
+                return Configurator;
             }
 
-            public Builder EnsureThat(Func<IEnumerable<dynamic>, bool> ensureThat)
+            public T EnsureThat(Func<IEnumerable<dynamic>, bool> ensureThat)
             {
                 if (ensureThat == null)
                     throw new ArgumentException("Ensure that predicate can not be null.", nameof(ensureThat));
 
-                _configuration.EnsureThat = results => ensureThat(results);
+                Configuration.EnsureThat = results => ensureThat(results);
 
-                return this;
+                return Configurator;
             }
 
-            public Builder EnsureThatAsync(Func<IEnumerable<dynamic>, Task<bool>> ensureThat)
+            public T EnsureThatAsync(Func<IEnumerable<dynamic>, Task<bool>> ensureThat)
             {
                 if (ensureThat == null)
                     throw new ArgumentException("Ensure that async predicate can not be null.", nameof(ensureThat));
 
-                _configuration.EnsureThatAsync = ensureThat;
+                Configuration.EnsureThatAsync = ensureThat;
 
-                return this;
+                return Configurator;
+            }
+        }
+
+        public class Default : Configurator<Default>
+        {
+            public Default(MsSqlWatcherConfiguration configuration) : base(configuration)
+            {
+                SetInstance(this);
+            }
+        }
+
+        public class Builder : Configurator<Builder>
+        {
+            public Builder(string connectionString) : base(connectionString)
+            {
+                SetInstance(this);
             }
 
-            public MsSqlWatcherConfiguration Build() => _configuration;
+            public MsSqlWatcherConfiguration Build() => Configuration;
+
+            public static explicit operator Default(Builder builder) => new Default(builder.Configuration);
         }
     }
 }

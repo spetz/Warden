@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Sentry.Core;
 
 namespace Sentry.Watchers.Api
 {
@@ -31,16 +32,18 @@ namespace Sentry.Watchers.Api
 
         public static Builder Create(string url, HttpRequest request) => new Builder(url, request);
 
-        public class Builder
+        public abstract class Configurator<T> : WatcherConfigurator<T, ApiWatcherConfiguration> where T : Configurator<T>
         {
-            private readonly ApiWatcherConfiguration _configuration;
-
-            public Builder(string url, HttpRequest request)
+            protected Configurator(string url, HttpRequest request)
             {
-                _configuration = new ApiWatcherConfiguration(url, request);
+                Configuration = new ApiWatcherConfiguration(url, request);
             }
 
-            public Builder WithHeaders(IDictionary<string, string> headers)
+            protected Configurator(ApiWatcherConfiguration configuration) : base(configuration)
+            {
+            }
+
+            public T WithHeaders(IDictionary<string, string> headers)
             {
                 if (headers == null)
                     throw new ArgumentNullException(nameof(headers), "Headers can not be null.");
@@ -50,27 +53,27 @@ namespace Sentry.Watchers.Api
                     WithHeader(header);
                 }
 
-                return this;
+                return Configurator;
             }
 
-            public Builder WithHeader(KeyValuePair<string, string> header)
+            public T WithHeader(KeyValuePair<string, string> header)
             {
-                _configuration.Headers.Add(header);
+                Configuration.Headers.Add(header);
 
-                return this;
+                return Configurator;
             }
 
-            public Builder WithRequest(HttpRequest request)
+            public T WithRequest(HttpRequest request)
             {
                 if (request == null)
                     throw new ArgumentNullException(nameof(request), "HTTP request can not be null.");
 
-                _configuration.Request = request;
+                Configuration.Request = request;
 
-                return this;
+                return Configurator;
             }
 
-            public Builder WithTimeout(TimeSpan timeout)
+            public T WithTimeout(TimeSpan timeout)
             {
                 if (timeout == null)
                     throw new ArgumentNullException(nameof(timeout), "Timeout can not be null.");
@@ -78,39 +81,57 @@ namespace Sentry.Watchers.Api
                 if(timeout == TimeSpan.Zero)
                     throw new ArgumentException("Timeout can not be equal to zero.", nameof(timeout));
 
-                _configuration.Timeout = timeout;
+                Configuration.Timeout = timeout;
 
-                return this;
+                return Configurator;
             }
 
-            public Builder SkipStatusCodeValidation()
+            public T SkipStatusCodeValidation()
             {
-                _configuration.SkipStatusCodeValidation = true;
+                Configuration.SkipStatusCodeValidation = true;
 
-                return this;
+                return Configurator;
             }
 
-            public Builder EnsureThat(Func<HttpResponseMessage, bool> ensureThat)
+            public T EnsureThat(Func<HttpResponseMessage, bool> ensureThat)
             {
                 if (ensureThat == null)
                     throw new ArgumentException("Ensure that predicate can not be null.", nameof(ensureThat));
 
-                _configuration.EnsureThat = ensureThat;
+                Configuration.EnsureThat = ensureThat;
 
-                return this;
+                return Configurator;
             }
 
-            public Builder EnsureThatAsync(Func<HttpResponseMessage, Task<bool>> ensureThat)
+            public T EnsureThatAsync(Func<HttpResponseMessage, Task<bool>> ensureThat)
             {
                 if (ensureThat == null)
                     throw new ArgumentException("Ensure that async predicate can not be null.", nameof(ensureThat));
 
-                _configuration.EnsureThatAsync = ensureThat;
+                Configuration.EnsureThatAsync = ensureThat;
 
-                return this;
+                return Configurator;
+            }
+        }
+
+        public class Default : Configurator<Default>
+        {
+            public Default(ApiWatcherConfiguration configuration) : base(configuration)
+            {
+                SetInstance(this);
+            }
+        }
+
+        public class Builder : Configurator<Builder>
+        {
+            public Builder(string url, HttpRequest request) : base(url, request)
+            {
+                SetInstance(this);
             }
 
-            public ApiWatcherConfiguration Build() => _configuration;
+            public ApiWatcherConfiguration Build() => Configuration;
+
+            public static explicit operator Default(Builder builder) => new Default(builder.Configuration);
         }
     }
 }

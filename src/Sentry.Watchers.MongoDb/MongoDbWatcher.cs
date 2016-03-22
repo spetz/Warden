@@ -85,10 +85,10 @@ namespace Sentry.Watchers.MongoDb
         }
 
         public static MongoDbWatcher Create(string name, string connectionString, string database,
-            Action<MongoDbWatcherConfiguration.Builder> configuration = null)
+            Action<MongoDbWatcherConfiguration.Default> configurator = null)
         {
             var config = new MongoDbWatcherConfiguration.Builder(connectionString, database);
-            configuration?.Invoke(config);
+            configurator?.Invoke((MongoDbWatcherConfiguration.Default)config);
 
             return Create(name, config.Build());
         }
