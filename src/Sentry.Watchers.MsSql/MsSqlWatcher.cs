@@ -41,7 +41,7 @@ namespace Sentry.Watchers.MsSql
         {
             try
             {
-                using (IDbConnection connection = new SqlConnection(_configuration.ConnectionString))
+                using (IDbConnection connection = _configuration.ConnectionProvider(_configuration.ConnectionString))
                 {
                     connection.Open();
                     if (string.IsNullOrWhiteSpace(_configuration.Query))

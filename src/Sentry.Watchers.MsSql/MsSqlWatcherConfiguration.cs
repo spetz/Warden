@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
 using Sentry.Core;
 
@@ -9,6 +11,7 @@ namespace Sentry.Watchers.MsSql
     {
         public string ConnectionString { get; protected set; }
         public string Query { get; protected set; }
+        public Func<string, IDbConnection> ConnectionProvider { get; protected set; }
         public IDictionary<string, object> QueryParameters { get; protected set; }
         public Func<IEnumerable<dynamic>, bool> EnsureThat { get; protected set; }
         public Func<IEnumerable<dynamic>, Task<bool>> EnsureThatAsync { get; protected set; }
@@ -20,11 +23,13 @@ namespace Sentry.Watchers.MsSql
                 throw new ArgumentException("Connection string can not be empty.", nameof(connectionString));
 
             ConnectionString = connectionString;
+            ConnectionProvider = sqlConnectionString => new SqlConnection(sqlConnectionString);
         }
 
         public static Builder Create(string connectionString) => new Builder(connectionString);
 
-        public abstract class Configurator<T> : WatcherConfigurator<T,MsSqlWatcherConfiguration> where T : Configurator<T>
+        public abstract class Configurator<T> : WatcherConfigurator<T, MsSqlWatcherConfiguration>
+            where T : Configurator<T>
         {
             protected Configurator(string connectionString)
             {
@@ -55,6 +60,19 @@ namespace Sentry.Watchers.MsSql
                     throw new ArgumentException("Timeout can not be equal to zero.", nameof(timeout));
 
                 Configuration.Timeout = timeout;
+
+                return Configurator;
+            }
+
+            public T WithConnectionProvider(Func<string, SqlConnection> connectionProvider)
+            {
+                if (connectionProvider == null)
+                {
+                    throw new ArgumentNullException(nameof(connectionProvider),
+                        "SQL connection provider can not be null.");
+                }
+
+                Configuration.ConnectionProvider = connectionProvider;
 
                 return Configurator;
             }

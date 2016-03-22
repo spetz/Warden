@@ -25,10 +25,8 @@ namespace Sentry.Watchers.Api
 
             Name = name;
             _configuration = configuration;
-            _httpClient = new HttpClient
-            {
-                BaseAddress = configuration.Uri
-            };
+            _httpClient = configuration.HttpClientProvider();
+            _httpClient.BaseAddress = _configuration.Uri;
             SetRequestHeaders();
             if (_configuration.Timeout > TimeSpan.Zero)
                 _httpClient.Timeout = _configuration.Timeout;

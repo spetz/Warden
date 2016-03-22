@@ -9,7 +9,9 @@ namespace Sentry.Watchers.MongoDb
     {
         public string Database { get; protected set; }
         public MongoClientSettings Settings { get; protected set; }
+        public Func<MongoClient> ClientProvider { get; protected set; }
         public string ConnectionString { get; protected set; }
+        public Func<MongoClient, string, IMongoDatabase> DatabaseProvider { get; protected set; }
         public Func<IMongoDatabase, bool> EnsureThat { get; protected set; }
         public Func<IMongoDatabase, Task<bool>> EnsureThatAsync { get; protected set; }
         public TimeSpan ServerSelectionTimeout { get; protected set; }
@@ -24,6 +26,8 @@ namespace Sentry.Watchers.MongoDb
             ConnectionString = connectionString;
             ServerSelectionTimeout = TimeSpan.FromSeconds(10);
             ConnectTimeout = TimeSpan.FromSeconds(10);
+            ClientProvider = () => new MongoClient(connectionString);
+            DatabaseProvider = (client, name) => ClientProvider().GetDatabase(name);
         }
 
         protected internal MongoDbWatcherConfiguration(string database, MongoClientSettings settings)
@@ -35,6 +39,29 @@ namespace Sentry.Watchers.MongoDb
             Settings = settings;
             ServerSelectionTimeout = settings.ServerSelectionTimeout;
             ConnectTimeout = settings.ConnectTimeout;
+            ClientProvider = () => new MongoClient(InitializeSettings());
+            DatabaseProvider = (client, databaseName) => ClientProvider().GetDatabase(databaseName);
+        }
+
+        protected virtual MongoClientSettings InitializeSettings()
+        {
+            var settings = Settings ?? new MongoClientSettings
+            {
+                Server = GetServerAddress()
+            };
+            settings.ConnectTimeout = ConnectTimeout;
+            settings.ServerSelectionTimeout = ServerSelectionTimeout;
+
+            return settings;
+        }
+
+        protected virtual MongoServerAddress GetServerAddress()
+        {
+            //Remove the "mongodb://" substring
+            var cleanedConnectionString = ConnectionString.Substring(10);
+            var hostAndPort = cleanedConnectionString.Split(':');
+
+            return new MongoServerAddress(hostAndPort[0], int.Parse(hostAndPort[1]));
         }
 
         protected void ValidateAndSetDatabase(string database)
@@ -65,6 +92,13 @@ namespace Sentry.Watchers.MongoDb
             {
             }
 
+            public T WithSettings(MongoClientSettings settings)
+            {
+                Configuration.Settings = settings;
+
+                return Configurator;
+            }
+
             public T WithServerSelectionTimeout(TimeSpan timeout)
             {
                 ValidateTimeout(timeout);
@@ -77,6 +111,29 @@ namespace Sentry.Watchers.MongoDb
             {
                 ValidateTimeout(timeout);
                 Configuration.ConnectTimeout = timeout;
+
+                return Configurator;
+            }
+
+            public T WithClientProvider(Func<MongoClient> clientProvider)
+            {
+                if (clientProvider == null)
+                    throw new ArgumentNullException(nameof(clientProvider), "Mongo client provider can not be null.");
+
+                Configuration.ClientProvider = clientProvider;
+
+                return Configurator;
+            }
+
+            public T WithDatabaseProvider(Func<MongoClient, string, IMongoDatabase> databaseProvider)
+            {
+                if (databaseProvider == null)
+                {
+                    throw new ArgumentNullException(nameof(databaseProvider),
+                        "MongoDB database provider can not be null.");
+                }
+
+                Configuration.DatabaseProvider = databaseProvider;
 
                 return Configurator;
             }

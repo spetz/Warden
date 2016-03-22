@@ -25,35 +25,14 @@ namespace Sentry.Watchers.MongoDb
 
             Name = name;
             _configuration = configuration;
-            _client = new MongoClient(InitializeSettings());
-        }
-
-        private MongoClientSettings InitializeSettings()
-        {
-            var settings = _configuration.Settings ?? new MongoClientSettings
-            {
-                Server = GetServerAddress()
-            };
-            settings.ConnectTimeout = _configuration.ConnectTimeout;
-            settings.ServerSelectionTimeout = _configuration.ServerSelectionTimeout;
-
-            return settings;
-        }
-
-        private MongoServerAddress GetServerAddress()
-        {
-            //Remove the "mongodb://" substring
-            var cleanedConnectionString = _configuration.ConnectionString.Substring(10);
-            var hostAndPort = cleanedConnectionString.Split(':');
-
-            return new MongoServerAddress(hostAndPort[0], int.Parse(hostAndPort[1]));
+            _client = configuration.ClientProvider();
         }
 
         public async Task<IWatcherCheckResult> ExecuteAsync()
         {
             try
             {
-                var database = _client.GetDatabase(_configuration.Database);
+                var database = _configuration.DatabaseProvider(_client, _configuration.Database);
                 var databases = await _client.ListDatabasesAsync();
                 var isValid = true;
                 while (await databases.MoveNextAsync())
@@ -95,5 +74,8 @@ namespace Sentry.Watchers.MongoDb
 
         public static MongoDbWatcher Create(string name, MongoDbWatcherConfiguration configuration)
             => new MongoDbWatcher(name, configuration);
+
+        public static MongoDbWatcher Create(string name, string database, MongoClientSettings settings)
+            => new MongoDbWatcher(name, MongoDbWatcherConfiguration.Create(database, settings).Build());
     }
 }
