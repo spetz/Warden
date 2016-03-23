@@ -10,7 +10,7 @@ namespace Sentry.Watchers.Website
     {
         public Uri Uri { get; protected set; }
         public bool SkipStatusCodeValidation { get; protected set; }
-        public Func<HttpClient> HttpClientProvider { get; protected set; }
+        public Func<IHttpClient> HttpClientProvider { get; protected set; }
         public IDictionary<string, string> Headers { get; protected set; }
         public TimeSpan Timeout { get; protected set; }
         public Func<HttpResponseMessage, bool> EnsureThat { get; protected set; }
@@ -24,7 +24,7 @@ namespace Sentry.Watchers.Website
             Uri = new Uri(url);
             Headers = new Dictionary<string, string>();
             Timeout = TimeSpan.Zero;
-            HttpClientProvider = () => new HttpClient();
+            HttpClientProvider = () => new HttpClientWrapper(new HttpClient());
         }
 
         public static Builder Create(string url) => new Builder(url);
@@ -80,7 +80,7 @@ namespace Sentry.Watchers.Website
                 return Configurator;
             }
 
-            public T WithHttpClientProvider(Func<HttpClient> httpClientProvider)
+            public T WithHttpClientProvider(Func<IHttpClient> httpClientProvider)
             {
                 if (httpClientProvider == null)
                     throw new ArgumentNullException(nameof(httpClientProvider), "HTTP client provider can not be null.");

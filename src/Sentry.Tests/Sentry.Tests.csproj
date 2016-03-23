@@ -90,7 +90,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Unit\Watchers\WebsiteWatcherTests.cs" />
+    <Compile Include="Unit\Watchers\Api\ApiWatcherTests.cs" />
+    <Compile Include="Unit\Watchers\MongoDb\MongoDbWatcherTests.cs" />
+    <Compile Include="Unit\Watchers\MsSql\MsSqlWatcherTests.cs" />
+    <Compile Include="Unit\Watchers\Website\WebsiteWatcherTests.cs" />
     <Compile Include="Unit\Core\SentryTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -98,6 +101,18 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Sentry.Watchers.Api\Sentry.Watchers.Api.csproj">
+      <Project>{CA4FDDBA-7458-498E-93A2-A272F7D4BCF7}</Project>
+      <Name>Sentry.Watchers.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sentry.Watchers.MongoDb\Sentry.Watchers.MongoDb.csproj">
+      <Project>{C9C8420E-6A1F-4B9D-BB38-291D6F7E0467}</Project>
+      <Name>Sentry.Watchers.MongoDb</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sentry.Watchers.MsSql\Sentry.Watchers.MsSql.csproj">
+      <Project>{5ED102ED-B897-4B97-AE8C-A1E4AA37CCFC}</Project>
+      <Name>Sentry.Watchers.MsSql</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sentry.Watchers.Website\Sentry.Watchers.Website.csproj">
       <Project>{BA630713-7F82-4CC7-9B42-46B4DCE7A36D}</Project>
       <Name>Sentry.Watchers.Website</Name>
@@ -109,6 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Integration\" />
+    <Folder Include="Unit\Watchers\Redis\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

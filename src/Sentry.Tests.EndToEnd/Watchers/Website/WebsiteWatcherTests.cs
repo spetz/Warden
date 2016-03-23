@@ -4,7 +4,7 @@ using Sentry.Core;
 using Sentry.Watchers.Website;
 using It = Machine.Specifications.It;
 
-namespace Sentry.Tests.EndToEnd.Watchers
+namespace Sentry.Tests.EndToEnd.Watchers.Website
 {
     public class WebsiteWatcher_specs
     {

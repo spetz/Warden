@@ -12,10 +12,11 @@ namespace Sentry.Watchers.MsSql
         public string ConnectionString { get; protected set; }
         public string Query { get; protected set; }
         public Func<string, IDbConnection> ConnectionProvider { get; protected set; }
+        public Func<IQueryExecutor> QueryExecutorProvider { get; protected set; }
         public IDictionary<string, object> QueryParameters { get; protected set; }
         public Func<IEnumerable<dynamic>, bool> EnsureThat { get; protected set; }
         public Func<IEnumerable<dynamic>, Task<bool>> EnsureThatAsync { get; protected set; }
-        public TimeSpan Timeout { get; protected set; }
+        public TimeSpan? Timeout { get; protected set; }
 
         protected internal MsSqlWatcherConfiguration(string connectionString)
         {
@@ -24,6 +25,7 @@ namespace Sentry.Watchers.MsSql
 
             ConnectionString = connectionString;
             ConnectionProvider = sqlConnectionString => new SqlConnection(sqlConnectionString);
+            QueryExecutorProvider = () => new DapperQueryExecutor();
         }
 
         public static Builder Create(string connectionString) => new Builder(connectionString);
@@ -40,7 +42,7 @@ namespace Sentry.Watchers.MsSql
             {
             }
 
-            public T WithQuery(string query, IDictionary<string, object> parameters)
+            public T WithQuery(string query, IDictionary<string, object> parameters = null)
             {
                 if (string.IsNullOrEmpty(query))
                     throw new ArgumentException("SQL query can not be empty.", nameof(query));
@@ -64,7 +66,7 @@ namespace Sentry.Watchers.MsSql
                 return Configurator;
             }
 
-            public T WithConnectionProvider(Func<string, SqlConnection> connectionProvider)
+            public T WithConnectionProvider(Func<string, IDbConnection> connectionProvider)
             {
                 if (connectionProvider == null)
                 {
@@ -73,6 +75,16 @@ namespace Sentry.Watchers.MsSql
                 }
 
                 Configuration.ConnectionProvider = connectionProvider;
+
+                return Configurator;
+            }
+
+            public T WithQueryExecutorProvider(Func<IQueryExecutor> queryExecutorProvider)
+            {
+                if (queryExecutorProvider == null)
+                    throw new ArgumentNullException(nameof(queryExecutorProvider), "Query executor provider can not be null.");
+
+                Configuration.QueryExecutorProvider = queryExecutorProvider;
 
                 return Configurator;
             }

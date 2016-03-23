@@ -9,7 +9,7 @@ namespace Sentry.Watchers.Website
     public class WebsiteWatcher : IWatcher
     {
         private readonly WebsiteWatcherConfiguration _configuration;
-        private readonly HttpClient _httpClient;
+        private readonly IHttpClient _httpClient;
         public string Name { get; }
 
         protected WebsiteWatcher(string name, WebsiteWatcherConfiguration configuration)
@@ -20,7 +20,7 @@ namespace Sentry.Watchers.Website
             if (configuration == null)
             {
                 throw new ArgumentNullException(nameof(configuration),
-                    "WebsiteWatcher configuration has not been provided.");
+                    "Website Watcher configuration has not been provided.");
             }
 
             Name = name;
@@ -50,13 +50,13 @@ namespace Sentry.Watchers.Website
                 isValid = isValid && (_configuration.EnsureThat?.Invoke(response) ?? true);
 
                 return WebsiteWatcherCheckResult.Create(this, isValid, _configuration.Uri,
-                    _httpClient.DefaultRequestHeaders, response,
+                    _httpClient.RequestHeaders, response,
                     $"Websiste for URL: '{_configuration.Uri}' has returned a response with status code: {response.StatusCode}.");
             }
             catch (TaskCanceledException exception)
             {
                 return WebsiteWatcherCheckResult.Create(this, false, _configuration.Uri,
-                    _httpClient.DefaultRequestHeaders, null,
+                    _httpClient.RequestHeaders, null,
                     $"A connection timeout occurred while trying to access the website for URL: '{_configuration.Uri}'");
             }
             catch (Exception exception)
@@ -69,12 +69,12 @@ namespace Sentry.Watchers.Website
         {
             foreach (var header in _configuration.Headers)
             {
-                var existingHeader = _httpClient.DefaultRequestHeaders
+                var existingHeader = _httpClient.RequestHeaders
                     .FirstOrDefault(x => string.Equals(x.Key, header.Key, StringComparison.InvariantCultureIgnoreCase));
                 if (existingHeader.Key != null)
-                    _httpClient.DefaultRequestHeaders.Remove(existingHeader.Key);
+                    _httpClient.RequestHeaders.Remove(existingHeader.Key);
 
-                _httpClient.DefaultRequestHeaders.Add(header.Key, header.Value);
+                _httpClient.RequestHeaders.Add(header.Key, header.Value);
             }
         }
 

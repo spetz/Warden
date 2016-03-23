@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,8 +9,8 @@ namespace Sentry.Watchers.MsSql
 {
     public class MsSqlWatcher : IWatcher
     {
+        private readonly IQueryExecutor queryExecutor;
         private readonly MsSqlWatcherConfiguration _configuration;
-        private readonly DynamicParameters _queryParameters = new DynamicParameters();
         public string Name { get; }
 
         protected MsSqlWatcher(string name, MsSqlWatcherConfiguration configuration)
@@ -22,33 +21,26 @@ namespace Sentry.Watchers.MsSql
             if (configuration == null)
             {
                 throw new ArgumentNullException(nameof(configuration),
-                    "MsSqlWatcher configuration has not been provided.");
+                    "MSSQL Watcher configuration has not been provided.");
             }
 
             Name = name;
             _configuration = configuration;
-
-            if (_configuration.QueryParameters == null)
-                return;
-
-            foreach (var property in _configuration.QueryParameters)
-            {
-                _queryParameters.Add(property.Key, property.Value);
-            }
+            queryExecutor = _configuration.QueryExecutorProvider();
         }
 
         public async Task<IWatcherCheckResult> ExecuteAsync()
         {
             try
             {
-                using (IDbConnection connection = _configuration.ConnectionProvider(_configuration.ConnectionString))
+                using (var connection = _configuration.ConnectionProvider(_configuration.ConnectionString))
                 {
                     connection.Open();
                     if (string.IsNullOrWhiteSpace(_configuration.Query))
                         return WatcherCheckResult.Create(this, true);
 
-                    var result = await connection.QueryAsync<dynamic>(_configuration.Query, _queryParameters,
-                        commandTimeout: (int) _configuration.Timeout.TotalSeconds);
+                    var result = await queryExecutor.QueryAsync(connection, _configuration.Query,
+                        _configuration.QueryParameters, _configuration.Timeout);
 
                     var collection = result.ToList();
                     var isValid = true;

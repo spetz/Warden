@@ -20,7 +20,7 @@ namespace Sentry.Watchers.MongoDb
             if (configuration == null)
             {
                 throw new ArgumentNullException(nameof(configuration),
-                    "MsSqlWatcher configuration has not been provided.");
+                    "MongoDB Watcher configuration has not been provided.");
             }
 
             Name = name;

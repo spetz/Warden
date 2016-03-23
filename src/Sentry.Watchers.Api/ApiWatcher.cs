@@ -9,7 +9,7 @@ namespace Sentry.Watchers.Api
     public class ApiWatcher : IWatcher
     {
         private readonly ApiWatcherConfiguration _configuration;
-        private readonly HttpClient _httpClient;
+        private readonly IHttpClient _httpClient;
         public string Name { get; }
 
         protected ApiWatcher(string name, ApiWatcherConfiguration configuration)
@@ -47,10 +47,10 @@ namespace Sentry.Watchers.Api
                         response = await _httpClient.GetAsync(endpoint);
                         break;
                     case HttpRequest.MethodType.Put:
-                        response = await _httpClient.PutAsJsonAsync(endpoint, data);
+                        response = await _httpClient.PostAsync(endpoint, data);
                         break;
                     case HttpRequest.MethodType.Post:
-                        response = await _httpClient.PostAsJsonAsync(endpoint, data);
+                        response = await _httpClient.PostAsync(endpoint, data);
                         break;
                     case HttpRequest.MethodType.Delete:
                         response = await _httpClient.DeleteAsync(endpoint);
@@ -71,13 +71,13 @@ namespace Sentry.Watchers.Api
                 isValid = isValid && (_configuration.EnsureThat?.Invoke(response) ?? true);
 
                 return ApiWatcherCheckResult.Create(this, isValid, _configuration.Uri, _configuration.Request,
-                    _httpClient.DefaultRequestHeaders, response,
+                    _httpClient.RequestHeaders, response,
                     $"API endpoint: '{fullUrl}' has returned a response with status code: {response.StatusCode}.");
             }
             catch (TaskCanceledException exception)
             {
                 return ApiWatcherCheckResult.Create(this, false, _configuration.Uri, _configuration.Request,
-                    _httpClient.DefaultRequestHeaders, null,
+                    _httpClient.RequestHeaders, null,
                     $"A connection timeout occurred while trying to access the API endpoint: '{fullUrl}'.");
             }
             catch (Exception exception)
@@ -91,12 +91,12 @@ namespace Sentry.Watchers.Api
         {
             foreach (var header in _configuration.Headers)
             {
-                var existingHeader = _httpClient.DefaultRequestHeaders
+                var existingHeader = _httpClient.RequestHeaders
                     .FirstOrDefault(x => string.Equals(x.Key, header.Key, StringComparison.InvariantCultureIgnoreCase));
                 if (existingHeader.Key != null)
-                    _httpClient.DefaultRequestHeaders.Remove(existingHeader.Key);
+                    _httpClient.RequestHeaders.Remove(existingHeader.Key);
 
-                _httpClient.DefaultRequestHeaders.Add(header.Key, header.Value);
+                _httpClient.RequestHeaders.Add(header.Key, header.Value);
             }
         }
 
