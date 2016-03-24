@@ -39,7 +39,7 @@ var mssqlWatcherConfiguration = MsSqlWatcherConfiguration
 var mssqlWatcher = MsSqlWatcher.Create("My database watcher", mssqlWatcherConfiguration);
 ```
 
-Configure the **Sentry** by adding the previously defined **watchers**, setting up **hooks** (callbacks) to get notified about failures, successful checks, exceptions etc. - use that information e.g. in order to let your system administrator know when something goes wrong or to build your custom metrics.
+Configure the **[Sentry](https://github.com/spetz/Sentry/wiki/Sentry)** by adding the previously defined **watchers**, setting up **hooks** (callbacks) to get notified about failures, successful checks, exceptions etc. - use that information e.g. in order to let your system administrator know when something goes wrong or to build your custom metrics.
 ```csharp
 var sentryConfiguration = SentryConfiguration
     .Create()
