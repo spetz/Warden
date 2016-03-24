@@ -47,7 +47,7 @@ namespace Sentry.Watchers.Api
                         response = await _httpClient.GetAsync(endpoint);
                         break;
                     case HttpRequest.MethodType.Put:
-                        response = await _httpClient.PostAsync(endpoint, data);
+                        response = await _httpClient.PutAsync(endpoint, data);
                         break;
                     case HttpRequest.MethodType.Post:
                         response = await _httpClient.PostAsync(endpoint, data);
