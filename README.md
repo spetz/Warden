@@ -5,6 +5,8 @@
 > Define "health checks" for your applications, resources and
 > infrastructure. Keep your **Sentry** on the watch.
 
+**Please note that it's just a preview version of the library (work in progress), containing a very basic "documentation".**
+
 **Quick start**:
 ----------------
 
