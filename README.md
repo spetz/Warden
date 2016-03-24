@@ -7,6 +7,16 @@
 
 **Please note that it's just a preview version of the library (work in progress), containing a very basic "documentation".**
 
+**What is Sentry?**
+----------------
+
+Sentry is a simple library built to solve the problem of monitoring the resources such as the websites, API, databases, CPU etc. It allows to quickly define the **watchers** responsible for performing checks on a specific resources, and use these information e.g. to alert about any issues related to the possible downtime of your system.
+
+**Is there any documentation?**
+----------------
+
+Yes, please navigate to the **[wiki](https://github.com/spetz/Sentry/wiki)** page where you can find detailed information about configuring and running the Sentry.
+
 **Quick start**:
 ----------------
 
