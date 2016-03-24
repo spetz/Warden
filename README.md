@@ -8,24 +8,24 @@
 **Quick start**:
 ----------------
 
-Define the **watchers** that will monitor your resources. You may choose between the website, API and MSSQL watchers - many more are coming soon (MongoDB, Redis, File etc.)!
+Define the **[watchers](https://github.com/spetz/Sentry/wiki/Watchers)** that will monitor your resources. You may choose between the website, API, MSSQL and MongoDB **watchers** - many more are coming soon (Redis, CPU, Memory, File etc.)
 ```csharp
 //Define a watcher for the website 
 var myWebsiteUrl = "http://my-website.com";
 var websiteWatcherConfiguration = WebsiteWatcherConfiguration
     .Create(myWebsiteUrl)
-    .EnsureThat(response => response.Headers.Server != null)
     .Build();
 var websiteWatcher = WebsiteWatcher.Create("My website watcher", websiteWatcherConfiguration);
 
 //Define a watcher for the API 
 var myApiUrl = "http://my-api.com";
 var apiWatcherConfiguration = ApiWatcherConfiguration
-    .Create(myApiUrl, HttpRequest.Get("resource/path"))
+    .Create("http://my-api.com", HttpRequest.Post("users", new {name = "test"}))
     .WithHeaders(new Dictionary<string, string>
     {
-        ["Accept"] = "application/json"
+        ["Authorization"] = "Token MyBase64EncodedString",
     })
+    .EnsureThat(response => response.Headers.Location != null)
     .Build();
 var apiWatcher = ApiWatcher.Create("My API watcher", apiWatcherConfiguration);
 
@@ -45,6 +45,7 @@ var sentryConfiguration = SentryConfiguration
     .Create()
     .SetHooks(hooks =>
     {
+        //Configure the Sentry hooks
         hooks.OnError(exception => Logger.Error(exception));
         hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration));
     })
@@ -52,6 +53,7 @@ var sentryConfiguration = SentryConfiguration
     .AddWatcher(mssqlWatcher)
     .AddWatcher(websiteWatcher, hooks =>
     {
+        //Configure the hooks for this particular watcher
         hooks.OnStartAsync(check => WebsiteHookOnStartAsync(check));
         hooks.OnFailureAsync(result => WebsiteHookOnFailureAsync(result));
         hooks.OnSuccessAsync(result => WebsiteHookOnSuccessAsync(result));
@@ -59,6 +61,7 @@ var sentryConfiguration = SentryConfiguration
     })
     .SetGlobalWatcherHooks(hooks =>
     {
+        //Configure the common hooks for all of the watchers
         hooks.OnStart(check => GlobalHookOnStart(check));
         hooks.OnFailure(result => GlobalHookOnFailure(result));
         hooks.OnSuccess(result => GlobalHookOnSuccess(result));
