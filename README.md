@@ -76,3 +76,4 @@ Start the **Sentry** and let him do his job - now **you have the full control** 
 var sentry = Sentry.Create(sentryConfiguration);
 await sentry.StartAsync();
 ```
+Please check out the **[examples](https://github.com/spetz/Sentry/wiki/Examples)** by cloning the repository.
