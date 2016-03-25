@@ -32,12 +32,12 @@ var websiteWatcher = WebWatcher.Create("My website watcher", websiteWatcherConfi
 //Define a watcher for the API 
 var myApiUrl = "http://my-api.com";
 var apiWatcherConfiguration = WebWatcherConfiguration
-    .Create("http://my-api.com", HttpRequest.Post("users", new {name = "test"}))
-    .WithHeaders(new Dictionary<string, string>
-    {
-        ["Authorization"] = "Token MyBase64EncodedString",
-    })
-    .EnsureThat(response => response.Headers.Location != null)
+    .Create("http://my-api.com", HttpRequest.Post("users", new {name = "test"},
+        headers: new Dictionary<string, string>
+        {
+            ["Authorization"] = "Token MyBase64EncodedString",
+        }))
+    .EnsureThat(response => response.Headers.Any())
     .Build();
 var apiWatcher = WebWatcher.Create("My API watcher", apiWatcherConfiguration);
 
