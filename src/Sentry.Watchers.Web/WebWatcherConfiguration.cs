@@ -4,20 +4,19 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Sentry.Core;
 
-namespace Sentry.Watchers.Api
+namespace Sentry.Watchers.Web
 {
-    public class ApiWatcherConfiguration
+    public class WebWatcherConfiguration
     {
         public Uri Uri { get; protected set; }
-        public HttpRequest Request { get; protected set; }
-        public Func<IHttpClient> HttpClientProvider { get; protected set; }
+        public IHttpRequest Request { get; protected set; }
+        public Func<IHttpService> HttpServiceProvider { get; protected set; }
         public bool SkipStatusCodeValidation { get; protected set; }
-        public IDictionary<string, string> Headers { get; protected set; }
-        public TimeSpan Timeout { get; protected set; }
-        public Func<HttpResponseMessage, bool> EnsureThat { get; protected set; }
-        public Func<HttpResponseMessage, Task<bool>> EnsureThatAsync { get; protected set; }
+        public TimeSpan? Timeout { get; protected set; }
+        public Func<IHttpResponse, bool> EnsureThat { get; protected set; }
+        public Func<IHttpResponse, Task<bool>> EnsureThatAsync { get; protected set; }
 
-        protected internal ApiWatcherConfiguration(string url, HttpRequest request)
+        protected internal WebWatcherConfiguration(string url, IHttpRequest request)
         {
             if (string.IsNullOrEmpty(url))
                 throw new ArgumentException("URL can not be empty.", nameof(url));
@@ -26,43 +25,26 @@ namespace Sentry.Watchers.Api
                 throw new ArgumentNullException(nameof(request), "Request can not be null.");
 
             Uri = new Uri(url);
-            Headers = new Dictionary<string, string>();
-            Timeout = TimeSpan.Zero;
             Request = request;
-            HttpClientProvider = () => new HttpClientWrapper(new HttpClient());
+            HttpServiceProvider = () => new HttpService(new HttpClient
+            {
+                BaseAddress = Uri
+            });
         }
 
-        public static Builder Create(string url, HttpRequest request) => new Builder(url, request);
+        public static Builder Create(string url) => new Builder(url, HttpRequest.Get());
 
-        public abstract class Configurator<T> : WatcherConfigurator<T, ApiWatcherConfiguration> where T : Configurator<T>
+        public static Builder Create(string url, IHttpRequest request) => new Builder(url, request);
+
+        public abstract class Configurator<T> : WatcherConfigurator<T, WebWatcherConfiguration> where T : Configurator<T>
         {
-            protected Configurator(string url, HttpRequest request)
+            protected Configurator(string url, IHttpRequest request)
             {
-                Configuration = new ApiWatcherConfiguration(url, request);
+                Configuration = new WebWatcherConfiguration(url, request);
             }
 
-            protected Configurator(ApiWatcherConfiguration configuration) : base(configuration)
+            protected Configurator(WebWatcherConfiguration configuration) : base(configuration)
             {
-            }
-
-            public T WithHeaders(IDictionary<string, string> headers)
-            {
-                if (headers == null)
-                    throw new ArgumentNullException(nameof(headers), "Headers can not be null.");
-
-                foreach (var header in headers)
-                {
-                    WithHeader(header);
-                }
-
-                return Configurator;
-            }
-
-            public T WithHeader(KeyValuePair<string, string> header)
-            {
-                Configuration.Headers.Add(header);
-
-                return Configurator;
             }
 
             public T WithRequest(HttpRequest request)
@@ -88,12 +70,12 @@ namespace Sentry.Watchers.Api
                 return Configurator;
             }
 
-            public T WithHttpClientProvider(Func<IHttpClient> httpClientProvider)
+            public T WithHttpServiceProvider(Func<IHttpService> httpClientProvider)
             {
                 if (httpClientProvider == null)
                     throw new ArgumentNullException(nameof(httpClientProvider), "HTTP client provider can not be null.");
 
-                Configuration.HttpClientProvider = httpClientProvider;
+                Configuration.HttpServiceProvider = httpClientProvider;
 
                 return Configurator;
             }
@@ -105,7 +87,7 @@ namespace Sentry.Watchers.Api
                 return Configurator;
             }
 
-            public T EnsureThat(Func<HttpResponseMessage, bool> ensureThat)
+            public T EnsureThat(Func<IHttpResponse, bool> ensureThat)
             {
                 if (ensureThat == null)
                     throw new ArgumentException("Ensure that predicate can not be null.", nameof(ensureThat));
@@ -115,7 +97,7 @@ namespace Sentry.Watchers.Api
                 return Configurator;
             }
 
-            public T EnsureThatAsync(Func<HttpResponseMessage, Task<bool>> ensureThat)
+            public T EnsureThatAsync(Func<IHttpResponse, Task<bool>> ensureThat)
             {
                 if (ensureThat == null)
                     throw new ArgumentException("Ensure that async predicate can not be null.", nameof(ensureThat));
@@ -128,7 +110,7 @@ namespace Sentry.Watchers.Api
 
         public class Default : Configurator<Default>
         {
-            public Default(ApiWatcherConfiguration configuration) : base(configuration)
+            public Default(WebWatcherConfiguration configuration) : base(configuration)
             {
                 SetInstance(this);
             }
@@ -136,12 +118,12 @@ namespace Sentry.Watchers.Api
 
         public class Builder : Configurator<Builder>
         {
-            public Builder(string url, HttpRequest request) : base(url, request)
+            public Builder(string url, IHttpRequest request) : base(url, request)
             {
                 SetInstance(this);
             }
 
-            public ApiWatcherConfiguration Build() => Configuration;
+            public WebWatcherConfiguration Build() => Configuration;
 
             public static explicit operator Default(Builder builder) => new Default(builder.Configuration);
         }

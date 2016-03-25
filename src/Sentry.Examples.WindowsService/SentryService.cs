@@ -7,10 +7,9 @@ using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using NLog;
 using Sentry.Core;
-using Sentry.Watchers.Api;
 using Sentry.Watchers.MongoDb;
 using Sentry.Watchers.MsSql;
-using Sentry.Watchers.Website;
+using Sentry.Watchers.Web;
 
 namespace Sentry.Examples.WindowsService
 {
@@ -39,10 +38,11 @@ namespace Sentry.Examples.WindowsService
 
         private static ISentry ConfigureSentry()
         {
-            var websiteWatcherConfiguration = WebsiteWatcherConfiguration
+            var websiteWatcherConfiguration = WebWatcherConfiguration
                 .Create("http://httpstat.us/200")
+                .EnsureThat(x => x.IsValid)
                 .Build();
-            var websiteWatcher = WebsiteWatcher.Create("My website watcher", websiteWatcherConfiguration);
+            var websiteWatcher = WebWatcher.Create("Website watcher", websiteWatcherConfiguration);
 
             var mongoDbWatcherConfiguration = MongoDbWatcherConfiguration
                 .Create("MyDatabase", "mongodb://localhost:27017")
@@ -53,23 +53,23 @@ namespace Sentry.Examples.WindowsService
                         .AnyAsync(_ => true);
                 })
                 .Build();
-            var mongoDbWatcher = MongoDbWatcher.Create("My MongoDB watcher", mongoDbWatcherConfiguration);
+            var mongoDbWatcher = MongoDbWatcher.Create("MongoDB watcher", mongoDbWatcherConfiguration);
 
             var mssqlWatcherConfiguration = MsSqlWatcherConfiguration
                 .Create(ConfigurationManager.ConnectionStrings["MyDatabase"].ConnectionString)
                 .WithQuery("select * from users where id = @id", new Dictionary<string, object> {["id"] = 1})
                 .EnsureThat(users => users.Any(user => user.Name == "admin"))
                 .Build();
-            var mssqlWatcher = MsSqlWatcher.Create("My database watcher", mssqlWatcherConfiguration);
+            var mssqlWatcher = MsSqlWatcher.Create("Database watcher", mssqlWatcherConfiguration);
 
-            var apiWatcherConfiguration = ApiWatcherConfiguration
-                .Create("http://httpstat.us", HttpRequest.Get("200"))
-                .WithHeaders(new Dictionary<string, string>
-                {
-                    ["Accept"] = "application/json"
-                })
+            var apiWatcherConfiguration = WebWatcherConfiguration
+                .Create("http://httpstat.us", HttpRequest.Get("200",
+                    headers: new Dictionary<string, string>
+                    {
+                        ["Accept"] = "application/json"
+                    }))
                 .Build();
-            var apiWatcher = ApiWatcher.Create("My API watcher", apiWatcherConfiguration);
+            var apiWatcher = WebWatcher.Create("API watcher", apiWatcherConfiguration);
 
             var sentryConfiguration = SentryConfiguration
                 .Create()
@@ -109,8 +109,8 @@ namespace Sentry.Examples.WindowsService
 
         private static async Task WebsiteHookOnSuccessAsync(ISentryCheckResult check)
         {
-            var websiteWatcherCheckResult = (WebsiteWatcherCheckResult) check.WatcherCheckResult;
-            Logger.Info($"Invoking the hook OnSuccessAsync() by watcher: '{websiteWatcherCheckResult.WatcherName}'.");
+            var webWatcherCheckResult = (WebWatcherCheckResult) check.WatcherCheckResult;
+            Logger.Info($"Invoking the hook OnSuccessAsync() by watcher: '{webWatcherCheckResult.WatcherName}'.");
             await Task.CompletedTask;
         }
 

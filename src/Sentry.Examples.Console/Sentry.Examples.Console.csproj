@@ -85,10 +85,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Sentry.Watchers.Api\Sentry.Watchers.Api.csproj">
-      <Project>{CA4FDDBA-7458-498E-93A2-A272F7D4BCF7}</Project>
-      <Name>Sentry.Watchers.Api</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Sentry.Watchers.MongoDb\Sentry.Watchers.MongoDb.csproj">
       <Project>{C9C8420E-6A1F-4B9D-BB38-291D6F7E0467}</Project>
       <Name>Sentry.Watchers.MongoDb</Name>
@@ -97,9 +93,9 @@
       <Project>{5ED102ED-B897-4B97-AE8C-A1E4AA37CCFC}</Project>
       <Name>Sentry.Watchers.MsSql</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Sentry.Watchers.Website\Sentry.Watchers.Website.csproj">
-      <Project>{ba630713-7f82-4cc7-9b42-46b4dce7a36d}</Project>
-      <Name>Sentry.Watchers.Website</Name>
+    <ProjectReference Include="..\Sentry.Watchers.Web\Sentry.Watchers.Web.csproj">
+      <Project>{d372fdd0-c172-4486-b8be-1bcf33dbaff9}</Project>
+      <Name>Sentry.Watchers.Web</Name>
     </ProjectReference>
     <ProjectReference Include="..\Sentry\Sentry.csproj">
       <Project>{eabc1132-32ea-4a2c-8129-60e20b74a546}</Project>

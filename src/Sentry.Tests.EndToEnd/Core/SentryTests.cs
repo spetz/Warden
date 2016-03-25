@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Machine.Specifications;
 using Sentry.Core;
-using Sentry.Watchers.Website;
+using Sentry.Watchers.Web;
 using It = Machine.Specifications.It;
 
 namespace Sentry.Tests.EndToEnd.Core
@@ -10,8 +10,8 @@ namespace Sentry.Tests.EndToEnd.Core
     {
         protected static ISentry Sentry { get; set; }
         protected static SentryConfiguration SentryConfiguration { get; set; }
-        protected static WebsiteWatcher WebsiteWatcher { get; set; }
-        protected static WebsiteWatcherConfiguration WebsiteWatcherConfiguration { get; set; }
+        protected static WebWatcher WebWatcher { get; set; }
+        protected static WebWatcherConfiguration WatcherConfiguration { get; set; }
         protected static ISentryIteration SentryIteration { get; set; } 
     }
 
@@ -20,13 +20,13 @@ namespace Sentry.Tests.EndToEnd.Core
     {
         Establish context = () =>
         {
-            WebsiteWatcherConfiguration = WebsiteWatcherConfiguration
+            WatcherConfiguration = WebWatcherConfiguration
                 .Create("http://httpstat.us/200")
                 .Build();
-            WebsiteWatcher = WebsiteWatcher.Create("Valid website watcher",WebsiteWatcherConfiguration);
+            WebWatcher = WebWatcher.Create("Valid web watcher",WatcherConfiguration);
             SentryConfiguration = SentryConfiguration
                 .Create()
-                .AddWatcher(WebsiteWatcher)
+                .AddWatcher(WebWatcher)
                 .RunOnlyOnce()
                 .Build();
             Sentry = new Sentry(SentryConfiguration);
@@ -42,17 +42,17 @@ namespace Sentry.Tests.EndToEnd.Core
     {
         Establish context = () =>
         {
-            WebsiteWatcherConfiguration = WebsiteWatcherConfiguration
+            WatcherConfiguration = WebWatcherConfiguration
                 .Create("http://httpstat.us/400")
                 .Build();
-            WebsiteWatcher = WebsiteWatcher.Create("Invalid website watcher", WebsiteWatcherConfiguration);
+            WebWatcher = WebWatcher.Create("Invalid web watcher", WatcherConfiguration);
             SentryConfiguration = SentryConfiguration
                 .Create()
                 .SetHooks(hooks =>
                 {
                     hooks.OnIterationCompleted(iteration => UpdateSentryIteration(iteration));
                 })
-                .AddWatcher(WebsiteWatcher)
+                .AddWatcher(WebWatcher)
                 .RunOnlyOnce()
                 .Build();
             Sentry = new Sentry(SentryConfiguration);

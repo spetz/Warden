@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Sentry.Watchers.Api")]
+[assembly: AssemblyTitle("Sentry.Watchers.Web")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Sentry.Watchers.Api")]
+[assembly: AssemblyProduct("Sentry.Watchers.Web")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("ca4fddba-7458-498e-93a2-a272f7d4bcf7")]
+[assembly: Guid("d372fdd0-c172-4486-b8be-1bcf33dbaff9")]
 
 // Version information for an assembly consists of the following four values:
 //
