@@ -24,14 +24,14 @@ Define the **[watchers](https://github.com/spetz/Sentry/wiki/Watchers)** that wi
 ```csharp
 //Define a watcher for the website 
 var myWebsiteUrl = "http://my-website.com";
-var websiteWatcherConfiguration = WebsiteWatcherConfiguration
+var websiteWatcherConfiguration = WebWatcherConfiguration
     .Create(myWebsiteUrl)
     .Build();
-var websiteWatcher = WebsiteWatcher.Create("My website watcher", websiteWatcherConfiguration);
+var websiteWatcher = WebWatcher.Create("My website watcher", websiteWatcherConfiguration);
 
 //Define a watcher for the API 
 var myApiUrl = "http://my-api.com";
-var apiWatcherConfiguration = ApiWatcherConfiguration
+var apiWatcherConfiguration = WebWatcherConfiguration
     .Create("http://my-api.com", HttpRequest.Post("users", new {name = "test"}))
     .WithHeaders(new Dictionary<string, string>
     {
@@ -39,7 +39,7 @@ var apiWatcherConfiguration = ApiWatcherConfiguration
     })
     .EnsureThat(response => response.Headers.Location != null)
     .Build();
-var apiWatcher = ApiWatcher.Create("My API watcher", apiWatcherConfiguration);
+var apiWatcher = WebWatcher.Create("My API watcher", apiWatcherConfiguration);
 
 //Define a watcher for the MSSQL database 
 var myConnectionString = @"Data Source=.\sqlexpress;Initial Catalog=MyDatabase;Integrated Security=True";
