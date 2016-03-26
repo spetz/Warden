@@ -9,7 +9,7 @@ namespace Sentry.Watchers.MsSql
 {
     public class MsSqlWatcher : IWatcher
     {
-        private readonly IMsSqlService _msSqlService;
+        private readonly IMsSql _msSql;
         private readonly MsSqlWatcherConfiguration _configuration;
         public string Name { get; }
 
@@ -26,7 +26,7 @@ namespace Sentry.Watchers.MsSql
 
             Name = name;
             _configuration = configuration;
-            _msSqlService = _configuration.MsSqlServiceProvider();
+            _msSql = _configuration.MsSqlServiceProvider();
         }
 
         public async Task<IWatcherCheckResult> ExecuteAsync()
@@ -39,7 +39,7 @@ namespace Sentry.Watchers.MsSql
                     if (string.IsNullOrWhiteSpace(_configuration.Query))
                         return WatcherCheckResult.Create(this, true);
 
-                    var result = await _msSqlService.QueryAsync(connection, _configuration.Query,
+                    var result = await _msSql.QueryAsync(connection, _configuration.Query,
                         _configuration.QueryParameters, _configuration.Timeout);
 
                     var collection = result.ToList();

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using Sentry.Core;
@@ -8,51 +9,41 @@ namespace Sentry.Watchers.MongoDb
     public class MongoDbWatcherConfiguration
     {
         public string Database { get; protected set; }
-        public MongoClientSettings Settings { get; protected set; }
-        public Func<MongoClient> ClientProvider { get; protected set; }
         public string ConnectionString { get; protected set; }
-        public Func<MongoClient, string, IMongoDatabase> DatabaseProvider { get; protected set; }
-        public Func<IMongoDatabase, bool> EnsureThat { get; protected set; }
-        public Func<IMongoDatabase, Task<bool>> EnsureThatAsync { get; protected set; }
-        public TimeSpan ServerSelectionTimeout { get; protected set; }
-        public TimeSpan ConnectTimeout { get; protected set; }
+        public string Query { get; protected set; }
+        public string QueryCollectionName { get; protected set; }
+        public Func<string, IMongoDbConnection> ConnectionProvider { get; protected set; }
+        public Func<IMongoDb> DatabaseProvider { get; protected set; }
+        public Func<IEnumerable<dynamic>, bool> EnsureThat { get; protected set; }
+        public Func<IEnumerable<dynamic>, Task<bool>> EnsureThatAsync { get; protected set; }
+        public TimeSpan Timeout { get; protected set; }
 
-        protected internal MongoDbWatcherConfiguration(string database, string connectionString)
+        protected internal MongoDbWatcherConfiguration(string database, string connectionString,
+            TimeSpan? timeout = null)
         {
             if (string.IsNullOrWhiteSpace(connectionString))
                 throw new ArgumentException("Connection string can not be empty.", nameof(connectionString));
 
             ValidateAndSetDatabase(database);
             ConnectionString = connectionString;
-            ServerSelectionTimeout = TimeSpan.FromSeconds(10);
-            ConnectTimeout = TimeSpan.FromSeconds(10);
-            ClientProvider = () => new MongoClient(connectionString);
-            DatabaseProvider = (client, name) => ClientProvider().GetDatabase(name);
-        }
-
-        protected internal MongoDbWatcherConfiguration(string database, MongoClientSettings settings)
-        {
-            if (settings == null)
-                throw new ArgumentNullException(nameof(settings), "Settings string can not be null.");
-
-            ValidateAndSetDatabase(database);
-            Settings = settings;
-            ServerSelectionTimeout = settings.ServerSelectionTimeout;
-            ConnectTimeout = settings.ConnectTimeout;
-            ClientProvider = () => new MongoClient(InitializeSettings());
-            DatabaseProvider = (client, databaseName) => ClientProvider().GetDatabase(databaseName);
-        }
-
-        protected virtual MongoClientSettings InitializeSettings()
-        {
-            var settings = Settings ?? new MongoClientSettings
+            if (timeout.HasValue)
             {
-                Server = GetServerAddress()
-            };
-            settings.ConnectTimeout = ConnectTimeout;
-            settings.ServerSelectionTimeout = ServerSelectionTimeout;
+                ValidateTimeout(timeout.Value);
+                Timeout = timeout.Value;
+            }
+            else
+                Timeout = TimeSpan.FromSeconds(5);
 
-            return settings;
+           ConnectionProvider = cs => new MongoDbConnection(Database, connectionString, Timeout);
+        }
+
+        protected static void ValidateTimeout(TimeSpan timeout)
+        {
+            if (timeout == null)
+                throw new ArgumentNullException(nameof(timeout), "Timeout can not be null.");
+
+            if (timeout == TimeSpan.Zero)
+                throw new ArgumentException("Timeout can not be equal to zero.", nameof(timeout));
         }
 
         protected virtual MongoServerAddress GetServerAddress()
@@ -72,60 +63,36 @@ namespace Sentry.Watchers.MongoDb
             Database = database;
         }
 
-        public static Builder Create(string database, MongoClientSettings settings) => new Builder(database, settings);
+        public static Builder Create(string database, string connectionString, TimeSpan? timeout = null)
+            => new Builder(database, connectionString, timeout);
 
-        public static Builder Create(string database, string connectionString) => new Builder(database, connectionString);
-
-        public abstract class Configurator<T> : WatcherConfigurator<T,MongoDbWatcherConfiguration> where T : Configurator<T>
+        public abstract class Configurator<T> : WatcherConfigurator<T, MongoDbWatcherConfiguration>
+            where T : Configurator<T>
         {
-            protected Configurator(string database, MongoClientSettings settings)
-            {
-                Configuration = new MongoDbWatcherConfiguration(database, settings);
-            }
 
-            protected Configurator(string database, string connectionString)
+            protected Configurator(string database, string connectionString, TimeSpan? timeout = null)
             {
-                Configuration = new MongoDbWatcherConfiguration(database, connectionString);
+                Configuration = new MongoDbWatcherConfiguration(database, connectionString, timeout);
             }
 
             protected Configurator(MongoDbWatcherConfiguration configuration) : base(configuration)
             {
             }
 
-            public T WithSettings(MongoClientSettings settings)
+            public T WithConnectionProvider(Func<string, IMongoDbConnection> connectionProvider)
             {
-                Configuration.Settings = settings;
+                if (connectionProvider == null)
+                {
+                    throw new ArgumentNullException(nameof(connectionProvider),
+                        "MongoDB connection provider can not be null.");
+                }
+
+                Configuration.ConnectionProvider = connectionProvider;
 
                 return Configurator;
             }
 
-            public T WithServerSelectionTimeout(TimeSpan timeout)
-            {
-                ValidateTimeout(timeout);
-                Configuration.ServerSelectionTimeout = timeout;
-
-                return Configurator;
-            }
-
-            public T WithConnectTimeout(TimeSpan timeout)
-            {
-                ValidateTimeout(timeout);
-                Configuration.ConnectTimeout = timeout;
-
-                return Configurator;
-            }
-
-            public T WithClientProvider(Func<MongoClient> clientProvider)
-            {
-                if (clientProvider == null)
-                    throw new ArgumentNullException(nameof(clientProvider), "Mongo client provider can not be null.");
-
-                Configuration.ClientProvider = clientProvider;
-
-                return Configurator;
-            }
-
-            public T WithDatabaseProvider(Func<MongoClient, string, IMongoDatabase> databaseProvider)
+            public T WithDatabaseProvider(Func<IMongoDb> databaseProvider)
             {
                 if (databaseProvider == null)
                 {
@@ -138,7 +105,21 @@ namespace Sentry.Watchers.MongoDb
                 return Configurator;
             }
 
-            public T EnsureThat(Func<IMongoDatabase, bool> ensureThat)
+            public T WithQuery(string collectionName, string query)
+            {
+                if (string.IsNullOrEmpty(collectionName))
+                    throw new ArgumentException("MongoDB collection name can not be empty.", nameof(collectionName));
+
+                if (string.IsNullOrEmpty(query))
+                    throw new ArgumentException("MongoDB query can not be empty.", nameof(query));
+
+                Configuration.QueryCollectionName = collectionName;
+                Configuration.Query = query;
+
+                return Configurator;
+            }
+
+            public T EnsureThat(Func<IEnumerable<dynamic>, bool> ensureThat)
             {
                 if (ensureThat == null)
                     throw new ArgumentException("Ensure that predicate can not be null.", nameof(ensureThat));
@@ -148,7 +129,7 @@ namespace Sentry.Watchers.MongoDb
                 return Configurator;
             }
 
-            public T EnsureThatAsync(Func<IMongoDatabase, Task<bool>> ensureThat)
+            public T EnsureThatAsync(Func<IEnumerable<dynamic>, Task<bool>> ensureThat)
             {
                 if (ensureThat == null)
                     throw new ArgumentException("Ensure that async predicate can not be null.", nameof(ensureThat));
@@ -156,15 +137,6 @@ namespace Sentry.Watchers.MongoDb
                 Configuration.EnsureThatAsync = ensureThat;
 
                 return Configurator;
-            }
-
-            protected void ValidateTimeout(TimeSpan timeout)
-            {
-                if (timeout == null)
-                    throw new ArgumentNullException(nameof(timeout), "Timeout can not be null.");
-
-                if (timeout == TimeSpan.Zero)
-                    throw new ArgumentException("Timeout can not be equal to zero.", nameof(timeout));
             }
         }
 
@@ -178,12 +150,8 @@ namespace Sentry.Watchers.MongoDb
 
         public class Builder : Configurator<Builder>
         {
-            public Builder(string database, string connectionString) : base(database, connectionString)
-            {
-                SetInstance(this);
-            }
-
-            public Builder(string database, MongoClientSettings settings) : base(database, settings)
+            public Builder(string database, string connectionString, TimeSpan? timeout = null)
+                : base(database, connectionString, timeout)
             {
                 SetInstance(this);
             }

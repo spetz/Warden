@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
 using NLog;
 using Sentry.Core;
 using Sentry.Watchers.MongoDb;
@@ -46,12 +44,8 @@ namespace Sentry.Examples.WindowsService
 
             var mongoDbWatcherConfiguration = MongoDbWatcherConfiguration
                 .Create("MyDatabase", "mongodb://localhost:27017")
-                .EnsureThatAsync(async db =>
-                {
-                    return await db.GetCollection<dynamic>("MyCollection")
-                        .AsQueryable()
-                        .AnyAsync(_ => true);
-                })
+                .WithQuery("Users", "{\"name\": \"admin\"}")
+                .EnsureThat(users => users.Any(user => user.role == "admin"))
                 .Build();
             var mongoDbWatcher = MongoDbWatcher.Create("MongoDB watcher", mongoDbWatcherConfiguration);
 

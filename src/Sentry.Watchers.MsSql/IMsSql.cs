@@ -6,16 +6,16 @@ using Dapper;
 
 namespace Sentry.Watchers.MsSql
 {
-    public interface IMsSqlService
+    public interface IMsSql
     {
         Task<IEnumerable<dynamic>> QueryAsync(IDbConnection connection, string query,
-            IDictionary<string, object> parameters, TimeSpan? timeout);
+            IDictionary<string, object> parameters, TimeSpan? timeout = null);
     }
 
-    public class DapperMsSqlService : IMsSqlService
+    public class DapperMsSql : IMsSql
     {
         public async Task<IEnumerable<dynamic>> QueryAsync(IDbConnection connection, string query, 
-            IDictionary<string, object> parameters, TimeSpan? timeout)
+            IDictionary<string, object> parameters, TimeSpan? timeout = null)
         {
             var queryParameters = new DynamicParameters();
             if (parameters != null)

@@ -52,6 +52,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IMongoDb.cs" />
+    <Compile Include="IMongoDbConnection.cs" />
     <Compile Include="MongoDbWatcher.cs" />
     <Compile Include="MongoDbWatcherConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

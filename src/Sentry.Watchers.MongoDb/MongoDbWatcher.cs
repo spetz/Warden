@@ -9,7 +9,7 @@ namespace Sentry.Watchers.MongoDb
     public class MongoDbWatcher : IWatcher
     {
         private readonly MongoDbWatcherConfiguration _configuration;
-        private readonly MongoClient _client;
+        private readonly IMongoDbConnection _connection;
         public string Name { get; }
 
         protected MongoDbWatcher(string name, MongoDbWatcherConfiguration configuration)
@@ -25,31 +25,30 @@ namespace Sentry.Watchers.MongoDb
 
             Name = name;
             _configuration = configuration;
-            _client = configuration.ClientProvider();
+            _connection = configuration.ConnectionProvider(configuration.ConnectionString);
         }
 
         public async Task<IWatcherCheckResult> ExecuteAsync()
         {
             try
             {
-                var database = _configuration.DatabaseProvider(_client, _configuration.Database);
-                var databases = await _client.ListDatabasesAsync();
-                var isValid = true;
-                while (await databases.MoveNextAsync())
-                {
-                    isValid = databases.Current.Any(x => x["name"] == _configuration.Database);
-                }
-
-                if (!isValid)
+                var database = await _connection.GetDatabaseAsync() ?? _configuration.DatabaseProvider();
+                if (database == null)
                 {
                     return WatcherCheckResult.Create(this, false,
                         $"Database: '{_configuration.Database}' has not been found.");
                 }
+                if (string.IsNullOrWhiteSpace(_configuration.Query))
+                {
+                    return WatcherCheckResult.Create(this, true);
+                }
 
+                var queryResult = await database.QueryAsync(_connection, _configuration.QueryCollectionName, _configuration.Query);
+                var isValid = true;
                 if (_configuration.EnsureThatAsync != null)
-                    isValid = await _configuration.EnsureThatAsync?.Invoke(database);
+                    isValid = await _configuration.EnsureThatAsync?.Invoke(queryResult);
 
-                isValid = isValid && (_configuration.EnsureThat?.Invoke(database) ?? true);
+                isValid = isValid && (_configuration.EnsureThat?.Invoke(queryResult) ?? true);
 
                 return WatcherCheckResult.Create(this, isValid);
             }
@@ -75,7 +74,7 @@ namespace Sentry.Watchers.MongoDb
         public static MongoDbWatcher Create(string name, MongoDbWatcherConfiguration configuration)
             => new MongoDbWatcher(name, configuration);
 
-        public static MongoDbWatcher Create(string name, string database, MongoClientSettings settings)
-            => new MongoDbWatcher(name, MongoDbWatcherConfiguration.Create(database, settings).Build());
+        //public static MongoDbWatcher Create(string name, string database, MongoClientSettings settings)
+        //    => new MongoDbWatcher(name, MongoDbWatcherConfiguration.Create(database, settings).Build());
     }
 }

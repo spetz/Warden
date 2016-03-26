@@ -12,7 +12,7 @@ namespace Sentry.Watchers.MsSql
         public string ConnectionString { get; protected set; }
         public string Query { get; protected set; }
         public Func<string, IDbConnection> ConnectionProvider { get; protected set; }
-        public Func<IMsSqlService> MsSqlServiceProvider { get; protected set; }
+        public Func<IMsSql> MsSqlServiceProvider { get; protected set; }
         public IDictionary<string, object> QueryParameters { get; protected set; }
         public Func<IEnumerable<dynamic>, bool> EnsureThat { get; protected set; }
         public Func<IEnumerable<dynamic>, Task<bool>> EnsureThatAsync { get; protected set; }
@@ -34,7 +34,7 @@ namespace Sentry.Watchers.MsSql
 
             ConnectionString = connectionString;
             ConnectionProvider = sqlConnectionString => new SqlConnection(sqlConnectionString);
-            MsSqlServiceProvider = () => new DapperMsSqlService();
+            MsSqlServiceProvider = () => new DapperMsSql();
         }
 
         public static Builder Create(string connectionString) => new Builder(connectionString);
@@ -88,7 +88,7 @@ namespace Sentry.Watchers.MsSql
                 return Configurator;
             }
 
-            public T WithMsSqlServiceProvider(Func<IMsSqlService> msSqlServiceProvider)
+            public T WithMsSqlServiceProvider(Func<IMsSql> msSqlServiceProvider)
             {
                 if (msSqlServiceProvider == null)
                     throw new ArgumentNullException(nameof(msSqlServiceProvider), "MSSQL service provider can not be null.");

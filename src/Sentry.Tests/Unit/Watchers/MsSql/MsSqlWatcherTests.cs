@@ -33,12 +33,12 @@ namespace Sentry.Tests.Unit.Watchers.MsSql
     [Subject("MSSQL watcher execution")]
     public class when_invoking_execute_async_method_without_query : MsSqlWatcher_specs
     {
-        static Mock<IMsSqlService> MsSqlServicerMock;
+        static Mock<IMsSql> MsSqlServicerMock;
         static Mock<IDbConnection> DbConnectionMock;
 
         Establish context = () =>
         {
-            MsSqlServicerMock = new Mock<IMsSqlService>();
+            MsSqlServicerMock = new Mock<IMsSql>();
             DbConnectionMock = new Mock<IDbConnection>();
             Configuration = MsSqlWatcherConfiguration
                 .Create(ConnectionString)
@@ -56,12 +56,12 @@ namespace Sentry.Tests.Unit.Watchers.MsSql
     [Subject("MSSQL watcher execution")]
     public class when_invoking_execute_async_method_with_query : MsSqlWatcher_specs
     {
-        static Mock<IMsSqlService> MsSqlServicerMock;
+        static Mock<IMsSql> MsSqlServicerMock;
         static Mock<IDbConnection> DbConnectionMock;
 
         Establish context = () =>
         {
-            MsSqlServicerMock = new Mock<IMsSqlService>();
+            MsSqlServicerMock = new Mock<IMsSql>();
             DbConnectionMock = new Mock<IDbConnection>();
             Configuration = MsSqlWatcherConfiguration
                 .Create(ConnectionString)
