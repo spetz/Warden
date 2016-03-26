@@ -28,7 +28,8 @@ var websiteWatcherConfiguration = WebWatcherConfiguration
     .Build();
 var websiteWatcher = WebWatcher.Create("My website watcher", websiteWatcherConfiguration);
 
-//Define a watcher for the API var apiWatcherConfiguration = WebWatcherConfiguration
+//Define a watcher for the API 
+var apiWatcherConfiguration = WebWatcherConfiguration
     .Create("http://my-api.com", HttpRequest.Post("users", new {name = "test"},
         headers: new Dictionary<string, string>
         {
