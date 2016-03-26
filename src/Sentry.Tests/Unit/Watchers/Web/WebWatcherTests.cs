@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Machine.Specifications;
 using Moq;
 using Sentry.Watchers.Web;
@@ -53,7 +52,7 @@ namespace Sentry.Tests.Unit.Watchers.Web
             HttpServiceMock = new Mock<IHttpService>();
             HttpResponseMock = new Mock<IHttpResponse>();
             HttpServiceMock.Setup(x =>
-                x.ExecuteAsync(Moq.It.IsAny<IHttpRequest>(), Moq.It.IsAny<TimeSpan?>()))
+                x.ExecuteAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<IHttpRequest>(), Moq.It.IsAny<TimeSpan?>()))
                 .ReturnsAsync(HttpResponseMock.Object);
 
             Configuration = WebWatcherConfiguration
@@ -66,6 +65,7 @@ namespace Sentry.Tests.Unit.Watchers.Web
         Because of = async () => await Watcher.ExecuteAsync().Await().AsTask;
 
         It should_invoke_http_service_execute_async_method_only_once = () =>
-            HttpServiceMock.Verify(x => x.ExecuteAsync(Moq.It.IsAny<IHttpRequest>(), Moq.It.IsAny<TimeSpan?>()), Times.Once);
+            HttpServiceMock.Verify(x => x.ExecuteAsync(Moq.It.IsAny<string>(),
+                Moq.It.IsAny<IHttpRequest>(), Moq.It.IsAny<TimeSpan?>()), Times.Once);
     }
 }

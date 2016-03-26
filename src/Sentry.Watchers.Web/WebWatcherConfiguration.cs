@@ -26,10 +26,7 @@ namespace Sentry.Watchers.Web
 
             Uri = new Uri(url);
             Request = request;
-            HttpServiceProvider = () => new HttpService(new HttpClient
-            {
-                BaseAddress = Uri
-            });
+            HttpServiceProvider = () => new HttpService(new HttpClient());
         }
 
         public static Builder Create(string url) => new Builder(url, HttpRequest.Get());

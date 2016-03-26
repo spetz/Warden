@@ -28,10 +28,11 @@ namespace Sentry.Watchers.Web
 
         public async Task<IWatcherCheckResult> ExecuteAsync()
         {
-            var fullUrl = $"{_configuration.Uri}{_configuration.Request.Endpoint}";
+            var baseUrl = _configuration.Uri.ToString();
+            var fullUrl = _configuration.Request.GetFullUrl(baseUrl);
             try
             {
-                var response = await _httpService.ExecuteAsync(_configuration.Request, _configuration.Timeout);
+                var response = await _httpService.ExecuteAsync(baseUrl, _configuration.Request, _configuration.Timeout);
                 var isValid = HasValidResponse(response);
                 if (!isValid)
                 {

@@ -9,7 +9,7 @@ namespace Sentry.Watchers.Web
 {
     public interface IHttpService
     {
-        Task<IHttpResponse> ExecuteAsync(IHttpRequest request, TimeSpan? timeout = null);
+        Task<IHttpResponse> ExecuteAsync(string baseUrl, IHttpRequest request, TimeSpan? timeout = null);
     }
 
     public class HttpService : IHttpService
@@ -21,11 +21,11 @@ namespace Sentry.Watchers.Web
             _client = client;
         }
 
-        public async Task<IHttpResponse> ExecuteAsync(IHttpRequest request, TimeSpan? timeout = null)
+        public async Task<IHttpResponse> ExecuteAsync(string baseUrl, IHttpRequest request, TimeSpan? timeout = null)
         {
             SetRequestHeaders(request.Headers);
             SetTimeout(timeout);
-            var response = await GetHttpResponseAsync(request);
+            var response = await GetHttpResponseAsync(baseUrl, request);
             var data = response.Content != null ? await response.Content.ReadAsStringAsync() : string.Empty;
             var valid = response.IsSuccessStatusCode;
             var responseHeaders = GetResponseHeaders(response.Headers);
@@ -35,9 +35,9 @@ namespace Sentry.Watchers.Web
                 : HttpResponse.Invalid(response.StatusCode, response.ReasonPhrase, responseHeaders, data);
         }
 
-        private async Task<HttpResponseMessage> GetHttpResponseAsync(IHttpRequest request)
+        private async Task<HttpResponseMessage> GetHttpResponseAsync(string baseUrl, IHttpRequest request)
         {
-            var fullUrl = $"{_client.BaseAddress}{request.Endpoint}";
+            var fullUrl = request.GetFullUrl(baseUrl);
             var method = request.Method;
             HttpResponseMessage response;
             switch (method)

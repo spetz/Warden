@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions.cs" />
     <Compile Include="WebWatcher.cs" />
     <Compile Include="WebWatcherCheckResult.cs" />
     <Compile Include="WebWatcherConfiguration.cs" />
