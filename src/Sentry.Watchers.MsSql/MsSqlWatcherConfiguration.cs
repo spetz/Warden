@@ -75,6 +75,26 @@ namespace Sentry.Watchers.MsSql
                 return Configurator;
             }
 
+            public T EnsureThat(Func<IEnumerable<dynamic>, bool> ensureThat)
+            {
+                if (ensureThat == null)
+                    throw new ArgumentException("Ensure that predicate can not be null.", nameof(ensureThat));
+
+                Configuration.EnsureThat = results => ensureThat(results);
+
+                return Configurator;
+            }
+
+            public T EnsureThatAsync(Func<IEnumerable<dynamic>, Task<bool>> ensureThat)
+            {
+                if (ensureThat == null)
+                    throw new ArgumentException("Ensure that async predicate can not be null.", nameof(ensureThat));
+
+                Configuration.EnsureThatAsync = ensureThat;
+
+                return Configurator;
+            }
+
             public T WithConnectionProvider(Func<string, IDbConnection> connectionProvider)
             {
                 if (connectionProvider == null)
@@ -94,26 +114,6 @@ namespace Sentry.Watchers.MsSql
                     throw new ArgumentNullException(nameof(msSqlServiceProvider), "MSSQL service provider can not be null.");
 
                 Configuration.MsSqlServiceProvider = msSqlServiceProvider;
-
-                return Configurator;
-            }
-
-            public T EnsureThat(Func<IEnumerable<dynamic>, bool> ensureThat)
-            {
-                if (ensureThat == null)
-                    throw new ArgumentException("Ensure that predicate can not be null.", nameof(ensureThat));
-
-                Configuration.EnsureThat = results => ensureThat(results);
-
-                return Configurator;
-            }
-
-            public T EnsureThatAsync(Func<IEnumerable<dynamic>, Task<bool>> ensureThat)
-            {
-                if (ensureThat == null)
-                    throw new ArgumentException("Ensure that async predicate can not be null.", nameof(ensureThat));
-
-                Configuration.EnsureThatAsync = ensureThat;
 
                 return Configurator;
             }

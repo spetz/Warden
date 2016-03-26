@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Sentry.Core;
@@ -44,7 +43,7 @@ namespace Sentry.Watchers.Web
             {
             }
 
-            public T WithRequest(HttpRequest request)
+            public T WithRequest(IHttpRequest request)
             {
                 if (request == null)
                     throw new ArgumentNullException(nameof(request), "HTTP request can not be null.");
@@ -63,16 +62,6 @@ namespace Sentry.Watchers.Web
                     throw new ArgumentException("Timeout can not be equal to zero.", nameof(timeout));
 
                 Configuration.Timeout = timeout;
-
-                return Configurator;
-            }
-
-            public T WithHttpServiceProvider(Func<IHttpService> httpClientProvider)
-            {
-                if (httpClientProvider == null)
-                    throw new ArgumentNullException(nameof(httpClientProvider), "HTTP client provider can not be null.");
-
-                Configuration.HttpServiceProvider = httpClientProvider;
 
                 return Configurator;
             }
@@ -100,6 +89,16 @@ namespace Sentry.Watchers.Web
                     throw new ArgumentException("Ensure that async predicate can not be null.", nameof(ensureThat));
 
                 Configuration.EnsureThatAsync = ensureThat;
+
+                return Configurator;
+            }
+
+            public T WithHttpServiceProvider(Func<IHttpService> httpServiceProvider)
+            {
+                if (httpServiceProvider == null)
+                    throw new ArgumentNullException(nameof(httpServiceProvider), "HTTP service provider can not be null.");
+
+                Configuration.HttpServiceProvider = httpServiceProvider;
 
                 return Configurator;
             }

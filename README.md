@@ -5,7 +5,7 @@
 > Define "health checks" for your applications, resources and
 > infrastructure. Keep your **Sentry** on the watch.
 
-**Please note that it's just a preview version of the library (work in progress), containing a very basic "documentation".**
+**Please note that it's just a preview version of the library (work in progress), containing a basic "documentation".**
 
 **What is Sentry?**
 ----------------
@@ -23,15 +23,12 @@ Yes, please navigate to the **[wiki](https://github.com/spetz/Sentry/wiki)** pag
 Define the **[watchers](https://github.com/spetz/Sentry/wiki/Watchers)** that will monitor your resources. You may choose between the website, API, MSSQL and MongoDB **watchers** - many more are coming soon (Redis, CPU, Memory, File etc.)
 ```csharp
 //Define a watcher for the website 
-var myWebsiteUrl = "http://my-website.com";
 var websiteWatcherConfiguration = WebWatcherConfiguration
-    .Create(myWebsiteUrl)
+    .Create("http://my-website.com")
     .Build();
 var websiteWatcher = WebWatcher.Create("My website watcher", websiteWatcherConfiguration);
 
-//Define a watcher for the API 
-var myApiUrl = "http://my-api.com";
-var apiWatcherConfiguration = WebWatcherConfiguration
+//Define a watcher for the API var apiWatcherConfiguration = WebWatcherConfiguration
     .Create("http://my-api.com", HttpRequest.Post("users", new {name = "test"},
         headers: new Dictionary<string, string>
         {
@@ -42,16 +39,15 @@ var apiWatcherConfiguration = WebWatcherConfiguration
 var apiWatcher = WebWatcher.Create("My API watcher", apiWatcherConfiguration);
 
 //Define a watcher for the MSSQL database 
-var myConnectionString = @"Data Source=.\sqlexpress;Initial Catalog=MyDatabase;Integrated Security=True";
 var mssqlWatcherConfiguration = MsSqlWatcherConfiguration
-    .Create(myConnectionString)
+    .Create(@"Data Source=.\sqlexpress;Initial Catalog=MyDatabase;Integrated Security=True")
     .WithQuery("select * from users where id = @id", new Dictionary<string, object> {["id"] = 1})
     .EnsureThat(users => users.Any(user => user.Name == "admin"))
     .Build();
 var mssqlWatcher = MsSqlWatcher.Create("My database watcher", mssqlWatcherConfiguration);
 ```
 
-Configure the **[Sentry](https://github.com/spetz/Sentry/wiki/Sentry)** by adding the previously defined **watchers**, setting up the **[Hooks](https://github.com/spetz/Sentry/wiki/Hooks)** (callbacks) to get notified about failures, successful checks, exceptions etc. - use that information e.g. in order to let your system administrator know when something goes wrong or to build your custom metrics.
+Configure the **[Sentry](https://github.com/spetz/Sentry/wiki/Sentry)** by adding the previously defined **watchers**, setting up the **[hooks](https://github.com/spetz/Sentry/wiki/Hooks)** (callbacks) to get notified about failures, successful checks, exceptions etc. - use that information e.g. in order to let your system administrator know when something goes wrong or to build your custom metrics.
 ```csharp
 var sentryConfiguration = SentryConfiguration
     .Create()

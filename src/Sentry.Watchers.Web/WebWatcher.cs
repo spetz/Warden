@@ -66,7 +66,7 @@ namespace Sentry.Watchers.Web
         private bool HasValidResponse(IHttpResponse response)
             => response.IsValid || _configuration.SkipStatusCodeValidation;
 
-        public static WebWatcher Create(string name, string url, HttpRequest request,
+        public static WebWatcher Create(string name, string url, IHttpRequest request,
             Action<WebWatcherConfiguration.Default> configurator = null)
         {
             var config = new WebWatcherConfiguration.Builder(url, request);

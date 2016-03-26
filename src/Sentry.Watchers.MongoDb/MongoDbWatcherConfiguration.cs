@@ -79,32 +79,6 @@ namespace Sentry.Watchers.MongoDb
             {
             }
 
-            public T WithConnectionProvider(Func<string, IMongoDbConnection> connectionProvider)
-            {
-                if (connectionProvider == null)
-                {
-                    throw new ArgumentNullException(nameof(connectionProvider),
-                        "MongoDB connection provider can not be null.");
-                }
-
-                Configuration.ConnectionProvider = connectionProvider;
-
-                return Configurator;
-            }
-
-            public T WithDatabaseProvider(Func<IMongoDb> databaseProvider)
-            {
-                if (databaseProvider == null)
-                {
-                    throw new ArgumentNullException(nameof(databaseProvider),
-                        "MongoDB database provider can not be null.");
-                }
-
-                Configuration.DatabaseProvider = databaseProvider;
-
-                return Configurator;
-            }
-
             public T WithQuery(string collectionName, string query)
             {
                 if (string.IsNullOrEmpty(collectionName))
@@ -135,6 +109,32 @@ namespace Sentry.Watchers.MongoDb
                     throw new ArgumentException("Ensure that async predicate can not be null.", nameof(ensureThat));
 
                 Configuration.EnsureThatAsync = ensureThat;
+
+                return Configurator;
+            }
+
+            public T WithConnectionProvider(Func<string, IMongoDbConnection> connectionProvider)
+            {
+                if (connectionProvider == null)
+                {
+                    throw new ArgumentNullException(nameof(connectionProvider),
+                        "MongoDB connection provider can not be null.");
+                }
+
+                Configuration.ConnectionProvider = connectionProvider;
+
+                return Configurator;
+            }
+
+            public T WithDatabaseProvider(Func<IMongoDb> databaseProvider)
+            {
+                if (databaseProvider == null)
+                {
+                    throw new ArgumentNullException(nameof(databaseProvider),
+                        "MongoDB database provider can not be null.");
+                }
+
+                Configuration.DatabaseProvider = databaseProvider;
 
                 return Configurator;
             }
