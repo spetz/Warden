@@ -12,7 +12,7 @@ namespace Sentry.Watchers.MsSql
         public string ConnectionString { get; protected set; }
         public string Query { get; protected set; }
         public Func<string, IDbConnection> ConnectionProvider { get; protected set; }
-        public Func<IQueryExecutor> QueryExecutorProvider { get; protected set; }
+        public Func<IMsSqlService> MsSqlServiceProvider { get; protected set; }
         public IDictionary<string, object> QueryParameters { get; protected set; }
         public Func<IEnumerable<dynamic>, bool> EnsureThat { get; protected set; }
         public Func<IEnumerable<dynamic>, Task<bool>> EnsureThatAsync { get; protected set; }
@@ -21,11 +21,20 @@ namespace Sentry.Watchers.MsSql
         protected internal MsSqlWatcherConfiguration(string connectionString)
         {
             if (string.IsNullOrEmpty(connectionString))
-                throw new ArgumentException("Connection string can not be empty.", nameof(connectionString));
+                throw new ArgumentException("MSSQL connection string can not be empty.", nameof(connectionString));
+
+            try
+            {
+                new SqlConnectionStringBuilder(connectionString);
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException("MSSQL connection string is invalid.", nameof(connectionString));
+            }
 
             ConnectionString = connectionString;
             ConnectionProvider = sqlConnectionString => new SqlConnection(sqlConnectionString);
-            QueryExecutorProvider = () => new DapperQueryExecutor();
+            MsSqlServiceProvider = () => new DapperMsSqlService();
         }
 
         public static Builder Create(string connectionString) => new Builder(connectionString);
@@ -79,12 +88,12 @@ namespace Sentry.Watchers.MsSql
                 return Configurator;
             }
 
-            public T WithQueryExecutorProvider(Func<IQueryExecutor> queryExecutorProvider)
+            public T WithMsSqlServiceProvider(Func<IMsSqlService> msSqlServiceProvider)
             {
-                if (queryExecutorProvider == null)
-                    throw new ArgumentNullException(nameof(queryExecutorProvider), "Query executor provider can not be null.");
+                if (msSqlServiceProvider == null)
+                    throw new ArgumentNullException(nameof(msSqlServiceProvider), "MSSQL service provider can not be null.");
 
-                Configuration.QueryExecutorProvider = queryExecutorProvider;
+                Configuration.MsSqlServiceProvider = msSqlServiceProvider;
 
                 return Configurator;
             }

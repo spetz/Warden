@@ -10,6 +10,9 @@ namespace Sentry.Tests.Unit.Watchers.MsSql
 {
     public class MsSqlWatcher_specs
     {
+        protected static string ConnectionString =
+            @"Data Source=.\sqlexpress;Initial Catalog=MyDatabase;Integrated Security=True";
+
         protected static MsSqlWatcher Watcher { get; set; }
         protected static MsSqlWatcherConfiguration Configuration { get; set; }
         protected static IWatcherCheckResult CheckResult { get; set; }
@@ -30,17 +33,17 @@ namespace Sentry.Tests.Unit.Watchers.MsSql
     [Subject("MSSQL watcher execution")]
     public class when_invoking_execute_async_method_without_query : MsSqlWatcher_specs
     {
-        static Mock<IQueryExecutor> QueryExecutorMock;
+        static Mock<IMsSqlService> MsSqlServicerMock;
         static Mock<IDbConnection> DbConnectionMock;
 
         Establish context = () =>
         {
-            QueryExecutorMock = new Mock<IQueryExecutor>();
+            MsSqlServicerMock = new Mock<IMsSqlService>();
             DbConnectionMock = new Mock<IDbConnection>();
             Configuration = MsSqlWatcherConfiguration
-                .Create("connectionString")
+                .Create(ConnectionString)
                 .WithConnectionProvider((connectionString) => DbConnectionMock.Object)
-                .WithQueryExecutorProvider(() => QueryExecutorMock.Object)
+                .WithMsSqlServiceProvider(() => MsSqlServicerMock.Object)
                 .Build();
             Watcher = MsSqlWatcher.Create("MSSQL watcher", Configuration);
         };
@@ -53,18 +56,18 @@ namespace Sentry.Tests.Unit.Watchers.MsSql
     [Subject("MSSQL watcher execution")]
     public class when_invoking_execute_async_method_with_query : MsSqlWatcher_specs
     {
-        static Mock<IQueryExecutor> QueryExecutorMock;
+        static Mock<IMsSqlService> MsSqlServicerMock;
         static Mock<IDbConnection> DbConnectionMock;
 
         Establish context = () =>
         {
-            QueryExecutorMock = new Mock<IQueryExecutor>();
+            MsSqlServicerMock = new Mock<IMsSqlService>();
             DbConnectionMock = new Mock<IDbConnection>();
             Configuration = MsSqlWatcherConfiguration
-                .Create("connectionString")
+                .Create(ConnectionString)
                 .WithQuery("select * from users")
                 .WithConnectionProvider((connectionString) => DbConnectionMock.Object)
-                .WithQueryExecutorProvider(() => QueryExecutorMock.Object)
+                .WithMsSqlServiceProvider(() => MsSqlServicerMock.Object)
                 .Build();
             Watcher = MsSqlWatcher.Create("MSSQL watcher", Configuration);
         };
@@ -72,7 +75,7 @@ namespace Sentry.Tests.Unit.Watchers.MsSql
         Because of = async () => await Watcher.ExecuteAsync().Await().AsTask;
 
         It should_invoke_open_method_only_once = () => DbConnectionMock.Verify(x => x.Open(), Times.Once);
-        It should_invoke_query_async_method_only_once = () => QueryExecutorMock.Verify(
+        It should_invoke_query_async_method_only_once = () => MsSqlServicerMock.Verify(
                 x => x.QueryAsync(Moq.It.IsAny<IDbConnection>(), Moq.It.IsAny<string>(),
                 Moq.It.IsAny<IDictionary<string, object>>(), Moq.It.IsAny<TimeSpan?>()), Times.Once);
     }
