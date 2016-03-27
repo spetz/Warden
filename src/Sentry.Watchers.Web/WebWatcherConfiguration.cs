@@ -31,7 +31,7 @@ namespace Sentry.Watchers.Web
         public bool SkipStatusCodeValidation { get; protected set; }
 
         /// <summary>
-        /// Optional timeout of the IHttpRequest.
+        /// Optional timeout of the HTTP request.
         /// </summary>
         public TimeSpan? Timeout { get; protected set; }
 

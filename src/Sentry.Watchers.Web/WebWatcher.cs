@@ -82,7 +82,7 @@ namespace Sentry.Watchers.Web
             Action<WebWatcherConfiguration.Default> configurator = null)
         {
             var config = new WebWatcherConfiguration.Builder(url, request);
-            configurator?.Invoke((WebWatcherConfiguration.Default)config);
+            configurator?.Invoke((WebWatcherConfiguration.Default) config);
 
             return Create(name, config.Build());
         }

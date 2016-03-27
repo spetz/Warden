@@ -9,7 +9,7 @@ namespace Sentry.Watchers.MsSql
     public class MsSqlWatcherCheckResult : WatcherCheckResult
     {
         /// <summary>
-        /// Connection string of the MSSQL database.
+        /// Connection string of the MSSQL server.
         /// </summary>
         public string ConnectionString { get; }
 
@@ -37,7 +37,7 @@ namespace Sentry.Watchers.MsSql
         /// </summary>
         /// <param name="watcher">Instance of IWatcher.</param>
         /// <param name="isValid">Flag determining whether the performed check was valid.</param>
-        /// <param name="connectionString">Connection string of the MSSQL database.</param>
+        /// <param name="connectionString">Connection string of the MSSQL server.</param>
         /// <param name="description">Custom description of the performed check.</param>
         /// <returns>Instance of MsSqlWatcherCheckResult.</returns>
         public static MsSqlWatcherCheckResult Create(IWatcher watcher, bool isValid,
@@ -50,7 +50,7 @@ namespace Sentry.Watchers.MsSql
         /// </summary>
         /// <param name="watcher">Instance of IWatcher.</param>
         /// <param name="isValid">Flag determining whether the performed check was valid.</param>
-        /// <param name="connectionString">Connection string of the MSSQL database.</param>
+        /// <param name="connectionString">Connection string of the MSSQL server.</param>
         /// <param name="query">SQL query.</param>
         /// <param name="queryResult">Collection of dynamic results of the SQL query.</param>
         /// <param name="description">Custom description of the performed check.</param>

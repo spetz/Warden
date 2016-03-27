@@ -12,18 +12,22 @@ namespace Sentry.Watchers.Web
         /// Status code of response.
         /// </summary>
         HttpStatusCode StatusCode { get; }
+
         /// <summary>
         /// Flag determining whether response is valid.
         /// </summary>
         bool IsValid { get; }
+
         /// <summary>
         /// Reason phrase that can be provided in response.
         /// </summary>
         string ReasonPhrase { get; }
+
         /// <summary>
         /// Response headers.
         /// </summary>
         IDictionary<string, string> Headers { get; }
+
         /// <summary>
         /// Response content.
         /// </summary>
@@ -41,7 +45,7 @@ namespace Sentry.Watchers.Web
         public IDictionary<string, string> Headers { get; }
         public string Data { get; }
 
-        protected HttpResponse(HttpStatusCode statusCode, bool isValid, 
+        protected HttpResponse(HttpStatusCode statusCode, bool isValid,
             string reasonPhrase, IDictionary<string, string> headers, string data)
         {
             StatusCode = statusCode;

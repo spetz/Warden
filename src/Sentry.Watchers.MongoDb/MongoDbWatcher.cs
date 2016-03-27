@@ -5,6 +5,9 @@ using Sentry.Core;
 
 namespace Sentry.Watchers.MongoDb
 {
+    /// <summary>
+    /// MongoDbWatcher designed for MongoDB monitoring.
+    /// </summary>
     public class MongoDbWatcher : IWatcher
     {
         private readonly MongoDbWatcherConfiguration _configuration;
@@ -31,7 +34,7 @@ namespace Sentry.Watchers.MongoDb
         {
             try
             {
-                var database = await _connection.GetDatabaseAsync() ?? _configuration.DatabaseProvider();
+                var database = await _connection.GetDatabaseAsync() ?? _configuration.MongoDbProvider();
                 if (database == null)
                 {
                     return MongoDbWatcherCheckResult.Create(this, false, _configuration.Database,
@@ -43,7 +46,7 @@ namespace Sentry.Watchers.MongoDb
                         _configuration.ConnectionString);
                 }
 
-                var queryResult = await database.QueryAsync(_connection, _configuration.QueryCollectionName,
+                var queryResult = await database.QueryAsync(_connection, _configuration.CollectionName,
                     _configuration.Query);
                 var isValid = true;
                 if (_configuration.EnsureThatAsync != null)
@@ -65,15 +68,29 @@ namespace Sentry.Watchers.MongoDb
             }
         }
 
+        /// <summary>
+        /// Factory method for creating a new instance of MongoDbWatcher.
+        /// </summary>
+        /// <param name="name">Name of the MongoDbWatcher.</param>
+        /// <param name="database">Name of the MongoDB database.</param>
+        /// <param name="connectionString">Connection string of the MongoDB server.</param>
+        /// <param name="configurator">Optional lambda expression for configuring the MongoDbWatcher.</param>
+        /// <returns>Instance of MongoDbWatcher.</returns>
         public static MongoDbWatcher Create(string name, string connectionString, string database,
             Action<MongoDbWatcherConfiguration.Default> configurator = null)
         {
             var config = new MongoDbWatcherConfiguration.Builder(connectionString, database);
-            configurator?.Invoke((MongoDbWatcherConfiguration.Default)config);
+            configurator?.Invoke((MongoDbWatcherConfiguration.Default) config);
 
             return Create(name, config.Build());
         }
 
+        /// <summary>
+        /// Factory method for creating a new instance of MongoDbWatcher.
+        /// </summary>
+        /// <param name="name">Name of the MongoDbWatcher.</param>
+        /// <param name="configuration">Configuration of MongoDbWatcher.</param>
+        /// <returns>Instance of MongoDbWatcher.</returns>
         public static MongoDbWatcher Create(string name, MongoDbWatcherConfiguration configuration)
             => new MongoDbWatcher(name, configuration);
     }

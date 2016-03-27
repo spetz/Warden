@@ -11,17 +11,19 @@ namespace Sentry.Watchers.Web
         /// Base URL of the request.
         /// </summary>
         public Uri Uri { get; }
+
         /// <summary>
         /// Instance of IHttpRequest.
         /// </summary>
         public IHttpRequest Request { get; }
+
         /// <summary>
         /// Instance of IHttpResponse.
         /// </summary>
         public IHttpResponse Response { get; }
 
         protected WebWatcherCheckResult(IWatcher watcher, bool isValid, string description,
-             Uri uri, IHttpRequest request, IHttpResponse response) 
+            Uri uri, IHttpRequest request, IHttpResponse response)
             : base(watcher, isValid, description)
         {
             Uri = uri;

@@ -13,7 +13,7 @@ namespace Sentry.Watchers.MsSql
     public class MsSqlWatcherConfiguration
     {
         /// <summary>
-        /// Connection string of the MSSQL database.
+        /// Connection string of the MSSQL server.
         /// </summary>
         public string ConnectionString { get; protected set; }
 
@@ -74,7 +74,8 @@ namespace Sentry.Watchers.MsSql
         /// <summary>
         /// Factory method for creating a new instance of fluent builder for the MsSqlWatcherConfiguration.
         /// </summary>
-        /// <param name="connectionString">Connection string of the MSSQL database.</param>
+        /// <param name="connectionString">Connection string of the MSSQL server.</param>
+        /// <returns>Instance of fluent builder for the MsSqlWatcherConfiguration.</returns>
         public static Builder Create(string connectionString) => new Builder(connectionString);
 
         /// <summary>

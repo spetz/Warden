@@ -5,11 +5,24 @@ using MongoDB.Driver;
 
 namespace Sentry.Watchers.MongoDb
 {
+    /// <summary>
+    /// Custom MongoDB connector for executing the MongoDB queries.
+    /// </summary>
     public interface IMongoDb
     {
+        /// <summary>
+        /// Executes the MongoDB query and returns a collection of the dynamic results.
+        /// </summary>
+        /// <param name="connection">Instance of IMongoDbConnection.</param>
+        /// <param name="collection">Name of the collection in selected MongoDB database.</param>
+        /// <param name="query">MongoDB query.</param>
+        /// <returns></returns>
         Task<IEnumerable<dynamic>> QueryAsync(IMongoDbConnection connection, string collection, string query);
     }
 
+    /// <summary>
+    /// Default implementation of the IMongoDb based on MongoDB Driver.
+    /// </summary>
     public class MongoDb : IMongoDb
     {
         private readonly IMongoDatabase _database;

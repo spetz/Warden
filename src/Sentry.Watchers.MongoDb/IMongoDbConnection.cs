@@ -5,14 +5,36 @@ using MongoDB.Driver;
 
 namespace Sentry.Watchers.MongoDb
 {
+    /// <summary>
+    /// Custom IMongoDbConnection for opening a connection to the MongoDB.
+    /// </summary>
     public interface IMongoDbConnection
     {
+        /// <summary>
+        /// Name of the MongoDB database.
+        /// </summary>
         string Database { get; }
+
+        /// <summary>
+        /// Connection string of the MongoDB server.
+        /// </summary>
         string ConnectionString { get; }
+
+        /// <summary>
+        /// Timeout for connection to the MongoDB server.
+        /// </summary>
         TimeSpan Timeout { get; }
+
+        /// <summary>
+        /// Opens a connection to the MongoDB database.
+        /// </summary>
+        /// <returns>Instance of IMongoDb.</returns>
         Task<IMongoDb> GetDatabaseAsync();
     }
 
+    /// <summary>
+    /// Default implementation of the IMongoDbConnection based on the MongoClient from MongoDB Driver.
+    /// </summary>
     public class MongoDbConnection : IMongoDbConnection
     {
         private readonly MongoClient _client;

@@ -6,17 +6,55 @@ using Sentry.Core;
 
 namespace Sentry.Watchers.MongoDb
 {
+    /// <summary>
+    /// Configuration of the MongoDbWatcher.
+    /// </summary>
     public class MongoDbWatcherConfiguration
     {
+        /// <summary>
+        /// Name of the MongoDB database. 
+        /// </summary>
         public string Database { get; protected set; }
+
+        /// <summary>
+        /// Connection string of the MongoDB server.
+        /// </summary>
         public string ConnectionString { get; protected set; }
+
+        /// <summary>
+        /// MongoDB query.
+        /// </summary>
         public string Query { get; protected set; }
-        public string QueryCollectionName { get; protected set; }
-        public Func<string, IMongoDbConnection> ConnectionProvider { get; protected set; }
-        public Func<IMongoDb> DatabaseProvider { get; protected set; }
-        public Func<IEnumerable<dynamic>, bool> EnsureThat { get; protected set; }
-        public Func<IEnumerable<dynamic>, Task<bool>> EnsureThatAsync { get; protected set; }
+
+        /// <summary>
+        /// Name of the MongoDB collection.
+        /// </summary>
+        public string CollectionName { get; protected set; }
+
+        /// <summary>
+        /// Optional timeout of the MongoDB query (5 seconds by default).
+        /// </summary>
         public TimeSpan Timeout { get; protected set; }
+
+        /// <summary>
+        /// Custom provider for the IMongoDbConnection. Input parameter is connection string.
+        /// </summary>
+        public Func<string, IMongoDbConnection> ConnectionProvider { get; protected set; }
+
+        /// <summary>
+        /// Custom provider for the IMongoDb. 
+        /// </summary>
+        public Func<IMongoDb> MongoDbProvider { get; protected set; }
+
+        /// <summary>
+        /// Predicate that has to be satisfied in order to return the valid result.
+        /// </summary>
+        public Func<IEnumerable<dynamic>, bool> EnsureThat { get; protected set; }
+
+        /// <summary>
+        /// Async predicate that has to be satisfied in order to return the valid result.
+        /// </summary>
+        public Func<IEnumerable<dynamic>, Task<bool>> EnsureThatAsync { get; protected set; }
 
         protected internal MongoDbWatcherConfiguration(string database, string connectionString,
             TimeSpan? timeout = null)
@@ -34,7 +72,7 @@ namespace Sentry.Watchers.MongoDb
             else
                 Timeout = TimeSpan.FromSeconds(5);
 
-           ConnectionProvider = cs => new MongoDbConnection(Database, connectionString, Timeout);
+            ConnectionProvider = cs => new MongoDbConnection(Database, connectionString, Timeout);
         }
 
         protected static void ValidateTimeout(TimeSpan timeout)
@@ -63,13 +101,22 @@ namespace Sentry.Watchers.MongoDb
             Database = database;
         }
 
+        /// <summary>
+        /// Factory method for creating a new instance of fluent builder for the MongoDbWatcherConfiguration.
+        /// </summary>
+        /// <param name="database">Name of the MongoDB database.</param>
+        /// <param name="connectionString">Connection string of the MongoDB server.</param>
+        /// <param name="timeout">Optional timeout of the MongoDB query (5 seconds by default).</param>
+        /// <returns>Instance of fluent builder for the MongoDbWatcherConfiguration.</returns>
         public static Builder Create(string database, string connectionString, TimeSpan? timeout = null)
             => new Builder(database, connectionString, timeout);
 
+        /// <summary>
+        /// Fluent builder for the MongoDbWatcherConfiguration.
+        /// </summary>
         public abstract class Configurator<T> : WatcherConfigurator<T, MongoDbWatcherConfiguration>
             where T : Configurator<T>
         {
-
             protected Configurator(string database, string connectionString, TimeSpan? timeout = null)
             {
                 Configuration = new MongoDbWatcherConfiguration(database, connectionString, timeout);
@@ -79,6 +126,12 @@ namespace Sentry.Watchers.MongoDb
             {
             }
 
+            /// <summary>
+            /// Sets the collection name and a MongoDB query.
+            /// </summary>
+            /// <param name="collectionName">Name of the MongoDB collection.</param>
+            /// <param name="query">MongoDB query.</param>
+            /// <returns>Instance of fluent builder for the MongoDbWatcherConfiguration.</returns>
             public T WithQuery(string collectionName, string query)
             {
                 if (string.IsNullOrEmpty(collectionName))
@@ -87,12 +140,18 @@ namespace Sentry.Watchers.MongoDb
                 if (string.IsNullOrEmpty(query))
                     throw new ArgumentException("MongoDB query can not be empty.", nameof(query));
 
-                Configuration.QueryCollectionName = collectionName;
+                Configuration.CollectionName = collectionName;
                 Configuration.Query = query;
 
                 return Configurator;
             }
 
+
+            /// <summary>
+            /// Sets the predicate that has to be satisfied in order to return the valid result.
+            /// </summary>
+            /// <param name="ensureThat">Lambda expression predicate.</param>
+            /// <returns>Instance of fluent builder for the MongoDbWatcherConfiguration.</returns>
             public T EnsureThat(Func<IEnumerable<dynamic>, bool> ensureThat)
             {
                 if (ensureThat == null)
@@ -103,6 +162,11 @@ namespace Sentry.Watchers.MongoDb
                 return Configurator;
             }
 
+            /// <summary>
+            /// Sets the async predicate that has to be satisfied in order to return the valid result.
+            /// </summary>
+            /// <param name="ensureThat">Lambda expression predicate.</param>
+            /// <returns>Instance of fluent builder for the MongoDbWatcherConfiguration.</returns>
             public T EnsureThatAsync(Func<IEnumerable<dynamic>, Task<bool>> ensureThat)
             {
                 if (ensureThat == null)
@@ -113,6 +177,13 @@ namespace Sentry.Watchers.MongoDb
                 return Configurator;
             }
 
+            /// <summary>
+            /// Sets the custom provider for the IMongoDbConnection.
+            /// </summary>
+            /// <param name="connectionProvider">Custom provider for the IMongoDbConnection.</param>
+            /// <returns>Lambda expression taking as an input connection string 
+            /// and returning an instance of the IMongoDbConnection.</returns>
+            /// <returns>Instance of fluent builder for the MongoDbWatcherConfiguration.</returns>
             public T WithConnectionProvider(Func<string, IMongoDbConnection> connectionProvider)
             {
                 if (connectionProvider == null)
@@ -126,20 +197,29 @@ namespace Sentry.Watchers.MongoDb
                 return Configurator;
             }
 
-            public T WithDatabaseProvider(Func<IMongoDb> databaseProvider)
+            /// <summary>
+            /// Sets the custom provider for the IMongoDb.
+            /// </summary>
+            /// <param name="mongoDbProvider">Custom provider for the IMongoDb.</param>
+            /// <returns>Lambda expression returning an instance of the IMongoDb.</returns>
+            /// <returns>Instance of fluent builder for the MongoDbWatcherConfiguration.</returns>
+            public T WithMongoDbProvider(Func<IMongoDb> mongoDbProvider)
             {
-                if (databaseProvider == null)
+                if (mongoDbProvider == null)
                 {
-                    throw new ArgumentNullException(nameof(databaseProvider),
-                        "MongoDB database provider can not be null.");
+                    throw new ArgumentNullException(nameof(mongoDbProvider), "MongoDB provider can not be null.");
                 }
 
-                Configuration.DatabaseProvider = databaseProvider;
+                Configuration.MongoDbProvider = mongoDbProvider;
 
                 return Configurator;
             }
         }
 
+
+        /// <summary>
+        /// Default MongoDbWatcherConfiguration fluent builder used while configuring watcher via lambda expression.
+        /// </summary>
         public class Default : Configurator<Default>
         {
             public Default(MongoDbWatcherConfiguration configuration) : base(configuration)
@@ -148,6 +228,9 @@ namespace Sentry.Watchers.MongoDb
             }
         }
 
+        /// <summary>
+        /// Extended MongoDbWatcherConfiguration fluent builder used while configuring watcher directly.
+        /// </summary>
         public class Builder : Configurator<Builder>
         {
             public Builder(string database, string connectionString, TimeSpan? timeout = null)
@@ -156,8 +239,17 @@ namespace Sentry.Watchers.MongoDb
                 SetInstance(this);
             }
 
+            /// <summary>
+            /// Builds the MongoDbWatcherConfiguration and return its instance.
+            /// </summary>
+            /// <returns>Instance of MongoDbWatcherConfiguration.</returns>
             public MongoDbWatcherConfiguration Build() => Configuration;
 
+            /// <summary>
+            /// Operator overload to provide casting the Builder configurator into Default configurator.
+            /// </summary>
+            /// <param name="builder">Instance of extended Builder configurator.</param>
+            /// <returns>Instance of Default builder configurator.</returns>
             public static explicit operator Default(Builder builder) => new Default(builder.Configuration);
         }
     }
