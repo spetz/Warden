@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
 using Machine.Specifications;
 using Moq;
 using Sentry.Watchers.Web;
@@ -44,16 +47,16 @@ namespace Sentry.Tests.Watchers.Web
     [Subject("Web watcher execution")]
     public class when_invoking_execute_async_method_with_valid_url_for_get_request : WebWatcher_specs
     {
-        static Mock<IHttpService> HttpServiceMock { get; set; }
-        static Mock<IHttpResponse> HttpResponseMock { get; set; }
+        static Mock<IHttpService> HttpServiceMock;
+        static IHttpResponse Response;
 
         Establish context = () =>
         {
             HttpServiceMock = new Mock<IHttpService>();
-            HttpResponseMock = new Mock<IHttpResponse>();
+            Response = HttpResponse.Valid(HttpStatusCode.OK, "Ok", new Dictionary<string, string>(), string.Empty);
             HttpServiceMock.Setup(x =>
                 x.ExecuteAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<IHttpRequest>(), Moq.It.IsAny<TimeSpan?>()))
-                .ReturnsAsync(HttpResponseMock.Object);
+                .ReturnsAsync(Response);
 
             Configuration = WebWatcherConfiguration
                 .Create("http://website.com", HttpRequest.Get())
@@ -62,10 +65,206 @@ namespace Sentry.Tests.Watchers.Web
             Watcher = WebWatcher.Create("Web watcher", Configuration);
         };
 
-        Because of = async () => await Watcher.ExecuteAsync().Await().AsTask;
+        Because of = async () =>
+        {
+            CheckResult = await Watcher.ExecuteAsync().Await().AsTask;
+            WebCheckResult = CheckResult as WebWatcherCheckResult;
+        };
 
         It should_invoke_http_service_execute_async_method_only_once = () =>
             HttpServiceMock.Verify(x => x.ExecuteAsync(Moq.It.IsAny<string>(),
                 Moq.It.IsAny<IHttpRequest>(), Moq.It.IsAny<TimeSpan?>()), Times.Once);
+
+        It should_have_valid_check_result = () => CheckResult.IsValid.ShouldBeTrue();
+        It should_have_check_result_of_type_web = () => WebCheckResult.ShouldNotBeNull();
+
+        It should_have_set_values_in_web_check_result = () =>
+        {
+            WebCheckResult.WatcherName.ShouldNotBeEmpty();
+            WebCheckResult.WatcherType.ShouldNotBeNull();
+            WebCheckResult.Uri.ShouldNotBeNull();
+            WebCheckResult.Request.ShouldNotBeNull();
+            WebCheckResult.Response.ShouldNotBeNull();
+        };
+    }
+
+    [Subject("Web watcher execution")]
+    public class when_invoking_ensure_predicate_that_is_valid : WebWatcher_specs
+    {
+        static Mock<IHttpService> HttpServiceMock;
+        static IHttpResponse Response;
+
+        Establish context = () =>
+        {
+            Response = HttpResponse.Valid(HttpStatusCode.OK, "Ok", new Dictionary<string, string>(), string.Empty);
+            HttpServiceMock = new Mock<IHttpService>();
+            HttpServiceMock.Setup(x =>
+                x.ExecuteAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<IHttpRequest>(), Moq.It.IsAny<TimeSpan?>()))
+                .ReturnsAsync(Response);
+
+            Configuration = WebWatcherConfiguration
+                .Create("http://website.com", HttpRequest.Get())
+                .EnsureThat(response => response.ReasonPhrase == "Ok")
+                .WithHttpServiceProvider(() => HttpServiceMock.Object)
+                .Build();
+            Watcher = WebWatcher.Create("Web watcher", Configuration);
+        };
+
+        Because of = async () =>
+        {
+            CheckResult = await Watcher.ExecuteAsync().Await().AsTask;
+            WebCheckResult = CheckResult as WebWatcherCheckResult;
+        };
+
+        It should_invoke_http_service_execute_async_method_only_once = () =>
+            HttpServiceMock.Verify(x => x.ExecuteAsync(Moq.It.IsAny<string>(),
+                Moq.It.IsAny<IHttpRequest>(), Moq.It.IsAny<TimeSpan?>()), Times.Once);
+
+        It should_have_valid_check_result = () => CheckResult.IsValid.ShouldBeTrue();
+        It should_have_check_result_of_type_web = () => WebCheckResult.ShouldNotBeNull();
+
+        It should_have_set_values_in_web_check_result = () =>
+        {
+            WebCheckResult.WatcherName.ShouldNotBeEmpty();
+            WebCheckResult.WatcherType.ShouldNotBeNull();
+            WebCheckResult.Uri.ShouldNotBeNull();
+            WebCheckResult.Request.ShouldNotBeNull();
+            WebCheckResult.Response.ShouldNotBeNull();
+        };
+    }
+
+    [Subject("Web watcher execution")]
+    public class when_invoking_ensure_async_predicate_that_is_valid : WebWatcher_specs
+    {
+        static Mock<IHttpService> HttpServiceMock;
+        static IHttpResponse Response;
+
+        Establish context = () =>
+        {
+            Response = HttpResponse.Valid(HttpStatusCode.OK, "Ok", new Dictionary<string, string>(), string.Empty);
+            HttpServiceMock = new Mock<IHttpService>();
+            HttpServiceMock.Setup(x =>
+                x.ExecuteAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<IHttpRequest>(), Moq.It.IsAny<TimeSpan?>()))
+                .ReturnsAsync(Response);
+
+            Configuration = WebWatcherConfiguration
+                .Create("http://website.com", HttpRequest.Get())
+                .EnsureThatAsync(response => Task.Factory.StartNew(() => response.ReasonPhrase == "Ok"))
+                .WithHttpServiceProvider(() => HttpServiceMock.Object)
+                .Build();
+            Watcher = WebWatcher.Create("Web watcher", Configuration);
+        };
+
+        Because of = async () =>
+        {
+            CheckResult = await Watcher.ExecuteAsync().Await().AsTask;
+            WebCheckResult = CheckResult as WebWatcherCheckResult;
+        };
+
+        It should_invoke_http_service_execute_async_method_only_once = () =>
+            HttpServiceMock.Verify(x => x.ExecuteAsync(Moq.It.IsAny<string>(),
+                Moq.It.IsAny<IHttpRequest>(), Moq.It.IsAny<TimeSpan?>()), Times.Once);
+
+        It should_have_valid_check_result = () => CheckResult.IsValid.ShouldBeTrue();
+        It should_have_check_result_of_type_web = () => WebCheckResult.ShouldNotBeNull();
+
+        It should_have_set_values_in_web_check_result = () =>
+        {
+            WebCheckResult.WatcherName.ShouldNotBeEmpty();
+            WebCheckResult.WatcherType.ShouldNotBeNull();
+            WebCheckResult.Uri.ShouldNotBeNull();
+            WebCheckResult.Request.ShouldNotBeNull();
+            WebCheckResult.Response.ShouldNotBeNull();
+        };
+    }
+
+    [Subject("Web watcher execution")]
+    public class when_invoking_ensure_predicate_that_is_invalid : WebWatcher_specs
+    {
+        static Mock<IHttpService> HttpServiceMock;
+        static IHttpResponse Response;
+
+        Establish context = () =>
+        {
+            Response = HttpResponse.Valid(HttpStatusCode.OK, "Ok", new Dictionary<string, string>(), string.Empty);
+            HttpServiceMock = new Mock<IHttpService>();
+            HttpServiceMock.Setup(x =>
+                x.ExecuteAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<IHttpRequest>(), Moq.It.IsAny<TimeSpan?>()))
+                .ReturnsAsync(Response);
+
+            Configuration = WebWatcherConfiguration
+                .Create("http://website.com", HttpRequest.Get())
+                .EnsureThat(response => response.ReasonPhrase == "Not ok")
+                .WithHttpServiceProvider(() => HttpServiceMock.Object)
+                .Build();
+            Watcher = WebWatcher.Create("Web watcher", Configuration);
+        };
+
+        Because of = async () =>
+        {
+            CheckResult = await Watcher.ExecuteAsync().Await().AsTask;
+            WebCheckResult = CheckResult as WebWatcherCheckResult;
+        };
+
+        It should_invoke_http_service_execute_async_method_only_once = () =>
+            HttpServiceMock.Verify(x => x.ExecuteAsync(Moq.It.IsAny<string>(),
+                Moq.It.IsAny<IHttpRequest>(), Moq.It.IsAny<TimeSpan?>()), Times.Once);
+
+        It should_have_invalid_check_result = () => CheckResult.IsValid.ShouldBeFalse();
+        It should_have_check_result_of_type_web = () => WebCheckResult.ShouldNotBeNull();
+
+        It should_have_set_values_in_web_check_result = () =>
+        {
+            WebCheckResult.WatcherName.ShouldNotBeEmpty();
+            WebCheckResult.WatcherType.ShouldNotBeNull();
+            WebCheckResult.Uri.ShouldNotBeNull();
+            WebCheckResult.Request.ShouldNotBeNull();
+            WebCheckResult.Response.ShouldNotBeNull();
+        };
+    }
+
+    [Subject("Web watcher execution")]
+    public class when_invoking_ensure_async_predicate_that_is_invalid : WebWatcher_specs
+    {
+        static Mock<IHttpService> HttpServiceMock;
+        static IHttpResponse Response;
+
+        Establish context = () =>
+        {
+            Response = HttpResponse.Valid(HttpStatusCode.OK, "Ok", new Dictionary<string, string>(), string.Empty);
+            HttpServiceMock = new Mock<IHttpService>();
+            HttpServiceMock.Setup(x =>
+                x.ExecuteAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<IHttpRequest>(), Moq.It.IsAny<TimeSpan?>()))
+                .ReturnsAsync(Response);
+
+            Configuration = WebWatcherConfiguration
+                .Create("http://website.com", HttpRequest.Get())
+                .EnsureThatAsync(response => Task.Factory.StartNew(() => response.ReasonPhrase == "Not ok"))
+                .WithHttpServiceProvider(() => HttpServiceMock.Object)
+                .Build();
+            Watcher = WebWatcher.Create("Web watcher", Configuration);
+        };
+
+        Because of = async () =>
+        {
+            CheckResult = await Watcher.ExecuteAsync().Await().AsTask;
+            WebCheckResult = CheckResult as WebWatcherCheckResult;
+        };
+
+        It should_invoke_http_service_execute_async_method_only_once = () =>
+            HttpServiceMock.Verify(x => x.ExecuteAsync(Moq.It.IsAny<string>(),
+                Moq.It.IsAny<IHttpRequest>(), Moq.It.IsAny<TimeSpan?>()), Times.Once);
+
+        It should_have_invalid_check_result = () => CheckResult.IsValid.ShouldBeFalse();
+        It should_have_check_result_of_type_web = () => WebCheckResult.ShouldNotBeNull();
+
+        It should_have_set_values_in_web_check_result = () =>
+        {
+            WebCheckResult.WatcherName.ShouldNotBeEmpty();
+            WebCheckResult.WatcherType.ShouldNotBeNull();
+            WebCheckResult.Uri.ShouldNotBeNull();
+            WebCheckResult.Request.ShouldNotBeNull();
+            WebCheckResult.Response.ShouldNotBeNull();
+        };
     }
 }

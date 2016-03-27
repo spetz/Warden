@@ -96,7 +96,7 @@ namespace Sentry.Tests.Watchers.MongoDb
                 Moq.It.IsAny<string>(), Moq.It.IsAny<string>()), Times.Once);
 
         It should_have_valid_check_result = () => CheckResult.IsValid.ShouldBeTrue();
-        It should_have_check_result_of_type_mssql = () => MongoDbCheckResult.ShouldNotBeNull();
+        It should_have_check_result_of_type_mongodb = () => MongoDbCheckResult.ShouldNotBeNull();
 
         It should_have_set_values_in_mongodb_check_result = () =>
         {
@@ -145,7 +145,7 @@ namespace Sentry.Tests.Watchers.MongoDb
                 Moq.It.IsAny<string>(), Moq.It.IsAny<string>()), Times.Once);
 
         It should_have_valid_check_result = () => CheckResult.IsValid.ShouldBeTrue();
-        It should_have_check_result_of_type_mssql = () => MongoDbCheckResult.ShouldNotBeNull();
+        It should_have_check_result_of_type_mongodb = () => MongoDbCheckResult.ShouldNotBeNull();
 
         It should_have_set_values_in_mongodb_check_result = () =>
         {
@@ -193,7 +193,7 @@ namespace Sentry.Tests.Watchers.MongoDb
                 Moq.It.IsAny<string>(), Moq.It.IsAny<string>()), Times.Once);
 
         It should_have_valid_check_result = () => CheckResult.IsValid.ShouldBeTrue();
-        It should_have_check_result_of_type_mssql = () => MongoDbCheckResult.ShouldNotBeNull();
+        It should_have_check_result_of_type_mongodb = () => MongoDbCheckResult.ShouldNotBeNull();
 
         It should_have_set_values_in_mongodb_check_result = () =>
         {
@@ -242,7 +242,7 @@ namespace Sentry.Tests.Watchers.MongoDb
                 Moq.It.IsAny<string>(), Moq.It.IsAny<string>()), Times.Once);
 
         It should_have_invalid_check_result = () => CheckResult.IsValid.ShouldBeFalse();
-        It should_have_check_result_of_type_mssql = () => MongoDbCheckResult.ShouldNotBeNull();
+        It should_have_check_result_of_type_mongodb = () => MongoDbCheckResult.ShouldNotBeNull();
 
         It should_have_set_values_in_mongodb_check_result = () =>
         {
@@ -290,7 +290,7 @@ namespace Sentry.Tests.Watchers.MongoDb
                 Moq.It.IsAny<string>(), Moq.It.IsAny<string>()), Times.Once);
 
         It should_have_invalid_check_result = () => CheckResult.IsValid.ShouldBeFalse();
-        It should_have_check_result_of_type_mssql = () => MongoDbCheckResult.ShouldNotBeNull();
+        It should_have_check_result_of_type_mongodb = () => MongoDbCheckResult.ShouldNotBeNull();
 
         It should_have_set_values_in_mongodb_check_result = () =>
         {

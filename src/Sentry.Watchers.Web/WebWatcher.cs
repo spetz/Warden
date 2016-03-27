@@ -36,7 +36,8 @@ namespace Sentry.Watchers.Web
                 var isValid = HasValidResponse(response);
                 if (!isValid)
                 {
-                    return WatcherCheckResult.Create(this, false,
+                    return WebWatcherCheckResult.Create(this, false,
+                        _configuration.Uri, _configuration.Request, response,
                         $"Web endpoint: '{fullUrl}' has returned an invalid response with status code: {response.StatusCode}.");
                 }
 
