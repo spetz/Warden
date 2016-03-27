@@ -1,4 +1,4 @@
-# Sentry
+# **[Sentry](https://github.com/spetz/sentry)**
 
 [![Build status](https://ci.appveyor.com/api/projects/status/47l3ldatuj526tf5/branch/master?svg=true)](https://ci.appveyor.com/project/spetz/sentry/branch/master)
 
