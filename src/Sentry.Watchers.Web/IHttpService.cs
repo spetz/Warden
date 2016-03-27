@@ -7,11 +7,24 @@ using System.Threading.Tasks;
 
 namespace Sentry.Watchers.Web
 {
+    /// <summary>
+    /// Custom HTTP service for executing the requests.
+    /// </summary>
     public interface IHttpService
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="baseUrl">Base URL of the request (e.g. http://www.example.com)</param>
+        /// <param name="request">Instance of the IHttpRequest that contains request details (method type, headers, etc.).</param>
+        /// <param name="timeout">Optional timeout for the request.</param>
+        /// <returns>Instance of IHttpResponse.</returns>
         Task<IHttpResponse> ExecuteAsync(string baseUrl, IHttpRequest request, TimeSpan? timeout = null);
     }
 
+    /// <summary>
+    /// Default implementation of the IHttpService based on HtpClient.
+    /// </summary>
     public class HttpService : IHttpService
     {
         private readonly HttpClient _client;

@@ -39,7 +39,7 @@ namespace Sentry
         }
 
         /// <summary>
-        /// Factory method for creating a new intance of ISentryCheckResult.
+        /// Factory method for creating a new instance of ISentryCheckResult.
         /// </summary>
         /// <returns>Instance of ISentryCheckResult.</returns>
         public static ISentryCheckResult Create(IWatcherCheckResult watcherCheckResult, DateTime startedAt,

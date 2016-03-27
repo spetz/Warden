@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Sentry.Core
 {
     /// <summary>
-    /// Custom extension methods
+    /// Custom extension methods.
     /// </summary>
     public static class Extensions
     {

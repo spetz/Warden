@@ -31,7 +31,7 @@ namespace Sentry.Core
         }
 
         /// <summary>
-        /// Factory method for creating a new intance of fluent builder for the IterationProcessorConfiguration.
+        /// Factory method for creating a new instance of fluent builder for the IterationProcessorConfiguration.
         /// </summary>
         /// <returns>Instance of fluent builder for the IterationProcessorConfiguration.</returns>
         public static Builder Create() => new Builder();

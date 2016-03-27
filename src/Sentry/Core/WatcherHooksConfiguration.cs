@@ -125,7 +125,7 @@ namespace Sentry.Core
         public static WatcherHooksConfiguration Empty => new WatcherHooksConfiguration();
 
         /// <summary>
-        /// Factory method for creating a new intance of fluent builder for the WatcherHooksConfiguration.
+        /// Factory method for creating a new instance of fluent builder for the WatcherHooksConfiguration.
         /// </summary>
         /// <returns>Instance of fluent builder for the WatcherHooksConfiguration.</returns>
         public static Builder Create() => new Builder();

@@ -27,7 +27,7 @@ namespace Sentry.Core
         }
 
         /// <summary>
-        /// Factory method for creating a new intance of fluent builder for the WatcherConfiguration.
+        /// Factory method for creating a new instance of fluent builder for the WatcherConfiguration.
         /// </summary>
         /// <returns>Instance of fluent builder for the WatcherConfiguration.</returns>
         public static Builder Create(IWatcher watcher) => new Builder(watcher);

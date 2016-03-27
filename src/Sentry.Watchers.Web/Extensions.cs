@@ -1,5 +1,8 @@
 ﻿namespace Sentry.Watchers.Web
 {
+    /// <summary>
+    /// Custom extension methods for the Web watcher.
+    /// </summary>
     public static class Extensions
     {
         public static string GetFullUrl(this IHttpRequest request, string baseUrl)

@@ -95,7 +95,7 @@ namespace Sentry.Core
         public static Builder Create() => new Builder();
 
         /// <summary>
-        /// Factory method for creating a new intance of fluent builder for the SentryHooksConfiguration.
+        /// Factory method for creating a new instance of fluent builder for the SentryHooksConfiguration.
         /// </summary>
         /// <returns>Instance of fluent builder for the SentryHooksConfiguration.</returns>
         public class Builder

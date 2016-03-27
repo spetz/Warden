@@ -4,6 +4,9 @@ using Sentry.Core;
 
 namespace Sentry.Watchers.Web
 {
+    /// <summary>
+    /// WebWatcher designed for website or API monitoring.
+    /// </summary>
     public class WebWatcher : IWatcher
     {
         private readonly WebWatcherConfiguration _configuration;
@@ -67,6 +70,14 @@ namespace Sentry.Watchers.Web
         private bool HasValidResponse(IHttpResponse response)
             => response.IsValid || _configuration.SkipStatusCodeValidation;
 
+        /// <summary>
+        /// Factory method for creating a new instance of WebWatcher.
+        /// </summary>
+        /// <param name="name">Name of the WebWatcher.</param>
+        /// <param name="url">Base URL of the request.</param>
+        /// <param name="request">Instance of IHttpRequest.</param>
+        /// <param name="configurator">Optional lambda expression for configuring the WebWatcher.</param>
+        /// <returns>Instance of WebWatcher.</returns>
         public static WebWatcher Create(string name, string url, IHttpRequest request,
             Action<WebWatcherConfiguration.Default> configurator = null)
         {
@@ -76,6 +87,10 @@ namespace Sentry.Watchers.Web
             return Create(name, config.Build());
         }
 
+        /// <summary>
+        /// Factory method for creating a new instance of WebWatcher.
+        /// </summary>
+        /// <returns>Instance of WebWatcher.</returns>
         public static WebWatcher Create(string name, WebWatcherConfiguration configuration)
             => new WebWatcher(name, configuration);
     }
