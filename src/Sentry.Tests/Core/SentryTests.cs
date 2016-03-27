@@ -5,7 +5,7 @@ using Moq;
 using Sentry.Core;
 using It = Machine.Specifications.It;
 
-namespace Sentry.Tests.Unit.Core
+namespace Sentry.Tests.Core
 {
     public class Sentry_specs
     {

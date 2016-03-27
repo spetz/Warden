@@ -4,7 +4,7 @@ using Moq;
 using Sentry.Watchers.Web;
 using It = Machine.Specifications.It;
 
-namespace Sentry.Tests.Unit.Watchers.Web
+namespace Sentry.Tests.Watchers.Web
 {
     public class WebWatcher_specs
     {

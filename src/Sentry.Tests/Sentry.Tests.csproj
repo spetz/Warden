@@ -90,10 +90,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Unit\Watchers\MongoDb\MongoDbWatcherTests.cs" />
-    <Compile Include="Unit\Watchers\MsSql\MsSqlWatcherTests.cs" />
-    <Compile Include="Unit\Watchers\Web\WebWatcherTests.cs" />
-    <Compile Include="Unit\Core\SentryTests.cs" />
+    <Compile Include="Watchers\MongoDb\MongoDbWatcherTests.cs" />
+    <Compile Include="Watchers\MsSql\MsSqlWatcherTests.cs" />
+    <Compile Include="Watchers\Web\WebWatcherTests.cs" />
+    <Compile Include="Core\SentryTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -118,8 +118,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Integration\" />
-    <Folder Include="Unit\Watchers\Redis\" />
+    <Folder Include="Watchers\Redis\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

@@ -5,7 +5,7 @@ using Moq;
 using Sentry.Watchers.MongoDb;
 using It = Machine.Specifications.It;
 
-namespace Sentry.Tests.Unit.Watchers.MongoDb
+namespace Sentry.Tests.Watchers.MongoDb
 {
     public class MongoDbWatcher_specs
     {
