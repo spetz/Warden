@@ -48,6 +48,7 @@
     <Compile Include="MsSqlWatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MsSqlWatcherConfiguration.cs" />
+    <Compile Include="MsSqlWatcherCheckResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sentry\Sentry.csproj">

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Threading.Tasks;
-using Dapper;
 using Sentry.Core;
 
 namespace Sentry.Watchers.MsSql
@@ -37,24 +35,24 @@ namespace Sentry.Watchers.MsSql
                 {
                     connection.Open();
                     if (string.IsNullOrWhiteSpace(_configuration.Query))
-                        return WatcherCheckResult.Create(this, true);
+                        return MsSqlWatcherCheckResult.Create(this, true, _configuration.ConnectionString);
 
-                    var result = await _msSql.QueryAsync(connection, _configuration.Query,
+                    var queryResult = await _msSql.QueryAsync(connection, _configuration.Query,
                         _configuration.QueryParameters, _configuration.Timeout);
 
-                    var collection = result.ToList();
                     var isValid = true;
                     if (_configuration.EnsureThatAsync != null)
-                        isValid = await _configuration.EnsureThatAsync?.Invoke(collection);
+                        isValid = await _configuration.EnsureThatAsync?.Invoke(queryResult);
 
-                    isValid = isValid && (_configuration.EnsureThat?.Invoke(collection) ?? true);
+                    isValid = isValid && (_configuration.EnsureThat?.Invoke(queryResult) ?? true);
 
-                    return WatcherCheckResult.Create(this, isValid);
+                    return MsSqlWatcherCheckResult.Create(this, isValid, _configuration.ConnectionString,
+                        _configuration.Query, queryResult);
                 }
             }
             catch (SqlException ex)
             {
-                return WatcherCheckResult.Create(this, false, ex.Message);
+                return MsSqlWatcherCheckResult.Create(this, false, _configuration.ConnectionString, ex.Message);
             }
             catch (Exception ex)
             {
@@ -66,7 +64,7 @@ namespace Sentry.Watchers.MsSql
             Action<MsSqlWatcherConfiguration.Default> configurator = null)
         {
             var config = new MsSqlWatcherConfiguration.Builder(connectionString);
-            configurator?.Invoke((MsSqlWatcherConfiguration.Default)config);
+            configurator?.Invoke((MsSqlWatcherConfiguration.Default) config);
 
             return Create(name, config.Build());
         }

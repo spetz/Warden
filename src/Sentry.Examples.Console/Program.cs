@@ -46,7 +46,7 @@ namespace Sentry.Examples.Console
                 .WithQuery("select * from users where id = @id", new Dictionary<string, object> {["id"] = 1 })
                 .EnsureThat(users => users.Any(user => user.Name == "admin"))
                 .Build();
-            var mssqlWatcher = MsSqlWatcher.Create("Database watcher", mssqlWatcherConfiguration);
+            var mssqlWatcher = MsSqlWatcher.Create("MSSQL watcher", mssqlWatcherConfiguration);
 
             var apiWatcherConfiguration = WebWatcherConfiguration
                 .Create("http://httpstat.us", HttpRequest.Get("200",

@@ -56,6 +56,7 @@
     <Compile Include="IMongoDbConnection.cs" />
     <Compile Include="MongoDbWatcher.cs" />
     <Compile Include="MongoDbWatcherConfiguration.cs" />
+    <Compile Include="MsSqlWatcherCheckResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
