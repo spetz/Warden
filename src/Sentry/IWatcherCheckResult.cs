@@ -1,8 +1,15 @@
 ﻿namespace Sentry
 {
-
+    /// <summary>
+    /// Holds the information about the watcher check result. 
+    /// That interface is implemented by specific watchers, which allows to pass the custom data. 
+    /// It's a part of the interface defined below, which is used by most of the watcher hooks
+    /// </summary>
     public interface IWatcherCheckResult : IValidatable, IWatcherCheck
     {
+        /// <summary>
+        /// Custom description of the performed watcher check.
+        /// </summary>
         string Description { get; }
     }
 
@@ -17,6 +24,13 @@
             IsValid = isValid;
         }
 
+        /// <summary>
+        /// Factory method for creating a new instance of the IWatcherCheckResult.
+        /// </summary>
+        /// <param name="watcher">Instance of IWatcher.</param>
+        /// <param name="isValid">Flag determining whether the performed check was valid.</param>
+        /// <param name="description">Custom description of the performed check.</param>
+        /// <returns>Instance of IWatcherCheckResult.</returns>
         public static IWatcherCheckResult Create(IWatcher watcher, bool isValid, string description = "")
             => new WatcherCheckResult(watcher, isValid, description);
     }

@@ -4,9 +4,20 @@ using System.Linq;
 
 namespace Sentry
 {
+    /// <summary>
+    /// ISentryIteration has the number (ordinal) of the executed iteration (e.g. 1,2,3 ... N) and the collection of the ISentryCheckResult. 
+    /// For example, let's say you have added 3 watchers this list will then contain 3 elements.
+    /// </summary>
     public interface ISentryIteration : IValidatable, ITimestampable
     {
+        /// <summary>
+        /// Number of the iteration.
+        /// </summary>
         long Ordinal { get; }
+
+        /// <summary>
+        /// Collection containing all of the watcher check results executed in this iteration.
+        /// </summary>
         IEnumerable<ISentryCheckResult> Results { get; }
     }
 
@@ -33,7 +44,15 @@ namespace Sentry
             CompletedAt = completedAt;
         }
 
-        public static SentryIteration Create(long ordinal, IEnumerable<ISentryCheckResult> results,
+        /// <summary>
+        /// Factory method for creating a new instance of the ISentryIteration.
+        /// </summary>
+        /// <param name="ordinal">Number of executed iteration.</param>
+        /// <param name="results">Collection of ISentryCheckResult that were created during the iteration.</param>
+        /// <param name="startedAt">Date and time at which the iteration started.</param>
+        /// <param name="completedAt">Date and time at which the iteration completedAt.</param>
+        /// <returns>Instance of ISentryIteration.</returns>
+        public static ISentryIteration Create(long ordinal, IEnumerable<ISentryCheckResult> results,
             DateTime startedAt, DateTime completedAt)
             => new SentryIteration(ordinal, results, startedAt, completedAt);
     }

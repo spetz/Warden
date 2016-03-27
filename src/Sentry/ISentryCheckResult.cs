@@ -2,11 +2,23 @@
 
 namespace Sentry
 {
+    /// <summary>
+    /// Contains the specific IWatcherCheckResult type and also the dates and times at which the watcher check has been executed. 
+    /// This interface is used by most of the hooks, such as: OnSuccess(), OnSuccessAsync(), OnFirstSuccess(), OnFirstSuccessAsync(), 
+    /// OnFailure(), OnFailureAsync(), OnFirstFailure(), OnFirstFailureAsync(), OnCompleted() and OnCompletedAsync().
+    /// </summary>
     public interface ISentryCheckResult : IValidatable, ITimestampable
     {
+        /// <summary>
+        /// Holds the result of the specific watcher check. 
+        /// Can be casted down to its custom result type in order to get the specialized data.
+        /// </summary>
         IWatcherCheckResult WatcherCheckResult { get; }
     }
 
+    /// <summary>
+    /// Default implementation of ISentryCheckResult.
+    /// </summary>
     public class SentryCheckResult : ISentryCheckResult
     {
         public IWatcherCheckResult WatcherCheckResult { get; }
@@ -26,6 +38,10 @@ namespace Sentry
             CompletedAt = completedAt;
         }
 
+        /// <summary>
+        /// Factory method for creating a new intance of ISentryCheckResult.
+        /// </summary>
+        /// <returns>Instance of ISentryCheckResult.</returns>
         public static ISentryCheckResult Create(IWatcherCheckResult watcherCheckResult, DateTime startedAt,
             DateTime completedAt)
             => new SentryCheckResult(watcherCheckResult, startedAt, completedAt);

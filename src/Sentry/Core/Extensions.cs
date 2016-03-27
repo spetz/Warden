@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Sentry.Core
 {
+    /// <summary>
+    /// Custom extension methods
+    /// </summary>
     public static class Extensions
     {
         public static void Execute(this IEnumerable<Expression<Action>> actions)

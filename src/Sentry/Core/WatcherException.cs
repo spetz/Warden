@@ -2,6 +2,9 @@
 
 namespace Sentry.Core
 {
+    /// <summary>
+    /// Custom class for the exceptions thrown by watchers.
+    /// </summary>
     public class WatcherException : Exception
     {
         public WatcherException()

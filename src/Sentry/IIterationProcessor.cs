@@ -8,6 +8,11 @@ namespace Sentry
 {
     public interface IIterationProcessor
     {
+        /// <summary>
+        /// Run a single iteration (cycle) that will execute all of the watchers and theirs hooks.
+        /// </summary>
+        /// <param name="ordinal">Number (ordinal) of executed iteration</param>
+        /// <returns>Single iteration containing its ordinal and results of all executed watcher checks</returns>
         Task<ISentryIteration> ExecuteAsync(long ordinal);
     }
 
@@ -26,11 +31,20 @@ namespace Sentry
             Error = 3
         }
 
+        /// <summary>
+        /// Initialize a new instance of the IterationProcessor using the provided configuration.
+        /// </summary>
+        /// <param name="configuration">Configuration of IterationProcessor</param>
         public IterationProcessor(IterationProcessorConfiguration configuration)
         {
             _configuration = configuration;
         }
 
+        /// <summary>
+        /// Run a single iteration (cycle) that will execute all of the watchers and theirs hooks.
+        /// </summary>
+        /// <param name="ordinal">Number (ordinal) of executed iteration</param>
+        /// <returns>Single iteration containing its ordinal and results of all executed watcher checks</returns>
         public async Task<ISentryIteration> ExecuteAsync(long ordinal)
         {
             var iterationStartedAt = _configuration.DateTimeProvider();

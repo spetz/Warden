@@ -2,12 +2,20 @@
 
 namespace Sentry.Core
 {
+    /// <summary>
+    /// Internal configuration of the watchers used by Sentry.
+    /// </summary>
     public class WatcherConfiguration
     {
+        /// <summary>
+        /// Instance of configured watcher.
+        /// </summary>
         public IWatcher Watcher { get; protected set; }
-        public WatcherHooksConfiguration Hooks { get; protected set; }
 
-        public static Builder Create(IWatcher watcher) => new Builder(watcher);
+        /// <summary>
+        /// Optional hooks specific for the configured watcher.
+        /// </summary>
+        public WatcherHooksConfiguration Hooks { get; protected set; }
 
         protected WatcherConfiguration(IWatcher watcher)
         {
@@ -18,6 +26,16 @@ namespace Sentry.Core
             Hooks = WatcherHooksConfiguration.Empty;
         }
 
+        /// <summary>
+        /// Factory method for creating a new intance of fluent builder for the WatcherConfiguration.
+        /// </summary>
+        /// <returns>Instance of fluent builder for the WatcherConfiguration.</returns>
+        public static Builder Create(IWatcher watcher) => new Builder(watcher);
+
+        /// <summary>
+        /// Fluent builder for the WatcherConfiguration.
+        /// </summary>
+        /// <returns>Instance of fluent builder for the WatcherConfiguration.</returns>
         public class Builder
         {
             private readonly WatcherConfiguration _configuration;
@@ -27,6 +45,11 @@ namespace Sentry.Core
                 _configuration = new WatcherConfiguration(watcher);
             }
 
+            /// <summary>
+            /// Sets hooks specific for the particular watcher.
+            /// </summary>
+            /// <param name="hooks">Lambda expression for configuring the watcher hooks.</param>
+            /// <returns>Instance of fluent builder for the WatcherConfiguration.</returns>
             public Builder WithHooks(WatcherHooksConfiguration hooks)
             {
                 _configuration.Hooks = hooks;
@@ -34,10 +57,11 @@ namespace Sentry.Core
                 return this;
             }
 
-            public WatcherConfiguration Build()
-            {
-                return _configuration;
-            }
+            /// <summary>
+            /// Builds the WatcherConfiguration and return its instance.
+            /// </summary>
+            /// <returns>Instance of WatcherConfiguration.</returns>
+            public WatcherConfiguration Build() => _configuration;
         }
     }
 }

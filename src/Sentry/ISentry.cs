@@ -6,8 +6,22 @@ namespace Sentry
 {
     public interface ISentry
     {
+        /// <summary>
+        /// Start the Sentry. It will be running iterations in a loop (infinite by default but can bo changed) and executing all of the configured hooks.
+        /// </summary>
+        /// <returns></returns>
         Task StartAsync();
+
+        /// <summary>
+        /// Pause the Sentry. It will not reset the current iteration number (ordinal) back to 1. Can be resumed by invoking StartAsync().
+        /// </summary>
+        /// <returns></returns>
         Task PauseAsync();
+
+        /// <summary>
+        /// Stop the Sentry. It will reset the current iteration number (ordinal) back to 1. Can be resumed by invoking StartAsync().
+        /// </summary>
+        /// <returns></returns>
         Task StopAsync();
     }
 
@@ -16,7 +30,10 @@ namespace Sentry
         private readonly SentryConfiguration _configuration;
         private long _iterationOrdinal = 1;
         private bool _running = false;
-
+        /// <summary>
+        /// Initialize a new instance of the Sentry using the provided configuration.
+        /// </summary>
+        /// <param name="configuration">Configuration of Sentry</param>
         public Sentry(SentryConfiguration configuration)
         {
             if (configuration == null)
@@ -25,11 +42,17 @@ namespace Sentry
             _configuration = configuration;
         }
 
+        /// <summary>
+        /// Start the Sentry. 
+        /// It will be running iterations in a loop (infinite by default but can bo changed) and executing all of the configured hooks.
+        /// </summary>
+        /// <returns></returns>
         public async Task StartAsync()
         {
             _running = true;
             _configuration.Hooks.OnStart.Execute();
             await _configuration.Hooks.OnStartAsync.ExecuteAsync();
+            var iterationProcessor = _configuration.IterationProcessor();
 
             try
             {
@@ -37,7 +60,7 @@ namespace Sentry
                 {
                     _configuration.Hooks.OnIterationStart.Execute(_iterationOrdinal);
                     await _configuration.Hooks.OnIterationStartAsync.ExecuteAsync(_iterationOrdinal);
-                    var iteration = await _configuration.IterationProcessor.ExecuteAsync(_iterationOrdinal);
+                    var iteration = await iterationProcessor.ExecuteAsync(_iterationOrdinal);
                     _configuration.Hooks.OnIterationCompleted.Execute(iteration);
                     await _configuration.Hooks.OnIterationCompletedAsync.ExecuteAsync(iteration);
                     var canExecuteNextIteration = CanExecuteIteration(_iterationOrdinal + 1);
@@ -67,6 +90,11 @@ namespace Sentry
             return false;
         }
 
+        /// <summary>
+        /// Pause the Sentry. 
+        /// It will not reset the current iteration number (ordinal) back to 1. Can be resumed by invoking StartAsync().
+        /// </summary>
+        /// <returns></returns>
         public async Task PauseAsync()
         {
             _running = false;
@@ -74,6 +102,11 @@ namespace Sentry
             await _configuration.Hooks.OnPauseAsync.ExecuteAsync();
         }
 
+        /// <summary>
+        /// Stop the Sentry. 
+        /// It will reset the current iteration number (ordinal) back to 1. Can be resumed by invoking StartAsync().
+        /// </summary>
+        /// <returns></returns>
         public async Task StopAsync()
         {
             _running = false;
@@ -82,8 +115,18 @@ namespace Sentry
             await _configuration.Hooks.OnStopAsync.ExecuteAsync();
         }
 
+        /// <summary>
+        /// Factory method for creating a new Sentry instance with provided configuration.
+        /// </summary>
+        /// <param name="configuration">Configuration of Sentry.</param>
+        /// <returns>Instance of ISentry.</returns>
         public static ISentry Create(SentryConfiguration configuration) => new Sentry(configuration);
 
+        /// <summary>
+        /// Factory method for creating a new Sentry instance, for which the configuration can be provided via the lambda expression.
+        /// </summary>
+        /// <param name="configuration">Lambda expression to build configuration of Sentry</param>
+        /// <returns>Instance of ISentry.</returns>
         public static ISentry Create(Action<SentryConfiguration.Builder> configuration)
         {
             var config = new SentryConfiguration.Builder();
