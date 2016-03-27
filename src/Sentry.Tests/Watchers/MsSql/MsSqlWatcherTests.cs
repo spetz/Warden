@@ -43,7 +43,7 @@ namespace Sentry.Tests.Watchers.MsSql
     }
 
     [Subject("MSSQL watcher execution")]
-    public class when_invoking_execute_async_method_without_query : MsSqlWatcher_specs
+    public class when_invoking_execute_async_without_query : MsSqlWatcher_specs
     {
         static Mock<IMsSql> MsSqlMock;
         static Mock<IDbConnection> DbConnectionMock;
@@ -86,7 +86,7 @@ namespace Sentry.Tests.Watchers.MsSql
     }
 
     [Subject("MSSQL watcher execution")]
-    public class when_invoking_execute_async_method_with_query : MsSqlWatcher_specs
+    public class when_invoking_execute_async_with_query : MsSqlWatcher_specs
     {
         static Mock<IMsSql> MsSqlMock;
         static Mock<IDbConnection> DbConnectionMock;
@@ -133,7 +133,7 @@ namespace Sentry.Tests.Watchers.MsSql
     }
 
     [Subject("MSSQL watcher execution")]
-    public class when_invoking_open_connection_method_that_fails : MsSqlWatcher_specs
+    public class when_invoking_open_connection_that_fails : MsSqlWatcher_specs
     {
         static Mock<IMsSql> MsSqlMock;
         static Mock<IDbConnection> DbConnectionMock;
@@ -159,7 +159,7 @@ namespace Sentry.Tests.Watchers.MsSql
     }
 
     [Subject("MSSQL watcher execution")]
-    public class when_invoking_query_async_method_that_fails : MsSqlWatcher_specs
+    public class when_invoking_query_async_that_fails : MsSqlWatcher_specs
     {
         static Mock<IMsSql> MsSqlMock;
         static Mock<IDbConnection> DbConnectionMock;
@@ -295,7 +295,7 @@ namespace Sentry.Tests.Watchers.MsSql
 
 
     [Subject("MSSQL watcher execution")]
-    public class when_invoking_ensure_predicate_that_is_not_valid : MsSqlWatcher_specs
+    public class when_invoking_ensure_predicate_that_is_invalid : MsSqlWatcher_specs
     {
         static Mock<IMsSql> MsSqlMock;
         static Mock<IDbConnection> DbConnectionMock;
@@ -344,7 +344,7 @@ namespace Sentry.Tests.Watchers.MsSql
     }
 
     [Subject("MSSQL watcher execution")]
-    public class when_invoking_ensure_async_predicate_that_is_not_valid : MsSqlWatcher_specs
+    public class when_invoking_ensure_async_predicate_that_is_invalid : MsSqlWatcher_specs
     {
         static Mock<IMsSql> MsSqlMock;
         static Mock<IDbConnection> DbConnectionMock;
