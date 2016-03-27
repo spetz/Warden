@@ -3,7 +3,7 @@
 namespace Sentry.Watchers.Web
 {
     /// <summary>
-    /// Custom check result type for WebWatcher
+    /// Custom check result type for WebWatcher.
     /// </summary>
     public class WebWatcherCheckResult : WatcherCheckResult
     {
@@ -39,7 +39,7 @@ namespace Sentry.Watchers.Web
         /// <param name="request">Instance of IHttpRequest.</param>
         /// <param name="response">Instance of IHttpResponse.</param>
         /// <param name="description">Custom description of the performed check.</param>
-        /// <returns>Instance of WebWatcher.</returns>
+        /// <returns>Instance of WebWatcherCheckResult.</returns>
         public static WebWatcherCheckResult Create(IWatcher watcher, bool isValid, Uri uri,
             IHttpRequest request, IHttpResponse response, string description = "")
             => new WebWatcherCheckResult(watcher, isValid, description, uri, request, response);

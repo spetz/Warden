@@ -90,6 +90,8 @@ namespace Sentry.Watchers.Web
         /// <summary>
         /// Factory method for creating a new instance of WebWatcher.
         /// </summary>
+        /// <param name="name">Name of the WebWatcher.</param>
+        /// <param name="configuration">Configuration of WebWatcher.</param>
         /// <returns>Instance of WebWatcher.</returns>
         public static WebWatcher Create(string name, WebWatcherConfiguration configuration)
             => new WebWatcher(name, configuration);

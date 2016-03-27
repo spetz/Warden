@@ -13,7 +13,7 @@ namespace Sentry.Watchers.Web
     public interface IHttpService
     {
         /// <summary>
-        /// 
+        /// Executes the HTTP request and returns an instance of the IHttpResponse.
         /// </summary>
         /// <param name="baseUrl">Base URL of the request (e.g. http://www.example.com)</param>
         /// <param name="request">Instance of the IHttpRequest that contains request details (method type, headers, etc.).</param>

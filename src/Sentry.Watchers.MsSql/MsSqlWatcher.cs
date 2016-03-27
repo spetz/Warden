@@ -5,6 +5,9 @@ using Sentry.Core;
 
 namespace Sentry.Watchers.MsSql
 {
+    /// <summary>
+    /// MsSqlWatcher designed for MSSQL monitoring.
+    /// </summary>
     public class MsSqlWatcher : IWatcher
     {
         private readonly IMsSql _msSql;
@@ -24,7 +27,7 @@ namespace Sentry.Watchers.MsSql
 
             Name = name;
             _configuration = configuration;
-            _msSql = _configuration.MsSqlServiceProvider();
+            _msSql = _configuration.MsSqlProvider();
         }
 
         public async Task<IWatcherCheckResult> ExecuteAsync()
@@ -38,7 +41,7 @@ namespace Sentry.Watchers.MsSql
                         return MsSqlWatcherCheckResult.Create(this, true, _configuration.ConnectionString);
 
                     var queryResult = await _msSql.QueryAsync(connection, _configuration.Query,
-                        _configuration.QueryParameters, _configuration.Timeout);
+                        _configuration.QueryParameters, _configuration.QueryTimeout);
 
                     var isValid = true;
                     if (_configuration.EnsureThatAsync != null)
@@ -60,6 +63,13 @@ namespace Sentry.Watchers.MsSql
             }
         }
 
+        /// <summary>
+        /// Factory method for creating a new instance of MsSqlWatcher.
+        /// </summary>
+        /// <param name="name">Name of the MsSqlWatcher.</param>
+        /// <param name="connectionString">Connection string of the MSSQL databse.</param>
+        /// <param name="configurator">Optional lambda expression for configuring the MsSqlWatcher.</param>
+        /// <returns>Instance of MsSqlWatcher.</returns>
         public static MsSqlWatcher Create(string name, string connectionString,
             Action<MsSqlWatcherConfiguration.Default> configurator = null)
         {
@@ -69,6 +79,12 @@ namespace Sentry.Watchers.MsSql
             return Create(name, config.Build());
         }
 
+        /// <summary>
+        /// Factory method for creating a new instance of MsSqlWatcher.
+        /// </summary>
+        /// <param name="name">Name of the MsSqlWatcher.</param>
+        /// <param name="configuration">Configuration of MsSqlWatcher.</param>
+        /// <returns>Instance of MsSqlWatcher.</returns>
         public static MsSqlWatcher Create(string name, MsSqlWatcherConfiguration configuration)
             => new MsSqlWatcher(name, configuration);
     }

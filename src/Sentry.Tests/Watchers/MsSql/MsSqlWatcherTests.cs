@@ -55,7 +55,7 @@ namespace Sentry.Tests.Watchers.MsSql
             Configuration = MsSqlWatcherConfiguration
                 .Create(ConnectionString)
                 .WithConnectionProvider(connectionString => DbConnectionMock.Object)
-                .WithMsSqlServiceProvider(() => MsSqlMock.Object)
+                .WithMsSqlProvider(() => MsSqlMock.Object)
                 .Build();
             Watcher = MsSqlWatcher.Create("MSSQL watcher", Configuration);
         };
@@ -102,7 +102,7 @@ namespace Sentry.Tests.Watchers.MsSql
                 .Create(ConnectionString)
                 .WithQuery("select * from users")
                 .WithConnectionProvider(connectionString => DbConnectionMock.Object)
-                .WithMsSqlServiceProvider(() => MsSqlMock.Object)
+                .WithMsSqlProvider(() => MsSqlMock.Object)
                 .Build();
             Watcher = MsSqlWatcher.Create("MSSQL watcher", Configuration);
         };
@@ -147,7 +147,7 @@ namespace Sentry.Tests.Watchers.MsSql
                 .Create(ConnectionString)
                 .WithQuery("select * from users")
                 .WithConnectionProvider(connectionString => DbConnectionMock.Object)
-                .WithMsSqlServiceProvider(() => MsSqlMock.Object)
+                .WithMsSqlProvider(() => MsSqlMock.Object)
                 .Build();
             Watcher = MsSqlWatcher.Create("MSSQL watcher", Configuration);
         };
@@ -175,7 +175,7 @@ namespace Sentry.Tests.Watchers.MsSql
                 .Create(ConnectionString)
                 .WithQuery("select * from users")
                 .WithConnectionProvider(connectionString => DbConnectionMock.Object)
-                .WithMsSqlServiceProvider(() => MsSqlMock.Object)
+                .WithMsSqlProvider(() => MsSqlMock.Object)
                 .Build();
             Watcher = MsSqlWatcher.Create("MSSQL watcher", Configuration);
         };
@@ -213,7 +213,7 @@ namespace Sentry.Tests.Watchers.MsSql
                 .WithQuery("select * from users")
                 .EnsureThat(users => users.Any(user => user.id == 1))
                 .WithConnectionProvider(connectionString => DbConnectionMock.Object)
-                .WithMsSqlServiceProvider(() => MsSqlMock.Object)
+                .WithMsSqlProvider(() => MsSqlMock.Object)
                 .Build();
             Watcher = MsSqlWatcher.Create("MSSQL watcher", Configuration);
         };
@@ -262,7 +262,7 @@ namespace Sentry.Tests.Watchers.MsSql
                 .WithQuery("select * from users")
                 .EnsureThatAsync(users => Task.Factory.StartNew(() => users.Any(user => user.id == 1)))
                 .WithConnectionProvider(connectionString => DbConnectionMock.Object)
-                .WithMsSqlServiceProvider(() => MsSqlMock.Object)
+                .WithMsSqlProvider(() => MsSqlMock.Object)
                 .Build();
             Watcher = MsSqlWatcher.Create("MSSQL watcher", Configuration);
         };
@@ -312,7 +312,7 @@ namespace Sentry.Tests.Watchers.MsSql
                 .WithQuery("select * from users")
                 .EnsureThat(users => users.Any(user => user.id == 100))
                 .WithConnectionProvider(connectionString => DbConnectionMock.Object)
-                .WithMsSqlServiceProvider(() => MsSqlMock.Object)
+                .WithMsSqlProvider(() => MsSqlMock.Object)
                 .Build();
             Watcher = MsSqlWatcher.Create("MSSQL watcher", Configuration);
         };
@@ -361,7 +361,7 @@ namespace Sentry.Tests.Watchers.MsSql
                 .WithQuery("select * from users")
                 .EnsureThatAsync(users => Task.Factory.StartNew(() => users.Any(user => user.id == 100)))
                 .WithConnectionProvider(connectionString => DbConnectionMock.Object)
-                .WithMsSqlServiceProvider(() => MsSqlMock.Object)
+                .WithMsSqlProvider(() => MsSqlMock.Object)
                 .Build();
             Watcher = MsSqlWatcher.Create("MSSQL watcher", Configuration);
         };

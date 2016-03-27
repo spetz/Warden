@@ -6,7 +6,7 @@ using Sentry.Core;
 namespace Sentry.Watchers.Web
 {
     /// <summary>
-    /// Configuration of the hooks for the WebWatcher.
+    /// Configuration of the WebWatcher.
     /// </summary>
     public class WebWatcherConfiguration
     {
@@ -164,9 +164,9 @@ namespace Sentry.Watchers.Web
             }
 
             /// <summary>
-            /// Sets the custom provider fot the IHttpService.
+            /// Sets the custom provider for the IHttpService.
             /// </summary>
-            /// <param name="httpServiceProvider">Custom provider fot the </param>
+            /// <param name="httpServiceProvider">Custom provider for the IHttpService.</param>
             /// <returns>Lambda expression returning an instance of the IHttpService.</returns>
             /// <returns>Instance of fluent builder for the WebWatcherConfiguration.</returns>
             public T WithHttpServiceProvider(Func<IHttpService> httpServiceProvider)
