@@ -2,8 +2,8 @@
 {
     /// <summary>
     /// Holds the information about the watcher check result. 
-    /// That interface is implemented by specific watchers, which allows to pass the custom data. 
-    /// It's a part of the interface defined below, which is used by most of the watcher hooks
+    /// This interface is implemented by the specific watchers which allows to pass the custom data. 
+    /// It's being used by most of the watcher hooks.
     /// </summary>
     public interface IWatcherCheckResult : IValidatable, IWatcherCheck
     {

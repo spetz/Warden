@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentry.Watchers.MongoDb", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentry.Watchers.Web", "Sentry.Watchers.Web\Sentry.Watchers.Web.csproj", "{D372FDD0-C172-4486-B8BE-1BCF33DBAFF9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentry.Watchers.Redis", "Sentry.Watchers.Redis\Sentry.Watchers.Redis.csproj", "{866489F8-7CFA-40CD-9BF7-4990FC97D383}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{D372FDD0-C172-4486-B8BE-1BCF33DBAFF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D372FDD0-C172-4486-B8BE-1BCF33DBAFF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D372FDD0-C172-4486-B8BE-1BCF33DBAFF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{866489F8-7CFA-40CD-9BF7-4990FC97D383}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{866489F8-7CFA-40CD-9BF7-4990FC97D383}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{866489F8-7CFA-40CD-9BF7-4990FC97D383}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{866489F8-7CFA-40CD-9BF7-4990FC97D383}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,5 +81,6 @@ Global
 		{5ED102ED-B897-4B97-AE8C-A1E4AA37CCFC} = {A2DFC5AE-3A65-4723-9B32-5FD5B2586606}
 		{C9C8420E-6A1F-4B9D-BB38-291D6F7E0467} = {A2DFC5AE-3A65-4723-9B32-5FD5B2586606}
 		{D372FDD0-C172-4486-B8BE-1BCF33DBAFF9} = {A2DFC5AE-3A65-4723-9B32-5FD5B2586606}
+		{866489F8-7CFA-40CD-9BF7-4990FC97D383} = {A2DFC5AE-3A65-4723-9B32-5FD5B2586606}
 	EndGlobalSection
 EndGlobal
