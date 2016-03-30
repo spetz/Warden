@@ -12,6 +12,17 @@
 
 Sentry is a simple library built to solve the problem of monitoring the resources such as the websites, API, databases, CPU etc. It allows to quickly define the **watchers** responsible for performing checks on a specific resources, and use these information e.g. to alert about any issues related to the possible downtime of your system.
 
+**What kind of monitoring is available?**
+----------------
+Currently available **[watchers](https://github.com/spetz/Sentry/wiki/Watchers)**:
+
+ - **[MongoDB](https://github.com/spetz/Sentry/wiki/Watcher-type-MongoDB)**
+ - **[MSSQL](https://github.com/spetz/Sentry/wiki/Watcher-type-MSSQL)**
+ - **[Redis](https://github.com/spetz/Sentry/wiki/Watcher-type-Redis)**
+ - **[Web](https://github.com/spetz/Sentry/wiki/Watcher-type-Web)**
+
+Please note that many more are coming soon (CPU, Memory, File etc.)
+
 **Is there any documentation?**
 ----------------
 
@@ -20,7 +31,7 @@ Yes, please navigate to the **[wiki](https://github.com/spetz/Sentry/wiki)** pag
 **Quick start**:
 ----------------
 
-Define the **[watchers](https://github.com/spetz/Sentry/wiki/Watchers)** that will monitor your resources. You may choose between the website, API, MSSQL and MongoDB **watchers** - many more are coming soon (Redis, CPU, Memory, File etc.)
+Define the **watchers** that will monitor your resources by using the provided configuration classes.
 ```csharp
 //Define a watcher for the website 
 var websiteWatcherConfiguration = WebWatcherConfiguration
