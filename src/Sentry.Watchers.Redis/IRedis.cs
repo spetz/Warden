@@ -50,6 +50,8 @@ namespace Sentry.Watchers.Redis
             {
                 case "get":
                     return await ExecuteGetAsync(command);
+                case "set":
+                    return await ExecuteSetAsync(command);
                 case "lrange":
                     return await ExecuteLRangeAsync(command);
                 default:
@@ -59,6 +61,9 @@ namespace Sentry.Watchers.Redis
 
         private async Task<IEnumerable<dynamic>> ExecuteGetAsync(Command command)
             => new List<dynamic> {await _database.StringGetAsync(command.Arguments[0])};
+
+        private async Task<IEnumerable<dynamic>> ExecuteSetAsync(Command command)
+            => new List<dynamic> {await _database.StringSetAsync(command.Arguments[0], command.Arguments[1])};
 
         private async Task<IEnumerable<dynamic>> ExecuteLRangeAsync(Command command)
             => new List<dynamic>

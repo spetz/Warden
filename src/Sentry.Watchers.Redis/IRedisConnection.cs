@@ -42,9 +42,13 @@ namespace Sentry.Watchers.Redis
 
         public async Task<IRedis> GetDatabaseAsync(int databaseId)
         {
-            _connectionMultiplexer = await ConnectionMultiplexer.ConnectAsync(ConnectionString);
+            _connectionMultiplexer = await ConnectionMultiplexer.ConnectAsync(new ConfigurationOptions
+            {
+                EndPoints = { ConnectionString},
+                ConnectTimeout = (int)Timeout.TotalMilliseconds
+            });
+
             var database = _connectionMultiplexer.GetDatabase(databaseId);
-            var ping = await database.PingAsync();
 
             return new Redis(database);
         }
