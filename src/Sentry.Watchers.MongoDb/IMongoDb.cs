@@ -13,11 +13,10 @@ namespace Sentry.Watchers.MongoDb
         /// <summary>
         /// Executes the MongoDB query and returns a collection of the dynamic results.
         /// </summary>
-        /// <param name="connection">Instance of IMongoDbConnection.</param>
         /// <param name="collection">Name of the collection in selected MongoDB database.</param>
         /// <param name="query">MongoDB query.</param>
         /// <returns></returns>
-        Task<IEnumerable<dynamic>> QueryAsync(IMongoDbConnection connection, string collection, string query);
+        Task<IEnumerable<dynamic>> QueryAsync(string collection, string query);
     }
 
     /// <summary>
@@ -32,8 +31,7 @@ namespace Sentry.Watchers.MongoDb
             _database = database;
         }
 
-        public async Task<IEnumerable<dynamic>> QueryAsync(IMongoDbConnection connection, string collection,
-            string query)
+        public async Task<IEnumerable<dynamic>> QueryAsync(string collection, string query)
         {
             var findQuery = MongoDB.Bson.Serialization.BsonSerializer.Deserialize<BsonDocument>(query);
             var result = await _database.GetCollection<dynamic>(collection).FindAsync(findQuery);

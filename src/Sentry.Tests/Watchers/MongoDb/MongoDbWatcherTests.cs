@@ -71,8 +71,8 @@ namespace Sentry.Tests.Watchers.MongoDb
         {
             MongoDbConnectionMock = new Mock<IMongoDbConnection>();
             MongoDbMock = new Mock<IMongoDb>();
-            MongoDbMock.Setup(x => x.QueryAsync(Moq.It.IsAny<IMongoDbConnection>(),
-                Moq.It.IsAny<string>(), Moq.It.IsAny<string>())).ReturnsAsync(QueryResult);
+            MongoDbMock.Setup(x => x.QueryAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))
+                .ReturnsAsync(QueryResult);
             MongoDbConnectionMock.Setup(x => x.GetDatabaseAsync()).ReturnsAsync(MongoDbMock.Object);
             Configuration = MongoDbWatcherConfiguration
                 .Create(Database, ConnectionString)
@@ -92,8 +92,7 @@ namespace Sentry.Tests.Watchers.MongoDb
             () => MongoDbConnectionMock.Verify(x => x.GetDatabaseAsync(), Times.Once);
 
         It should_invoke_query_async_method_only_once =
-            () => MongoDbMock.Verify(x => x.QueryAsync(Moq.It.IsAny<IMongoDbConnection>(),
-                Moq.It.IsAny<string>(), Moq.It.IsAny<string>()), Times.Once);
+            () => MongoDbMock.Verify(x => x.QueryAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()), Times.Once);
 
         It should_have_valid_check_result = () => CheckResult.IsValid.ShouldBeTrue();
         It should_have_check_result_of_type_mongodb = () => MongoDbCheckResult.ShouldNotBeNull();
@@ -118,8 +117,8 @@ namespace Sentry.Tests.Watchers.MongoDb
         {
             MongoDbConnectionMock = new Mock<IMongoDbConnection>();
             MongoDbMock = new Mock<IMongoDb>();
-            MongoDbMock.Setup(x => x.QueryAsync(Moq.It.IsAny<IMongoDbConnection>(),
-                Moq.It.IsAny<string>(), Moq.It.IsAny<string>())).ReturnsAsync(QueryResult);
+            MongoDbMock.Setup(x => x.QueryAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))
+                .ReturnsAsync(QueryResult);
             MongoDbConnectionMock.Setup(x => x.GetDatabaseAsync()).ReturnsAsync(MongoDbMock.Object);
             Configuration = MongoDbWatcherConfiguration
                 .Create(Database, ConnectionString)
@@ -141,8 +140,7 @@ namespace Sentry.Tests.Watchers.MongoDb
             () => MongoDbConnectionMock.Verify(x => x.GetDatabaseAsync(), Times.Once);
 
         It should_invoke_query_async_method_only_once =
-            () => MongoDbMock.Verify(x => x.QueryAsync(Moq.It.IsAny<IMongoDbConnection>(),
-                Moq.It.IsAny<string>(), Moq.It.IsAny<string>()), Times.Once);
+            () => MongoDbMock.Verify(x => x.QueryAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()), Times.Once);
 
         It should_have_valid_check_result = () => CheckResult.IsValid.ShouldBeTrue();
         It should_have_check_result_of_type_mongodb = () => MongoDbCheckResult.ShouldNotBeNull();
@@ -167,8 +165,8 @@ namespace Sentry.Tests.Watchers.MongoDb
         {
             MongoDbConnectionMock = new Mock<IMongoDbConnection>();
             MongoDbMock = new Mock<IMongoDb>();
-            MongoDbMock.Setup(x => x.QueryAsync(Moq.It.IsAny<IMongoDbConnection>(),
-                Moq.It.IsAny<string>(), Moq.It.IsAny<string>())).ReturnsAsync(QueryResult);
+            MongoDbMock.Setup(x => x.QueryAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))
+                .ReturnsAsync(QueryResult);
             MongoDbConnectionMock.Setup(x => x.GetDatabaseAsync()).ReturnsAsync(MongoDbMock.Object);
             Configuration = MongoDbWatcherConfiguration
                 .Create(Database, ConnectionString)
@@ -189,8 +187,7 @@ namespace Sentry.Tests.Watchers.MongoDb
             () => MongoDbConnectionMock.Verify(x => x.GetDatabaseAsync(), Times.Once);
 
         It should_invoke_query_async_method_only_once =
-            () => MongoDbMock.Verify(x => x.QueryAsync(Moq.It.IsAny<IMongoDbConnection>(),
-                Moq.It.IsAny<string>(), Moq.It.IsAny<string>()), Times.Once);
+            () => MongoDbMock.Verify(x => x.QueryAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()), Times.Once);
 
         It should_have_valid_check_result = () => CheckResult.IsValid.ShouldBeTrue();
         It should_have_check_result_of_type_mongodb = () => MongoDbCheckResult.ShouldNotBeNull();
@@ -215,8 +212,8 @@ namespace Sentry.Tests.Watchers.MongoDb
         {
             MongoDbConnectionMock = new Mock<IMongoDbConnection>();
             MongoDbMock = new Mock<IMongoDb>();
-            MongoDbMock.Setup(x => x.QueryAsync(Moq.It.IsAny<IMongoDbConnection>(),
-                Moq.It.IsAny<string>(), Moq.It.IsAny<string>())).ReturnsAsync(QueryResult);
+            MongoDbMock.Setup(x => x.QueryAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))
+                .ReturnsAsync(QueryResult);
             MongoDbConnectionMock.Setup(x => x.GetDatabaseAsync()).ReturnsAsync(MongoDbMock.Object);
             Configuration = MongoDbWatcherConfiguration
                 .Create(Database, ConnectionString)
@@ -238,8 +235,7 @@ namespace Sentry.Tests.Watchers.MongoDb
             () => MongoDbConnectionMock.Verify(x => x.GetDatabaseAsync(), Times.Once);
 
         It should_invoke_query_async_method_only_once =
-            () => MongoDbMock.Verify(x => x.QueryAsync(Moq.It.IsAny<IMongoDbConnection>(),
-                Moq.It.IsAny<string>(), Moq.It.IsAny<string>()), Times.Once);
+            () => MongoDbMock.Verify(x => x.QueryAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()), Times.Once);
 
         It should_have_invalid_check_result = () => CheckResult.IsValid.ShouldBeFalse();
         It should_have_check_result_of_type_mongodb = () => MongoDbCheckResult.ShouldNotBeNull();
@@ -264,8 +260,8 @@ namespace Sentry.Tests.Watchers.MongoDb
         {
             MongoDbConnectionMock = new Mock<IMongoDbConnection>();
             MongoDbMock = new Mock<IMongoDb>();
-            MongoDbMock.Setup(x => x.QueryAsync(Moq.It.IsAny<IMongoDbConnection>(),
-                Moq.It.IsAny<string>(), Moq.It.IsAny<string>())).ReturnsAsync(QueryResult);
+            MongoDbMock.Setup(x => x.QueryAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()))
+                .ReturnsAsync(QueryResult);
             MongoDbConnectionMock.Setup(x => x.GetDatabaseAsync()).ReturnsAsync(MongoDbMock.Object);
             Configuration = MongoDbWatcherConfiguration
                 .Create(Database, ConnectionString)
@@ -286,8 +282,7 @@ namespace Sentry.Tests.Watchers.MongoDb
             () => MongoDbConnectionMock.Verify(x => x.GetDatabaseAsync(), Times.Once);
 
         It should_invoke_query_async_method_only_once =
-            () => MongoDbMock.Verify(x => x.QueryAsync(Moq.It.IsAny<IMongoDbConnection>(),
-                Moq.It.IsAny<string>(), Moq.It.IsAny<string>()), Times.Once);
+            () => MongoDbMock.Verify(x => x.QueryAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<string>()), Times.Once);
 
         It should_have_invalid_check_result = () => CheckResult.IsValid.ShouldBeFalse();
         It should_have_check_result_of_type_mongodb = () => MongoDbCheckResult.ShouldNotBeNull();

@@ -46,8 +46,7 @@ namespace Sentry.Watchers.MongoDb
                         _configuration.ConnectionString);
                 }
 
-                var queryResult = await database.QueryAsync(_connection, _configuration.CollectionName,
-                    _configuration.Query);
+                var queryResult = await database.QueryAsync(_configuration.CollectionName, _configuration.Query);
                 var isValid = true;
                 if (_configuration.EnsureThatAsync != null)
                     isValid = await _configuration.EnsureThatAsync?.Invoke(queryResult);
@@ -74,12 +73,13 @@ namespace Sentry.Watchers.MongoDb
         /// <param name="name">Name of the MongoDbWatcher.</param>
         /// <param name="database">Name of the MongoDB database.</param>
         /// <param name="connectionString">Connection string of the MongoDB server.</param>
+        /// <param name="timeout">Optional timeout of the MongoDB query (5 seconds by default).</param>
         /// <param name="configurator">Optional lambda expression for configuring the MongoDbWatcher.</param>
         /// <returns>Instance of MongoDbWatcher.</returns>
         public static MongoDbWatcher Create(string name, string connectionString, string database,
-            Action<MongoDbWatcherConfiguration.Default> configurator = null)
+            TimeSpan? timeout = null, Action<MongoDbWatcherConfiguration.Default> configurator = null)
         {
-            var config = new MongoDbWatcherConfiguration.Builder(connectionString, database);
+            var config = new MongoDbWatcherConfiguration.Builder(connectionString, database, timeout);
             configurator?.Invoke((MongoDbWatcherConfiguration.Default) config);
 
             return Create(name, config.Build());

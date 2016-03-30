@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Sentry.Core;
+using StackExchange.Redis;
 
 namespace Sentry.Watchers.Redis
 {
@@ -8,7 +10,7 @@ namespace Sentry.Watchers.Redis
     /// </summary>
     public class RedisWatcher : IWatcher
     {
-        private readonly IRedis _redis;
+        private readonly IRedisConnection _connection;
         private readonly RedisWatcherConfiguration _configuration;
         public string Name { get; }
 
@@ -25,12 +27,71 @@ namespace Sentry.Watchers.Redis
 
             Name = name;
             _configuration = configuration;
-            _redis = _configuration.RedisProvider();
+            _connection = _configuration.ConnectionProvider(_configuration.ConnectionString);
         }
 
         public async Task<IWatcherCheckResult> ExecuteAsync()
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                var database = await _connection.GetDatabaseAsync(_configuration.Database) ?? _configuration.RedisProvider();
+                if (database == null)
+                {
+                    return RedisWatcherCheckResult.Create(this, false, _configuration.Database,
+                        _configuration.ConnectionString, $"Database: '{_configuration.Database}' has not been found.");
+                }
+                if (string.IsNullOrWhiteSpace(_configuration.Query))
+                {
+                    return RedisWatcherCheckResult.Create(this, true, _configuration.Database,
+                        _configuration.ConnectionString);
+                }
+
+                var queryResult = await database.QueryAsync(_configuration.Query);
+                var isValid = true;
+                if (_configuration.EnsureThatAsync != null)
+                    isValid = await _configuration.EnsureThatAsync?.Invoke(queryResult);
+
+                isValid = isValid && (_configuration.EnsureThat?.Invoke(queryResult) ?? true);
+
+                return RedisWatcherCheckResult.Create(this, isValid, _configuration.Database,
+                    _configuration.ConnectionString, _configuration.Query, queryResult);
+            }
+            catch (RedisException ex)
+            {
+                return RedisWatcherCheckResult.Create(this, false, _configuration.Database,
+                    _configuration.ConnectionString, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new WatcherException("There was an error while trying to access the Redis.", ex);
+            }
         }
+
+        /// <summary>
+        /// Factory method for creating a new instance of RedisWatcher.
+        /// </summary>
+        /// <param name="name">Name of the RedisWatcher.</param>
+        /// <param name="connectionString">Connection string of the Redis server.</param>
+        /// <param name="database">Id of the Redis database.</param>
+        /// <param name="timeout">Optional timeout of the Redis query (5 seconds by default).</param>
+        /// <param name="configurator">Optional lambda expression for configuring the RedisWatcher.</param>
+        /// <returns>Instance of RedisWatcher.</returns>
+        public static RedisWatcher Create(string name, string connectionString, int database,
+            TimeSpan? timeout = null, Action<RedisWatcherConfiguration.Default> configurator = null)
+        {
+            var config = new RedisWatcherConfiguration.Builder(database, connectionString, timeout);
+            configurator?.Invoke((RedisWatcherConfiguration.Default)config);
+
+            return Create(name, config.Build());
+        }
+
+        /// <summary>
+        /// Factory method for creating a new instance of RedisWatcher.
+        /// </summary>
+        /// <param name="name">Name of the RedisWatcher.</param>
+        /// <param name="configuration">Configuration of RedisWatcher.</param>
+        /// <returns>Instance of RedisWatcher.</returns>
+        public static RedisWatcher Create(string name, RedisWatcherConfiguration configuration)
+            => new RedisWatcher(name, configuration);
     }
 }

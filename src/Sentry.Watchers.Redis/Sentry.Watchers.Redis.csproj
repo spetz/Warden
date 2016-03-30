@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IRedis.cs" />
+    <Compile Include="IRedisConnection.cs" />
     <Compile Include="RedisWatcherCheckResult.cs" />
     <Compile Include="RedisWatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

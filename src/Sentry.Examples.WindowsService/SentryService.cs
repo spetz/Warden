@@ -7,6 +7,7 @@ using NLog;
 using Sentry.Core;
 using Sentry.Watchers.MongoDb;
 using Sentry.Watchers.MsSql;
+using Sentry.Watchers.Redis;
 using Sentry.Watchers.Web;
 
 namespace Sentry.Examples.WindowsService
@@ -49,6 +50,13 @@ namespace Sentry.Examples.WindowsService
                 .Build();
             var mongoDbWatcher = MongoDbWatcher.Create("MongoDB watcher", mongoDbWatcherConfiguration);
 
+            var redisWatcherConfiguration = RedisWatcherConfiguration
+                .Create(1, "localhost")
+                .WithQuery("get test")
+                .EnsureThat(results => results.Any(x => x == "test-value"))
+                .Build();
+            var redisWatcher = RedisWatcher.Create("Redis watcher", redisWatcherConfiguration);
+
             var mssqlWatcherConfiguration = MsSqlWatcherConfiguration
                 .Create(ConfigurationManager.ConnectionStrings["MyDatabase"].ConnectionString)
                 .WithQuery("select * from users where id = @id", new Dictionary<string, object> {["id"] = 1})
@@ -75,6 +83,7 @@ namespace Sentry.Examples.WindowsService
                 .AddWatcher(apiWatcher)
                 .AddWatcher(mssqlWatcher)
                 .AddWatcher(mongoDbWatcher)
+                .AddWatcher(redisWatcher)
                 .AddWatcher(websiteWatcher, hooks =>
                 {
                     hooks.OnStartAsync(check => WebsiteHookOnStartAsync(check));

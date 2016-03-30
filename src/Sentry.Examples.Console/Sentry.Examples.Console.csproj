@@ -93,6 +93,10 @@
       <Project>{5ED102ED-B897-4B97-AE8C-A1E4AA37CCFC}</Project>
       <Name>Sentry.Watchers.MsSql</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Sentry.Watchers.Redis\Sentry.Watchers.Redis.csproj">
+      <Project>{866489f8-7cfa-40cd-9bf7-4990fc97d383}</Project>
+      <Name>Sentry.Watchers.Redis</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sentry.Watchers.Web\Sentry.Watchers.Web.csproj">
       <Project>{d372fdd0-c172-4486-b8be-1bcf33dbaff9}</Project>
       <Name>Sentry.Watchers.Web</Name>
