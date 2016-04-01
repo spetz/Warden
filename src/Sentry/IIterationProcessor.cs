@@ -48,7 +48,7 @@ namespace Sentry
         public async Task<ISentryIteration> ExecuteAsync(long ordinal)
         {
             var iterationStartedAt = _configuration.DateTimeProvider();
-            var results = new List<ISentryCheckResult>();
+            var results = new Dictionary<WatcherConfiguration, ISentryCheckResult>();
             var tasks = _configuration.Watchers.Select(async watcherConfiguration =>
             {
                 var startedAt = _configuration.DateTimeProvider();
@@ -60,7 +60,7 @@ namespace Sentry
                     var watcherCheckResult = await watcher.ExecuteAsync();
                     var completedAt = _configuration.DateTimeProvider();
                     sentryCheckResult = SentryCheckResult.Create(watcherCheckResult, startedAt, completedAt);
-                    results.Add(sentryCheckResult);
+                    results.Add(watcherConfiguration, sentryCheckResult);
                     if (watcherCheckResult.IsValid)
                     {
                         var result = sentryCheckResult;
@@ -92,7 +92,7 @@ namespace Sentry
                     {
                         sentryCheckResult = SentryCheckResult.Create(WatcherCheckResult.Create(watcher, false),
                             startedAt, _configuration.DateTimeProvider());
-                        results.Add(sentryCheckResult);
+                        results.Add(watcherConfiguration, sentryCheckResult);
                     }
 
                     await InvokeOnCompletedHooksAsync(watcherConfiguration, sentryCheckResult);
@@ -100,8 +100,17 @@ namespace Sentry
             });
 
             await Task.WhenAll(tasks);
+            try
+            {
+                await InvokeAggregatedOnFailureHooksAsync(results.Select(x => x.Value));
+            }
+            catch (Exception exception)
+            {
+                
+            }
+
             var iterationCompletedAt = _configuration.DateTimeProvider();
-            var iteration = SentryIteration.Create(ordinal, results, iterationStartedAt, iterationCompletedAt);
+            var iteration = SentryIteration.Create(ordinal, results.Select(x => x.Value), iterationStartedAt, iterationCompletedAt);
 
             return iteration;
         }
@@ -126,6 +135,14 @@ namespace Sentry
 
             _latestWatcherResultStates[watcher] = state;
             await hooks();
+        }
+
+        //Add more aggregated hooks
+        private async Task InvokeAggregatedOnFailureHooksAsync(IEnumerable<ISentryCheckResult> sentryCheckResults)
+        {
+            var invalidResults = sentryCheckResults.Where(x => !x.IsValid);
+            _configuration.AggregatedGlobalWatcherHooks.OnFailure.Execute(invalidResults);
+            await _configuration.AggregatedGlobalWatcherHooks.OnFirstFailureAsync.ExecuteAsync(invalidResults);
         }
 
         private async Task InvokeOnStartHooksAsync(WatcherConfiguration watcherConfiguration, IWatcherCheck check)

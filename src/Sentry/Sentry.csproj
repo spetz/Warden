@@ -44,6 +44,7 @@
     <Compile Include="Core\IterationProcessorConfiguration.cs" />
     <Compile Include="Core\SentryHooksConfiguration.cs" />
     <Compile Include="Core\WatcherConfigurator.cs" />
+    <Compile Include="Core\AggregatedWatcherHooksConfiguration.cs" />
     <Compile Include="Core\WatcherHooksConfiguration.cs" />
     <Compile Include="Core\SentryConfiguration.cs" />
     <Compile Include="Core\SentryException.cs" />

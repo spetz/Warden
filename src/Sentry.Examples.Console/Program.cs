@@ -77,7 +77,7 @@ namespace Sentry.Examples.Console
                 .Create()
                 .SetHooks((hooks, integrations) =>
                 {
-                    hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration));
+                    //hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration));
                 })
                 .AddWatcher(apiWatcher)
                 .AddWatcher(mssqlWatcher)
@@ -85,23 +85,27 @@ namespace Sentry.Examples.Console
                 .AddWatcher(redisWatcher)
                 .AddWatcher(websiteWatcher, hooks =>
                 {
-                    hooks.OnFailureAsync(result => WebsiteHookOnFailureAsync(result));
-                    hooks.OnSuccessAsync(result => WebsiteHookOnSuccessAsync(result));
-                    hooks.OnCompletedAsync(result => WebsiteHookOnCompletedAsync(result));
+                    //hooks.OnFailureAsync(result => WebsiteHookOnFailureAsync(result));
+                    //hooks.OnSuccessAsync(result => WebsiteHookOnSuccessAsync(result));
+                    //hooks.OnCompletedAsync(result => WebsiteHookOnCompletedAsync(result));
                 })
                 .SetGlobalWatcherHooks((hooks, integrations) =>
                 {
                     hooks.OnStart(check => GlobalHookOnStart(check));
-                    hooks.OnFailure(result => GlobalHookOnFailure(result));
-                    hooks.OnSuccess(result => GlobalHookOnSuccess(result));
+                    //hooks.OnFailure(result => GlobalHookOnFailure(result));
+                    //hooks.OnSuccess(result => GlobalHookOnSuccess(result));
                     hooks.OnCompleted(result => GlobalHookOnCompleted(result));
-                    hooks.OnError(exception => Logger.Error(exception));
-                    hooks.OnFirstFailureAsync(check => integrations
-                        .SendGrid(sendGridConfiguration)
-                        .SendEmailAsync($"{check.WatcherCheckResult.WatcherName}: {check.WatcherCheckResult.Description}"));
-                    hooks.OnFirstSuccessAsync(check => integrations
-                        .SendGrid(sendGridConfiguration)
-                        .SendEmailAsync($"{check.WatcherCheckResult.WatcherName}: everything is up and running again! :)"));
+                    //hooks.OnError(exception => Logger.Error(exception));
+                    //hooks.OnFirstFailureAsync(check => integrations
+                    //    .SendGrid(sendGridConfiguration)
+                    //    .SendEmailAsync($"{check.WatcherCheckResult.WatcherName}: {check.WatcherCheckResult.Description}"));
+                    //hooks.OnFirstSuccessAsync(check => integrations
+                    //    .SendGrid(sendGridConfiguration)
+                    //    .SendEmailAsync($"{check.WatcherCheckResult.WatcherName}: everything is up and running again! :)"));
+                })
+                .SetAggregatedWatcherHooks(hooks =>
+                {
+                    hooks.OnFailure(results => Logger.Info($"Failure for {results.Count()} results"));
                 })
                 .Build();
 

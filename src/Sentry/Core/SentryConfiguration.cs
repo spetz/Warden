@@ -25,6 +25,11 @@ namespace Sentry.Core
         public WatcherHooksConfiguration GlobalWatcherHooks { get; protected set; }
 
         /// <summary>
+        /// Configuration of aggregated hooks including all of the watchers.
+        /// </summary>
+        public AggregatedWatcherHooksConfiguration AggregatedWatcherHooks { get; protected set; }
+
+        /// <summary>
         /// Delay between each iteration (5 seconds by default).
         /// </summary>
         public TimeSpan IterationDelay { get; protected set; }
@@ -48,6 +53,7 @@ namespace Sentry.Core
         {
             Hooks = SentryHooksConfiguration.Empty;
             GlobalWatcherHooks = WatcherHooksConfiguration.Empty;
+            AggregatedWatcherHooks = AggregatedWatcherHooksConfiguration.Empty;
             Watchers = new HashSet<WatcherConfiguration>();
             IterationDelay = new TimeSpan(0, 0, 5);
             DateTimeProvider = () => DateTime.UtcNow;
@@ -148,12 +154,45 @@ namespace Sentry.Core
 
                 return this;
             }
-
+            
+            /// <summary>
+            /// Configure the hooks specific for the Sentry.
+            /// </summary>
+            /// <param name="hooks">Lambda expression for configuring the Sentry hooks.</param>
+            /// <returns>Instance of fluent builder for the SentryConfiguration.</returns>
             public Builder SetGlobalWatcherHooks(Action<WatcherHooksConfiguration.Builder, IIntegrator> hooks)
             {
                 var hooksConfigurationBuilder = new WatcherHooksConfiguration.Builder();
                 hooks(hooksConfigurationBuilder, new Integrator());
                 _configuration.GlobalWatcherHooks = hooksConfigurationBuilder.Build();
+
+                return this;
+            }
+
+            /// <summary>
+            /// Configure aggregated hooks including all of the watchers
+            /// </summary>
+            /// <param name="hooks">Lambda expression for configuring aggregated watcher hooks.</param>
+            /// <returns>Instance of fluent builder for the SentryConfiguration.</returns>
+            public Builder SetAggregatedWatcherHooks(Action<AggregatedWatcherHooksConfiguration.Builder> hooks)
+            {
+                var hooksConfigurationBuilder = new AggregatedWatcherHooksConfiguration.Builder();
+                hooks(hooksConfigurationBuilder);
+                _configuration.AggregatedWatcherHooks = hooksConfigurationBuilder.Build();
+
+                return this;
+            }
+
+            /// <summary>
+            /// Configure aggregated hooks including all of the watchers
+            /// </summary>
+            /// <param name="hooks">Lambda expression for configuring the Sentry hooks.</param>
+            /// <returns>Instance of fluent builder for the SentryConfiguration.</returns>
+            public Builder SetAggregatedWatcherHooks(Action<AggregatedWatcherHooksConfiguration.Builder, IIntegrator> hooks)
+            {
+                var hooksConfigurationBuilder = new AggregatedWatcherHooksConfiguration.Builder();
+                hooks(hooksConfigurationBuilder, new Integrator());
+                _configuration.AggregatedWatcherHooks = hooksConfigurationBuilder.Build();
 
                 return this;
             }
@@ -234,6 +273,7 @@ namespace Sentry.Core
                     .Create()
                     .SetWatchers(_configuration.Watchers.ToArray())
                     .SetGlobalWatcherHooks(_configuration.GlobalWatcherHooks)
+                    .SetAggregatedWatcherHooks(_configuration.AggregatedWatcherHooks)
                     .SetDateTimeProvider(_configuration.DateTimeProvider)
                     .Build();
 

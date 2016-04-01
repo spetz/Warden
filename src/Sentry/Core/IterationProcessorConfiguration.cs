@@ -19,6 +19,11 @@ namespace Sentry.Core
         public WatcherHooksConfiguration GlobalWatcherHooks { get; protected set; }
 
         /// <summary>
+        /// Configuration of aggregated hooks that are common for all of the watchers.
+        /// </summary>
+        public AggregatedWatcherHooksConfiguration AggregatedGlobalWatcherHooks { get; protected set; }
+
+        /// <summary>
         /// Custom provider for the DateTime (UTC by default).
         /// </summary>
         public Func<DateTime> DateTimeProvider { get; protected set; }
@@ -26,6 +31,7 @@ namespace Sentry.Core
         protected internal IterationProcessorConfiguration()
         {
             GlobalWatcherHooks = WatcherHooksConfiguration.Empty;
+            AggregatedGlobalWatcherHooks = AggregatedWatcherHooksConfiguration.Empty;
             Watchers = new HashSet<WatcherConfiguration>();
             DateTimeProvider = () => DateTime.UtcNow;
         }
@@ -63,6 +69,18 @@ namespace Sentry.Core
             public Builder SetGlobalWatcherHooks(WatcherHooksConfiguration configuration)
             {
                 _configuration.GlobalWatcherHooks = configuration;
+
+                return this;
+            }
+
+            /// <summary>
+            /// Configure aggregated hooks including all of the watchers
+            /// </summary>
+            /// <param name="configuration">Configuration of the aggregated watcher hooks.</param>
+            /// <returns>Instance of fluent builder for the IterationProcessorConfiguration.</returns>
+            public Builder SetAggregatedWatcherHooks(AggregatedWatcherHooksConfiguration configuration)
+            {
+                _configuration.AggregatedGlobalWatcherHooks = configuration;
 
                 return this;
             }
