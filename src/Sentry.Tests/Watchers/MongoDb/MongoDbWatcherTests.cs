@@ -31,8 +31,7 @@ namespace Sentry.Tests.Watchers.MongoDb
     {
         Establish context = () => Configuration = null;
 
-        Because of =
-            () => Exception = Catch.Exception((Action) (() => Watcher = MongoDbWatcher.Create("test", Configuration)));
+        Because of = () => Exception = Catch.Exception((() => Watcher = MongoDbWatcher.Create("test", Configuration)));
 
         It should_fail = () => Exception.ShouldBeOfExactType<ArgumentNullException>();
 

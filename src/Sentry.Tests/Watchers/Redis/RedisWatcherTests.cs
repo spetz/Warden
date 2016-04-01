@@ -30,7 +30,7 @@ namespace Sentry.Tests.Watchers.Redis
     {
         Establish context = () => Configuration = null;
 
-        Because of =() => Exception = Catch.Exception((Action) (() => Watcher = RedisWatcher.Create("test", Configuration)));
+        Because of =() => Exception = Catch.Exception((() => Watcher = RedisWatcher.Create("test", Configuration)));
 
         It should_fail = () => Exception.ShouldBeOfExactType<ArgumentNullException>();
 

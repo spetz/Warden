@@ -54,9 +54,9 @@ namespace Sentry
             await _configuration.Hooks.OnStartAsync.ExecuteAsync();
             var iterationProcessor = _configuration.IterationProcessor();
 
-            try
+            while (CanExecuteIteration(_iterationOrdinal))
             {
-                while (CanExecuteIteration(_iterationOrdinal))
+                try
                 {
                     _configuration.Hooks.OnIterationStart.Execute(_iterationOrdinal);
                     await _configuration.Hooks.OnIterationStartAsync.ExecuteAsync(_iterationOrdinal);
@@ -70,11 +70,18 @@ namespace Sentry
                     await Task.Delay(_configuration.IterationDelay);
                     _iterationOrdinal++;
                 }
-            }
-            catch (Exception exception)
-            {
-                _configuration.Hooks.OnError.Execute(exception);
-                await _configuration.Hooks.OnErrorAsync.ExecuteAsync(exception);
+                catch (Exception exception)
+                {
+                    try
+                    {
+                        _configuration.Hooks.OnError.Execute(exception);
+                        await _configuration.Hooks.OnErrorAsync.ExecuteAsync(exception);
+                    }
+                    catch (Exception onErrorException)
+                    {
+                        //Think what to do about it
+                    }
+                }
             }
         }
 

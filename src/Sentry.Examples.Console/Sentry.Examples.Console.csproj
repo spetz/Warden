@@ -81,10 +81,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Sentry.Integrations.SendGrid\Sentry.Integrations.SendGrid.csproj">
+      <Project>{c432acae-0393-4756-ad72-155fae0c974d}</Project>
+      <Name>Sentry.Integrations.SendGrid</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sentry.Watchers.MongoDb\Sentry.Watchers.MongoDb.csproj">
       <Project>{C9C8420E-6A1F-4B9D-BB38-291D6F7E0467}</Project>
       <Name>Sentry.Watchers.MongoDb</Name>

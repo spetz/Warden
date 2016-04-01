@@ -13,18 +13,22 @@ namespace Sentry.Core
         /// Set of unique watcher configurations.
         /// </summary>
         public ISet<WatcherConfiguration> Watchers { get; protected set; }
+
         /// <summary>
         /// Configuration of Sentry hooks.
         /// </summary>
         public SentryHooksConfiguration Hooks { get; protected set; }
+
         /// <summary>
         /// Configuration of hooks that are common for all of the watchers.
         /// </summary>
         public WatcherHooksConfiguration GlobalWatcherHooks { get; protected set; }
+
         /// <summary>
         /// Delay between each iteration (5 seconds by default).
         /// </summary>
         public TimeSpan IterationDelay { get; protected set; }
+
         /// <summary>
         /// Total number of iterations (infinite by default).
         /// </summary>
@@ -118,6 +122,20 @@ namespace Sentry.Core
             }
 
             /// <summary>
+            /// Configure the hooks specific for the Sentry.
+            /// </summary>
+            /// <param name="hooks">Lambda expression for configuring the Sentry hooks.</param>
+            /// <returns>Instance of fluent builder for the SentryConfiguration.</returns>
+            public Builder SetHooks(Action<SentryHooksConfiguration.Builder, IIntegrator> hooks)
+            {
+                var hooksConfigurationBuilder = new SentryHooksConfiguration.Builder();
+                hooks(hooksConfigurationBuilder, new Integrator());
+                _configuration.Hooks = hooksConfigurationBuilder.Build();
+
+                return this;
+            }
+
+            /// <summary>
             /// Configure the hooks that will be common for all of the watchers.
             /// </summary>
             /// <param name="hooks">Lambda expression for configuring the  global (common) watcher hooks.</param>
@@ -126,6 +144,15 @@ namespace Sentry.Core
             {
                 var hooksConfigurationBuilder = new WatcherHooksConfiguration.Builder();
                 hooks(hooksConfigurationBuilder);
+                _configuration.GlobalWatcherHooks = hooksConfigurationBuilder.Build();
+
+                return this;
+            }
+
+            public Builder SetGlobalWatcherHooks(Action<WatcherHooksConfiguration.Builder, IIntegrator> hooks)
+            {
+                var hooksConfigurationBuilder = new WatcherHooksConfiguration.Builder();
+                hooks(hooksConfigurationBuilder, new Integrator());
                 _configuration.GlobalWatcherHooks = hooksConfigurationBuilder.Build();
 
                 return this;

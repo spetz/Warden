@@ -34,7 +34,7 @@ namespace Sentry.Watchers.Redis
         {
             try
             {
-                var database = await _connection.GetDatabaseAsync(_configuration.Database) ?? _configuration.RedisProvider();
+                var database = _configuration.RedisProvider?.Invoke() ?? await _connection.GetDatabaseAsync(_configuration.Database);
                 if (database == null)
                 {
                     return RedisWatcherCheckResult.Create(this, false, _configuration.Database,

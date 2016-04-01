@@ -34,7 +34,7 @@ namespace Sentry.Watchers.MongoDb
         {
             try
             {
-                var database = await _connection.GetDatabaseAsync() ?? _configuration.MongoDbProvider();
+                var database = _configuration.MongoDbProvider?.Invoke() ?? await _connection.GetDatabaseAsync();
                 if (database == null)
                 {
                     return MongoDbWatcherCheckResult.Create(this, false, _configuration.Database,

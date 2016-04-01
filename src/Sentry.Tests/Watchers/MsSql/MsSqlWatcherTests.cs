@@ -34,7 +34,7 @@ namespace Sentry.Tests.Watchers.MsSql
     {
         Establish context = () => Configuration = null;
 
-        Because of = () => Exception = Catch.Exception((Action) (() => Watcher = MsSqlWatcher.Create("test", Configuration)));
+        Because of = () => Exception = Catch.Exception((() => Watcher = MsSqlWatcher.Create("test", Configuration)));
 
         It should_fail = () => Exception.ShouldBeOfExactType<ArgumentNullException>();
 
