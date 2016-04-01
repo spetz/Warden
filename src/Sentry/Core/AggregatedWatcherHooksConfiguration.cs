@@ -10,8 +10,6 @@ namespace Sentry.Core
     /// </summary>
     public class AggregatedWatcherHooksConfiguration
     {
-        private readonly ISet<Expression<Action<IEnumerable<IWatcherCheck>>>> _onStart = new HashSet<Expression<Action<IEnumerable<IWatcherCheck>>>>();
-        private readonly ISet<Expression<Func<IEnumerable<IWatcherCheck>, Task>>> _onStartAsync = new HashSet<Expression<Func<IEnumerable<IWatcherCheck>, Task>>>();
         private readonly ISet<Expression<Action<IEnumerable<ISentryCheckResult>>>> _onSuccess = new HashSet<Expression<Action<IEnumerable<ISentryCheckResult>>>>();
         private readonly ISet<Expression<Func<IEnumerable<ISentryCheckResult>, Task>>> _onSuccessAsync = new HashSet<Expression<Func<IEnumerable<ISentryCheckResult>, Task>>>();
         private readonly ISet<Expression<Action<IEnumerable<ISentryCheckResult>>>> _onFirstSuccess = new HashSet<Expression<Action<IEnumerable<ISentryCheckResult>>>>();
@@ -26,16 +24,6 @@ namespace Sentry.Core
         private readonly ISet<Expression<Func<IEnumerable<Exception>, Task>>> _onErrorAsync = new HashSet<Expression<Func<IEnumerable<Exception>, Task>>>();
         private readonly ISet<Expression<Action<IEnumerable<Exception>>>> _onFirstError = new HashSet<Expression<Action<IEnumerable<Exception>>>>();
         private readonly ISet<Expression<Func<IEnumerable<Exception>, Task>>> _onFirstErrorAsync = new HashSet<Expression<Func<IEnumerable<Exception>, Task>>>();
-
-        /// <summary>
-        /// Set of unique OnStart hooks for the aggregated watchers, invoked when the ExecuteAsync() is about to start.
-        /// </summary>
-        public IEnumerable<Expression<Action<IEnumerable<IWatcherCheck>>>> OnStart => _onStart;
-
-        /// <summary>
-        /// Set of unique OnStartAsync hooks for the aggregated watchers, invoked when the ExecuteAsync() is about to start.
-        /// </summary>
-        public IEnumerable<Expression<Func<IEnumerable<IWatcherCheck>, Task>>> OnStartAsync => _onStartAsync;
 
         /// <summary>
         /// Set of unique OnSuccess hooks for the aggregated watchers, invoked when the ExecuteAsync() succeeded.
@@ -136,28 +124,6 @@ namespace Sentry.Core
 
             protected internal Builder()
             {
-            }
-
-            /// <summary>
-            /// One or more unique OnStart hooks for the aggregated watchers, invoked when the ExecuteAsync() is about to start.
-            /// </summary>
-            /// <param name="hooks">One or more custom aggregated watchers hooks.</param>
-            /// <returns>Instance of fluent builder for the AggregatedWatcherHooksConfiguration.</returns>
-            public Builder OnStart(params Expression<Action<IEnumerable<IWatcherCheck>>>[] hooks)
-            {
-                _configuration._onStart.UnionWith(hooks);
-                return this;
-            }
-
-            /// <summary>
-            /// One or more unique OnStartAsync hooks for the aggregated watchers, invoked when the ExecuteAsync() is about to start.
-            /// </summary>
-            /// <param name="hooks">One or more custom aggregated watchers hooks.</param>
-            /// <returns>Instance of fluent builder for the AggregatedWatcherHooksConfiguration.</returns>
-            public Builder OnStartAsync(params Expression<Func<IEnumerable<IWatcherCheck>, Task>>[] hooks)
-            {
-                _configuration._onStartAsync.UnionWith(hooks);
-                return this;
             }
 
             /// <summary>

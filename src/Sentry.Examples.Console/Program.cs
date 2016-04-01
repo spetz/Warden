@@ -68,16 +68,19 @@ namespace Sentry.Examples.Console
 
             var sendGridConfiguration = SendGridIntegrationConfiguration
                 .Create("my@email.com")
-                .WithDefaultSubject("Sentry monitoring error")
+                .WithDefaultSubject("Sentry monitoring")
                 .WithDefaultReceivers("my@email.com")
                 .WithApiKey("xxx")
                 .Build();
+
+            var sendGrid = SendGridIntegration.Create(sendGridConfiguration);
 
             var sentryConfiguration = SentryConfiguration
                 .Create()
                 .SetHooks((hooks, integrations) =>
                 {
                     //hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration));
+                    hooks.OnError(exception => Logger.Error(exception));
                 })
                 .AddWatcher(apiWatcher)
                 .AddWatcher(mssqlWatcher)
@@ -91,11 +94,11 @@ namespace Sentry.Examples.Console
                 })
                 .SetGlobalWatcherHooks((hooks, integrations) =>
                 {
-                    hooks.OnStart(check => GlobalHookOnStart(check));
+                    //hooks.OnStart(check => GlobalHookOnStart(check));
                     //hooks.OnFailure(result => GlobalHookOnFailure(result));
                     //hooks.OnSuccess(result => GlobalHookOnSuccess(result));
-                    hooks.OnCompleted(result => GlobalHookOnCompleted(result));
-                    //hooks.OnError(exception => Logger.Error(exception));
+                    //hooks.OnCompleted(result => GlobalHookOnCompleted(result));
+                    hooks.OnError(exception => Logger.Error(exception));
                     //hooks.OnFirstFailureAsync(check => integrations
                     //    .SendGrid(sendGridConfiguration)
                     //    .SendEmailAsync($"{check.WatcherCheckResult.WatcherName}: {check.WatcherCheckResult.Description}"));
@@ -105,11 +108,39 @@ namespace Sentry.Examples.Console
                 })
                 .SetAggregatedWatcherHooks(hooks =>
                 {
-                    hooks.OnFailure(results => Logger.Info($"Failure for {results.Count()} results"));
+                    hooks.OnFirstFailure(results => Logger.Info($"First failure for {results.Count()} results"));
+                    hooks.OnFirstSuccess(results => Logger.Info($"First success for {results.Count()} results"));
+                    hooks.OnFirstError(exceptions => Logger.Info($"First error for {exceptions.Count()} exceptions"));
+                    hooks.OnCompleted(results => Logger.Info($"Completed for {results.Count()} results"));
+
+                    hooks.OnFirstFailureAsync(results => sendGrid.SendEmailAsync(GetSentryCheckResultDetails(results)));
+                    hooks.OnFirstSuccessAsync(results => sendGrid.SendEmailAsync(GetSentryCheckResultDetails(results)));
+                    hooks.OnFirstErrorAsync(exceptions => sendGrid.SendEmailAsync(GetExceptionsDetails(exceptions)));
+                    //hooks.OnCompletedAsync(results => sendGrid.SendEmailAsync(GetSentryCheckResultDetails(results)));
                 })
                 .Build();
 
             return new Sentry(sentryConfiguration);
+        }
+
+        private static string GetExceptionsDetails(IEnumerable<Exception> exceptions)
+        {
+            if (!exceptions.Any())
+                return string.Empty;
+
+            return exceptions.Select(x => x.ToString()).Aggregate((x, y) => $"{x}\n{y}");
+        }
+
+        private static string GetSentryCheckResultDetails(IEnumerable<ISentryCheckResult> results)
+        {
+            if (!results.Any())
+                return string.Empty;
+
+            Func<ISentryCheckResult, string> details = result => $"{result.WatcherCheckResult.WatcherName} " +
+                                                                 $"({(result.WatcherCheckResult.IsValid ? "valid" : "invalid")}): " +
+                                                                 $"{result.WatcherCheckResult.Description}\n";
+
+            return results.Select(details).Aggregate((x, y) => $"{x}\n{y}");
         }
 
         private static async Task WebsiteHookOnStartAsync(IWatcherCheck check)
