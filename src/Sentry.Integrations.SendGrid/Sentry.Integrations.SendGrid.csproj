@@ -69,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EmailTemplateParameter.cs" />
     <Compile Include="SendGridIntegrationConfiguration.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="SendGridIntegration.cs" />

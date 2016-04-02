@@ -13,6 +13,7 @@ namespace Sentry.Integrations.SendGrid
         public string DefaultSubject { get; protected set; }
         public string DefaultMessage { get; protected set; }
         public string DefaultTemplateId { get; protected set; }
+        public EmailTemplateParameter[] DefaultTemplateParameters { get; protected set; }
 
         protected SendGridIntegrationConfiguration(string defaultSender = null)
         {
@@ -66,6 +67,16 @@ namespace Sentry.Integrations.SendGrid
                     throw new ArgumentException("Default template id can not be empty", nameof(templateId));
 
                 Configuration.DefaultTemplateId = templateId;
+
+                return this;
+            }
+
+            public Builder WithDefaultTemplateParameters(params EmailTemplateParameter[] parameters)
+            {
+                if (parameters?.Any() == false)
+                    throw new ArgumentException("Default template parameters can not be empty", nameof(parameters));
+
+                Configuration.DefaultTemplateParameters = parameters;
 
                 return this;
             }
