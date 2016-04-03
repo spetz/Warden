@@ -44,14 +44,14 @@ namespace Sentry.Examples.WindowsService
             var websiteWatcher = WebWatcher.Create("Website watcher", websiteWatcherConfiguration);
 
             var mongoDbWatcherConfiguration = MongoDbWatcherConfiguration
-                .Create("MyDatabase", "mongodb://localhost:27017")
+                .Create("mongodb://localhost:27017", "MyDatabase")
                 .WithQuery("Users", "{\"name\": \"admin\"}")
                 .EnsureThat(users => users.Any(user => user.role == "admin"))
                 .Build();
             var mongoDbWatcher = MongoDbWatcher.Create("MongoDB watcher", mongoDbWatcherConfiguration);
 
             var redisWatcherConfiguration = RedisWatcherConfiguration
-                .Create(1, "localhost")
+                .Create("localhost", 1)
                 .WithQuery("get test")
                 .EnsureThat(results => results.Any(x => x == "test-value"))
                 .Build();

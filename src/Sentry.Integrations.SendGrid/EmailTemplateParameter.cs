@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace Sentry.Integrations.SendGrid
 {
+    //Template parameter for SendGrid transactional template
     public class EmailTemplateParameter
     {
         public string ReplacementTag { get; }
@@ -14,13 +15,19 @@ namespace Sentry.Integrations.SendGrid
             if (string.IsNullOrWhiteSpace(replacementTag))
                 throw new ArgumentException("Replacement tag can not be empty", nameof(replacementTag));
             if (values?.Any() == false)
-                throw new ArgumentException("Template values can not be empty", nameof(replacementTag));
+                throw new ArgumentException("Replacement tag values can not be empty", nameof(replacementTag));
 
             ReplacementTag = replacementTag;
             Values = values;
         }
 
-        public static EmailTemplateParameter Create(string replacementTag, IList<string> values)
+        /// <summary>
+        /// Factory method for creating a new instance of EmailTemplateParameter.
+        /// </summary>
+        /// <param name="replacementTag">Name of the replacement tag.</param>
+        /// <param name="values">Replacement tag values.</param>
+        /// <returns>Instance of SendGridIntegration.</returns>
+        public static EmailTemplateParameter Create(string replacementTag, IEnumerable<string> values)
             => new EmailTemplateParameter(replacementTag, values);
     }
 }

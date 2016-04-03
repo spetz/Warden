@@ -50,13 +50,12 @@ namespace Sentry.Watchers.Redis
         /// </summary>
         public Func<IEnumerable<dynamic>, Task<bool>> EnsureThatAsync { get; protected set; }
 
-        protected internal RedisWatcherConfiguration(int database, string connectionString, TimeSpan? timeout = null)
+        protected internal RedisWatcherConfiguration(string connectionString, int database, TimeSpan? timeout = null)
         {
-            if (database < 0)
-                throw new ArgumentException("Database id can not be less than 0.", nameof(database));
-
             if (string.IsNullOrEmpty(connectionString))
                 throw new ArgumentException("Redis connection string can not be empty.", nameof(connectionString));
+            if (database < 0)
+                throw new ArgumentException("Database id can not be less than 0.", nameof(database));
 
             if (timeout.HasValue)
             {
@@ -83,12 +82,12 @@ namespace Sentry.Watchers.Redis
         /// <summary>
         /// Factory method for creating a new instance of fluent builder for the RedisWatcherConfiguration.
         /// </summary>
-        /// <param name="database">Id of the Redis database.</param>
         /// <param name="connectionString">Connection string of the Redis server.</param>
+        /// <param name="database">Id of the Redis database.</param>
         /// <param name="timeout">Optional timeout of the Redis (5 seconds by default).</param>
         /// <returns>Instance of fluent builder for the RedisWatcherConfiguration.</returns>
-        public static Builder Create(int database, string connectionString, TimeSpan? timeout = null)
-            => new Builder(database, connectionString, timeout);
+        public static Builder Create(string connectionString, int database, TimeSpan? timeout = null)
+            => new Builder(connectionString, database, timeout);
 
         /// <summary>
         /// Fluent builder for the RedisWatcherConfiguration.
@@ -96,9 +95,9 @@ namespace Sentry.Watchers.Redis
         public abstract class Configurator<T> : WatcherConfigurator<T, RedisWatcherConfiguration>
             where T : Configurator<T>
         {
-            protected Configurator(int database, string connectionString, TimeSpan? timeout = null)
+            protected Configurator(string connectionString, int database, TimeSpan? timeout = null)
             {
-                Configuration = new RedisWatcherConfiguration(database, connectionString, timeout);
+                Configuration = new RedisWatcherConfiguration(connectionString, database, timeout);
             }
 
             protected Configurator(RedisWatcherConfiguration configuration) : base(configuration)
@@ -206,8 +205,8 @@ namespace Sentry.Watchers.Redis
         /// </summary>
         public class Builder : Configurator<Builder>
         {
-            public Builder(int database, string connectionString, TimeSpan? timeout = null)
-                : base(database, connectionString, timeout)
+            public Builder(string connectionString, int database, TimeSpan? timeout = null)
+                : base(connectionString, database, timeout)
             {
                 SetInstance(this);
             }

@@ -46,7 +46,7 @@ namespace Sentry.Tests.Watchers.Redis
         {
             RedisConnectionMock = new Mock<IRedisConnection>();
             Configuration = RedisWatcherConfiguration
-                .Create(Database, ConnectionString)
+                .Create(ConnectionString, Database)
                 .WithConnectionProvider(connectionString => RedisConnectionMock.Object)
                 .Build();
             Watcher = RedisWatcher.Create("Redis watcher", Configuration);
@@ -72,7 +72,7 @@ namespace Sentry.Tests.Watchers.Redis
                 .ReturnsAsync(QueryResult);
             RedisConnectionMock.Setup(x => x.GetDatabaseAsync(Moq.It.IsAny<int>())).ReturnsAsync(RedisMock.Object);
             Configuration = RedisWatcherConfiguration
-                .Create(Database, ConnectionString)
+                .Create(ConnectionString, Database)
                 .WithQuery("get test")
                 .WithConnectionProvider(connectionString => RedisConnectionMock.Object)
                 .Build();
@@ -118,7 +118,7 @@ namespace Sentry.Tests.Watchers.Redis
                 .ReturnsAsync(QueryResult);
             RedisConnectionMock.Setup(x => x.GetDatabaseAsync(Moq.It.IsAny<int>())).ReturnsAsync(RedisMock.Object);
             Configuration = RedisWatcherConfiguration
-                .Create(Database, ConnectionString)
+                .Create(ConnectionString, Database)
                 .WithQuery("get test")
                 .EnsureThat(results => results.Any(x => x == "test-value"))
                 .WithConnectionProvider(connectionString => RedisConnectionMock.Object)
@@ -166,7 +166,7 @@ namespace Sentry.Tests.Watchers.Redis
                 .ReturnsAsync(QueryResult);
             RedisConnectionMock.Setup(x => x.GetDatabaseAsync(Moq.It.IsAny<int>())).ReturnsAsync(RedisMock.Object);
             Configuration = RedisWatcherConfiguration
-                .Create(Database, ConnectionString)
+                .Create(ConnectionString, Database)
                 .WithQuery("get test")
                 .EnsureThatAsync(results => Task.Factory.StartNew(() => results.Any(x => x == "test-value")))
                 .WithConnectionProvider(connectionString => RedisConnectionMock.Object)
@@ -213,7 +213,7 @@ namespace Sentry.Tests.Watchers.Redis
                 .ReturnsAsync(QueryResult);
             RedisConnectionMock.Setup(x => x.GetDatabaseAsync(Moq.It.IsAny<int>())).ReturnsAsync(RedisMock.Object);
             Configuration = RedisWatcherConfiguration
-                .Create(Database, ConnectionString)
+                .Create(ConnectionString, Database)
                 .WithQuery("get test")
                 .EnsureThat(results => results.Any(x => x == "invalid-value"))
                 .WithConnectionProvider(connectionString => RedisConnectionMock.Object)
@@ -261,7 +261,7 @@ namespace Sentry.Tests.Watchers.Redis
                 .ReturnsAsync(QueryResult);
             RedisConnectionMock.Setup(x => x.GetDatabaseAsync(Moq.It.IsAny<int>())).ReturnsAsync(RedisMock.Object);
             Configuration = RedisWatcherConfiguration
-                .Create(Database, ConnectionString)
+                .Create(ConnectionString, Database)
                 .WithQuery("get test")
                 .EnsureThatAsync(results => Task.Factory.StartNew(() => results.Any(x => x == "invalid-value")))
                 .WithConnectionProvider(connectionString => RedisConnectionMock.Object)

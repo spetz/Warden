@@ -32,14 +32,14 @@ namespace Sentry.Examples.Console
             var websiteWatcher = WebWatcher.Create("Website watcher", websiteWatcherConfiguration);
 
             var mongoDbWatcherConfiguration = MongoDbWatcherConfiguration
-                .Create("MyDatabase", "mongodb://localhost:27017")
+                .Create("mongodb://localhost:27017", "MyDatabase")
                 .WithQuery("Users", "{\"name\": \"admin\"}")
                 .EnsureThat(users => users.Any(user => user.role == "admin"))
                 .Build();
             var mongoDbWatcher = MongoDbWatcher.Create("MongoDB watcher", mongoDbWatcherConfiguration);
 
             var redisWatcherConfiguration = RedisWatcherConfiguration
-                .Create(1, "localhost")
+                .Create("localhost", 1)
                 .WithQuery("get test")
                 .EnsureThat(results => results.Any(x => x == "test-value"))
                 .Build();
@@ -62,10 +62,9 @@ namespace Sentry.Examples.Console
             var apiWatcher = WebWatcher.Create("API watcher", apiWatcherConfiguration);
 
             var sendGridConfiguration = SendGridIntegrationConfiguration
-                .Create("my@email.com")
+                .Create("api-key", "my@email.com")
                 .WithDefaultSubject("Sentry monitoring")
                 .WithDefaultReceivers("my@email.com")
-                .WithApiKey("xxx")
                 .Build();
 
             var sendGrid = SendGridIntegration.Create(sendGridConfiguration);
@@ -93,7 +92,7 @@ namespace Sentry.Examples.Console
                     //hooks.OnFailure(result => GlobalHookOnFailure(result));
                     //hooks.OnSuccess(result => GlobalHookOnSuccess(result));
                     //hooks.OnCompleted(result => GlobalHookOnCompleted(result));
-                    hooks.OnError(exception => Logger.Error(exception));
+                    //hooks.OnError(exception => Logger.Error(exception));
                     //hooks.OnFirstFailureAsync(check => integrations
                     //    .SendGrid(sendGridConfiguration)
                     //    .SendEmailAsync($"{check.WatcherCheckResult.WatcherName}: {check.WatcherCheckResult.Description}"));
@@ -108,9 +107,9 @@ namespace Sentry.Examples.Console
                     hooks.OnFirstError(exceptions => Logger.Info($"First error for {exceptions.Count()} exceptions"));
                     hooks.OnCompleted(results => Logger.Info($"Completed for {results.Count()} results"));
 
-                    hooks.OnFirstFailureAsync(results => sendGrid.SendEmailAsync(GetSentryCheckResultDetails(results)));
-                    hooks.OnFirstSuccessAsync(results => sendGrid.SendEmailAsync(GetSentryCheckResultDetails(results)));
-                    hooks.OnFirstErrorAsync(exceptions => sendGrid.SendEmailAsync(GetExceptionsDetails(exceptions)));
+                    //hooks.OnFirstFailureAsync(results => sendGrid.SendEmailAsync(GetSentryCheckResultDetails(results)));
+                    //hooks.OnFirstSuccessAsync(results => sendGrid.SendEmailAsync(GetSentryCheckResultDetails(results)));
+                    //hooks.OnFirstErrorAsync(exceptions => sendGrid.SendEmailAsync(GetExceptionsDetails(exceptions)));
                     //hooks.OnCompletedAsync(results => sendGrid.SendEmailAsync(GetSentryCheckResultDetails(results)));
                 })
                 .Build();

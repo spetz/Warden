@@ -3,20 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using SendGrid;
 
 namespace Sentry.Integrations.SendGrid
 {
+    /// <summary>
+    /// Integration with the SendGrid - email delivery & transactional service.
+    /// </summary>
     public class SendGridIntegration : IIntegration
     {
-        private static readonly Regex EmailRegex =
-            new Regex(
-                @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
-                @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$",
-                RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
-
         private readonly SendGridIntegrationConfiguration _configuration;
 
         public SendGridIntegration(SendGridIntegrationConfiguration configuration)
@@ -24,30 +20,47 @@ namespace Sentry.Integrations.SendGrid
             _configuration = configuration;
         }
 
+        /// <summary>
+        /// Sends email message.
+        /// </summary>
+        /// <returns></returns>
         public async Task SendEmailAsync()
         {
             await SendEmailAsync(Enumerable.Empty<string>().ToArray());
         }
 
+        /// <summary>
+        /// Sends email message.
+        /// </summary>
+        /// <param name="receivers">Receiver(s) email address(es). If default receivers have been set, it will merge these 2 lists.</param>
+        /// <returns></returns>
         public async Task SendEmailAsync(params string[] receivers)
         {
-            await SendEmailAsync(null, null, null, receivers);
+            await SendEmailAsync(null, null, receivers);
         }
 
+        /// <summary>
+        /// Sends email message.
+        /// </summary>
+        /// <param name="message">Body of the email message. If default message has been set, it will override its value.</param>
+        /// <param name="receivers">Receiver(s) email address(es). If default receivers have been set, it will merge these 2 lists.</param>
+        /// <returns></returns>
         public async Task SendEmailAsync(string message, params string[] receivers)
         {
-            await SendEmailAsync(null, null, message, receivers);
+            await SendEmailAsync(null, message, receivers);
         }
 
-        public async Task SendEmailAsync(string subject, string message, params string[] receivers)
-        {
-            await SendEmailAsync(null, subject, message, receivers);
-        }
-
-        public async Task SendEmailAsync(string sender = null, string subject = null,
+        /// <summary>
+        /// Sends email message.
+        /// </summary>
+        /// <param name="subject">Subject of the email message. If default subject has been set, it will override its value.</param>
+        /// <param name="message">Body of the email message. If default message has been set, it will override its value.</param>
+        /// <param name="receivers">Receiver(s) email address(es). If default receivers have been set, it will merge these 2 lists.</param>
+        /// <returns></returns>
+        public async Task SendEmailAsync(string subject = null,
             string message = null, params string[] receivers)
         {
-            var emailMessage = CreateMessage(sender, subject, receivers);
+            var emailMessage = CreateMessage(subject, receivers);
             var body = _configuration.DefaultMessage + emailMessage;
             if (_configuration.UseHtmlBody)
                 emailMessage.Html = body;
@@ -57,54 +70,94 @@ namespace Sentry.Integrations.SendGrid
             await SendMessageAsync(emailMessage);
         }
 
+        /// <summary>
+        /// Sends templated email message using transactional template.
+        /// </summary>
+        /// <returns></returns>
         public async Task SendTemplatedEmailAsync()
         {
             await SendTemplatedEmailAsync(Enumerable.Empty<string>().ToArray());
         }
 
+        /// <summary>
+        /// Sends templated email message using transactional template.
+        /// <param name="receivers">Receiver(s) email address(es). If default receivers have been set, it will merge these 2 lists.</param>
+        /// </summary>
+        /// <returns></returns>
         public async Task SendTemplatedEmailAsync(params string[] receivers)
         {
-            await SendTemplatedEmailAsync(null, null, null, null, receivers);
+            await SendTemplatedEmailAsync(null, null, null, receivers);
         }
 
+        /// <summary>
+        /// Sends templated email message using transactional template.
+        /// </summary>
+        /// <param name="templateId">Id of the transactional template. If default template id has been set, it will override its value.</param>
+        /// <returns></returns>
         public async Task SendTemplatedEmailAsync(string templateId)
         {
-            await SendTemplatedEmailAsync(null, null, templateId, null, Enumerable.Empty<string>().ToArray());
+            await SendTemplatedEmailAsync(null, templateId, null, Enumerable.Empty<string>().ToArray());
         }
 
+        /// <summary>
+        /// Sends templated email message using transactional template.
+        /// </summary>
+        /// <param name="parameters">Parameters of the transactional template. If default parameters have been set, it will merge these 2 lists.</param>
+        /// <returns></returns>
         public async Task SendTemplatedEmailAsync(IEnumerable<EmailTemplateParameter> parameters)
         {
-            await SendTemplatedEmailAsync(null, null, null, parameters);
+            await SendTemplatedEmailAsync(null, null, parameters);
         }
 
+        /// <summary>
+        /// Sends templated email message using transactional template.
+        /// </summary>
+        /// <param name="templateId">Id of the transactional template. If default template id has been set, it will override its value.</param>
+        /// <param name="parameters">Parameters of the transactional template. If default parameters have been set, it will merge these 2 lists.</param>
+        /// <returns></returns>
         public async Task SendTemplatedEmailAsync(string templateId, IEnumerable<EmailTemplateParameter> parameters)
         {
-            await SendTemplatedEmailAsync(null, null, templateId, parameters, Enumerable.Empty<string>().ToArray());
+            await SendTemplatedEmailAsync(null, templateId, parameters, Enumerable.Empty<string>().ToArray());
         }
 
+        /// <summary>
+        /// Sends templated email message using transactional template.
+        /// </summary>
+        /// <param name="templateId">Id of the transactional template. If default template id has been set, it will override its value.</param>
+        /// <param name="receivers">Receiver(s) email address(es). If default receivers have been set, it will merge these 2 lists.</param>
+        /// <returns></returns>
         public async Task SendTemplatedEmailAsync(string templateId, params string[] receivers)
         {
-            await SendTemplatedEmailAsync(null, null, templateId, null, receivers);
+            await SendTemplatedEmailAsync(null, templateId, null, receivers);
         }
 
+        /// <summary>
+        /// Sends templated email message using transactional template.
+        /// </summary>
+        /// <param name="templateId">Id of the transactional template. If default template id has been set, it will override its value.</param>
+        /// <param name="parameters">Parameters of the transactional template. If default parameters have been set, it will merge these 2 lists.</param>
+        /// <param name="receivers">Receiver(s) email address(es). If default receivers have been set, it will merge these 2 lists.</param>
+        /// <returns></returns>
         public async Task SendTemplatedEmailAsync(string templateId, IEnumerable<EmailTemplateParameter> parameters,
             params string[] receivers)
         {
-            await SendTemplatedEmailAsync(null, null, templateId, parameters, receivers);
+            await SendTemplatedEmailAsync(null,  templateId, parameters, receivers);
         }
 
-        public async Task SendTemplatedEmailAsync(string subject, string templateId,
-            IEnumerable<EmailTemplateParameter> parameters = null, params string[] receivers)
-        {
-            await SendTemplatedEmailAsync(null, subject, templateId, parameters, receivers);
-        }
-
-        public async Task SendTemplatedEmailAsync(string sender = null, string subject = null,
+        /// <summary>
+        /// Sends templated email message using transactional template.
+        /// </summary>
+        /// <param name="subject">Subject of the email message. If default subject has been set, it will override its value.</param>
+        /// <param name="templateId">Id of the transactional template. If default template id has been set, it will override its value.</param>
+        /// <param name="parameters">Parameters of the transactional template. If default parameters have been set, it will merge these 2 lists.</param>
+        /// <param name="receivers">Receiver(s) email address(es). If default receivers have been set, it will merge these 2 lists.</param>
+        /// <returns></returns>
+        public async Task SendTemplatedEmailAsync(string subject = null,
             string templateId = null, IEnumerable<EmailTemplateParameter> parameters = null,
             params string[] receivers)
         {
-            var emailMessage = CreateMessage(sender, subject, receivers);
-            var emailTemplateId = _configuration.DefaultTemplateId.Or(templateId);
+            var emailMessage = CreateMessage(subject, receivers);
+            var emailTemplateId = templateId.Or(_configuration.DefaultTemplateId);
             //Space and some empty html tag are required if the template is being used
             emailMessage.Text = " ";
             emailMessage.Html = "<span></span>";
@@ -122,31 +175,20 @@ namespace Sentry.Integrations.SendGrid
             await SendMessageAsync(emailMessage);
         }
 
-        private SendGridMessage CreateMessage(string sender = null, string subject = null, params string[] receivers)
+        private SendGridMessage CreateMessage(string subject = null, params string[] receivers)
         {
-            var emailSender = _configuration.DefaultSender.Or(sender);
-            if (string.IsNullOrWhiteSpace(emailSender))
-                throw new ArgumentException("Email message sender has not been defined.", nameof(emailSender));
-            if(!EmailRegex.IsMatch(sender))
-                throw new ArgumentException("Invalid email of the message sender.", nameof(emailSender));
-
             var customReceivers = receivers ?? Enumerable.Empty<string>();
             var emailReceivers = (_configuration.DefaultReceivers.Any()
                 ? _configuration.DefaultReceivers.Union(customReceivers)
                 : customReceivers).ToList();
             if (!emailReceivers.Any())
                 throw new ArgumentException("Email message receivers have not been defined.", nameof(emailReceivers));
-            var invalidEmailReceivers = emailReceivers.Where(x => !EmailRegex.IsMatch(x));
-            if (invalidEmailReceivers.Any())
-            {
-                throw new ArgumentException("Invalid email(s) of the message receiver(s): " +
-                                            $"{string.Join(",", invalidEmailReceivers)}", nameof(emailSender));
-            }
 
+            emailReceivers.ValidateEmails(nameof(receivers));
             var message = new SendGridMessage
             {
-                From = new MailAddress(emailSender),
-                Subject = _configuration.DefaultSubject.Or(subject)
+                From = new MailAddress(_configuration.Sender),
+                Subject = subject.Or(_configuration.DefaultSubject)
             };
             message.AddTo(emailReceivers);
 
@@ -165,12 +207,15 @@ namespace Sentry.Integrations.SendGrid
         /// <summary>
         /// Factory method for creating a new instance of SendGridIntegration.
         /// </summary>
+        /// <param name="username">Username of the SendGrid account.</param>
+        /// <param name="password">Password of the SendGrid account.</param>
         /// <param name="sender">Email address of the message sender.</param>
-        /// <param name="configurator">Lambda expression for configuring the SendGridIntegration.</param>
+        /// <param name="configurator">Lambda expression for configuring the SendGrid integration.</param>
         /// <returns>Instance of SendGridIntegration.</returns>
-        public static SendGridIntegration Create(string sender, Action<SendGridIntegrationConfiguration.Builder> configurator)
+        public static SendGridIntegration Create(string username, string password, string sender, 
+            Action<SendGridIntegrationConfiguration.Builder> configurator)
         {
-            var config = new SendGridIntegrationConfiguration.Builder(sender);
+            var config = new SendGridIntegrationConfiguration.Builder(username, password, sender);
             configurator?.Invoke(config);
 
             return Create(config.Build());
@@ -179,7 +224,23 @@ namespace Sentry.Integrations.SendGrid
         /// <summary>
         /// Factory method for creating a new instance of SendGridIntegration.
         /// </summary>
-        /// <param name="configuration">Configuration of SendGridIntegration.</param>
+        /// <param name="apiKey">API key of the SendGrid account.</param>
+        /// <param name="sender">Email address of the message sender.</param>
+        /// <param name="configurator">Lambda expression for configuring the SendGrid integration.</param>
+        /// <returns>Instance of SendGridIntegration.</returns>
+        public static SendGridIntegration Create(string apiKey, string sender,
+            Action<SendGridIntegrationConfiguration.Builder> configurator = null)
+        {
+            var config = new SendGridIntegrationConfiguration.Builder(apiKey, sender);
+            configurator?.Invoke(config);
+
+            return Create(config.Build());
+        }
+
+        /// <summary>
+        /// Factory method for creating a new instance of SendGridIntegration.
+        /// </summary>
+        /// <param name="configuration">Configuration of SendGrid integration.</param>
         /// <returns>Instance of SendGridIntegration.</returns>
         public static SendGridIntegration Create(SendGridIntegrationConfiguration configuration)
             => new SendGridIntegration(configuration);

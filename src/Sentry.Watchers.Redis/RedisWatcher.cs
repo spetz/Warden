@@ -92,7 +92,7 @@ namespace Sentry.Watchers.Redis
         public static RedisWatcher Create(string name, string connectionString, int database,
             TimeSpan? timeout = null, Action<RedisWatcherConfiguration.Default> configurator = null)
         {
-            var config = new RedisWatcherConfiguration.Builder(database, connectionString, timeout);
+            var config = new RedisWatcherConfiguration.Builder(connectionString, database, timeout);
             configurator?.Invoke((RedisWatcherConfiguration.Default)config);
 
             return Create(name, config.Build());
