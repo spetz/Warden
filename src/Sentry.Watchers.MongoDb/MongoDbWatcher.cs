@@ -78,12 +78,7 @@ namespace Sentry.Watchers.MongoDb
         /// <returns>Instance of MongoDbWatcher.</returns>
         public static MongoDbWatcher Create(string connectionString, string database,
             TimeSpan? timeout = null, Action<MongoDbWatcherConfiguration.Default> configurator = null)
-        {
-            var config = new MongoDbWatcherConfiguration.Builder(connectionString, database, timeout);
-            configurator?.Invoke((MongoDbWatcherConfiguration.Default)config);
-
-            return Create(DefaultName, config.Build());
-        }
+            => Create(DefaultName, connectionString, database, timeout, configurator);
 
         /// <summary>
         /// Factory method for creating a new instance of MongoDbWatcher.
@@ -109,7 +104,7 @@ namespace Sentry.Watchers.MongoDb
         /// <param name="configuration">Configuration of MongoDbWatcher.</param>
         /// <returns>Instance of MongoDbWatcher.</returns>
         public static MongoDbWatcher Create(MongoDbWatcherConfiguration configuration)
-            => new MongoDbWatcher(DefaultName, configuration);
+            => Create(DefaultName, configuration);
 
         /// <summary>
         /// Factory method for creating a new instance of MongoDbWatcher.

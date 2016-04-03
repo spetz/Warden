@@ -72,12 +72,7 @@ namespace Sentry.Watchers.MsSql
         /// <returns>Instance of MsSqlWatcher.</returns>
         public static MsSqlWatcher Create(string connectionString,
             Action<MsSqlWatcherConfiguration.Default> configurator = null)
-        {
-            var config = new MsSqlWatcherConfiguration.Builder(connectionString);
-            configurator?.Invoke((MsSqlWatcherConfiguration.Default)config);
-
-            return Create(DefaultName, config.Build());
-        }
+            => Create(DefaultName, connectionString, configurator);
 
         /// <summary>
         /// Factory method for creating a new instance of MsSqlWatcher.
@@ -101,7 +96,7 @@ namespace Sentry.Watchers.MsSql
         /// <param name="configuration">Configuration of MsSqlWatcher.</param>
         /// <returns>Instance of MsSqlWatcher.</returns>
         public static MsSqlWatcher Create(MsSqlWatcherConfiguration configuration)
-            => new MsSqlWatcher(DefaultName, configuration);
+            => Create(DefaultName, configuration);
 
         /// <summary>
         /// Factory method for creating a new instance of MsSqlWatcher.

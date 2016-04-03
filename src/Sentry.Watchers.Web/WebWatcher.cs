@@ -95,12 +95,7 @@ namespace Sentry.Watchers.Web
         /// <returns>Instance of WebWatcher.</returns>
         public static WebWatcher Create(string url, IHttpRequest request,
             Action<WebWatcherConfiguration.Default> configurator = null)
-        {
-            var config = new WebWatcherConfiguration.Builder(url, request);
-            configurator?.Invoke((WebWatcherConfiguration.Default)config);
-
-            return Create(DefaultName, config.Build());
-        }
+            => Create(DefaultName, url, request, configurator);
 
         /// <summary>
         /// Factory method for creating a new instance of WebWatcher.
@@ -125,7 +120,7 @@ namespace Sentry.Watchers.Web
         /// <param name="configuration">Configuration of WebWatcher.</param>
         /// <returns>Instance of WebWatcher.</returns>
         public static WebWatcher Create(WebWatcherConfiguration configuration)
-            => new WebWatcher(DefaultName, configuration);
+            => Create(DefaultName, configuration);
 
         /// <summary>
         /// Factory method for creating a new instance of WebWatcher.

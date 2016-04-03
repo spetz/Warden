@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions.cs" />
     <Compile Include="IRedis.cs" />
     <Compile Include="IRedisConnection.cs" />
     <Compile Include="RedisWatcherCheckResult.cs" />

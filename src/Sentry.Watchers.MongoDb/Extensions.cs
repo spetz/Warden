@@ -88,7 +88,6 @@ namespace Sentry.Watchers.MongoDb
             return builder;
         }
 
-
         /// <summary>
         /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration with the default name of MongoDB Watcher.
         /// </summary>

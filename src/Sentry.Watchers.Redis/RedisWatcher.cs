@@ -13,6 +13,7 @@ namespace Sentry.Watchers.Redis
         private readonly IRedisConnection _connection;
         private readonly RedisWatcherConfiguration _configuration;
         public string Name { get; }
+        public const string DefaultName = "Redis Watcher";
 
         protected RedisWatcher(string name, RedisWatcherConfiguration configuration)
         {
@@ -68,6 +69,18 @@ namespace Sentry.Watchers.Redis
         }
 
         /// <summary>
+        /// Factory method for creating a new instance of RedisWatcher with default name of Redis Watcher.
+        /// </summary>
+        /// <param name="connectionString">Connection string of the Redis server.</param>
+        /// <param name="database">Id of the Redis database.</param>
+        /// <param name="timeout">Optional timeout of the Redis query (5 seconds by default).</param>
+        /// <param name="configurator">Optional lambda expression for configuring the RedisWatcher.</param>
+        /// <returns>Instance of RedisWatcher.</returns>
+        public static RedisWatcher Create(string connectionString, int database,
+            TimeSpan? timeout = null, Action<RedisWatcherConfiguration.Default> configurator = null)
+            => Create(DefaultName, connectionString, database, timeout, configurator);
+
+        /// <summary>
         /// Factory method for creating a new instance of RedisWatcher.
         /// </summary>
         /// <param name="name">Name of the RedisWatcher.</param>
@@ -84,6 +97,14 @@ namespace Sentry.Watchers.Redis
 
             return Create(name, config.Build());
         }
+
+        /// <summary>
+        /// Factory method for creating a new instance of RedisWatcher with default name of Redis Watcher.
+        /// </summary>
+        /// <param name="configuration">Configuration of RedisWatcher.</param>
+        /// <returns>Instance of RedisWatcher.</returns>
+        public static RedisWatcher Create(RedisWatcherConfiguration configuration)
+            => Create(DefaultName, configuration);
 
         /// <summary>
         /// Factory method for creating a new instance of RedisWatcher.
