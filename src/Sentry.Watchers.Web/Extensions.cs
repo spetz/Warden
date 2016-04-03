@@ -21,13 +21,13 @@ namespace Sentry.Watchers.Web
         }
 
         /// <summary>
-        /// Factory method for creating a new instance of WebWatcher with the default name of Web Watcher.
+        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration with the default name of Web Watcher.
         /// Uses the default HTTP GET request.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="url">Base URL of the request.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
-        /// <returns>Instance of WebWatcher.</returns>
+        /// <returns>Instance of fluent builder for the SentryConfiguration.</returns>
         public static SentryConfiguration.Builder AddWebWatcher(
             this SentryConfiguration.Builder builder, string url,
             Action<WatcherHooksConfiguration.Builder> hooks = null)
@@ -38,13 +38,13 @@ namespace Sentry.Watchers.Web
         }
 
         /// <summary>
-        /// Factory method for creating a new instance of WebWatcher with the default name of Web Watcher.
+        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration with the default name of Web Watcher.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="url">Base URL of the request.</param>
         /// <param name="request">Instance of the IHttpRequest.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
-        /// <returns>Instance of WebWatcher.</returns>
+        /// <returns>Instance of fluent builder for the SentryConfiguration.</returns>
         public static SentryConfiguration.Builder AddWebWatcher(
             this SentryConfiguration.Builder builder, string url, IHttpRequest request,
             Action<WatcherHooksConfiguration.Builder> hooks = null)
@@ -54,6 +54,15 @@ namespace Sentry.Watchers.Web
             return builder;
         }
 
+        /// <summary>
+        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration..
+        /// </summary>
+        /// <param name="builder">Instance of the Sentry configuration builder.</param>
+        /// <param name="name">Name of the WebWatcher.</param>
+        /// <param name="url">Base URL of the request.</param>
+        /// <param name="request">Instance of the IHttpRequest.</param>
+        /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <returns>Instance of fluent builder for the SentryConfiguration.</returns>
         public static SentryConfiguration.Builder AddWebWatcher(
             this SentryConfiguration.Builder builder,
             string name, string url, IHttpRequest request,
@@ -65,7 +74,7 @@ namespace Sentry.Watchers.Web
         }
 
         /// <summary>
-        /// Factory method for creating a new instance of WebWatcher with the default name of Web Watcher.
+        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration with the default name of Web Watcher.
         /// Uses the default HTTP GET request.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
@@ -83,14 +92,14 @@ namespace Sentry.Watchers.Web
         }
 
         /// <summary>
-        /// Factory method for creating a new instance of WebWatcher with the default name of Web Watcher.
+        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration with the default name of Web Watcher.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="url">Base URL of the request.</param>
         /// <param name="request">Instance of the IHttpRequest.</param>
         /// <param name="configurator">Lambda expression for configuring the WebWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
-        /// <returns>Instance of WebWatcher.</returns>
+        /// <returns>Instance of fluent builder for the SentryConfiguration.</returns>
         public static SentryConfiguration.Builder AddWebWatcher(
             this SentryConfiguration.Builder builder, string url, IHttpRequest request,
             Action<WebWatcherConfiguration.Default> configurator,
@@ -102,7 +111,7 @@ namespace Sentry.Watchers.Web
         }
 
         /// <summary>
-        /// Factory method for creating a new instance of WebWatcher.
+        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="name">Name of the WebWatcher.</param>
@@ -110,7 +119,7 @@ namespace Sentry.Watchers.Web
         /// <param name="request">Instance of the IHttpRequest.</param>
         /// <param name="configurator">Lambda expression for configuring the WebWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
-        /// <returns>Instance of WebWatcher.</returns>
+        /// <returns>Instance of fluent builder for the SentryConfiguration.</returns>
         public static SentryConfiguration.Builder AddWebWatcher(
             this SentryConfiguration.Builder builder,
             string name, string url, IHttpRequest request,
@@ -122,14 +131,13 @@ namespace Sentry.Watchers.Web
             return builder;
         }
 
-
         /// <summary>
-        /// Factory method for creating a new instance of WebWatcher with the default name of Web Watcher.
+        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration with the default name of Web Watcher.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="configuration">Configuration of WebWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
-        /// <returns>Instance of WebWatcher.</returns>
+        /// <returns>Instance of fluent builder for the SentryConfiguration.</returns>
         public static SentryConfiguration.Builder AddWebWatcher(
             this SentryConfiguration.Builder builder,
             WebWatcherConfiguration configuration,
@@ -140,15 +148,14 @@ namespace Sentry.Watchers.Web
             return builder;
         }
 
-
         /// <summary>
-        /// Factory method for creating a new instance of WebWatcher.
+        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="name">Name of the WebWatcher.</param>
         /// <param name="configuration">Configuration of WebWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
-        /// <returns>Instance of WebWatcher.</returns>
+        /// <returns>Instance of fluent builder for the SentryConfiguration.</returns>
         public static SentryConfiguration.Builder AddWebWatcher(
             this SentryConfiguration.Builder builder, string name,
             WebWatcherConfiguration configuration,
