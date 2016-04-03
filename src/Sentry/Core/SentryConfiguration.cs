@@ -105,6 +105,18 @@ namespace Sentry.Core
             }
 
             /// <summary>
+            /// Register the IIntegration in the IIntegrator. 
+            /// </summary>
+            /// <param name="integration">Instance of IIntegration.</param>
+            /// <returns>Instance of fluent builder for the SentryConfiguration.</returns>
+            public Builder AddIntegration(IIntegration integration)
+            {
+                _configuration.IntegratorProvider().Register(integration);
+
+                return this;
+            }
+
+            /// <summary>
             /// Configure the hooks specific for the Sentry.
             /// </summary>
             /// <param name="hooks">Lambda expression for configuring the Sentry hooks.</param>
