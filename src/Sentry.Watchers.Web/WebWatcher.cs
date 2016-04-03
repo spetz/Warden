@@ -12,6 +12,7 @@ namespace Sentry.Watchers.Web
         private readonly WebWatcherConfiguration _configuration;
         private readonly IHttpService _httpService;
         public string Name { get; }
+        public const string DefaultName = "Web Watcher";
 
         protected WebWatcher(string name, WebWatcherConfiguration configuration)
         {
@@ -71,11 +72,42 @@ namespace Sentry.Watchers.Web
             => response.IsValid || _configuration.SkipStatusCodeValidation;
 
         /// <summary>
+        /// Factory method for creating a new instance of WebWatcher with default name of Web Watcher.
+        /// Uses the default HTTP GET request.
+        /// </summary>
+        /// <param name="url">Base URL of the request.</param>
+        /// <param name="configurator">Optional lambda expression for configuring the WebWatcher.</param>
+        /// <returns>Instance of WebWatcher.</returns>
+        public static WebWatcher Create(string url, Action<WebWatcherConfiguration.Default> configurator = null)
+        {
+            var config = new WebWatcherConfiguration.Builder(url);
+            configurator?.Invoke((WebWatcherConfiguration.Default)config);
+
+            return Create(DefaultName, config.Build());
+        }
+
+        /// <summary>
+        /// Factory method for creating a new instance of WebWatcher with default name of Web Watcher.
+        /// </summary>
+        /// <param name="url">Base URL of the request.</param>
+        /// <param name="request">Instance of the IHttpRequest.</param>
+        /// <param name="configurator">Optional lambda expression for configuring the WebWatcher.</param>
+        /// <returns>Instance of WebWatcher.</returns>
+        public static WebWatcher Create(string url, IHttpRequest request,
+            Action<WebWatcherConfiguration.Default> configurator = null)
+        {
+            var config = new WebWatcherConfiguration.Builder(url, request);
+            configurator?.Invoke((WebWatcherConfiguration.Default)config);
+
+            return Create(DefaultName, config.Build());
+        }
+
+        /// <summary>
         /// Factory method for creating a new instance of WebWatcher.
         /// </summary>
         /// <param name="name">Name of the WebWatcher.</param>
         /// <param name="url">Base URL of the request.</param>
-        /// <param name="request">Instance of IHttpRequest.</param>
+        /// <param name="request">Instance of the IHttpRequest.</param>
         /// <param name="configurator">Optional lambda expression for configuring the WebWatcher.</param>
         /// <returns>Instance of WebWatcher.</returns>
         public static WebWatcher Create(string name, string url, IHttpRequest request,
@@ -86,6 +118,14 @@ namespace Sentry.Watchers.Web
 
             return Create(name, config.Build());
         }
+
+        /// <summary>
+        /// Factory method for creating a new instance of WebWatcher with default name of Web Watcher.
+        /// </summary>
+        /// <param name="configuration">Configuration of WebWatcher.</param>
+        /// <returns>Instance of WebWatcher.</returns>
+        public static WebWatcher Create(WebWatcherConfiguration configuration)
+            => new WebWatcher(DefaultName, configuration);
 
         /// <summary>
         /// Factory method for creating a new instance of WebWatcher.

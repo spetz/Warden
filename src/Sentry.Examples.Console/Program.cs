@@ -23,11 +23,6 @@ namespace Sentry.Examples.Console
             Task.WaitAll(sentry.StartAsync());
         }
 
-        private class User
-        {
-            public int Id { get; set; }
-        }
-
         private static ISentry ConfigureSentry()
         {
             var websiteWatcherConfiguration = WebWatcherConfiguration

@@ -197,6 +197,11 @@ namespace Sentry.Watchers.Web
         /// </summary>
         public class Builder : Configurator<Builder>
         {
+            public Builder(string url) : base(url, HttpRequest.Get())
+            {
+                SetInstance(this);
+            }
+
             public Builder(string url, IHttpRequest request) : base(url, request)
             {
                 SetInstance(this);
