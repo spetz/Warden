@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using SendGrid;
 
@@ -10,6 +11,12 @@ namespace Sentry.Integrations.SendGrid
 {
     public class SendGridIntegration : IIntegration
     {
+        private static readonly Regex EmailRegex =
+            new Regex(
+                @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
+                @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$",
+                RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant);
+
         private readonly SendGridIntegrationConfiguration _configuration;
 
         public SendGridIntegration(SendGridIntegrationConfiguration configuration)
@@ -41,7 +48,12 @@ namespace Sentry.Integrations.SendGrid
             string message = null, params string[] receivers)
         {
             var emailMessage = CreateMessage(sender, subject, receivers);
-            emailMessage.Text = _configuration.DefaultMessage + emailMessage;
+            var body = _configuration.DefaultMessage + emailMessage;
+            if (_configuration.UseHtmlBody)
+                emailMessage.Html = body;
+            else
+                emailMessage.Text = body;
+
             await SendMessageAsync(emailMessage);
         }
 
@@ -115,6 +127,8 @@ namespace Sentry.Integrations.SendGrid
             var emailSender = _configuration.DefaultSender.Or(sender);
             if (string.IsNullOrWhiteSpace(emailSender))
                 throw new ArgumentException("Email message sender has not been defined.", nameof(emailSender));
+            if(!EmailRegex.IsMatch(sender))
+                throw new ArgumentException("Invalid email of the message sender.", nameof(emailSender));
 
             var customReceivers = receivers ?? Enumerable.Empty<string>();
             var emailReceivers = (_configuration.DefaultReceivers.Any()
@@ -122,6 +136,12 @@ namespace Sentry.Integrations.SendGrid
                 : customReceivers).ToList();
             if (!emailReceivers.Any())
                 throw new ArgumentException("Email message receivers have not been defined.", nameof(emailReceivers));
+            var invalidEmailReceivers = emailReceivers.Where(x => !EmailRegex.IsMatch(x));
+            if (invalidEmailReceivers.Any())
+            {
+                throw new ArgumentException("Invalid email(s) of the message receiver(s): " +
+                                            $"{string.Join(",", invalidEmailReceivers)}", nameof(emailSender));
+            }
 
             var message = new SendGridMessage
             {

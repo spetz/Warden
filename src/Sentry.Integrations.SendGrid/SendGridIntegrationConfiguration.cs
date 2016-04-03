@@ -14,6 +14,7 @@ namespace Sentry.Integrations.SendGrid
         public string DefaultMessage { get; protected set; }
         public string DefaultTemplateId { get; protected set; }
         public EmailTemplateParameter[] DefaultTemplateParameters { get; protected set; }
+        public bool UseHtmlBody { get; protected set; }
 
         protected SendGridIntegrationConfiguration(string defaultSender = null)
         {
@@ -100,6 +101,13 @@ namespace Sentry.Integrations.SendGrid
                     throw new ArgumentException("Api key can not be empty", nameof(apiKey));
 
                 Configuration.ApiKey = apiKey;
+
+                return this;
+            }
+
+            public Builder WithHtmlBody()
+            {
+                Configuration.UseHtmlBody = true;
 
                 return this;
             }

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Sentry.Integrations.SendGrid
 {
@@ -9,6 +11,11 @@ namespace Sentry.Integrations.SendGrid
 
         public EmailTemplateParameter(string replacementTag, IEnumerable<string> values)
         {
+            if (string.IsNullOrWhiteSpace(replacementTag))
+                throw new ArgumentException("Replacement tag can not be empty", nameof(replacementTag));
+            if (values?.Any() == false)
+                throw new ArgumentException("Template values can not be empty", nameof(replacementTag));
+
             ReplacementTag = replacementTag;
             Values = values;
         }
