@@ -47,7 +47,12 @@ namespace Sentry.Core
         /// <summary>
         /// Custom provider for IIterationProcessor.
         /// </summary>
-        public Func<IIterationProcessor> IterationProcessor { get; protected set; }
+        public Func<IIterationProcessor> IterationProcessorProvider { get; protected set; }
+
+        /// <summary>
+        /// Custom provider for the IIntegrator.
+        /// </summary>
+        public Func<IIntegrator> IntegratorProvider { get; protected set; }
 
         protected internal SentryConfiguration()
         {
@@ -57,6 +62,7 @@ namespace Sentry.Core
             Watchers = new HashSet<WatcherConfiguration>();
             IterationDelay = new TimeSpan(0, 0, 5);
             DateTimeProvider = () => DateTime.UtcNow;
+            IntegratorProvider = () => new Integrator();
         }
 
         /// <summary>
@@ -94,21 +100,6 @@ namespace Sentry.Core
                     .Build();
 
                 _configuration.Watchers.Add(watcherConfiguration);
-
-                return this;
-            }
-
-            /// <summary>
-            /// Allows to set the custom provider for the DateTime.
-            /// </summary>
-            /// <param name="dateTimeProvider"></param>
-            /// <returns>Instance of fluent builder for the SentryConfiguration.</returns>
-            public Builder SetCustomDateTimeProvider(Func<DateTime> dateTimeProvider)
-            {
-                if (dateTimeProvider == null)
-                    throw new ArgumentNullException(nameof(dateTimeProvider), "DateTime provider can not be null.");
-
-                _configuration.DateTimeProvider = dateTimeProvider;
 
                 return this;
             }
@@ -250,23 +241,53 @@ namespace Sentry.Core
             }
 
             /// <summary>
+            /// Allows to set the custom provider for the DateTime.
+            /// </summary>
+            /// <param name="dateTimeProvider"></param>
+            /// <returns>Instance of fluent builder for the SentryConfiguration.</returns>
+            public Builder SetDateTimeProvider(Func<DateTime> dateTimeProvider)
+            {
+                if (dateTimeProvider == null)
+                    throw new ArgumentNullException(nameof(dateTimeProvider), "DateTime provider can not be null.");
+
+                _configuration.DateTimeProvider = dateTimeProvider;
+
+                return this;
+            }
+
+            /// <summary>
             /// Sets the custom provider for IIterationProcessor.
             /// </summary>
-            /// <param name="iterationProcessor">Custom provider for IIterationProcessor.</param>
+            /// <param name="iterationProcessorProvider">Custom provider for IIterationProcessor.</param>
             /// <returns>Instance of fluent builder for the SentryConfiguration.</returns>
-            public Builder SetIterationProcessor(Func<IIterationProcessor> iterationProcessor)
+            public Builder SetIterationProcessorProvider(Func<IIterationProcessor> iterationProcessorProvider)
             {
-                if (iterationProcessor == null)
-                    throw new ArgumentNullException(nameof(iterationProcessor), "Iteration processor can not be null.");
+                if (iterationProcessorProvider == null)
+                    throw new ArgumentNullException(nameof(iterationProcessorProvider), "Iteration processor provider can not be null.");
 
-                _configuration.IterationProcessor = iterationProcessor;
+                _configuration.IterationProcessorProvider = iterationProcessorProvider;
+
+                return this;
+            }
+
+            /// <summary>
+            /// Sets the custom provider for IIterationProcessor.
+            /// </summary>
+            /// <param name="integratorProvider">Custom provider for IIntegrator.</param>
+            /// <returns>Instance of fluent builder for the SentryConfiguration.</returns>
+            public Builder SetIntegratorProvider(Func<IIntegrator> integratorProvider)
+            {
+                if (integratorProvider == null)
+                    throw new ArgumentNullException(nameof(integratorProvider), "Integrator processor can not be null.");
+
+                _configuration.IntegratorProvider = integratorProvider;
 
                 return this;
             }
 
             private void InitializeDefaultSentryIterationProcessorIfRequired()
             {
-                if (_configuration.IterationProcessor != null)
+                if (_configuration.IterationProcessorProvider != null)
                     return;
 
                 var iterationProcessorConfiguration = IterationProcessorConfiguration
@@ -277,7 +298,7 @@ namespace Sentry.Core
                     .SetDateTimeProvider(_configuration.DateTimeProvider)
                     .Build();
 
-                _configuration.IterationProcessor = () => new IterationProcessor(iterationProcessorConfiguration);
+                _configuration.IterationProcessorProvider = () => new IterationProcessor(iterationProcessorConfiguration);
             }
 
             /// <summary>

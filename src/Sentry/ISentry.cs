@@ -52,7 +52,7 @@ namespace Sentry
             _running = true;
             _configuration.Hooks.OnStart.Execute();
             await _configuration.Hooks.OnStartAsync.ExecuteAsync();
-            var iterationProcessor = _configuration.IterationProcessor();
+            var iterationProcessor = _configuration.IterationProcessorProvider();
 
             while (CanExecuteIteration(_iterationOrdinal))
             {

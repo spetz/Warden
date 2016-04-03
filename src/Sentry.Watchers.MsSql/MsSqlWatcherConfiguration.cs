@@ -181,16 +181,15 @@ namespace Sentry.Watchers.MsSql
             /// <summary>
             /// Sets the custom provider for the IMsSql.
             /// </summary>
-            /// <param name="msSqlServiceProvider">Custom provider for the IMsSql.</param>
+            /// <param name="msSqlProvider">Custom provider for the IMsSql.</param>
             /// <returns>Lambda expression returning an instance of the IMsSql.</returns>
             /// <returns>Instance of fluent builder for the MsSqlWatcherConfiguration.</returns>
-            public T WithMsSqlProvider(Func<IMsSql> msSqlServiceProvider)
+            public T WithMsSqlProvider(Func<IMsSql> msSqlProvider)
             {
-                if (msSqlServiceProvider == null)
-                    throw new ArgumentNullException(nameof(msSqlServiceProvider),
-                        "MSSQL service provider can not be null.");
+                if (msSqlProvider == null)
+                    throw new ArgumentNullException(nameof(msSqlProvider), "MSSQL provider can not be null.");
 
-                Configuration.MsSqlProvider = msSqlServiceProvider;
+                Configuration.MsSqlProvider = msSqlProvider;
 
                 return Configurator;
             }
