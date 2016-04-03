@@ -29,7 +29,7 @@ namespace Sentry.Watchers.MsSql
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="name">Name of the MsSqlWatcher.</param>
-        /// <param name="connectionString">Base URL of the request.</param>
+        /// <param name="connectionString">Connection string of the MSSQL database.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
         /// <returns>Instance of fluent builder for the SentryConfiguration.</returns>
         public static SentryConfiguration.Builder AddMsSqlWatcher(
@@ -43,10 +43,9 @@ namespace Sentry.Watchers.MsSql
 
         /// <summary>
         /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration with the default name of MSSQL Watcher.
-        /// Uses the default HTTP GET request.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
-        /// <param name="connectionString">Base URL of the request.</param>
+        /// <param name="connectionString">Connection string of the MSSQL database.</param>
         /// <param name="configurator">Lambda expression for configuring the MsSqlWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
         public static SentryConfiguration.Builder AddMsSqlWatcher(
@@ -64,7 +63,7 @@ namespace Sentry.Watchers.MsSql
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="name">Name of the MsSqlWatcher.</param>
-        /// <param name="connectionString">Base URL of the request.</param>
+        /// <param name="connectionString">Connection string of the MSSQL database.</param>
         /// <param name="configurator">Lambda expression for configuring the MsSqlWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
         /// <returns>Instance of fluent builder for the SentryConfiguration.</returns>

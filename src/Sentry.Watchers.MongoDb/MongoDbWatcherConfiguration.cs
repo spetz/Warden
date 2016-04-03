@@ -56,8 +56,8 @@ namespace Sentry.Watchers.MongoDb
         /// </summary>
         public Func<IEnumerable<dynamic>, Task<bool>> EnsureThatAsync { get; protected set; }
 
-        protected internal MongoDbWatcherConfiguration(string database, string connectionString,
-            TimeSpan? timeout = null)
+        protected internal MongoDbWatcherConfiguration(string connectionString,
+            string database, TimeSpan? timeout = null)
         {
             if (string.IsNullOrWhiteSpace(connectionString))
                 throw new ArgumentException("Connection string can not be empty.", nameof(connectionString));
@@ -104,12 +104,12 @@ namespace Sentry.Watchers.MongoDb
         /// <summary>
         /// Factory method for creating a new instance of fluent builder for the MongoDbWatcherConfiguration.
         /// </summary>
-        /// <param name="database">Name of the MongoDB database.</param>
         /// <param name="connectionString">Connection string of the MongoDB server.</param>
+        /// <param name="database">Name of the MongoDB database.</param>
         /// <param name="timeout">Optional timeout of the MongoDB query (5 seconds by default).</param>
         /// <returns>Instance of fluent builder for the MongoDbWatcherConfiguration.</returns>
-        public static Builder Create(string database, string connectionString, TimeSpan? timeout = null)
-            => new Builder(database, connectionString, timeout);
+        public static Builder Create(string connectionString, string database, TimeSpan? timeout = null)
+            => new Builder(connectionString, database, timeout);
 
         /// <summary>
         /// Fluent builder for the MongoDbWatcherConfiguration.
@@ -117,9 +117,9 @@ namespace Sentry.Watchers.MongoDb
         public abstract class Configurator<T> : WatcherConfigurator<T, MongoDbWatcherConfiguration>
             where T : Configurator<T>
         {
-            protected Configurator(string database, string connectionString, TimeSpan? timeout = null)
+            protected Configurator(string connectionString, string database, TimeSpan? timeout = null)
             {
-                Configuration = new MongoDbWatcherConfiguration(database, connectionString, timeout);
+                Configuration = new MongoDbWatcherConfiguration(connectionString, database, timeout);
             }
 
             protected Configurator(MongoDbWatcherConfiguration configuration) : base(configuration)

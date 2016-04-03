@@ -13,6 +13,7 @@ namespace Sentry.Watchers.MongoDb
         private readonly MongoDbWatcherConfiguration _configuration;
         private readonly IMongoDbConnection _connection;
         public string Name { get; }
+        public const string DefaultName = "MongoDB Watcher";
 
         protected MongoDbWatcher(string name, MongoDbWatcherConfiguration configuration)
         {
@@ -68,11 +69,28 @@ namespace Sentry.Watchers.MongoDb
         }
 
         /// <summary>
+        /// Factory method for creating a new instance of MongoDbWatcher with default name of MongoDB Watcher.
+        /// </summary>
+        /// <param name="connectionString">Connection string of the MongoDB server.</param>
+        /// <param name="database">Name of the MongoDB database.</param>
+        /// <param name="timeout">Optional timeout of the MongoDB query (5 seconds by default).</param>
+        /// <param name="configurator">Optional lambda expression for configuring the MongoDbWatcher.</param>
+        /// <returns>Instance of MongoDbWatcher.</returns>
+        public static MongoDbWatcher Create(string connectionString, string database,
+            TimeSpan? timeout = null, Action<MongoDbWatcherConfiguration.Default> configurator = null)
+        {
+            var config = new MongoDbWatcherConfiguration.Builder(connectionString, database, timeout);
+            configurator?.Invoke((MongoDbWatcherConfiguration.Default)config);
+
+            return Create(DefaultName, config.Build());
+        }
+
+        /// <summary>
         /// Factory method for creating a new instance of MongoDbWatcher.
         /// </summary>
         /// <param name="name">Name of the MongoDbWatcher.</param>
-        /// <param name="database">Name of the MongoDB database.</param>
         /// <param name="connectionString">Connection string of the MongoDB server.</param>
+        /// <param name="database">Name of the MongoDB database.</param>
         /// <param name="timeout">Optional timeout of the MongoDB query (5 seconds by default).</param>
         /// <param name="configurator">Optional lambda expression for configuring the MongoDbWatcher.</param>
         /// <returns>Instance of MongoDbWatcher.</returns>
@@ -84,6 +102,14 @@ namespace Sentry.Watchers.MongoDb
 
             return Create(name, config.Build());
         }
+
+        /// <summary>
+        /// Factory method for creating a new instance of MongoDbWatcher with default name of MongoDB Watcher.
+        /// </summary>
+        /// <param name="configuration">Configuration of MongoDbWatcher.</param>
+        /// <returns>Instance of MongoDbWatcher.</returns>
+        public static MongoDbWatcher Create(MongoDbWatcherConfiguration configuration)
+            => new MongoDbWatcher(DefaultName, configuration);
 
         /// <summary>
         /// Factory method for creating a new instance of MongoDbWatcher.
