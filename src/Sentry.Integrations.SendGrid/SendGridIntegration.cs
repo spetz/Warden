@@ -162,8 +162,13 @@ namespace Sentry.Integrations.SendGrid
             await transportWeb.DeliverAsync(message);
         }
 
-        public static SendGridIntegration Create(string sender,
-            Action<SendGridIntegrationConfiguration.Builder> configurator)
+        /// <summary>
+        /// Factory method for creating a new instance of SendGridIntegration.
+        /// </summary>
+        /// <param name="sender">Email address of the message sender.</param>
+        /// <param name="configurator">Lambda expression for configuring the SendGridIntegration.</param>
+        /// <returns>Instance of SendGridIntegration.</returns>
+        public static SendGridIntegration Create(string sender, Action<SendGridIntegrationConfiguration.Builder> configurator)
         {
             var config = new SendGridIntegrationConfiguration.Builder(sender);
             configurator?.Invoke(config);
@@ -171,6 +176,11 @@ namespace Sentry.Integrations.SendGrid
             return Create(config.Build());
         }
 
+        /// <summary>
+        /// Factory method for creating a new instance of SendGridIntegration.
+        /// </summary>
+        /// <param name="configuration">Configuration of SendGridIntegration.</param>
+        /// <returns>Instance of SendGridIntegration.</returns>
         public static SendGridIntegration Create(SendGridIntegrationConfiguration configuration)
             => new SendGridIntegration(configuration);
     }

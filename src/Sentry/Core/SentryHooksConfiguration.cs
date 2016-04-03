@@ -162,7 +162,7 @@ namespace Sentry.Core
             }
 
             /// <summary>
-            /// One or more unique OnStart hooks for the Sentry, invoked when the XXXXXXXXX.
+            /// One or more unique OnStart hooks for the Sentry, invoked when the StopAsync() is executed.
             /// </summary>
             /// <param name="hooks">One or more custom Sentry hooks.</param>
             /// <returns>Instance of fluent builder for the SentryHooksConfiguration.</returns>

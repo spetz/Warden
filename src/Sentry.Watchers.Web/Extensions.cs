@@ -8,7 +8,7 @@ namespace Sentry.Watchers.Web
     /// </summary>
     public static class Extensions
     {
-        public static string GetFullUrl(this IHttpRequest request, string baseUrl)
+        internal static string GetFullUrl(this IHttpRequest request, string baseUrl)
         {
             var endpoint = request.Endpoint;
             if (string.IsNullOrWhiteSpace(endpoint))
@@ -21,7 +21,7 @@ namespace Sentry.Watchers.Web
         }
 
         /// <summary>
-        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration with the default name of Web Watcher.
+        /// Extension method for adding the Web watcher to the the SentryConfiguration with the default name of Web Watcher.
         /// Uses the default HTTP GET request.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
@@ -38,7 +38,7 @@ namespace Sentry.Watchers.Web
         }
 
         /// <summary>
-        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration with the default name of Web Watcher.
+        /// Extension method for adding the Web watcher to the the SentryConfiguration with the default name of Web Watcher.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="url">Base URL of the request.</param>
@@ -55,7 +55,7 @@ namespace Sentry.Watchers.Web
         }
 
         /// <summary>
-        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration..
+        /// Extension method for adding the Web watcher to the the SentryConfiguration..
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="name">Name of the WebWatcher.</param>
@@ -74,7 +74,7 @@ namespace Sentry.Watchers.Web
         }
 
         /// <summary>
-        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration with the default name of Web Watcher.
+        /// Extension method for adding the Web watcher to the the SentryConfiguration with the default name of Web Watcher.
         /// Uses the default HTTP GET request.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
@@ -92,7 +92,7 @@ namespace Sentry.Watchers.Web
         }
 
         /// <summary>
-        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration with the default name of Web Watcher.
+        /// Extension method for adding the Web watcher to the the SentryConfiguration with the default name of Web Watcher.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="url">Base URL of the request.</param>
@@ -111,7 +111,7 @@ namespace Sentry.Watchers.Web
         }
 
         /// <summary>
-        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration.
+        /// Extension method for adding the Web watcher to the the SentryConfiguration.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="name">Name of the WebWatcher.</param>
@@ -132,7 +132,7 @@ namespace Sentry.Watchers.Web
         }
 
         /// <summary>
-        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration with the default name of Web Watcher.
+        /// Extension method for adding the Web watcher to the the SentryConfiguration with the default name of Web Watcher.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="configuration">Configuration of WebWatcher.</param>
@@ -149,7 +149,7 @@ namespace Sentry.Watchers.Web
         }
 
         /// <summary>
-        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration.
+        /// Extension method for adding the Web watcher to the the SentryConfiguration.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="name">Name of the WebWatcher.</param>

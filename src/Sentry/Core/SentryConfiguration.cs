@@ -66,7 +66,7 @@ namespace Sentry.Core
         }
 
         /// <summary>
-        /// Factory method for creating a new instance of fluent builder for the SentryConfiguration.
+        /// Factory method for creating a new instance of fxluent builder for the SentryConfiguration.
         /// </summary>
         /// <returns>Instance of fluent builder for the SentryConfiguration.</returns>
         public static Builder Create() => new Builder();

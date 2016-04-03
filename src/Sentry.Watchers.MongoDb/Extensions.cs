@@ -9,7 +9,7 @@ namespace Sentry.Watchers.MongoDb
     public static class Extensions
     {
         /// <summary>
-        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration with the default name of MongoDB Watcher.
+        /// Extension method for adding the MongoDB watcher to the the SentryConfiguration with the default name of MongoDB Watcher.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="connectionString">Connection string of the MongoDB database.</param>
@@ -27,7 +27,7 @@ namespace Sentry.Watchers.MongoDb
         }
 
         /// <summary>
-        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration.
+        /// Extension method for adding the MongoDB watcher to the the SentryConfiguration.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="name">Name of the MongoDbWatcher.</param>
@@ -47,7 +47,7 @@ namespace Sentry.Watchers.MongoDb
         }
 
         /// <summary>
-        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration with the default name of MongoDB Watcher.
+        /// Extension method for adding the MongoDB watcher to the the SentryConfiguration with the default name of MongoDB Watcher.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="connectionString">Connection string of the MongoDB database.</param>
@@ -67,7 +67,7 @@ namespace Sentry.Watchers.MongoDb
         }
 
         /// <summary>
-        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration.
+        /// Extension method for adding the MongoDB watcher to the the SentryConfiguration.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="name">Name of the MongoDbWatcher.</param>
@@ -89,7 +89,7 @@ namespace Sentry.Watchers.MongoDb
         }
 
         /// <summary>
-        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration with the default name of MongoDB Watcher.
+        /// Extension method for adding the MongoDB watcher to the the SentryConfiguration with the default name of MongoDB Watcher.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="configuration">Configuration of MongoDbWatcher.</param>
@@ -106,7 +106,7 @@ namespace Sentry.Watchers.MongoDb
         }
 
         /// <summary>
-        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration.
+        /// Extension method for adding the MongoDB watcher to the the SentryConfiguration.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="name">Name of the MongoDbWatcher.</param>

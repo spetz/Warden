@@ -9,7 +9,7 @@ namespace Sentry.Watchers.MsSql
     public static class Extensions
     {
         /// <summary>
-        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration with the default name of MSSQL Watcher.
+        /// Extension method for adding the MSSQL watcher to the the SentryConfiguration with the default name of MSSQL Watcher.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="connectionString">Connection string of the MSSQL database.</param>
@@ -25,7 +25,7 @@ namespace Sentry.Watchers.MsSql
         }
 
         /// <summary>
-        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration.
+        /// Extension method for adding the MSSQL watcher to the the SentryConfiguration.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="name">Name of the MsSqlWatcher.</param>
@@ -42,7 +42,7 @@ namespace Sentry.Watchers.MsSql
         }
 
         /// <summary>
-        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration with the default name of MSSQL Watcher.
+        /// Extension method for adding the MSSQL watcher to the the SentryConfiguration with the default name of MSSQL Watcher.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="connectionString">Connection string of the MSSQL database.</param>
@@ -59,7 +59,7 @@ namespace Sentry.Watchers.MsSql
         }
 
         /// <summary>
-        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration.
+        /// Extension method for adding the MSSQL watcher to the the SentryConfiguration.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="name">Name of the MsSqlWatcher.</param>
@@ -79,7 +79,7 @@ namespace Sentry.Watchers.MsSql
 
 
         /// <summary>
-        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration with the default name of MSSQL Watcher.
+        /// Extension method for adding the MSSQL watcher to the the SentryConfiguration with the default name of MSSQL Watcher.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="configuration">Configuration of MsSqlWatcher.</param>
@@ -96,7 +96,7 @@ namespace Sentry.Watchers.MsSql
         }
 
         /// <summary>
-        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration.
+        /// Extension method for adding the MSSQL watcher to the the SentryConfiguration.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="name">Name of the MsSqlWatcher.</param>

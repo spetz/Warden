@@ -9,7 +9,7 @@ namespace Sentry.Watchers.Redis
     public static class Extensions
     {
         /// <summary>
-        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration with the default name of Redis Watcher.
+        /// Extension method for adding the Redis watcher to the the SentryConfiguration with the default name of Redis Watcher.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="connectionString">Connection string of the Redis database.</param>m
@@ -27,7 +27,7 @@ namespace Sentry.Watchers.Redis
         }
 
         /// <summary>
-        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration.
+        /// Extension method for adding the Redis watcher to the the SentryConfiguration.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="name">Name of the RedisWatcher.</param>
@@ -47,7 +47,7 @@ namespace Sentry.Watchers.Redis
         }
 
         /// <summary>
-        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration with the default name of Redis Watcher.
+        /// Extension method for adding the Redis watcher to the the SentryConfiguration with the default name of Redis Watcher.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="connectionString">Connection string of the Redis database.</param>
@@ -67,7 +67,7 @@ namespace Sentry.Watchers.Redis
         }
 
         /// <summary>
-        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration.
+        /// Extension method for adding the Redis watcher to the the SentryConfiguration.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="name">Name of the RedisWatcher.</param>
@@ -89,7 +89,7 @@ namespace Sentry.Watchers.Redis
         }
 
         /// <summary>
-        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration with the default name of Redis Watcher.
+        /// Extension method for adding the Redis watcher to the the SentryConfiguration with the default name of Redis Watcher.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="configuration">Configuration of RedisWatcher.</param>
@@ -106,7 +106,7 @@ namespace Sentry.Watchers.Redis
         }
 
         /// <summary>
-        /// Factory method for creating a new Instance of fluent builder for the SentryConfiguration.
+        /// Extension method for adding the Redis watcher to the the SentryConfiguration.
         /// </summary>
         /// <param name="builder">Instance of the Sentry configuration builder.</param>
         /// <param name="name">Name of the RedisWatcher.</param>
