@@ -1,4 +1,4 @@
-﻿namespace Warden
+﻿namespace Warden.Core
 {
     /// <summary>
     /// Common interface with a single property determing the success of an operation.

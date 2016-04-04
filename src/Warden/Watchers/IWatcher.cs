@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Warden
+namespace Warden.Watchers
 {
     /// <summary>
     /// Common interface for all of the watchers. 

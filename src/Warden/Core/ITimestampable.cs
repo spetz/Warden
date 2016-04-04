@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Warden
+namespace Warden.Core
 {
     /// <summary>
     /// Common interface containing the dates and times of the watcher check execution.

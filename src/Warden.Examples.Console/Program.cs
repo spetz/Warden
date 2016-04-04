@@ -4,8 +4,10 @@ using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using NLog;
+using Warden.Configurations;
 using Warden.Core;
 using Warden.Integrations.SendGrid;
+using Warden.Watchers;
 using Warden.Watchers.MongoDb;
 using Warden.Watchers.MsSql;
 using Warden.Watchers.Redis;
@@ -47,7 +49,7 @@ namespace Warden.Examples.Console
 
             var mssqlWatcherConfiguration = MsSqlWatcherConfiguration
                 .Create(ConfigurationManager.ConnectionStrings["MyDatabase"].ConnectionString)
-                .WithQuery("select * from users where id = @id", new Dictionary<string, object> {["id"] = 1 })
+                .WithQuery("select * from users where id = @id", new Dictionary<string, object> {["id"] = 1})
                 .EnsureThat(users => users.Any(user => user.Name == "admin"))
                 .Build();
             var mssqlWatcher = MsSqlWatcher.Create("MSSQL watcher", mssqlWatcherConfiguration);
@@ -71,46 +73,55 @@ namespace Warden.Examples.Console
 
             var wardenConfiguration = WardenConfiguration
                 .Create()
-                .SetHooks((hooks, integrations) =>
+                .AddWebWatcher("http://my-website.com", hooks =>
                 {
-                    //hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration));
-                    hooks.OnError(exception => Logger.Error(exception));
+                    hooks.OnFailureAsync(result => WebsiteHookOnFailureAsync(result));
+                    hooks.OnSuccessAsync(result => WebsiteHookOnSuccessAsync(result));
+                    hooks.OnCompletedAsync(result => WebsiteHookOnCompletedAsync(result));
                 })
-                .AddWatcher(apiWatcher)
-                .AddWatcher(mssqlWatcher)
-                .AddWatcher(mongoDbWatcher)
-                .AddWatcher(redisWatcher)
-                .AddWatcher(websiteWatcher, hooks =>
+                .AddWebWatcher("http://my-api.com", HttpRequest.Post("users", new {name = "test"},
+                    headers: new Dictionary<string, string>
+                    {
+                        ["Authorization"] = "Token MyBase64EncodedString",
+                    }),
+                    cfg =>
+                    {
+                        cfg.EnsureThat(response => response.Headers.Any());
+                    })
+                .AddMongoDbWatcher("mongodb://localhost:27017", "MyDatabase", cfg =>
                 {
-                    //hooks.OnFailureAsync(result => WebsiteHookOnFailureAsync(result));
-                    //hooks.OnSuccessAsync(result => WebsiteHookOnSuccessAsync(result));
-                    //hooks.OnCompletedAsync(result => WebsiteHookOnCompletedAsync(result));
+                    cfg.WithQuery("Users", "{\"name\": \"admin\"}")
+                        .EnsureThat(users => users.Any(user => user.role == "admin"));
                 })
-                .SetGlobalWatcherHooks((hooks, integrations) =>
+                .AddMsSqlWatcher(@"Data Source=.\sqlexpress;Initial Catalog=MyDatabase;Integrated Security=True",
+                    cfg =>
+                    {
+                        cfg.WithQuery("select * from users where id = @id", new Dictionary<string, object> {["id"] = 1})
+                            .EnsureThat(users => users.Any(user => user.Name == "admin"));
+                    })
+                .IntegrateWithSendGrid("api-key", "noreply@system.com", cfg =>
                 {
-                    //hooks.OnStart(check => GlobalHookOnStart(check));
-                    //hooks.OnFailure(result => GlobalHookOnFailure(result));
-                    //hooks.OnSuccess(result => GlobalHookOnSuccess(result));
-                    //hooks.OnCompleted(result => GlobalHookOnCompleted(result));
-                    //hooks.OnError(exception => Logger.Error(exception));
-                    //hooks.OnFirstFailureAsync(check => integrations
-                    //    .SendGrid(sendGridConfiguration)
-                    //    .SendEmailAsync($"{check.WatcherCheckResult.WatcherName}: {check.WatcherCheckResult.Description}"));
-                    //hooks.OnFirstSuccessAsync(check => integrations
-                    //    .SendGrid(sendGridConfiguration)
-                    //    .SendEmailAsync($"{check.WatcherCheckResult.WatcherName}: everything is up and running again! :)"));
+                    cfg.WithDefaultSubject("Monitoring status")
+                        .WithDefaultReceivers("admin@system.com");
                 })
-                .SetAggregatedWatcherHooks(hooks =>
+                .SetGlobalWatcherHooks(hooks =>
                 {
-                    hooks.OnFirstFailure(results => Logger.Info($"First failure for {results.Count()} results"));
-                    hooks.OnFirstSuccess(results => Logger.Info($"First success for {results.Count()} results"));
-                    hooks.OnFirstError(exceptions => Logger.Info($"First error for {exceptions.Count()} exceptions"));
-                    hooks.OnCompleted(results => Logger.Info($"Completed for {results.Count()} results"));
-
-                    //hooks.OnFirstFailureAsync(results => sendGrid.SendEmailAsync(GetWardenCheckResultDetails(results)));
-                    //hooks.OnFirstSuccessAsync(results => sendGrid.SendEmailAsync(GetWardenCheckResultDetails(results)));
-                    //hooks.OnFirstErrorAsync(exceptions => sendGrid.SendEmailAsync(GetExceptionsDetails(exceptions)));
-                    //hooks.OnCompletedAsync(results => sendGrid.SendEmailAsync(GetWardenCheckResultDetails(results)));
+                    hooks.OnStart(check => GlobalHookOnStart(check))
+                        .OnFailure(result => GlobalHookOnFailure(result))
+                        .OnSuccess(result => GlobalHookOnSuccess(result))
+                        .OnCompleted(result => GlobalHookOnCompleted(result));
+                })
+                .SetAggregatedWatcherHooks((hooks, integrations) =>
+                {
+                    hooks.OnFirstFailureAsync(
+                        results => integrations.SendGrid().SendEmailAsync("Monitoring errors have occured."))
+                        .OnFirstSuccessAsync(
+                            results => integrations.SendGrid().SendEmailAsync("Everything is up and running again!"));
+                })
+                .SetHooks(hooks =>
+                {
+                    hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration))
+                         .OnError(exception => Logger.Error(exception));
                 })
                 .Build();
 

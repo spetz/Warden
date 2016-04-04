@@ -2,7 +2,9 @@
 using System.Threading.Tasks;
 using Machine.Specifications;
 using Moq;
+using Warden.Configurations;
 using Warden.Core;
+using Warden.Watchers;
 using It = Machine.Specifications.It;
 
 namespace Warden.Tests.Core

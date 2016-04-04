@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Warden.Integrations;
+using Warden.Watchers;
 
-namespace Warden.Core
+namespace Warden.Configurations
 {
     /// <summary>
     /// Configuration of the Warden.

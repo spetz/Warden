@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Warden.Configurations;
 using Warden.Core;
 
 namespace Warden.Integrations.SendGrid

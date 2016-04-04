@@ -1,4 +1,6 @@
-﻿namespace Warden
+﻿using Warden.Core;
+
+namespace Warden.Watchers
 {
     /// <summary>
     /// Holds the information about the watcher check result. 

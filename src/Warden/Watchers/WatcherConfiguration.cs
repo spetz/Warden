@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Warden.Core
+namespace Warden.Watchers
 {
     /// <summary>
     /// Internal configuration of the watchers used by Warden.

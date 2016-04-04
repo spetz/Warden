@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Warden.Configurations;
 using Warden.Core;
+using Warden.Watchers;
 
 namespace Warden
 {

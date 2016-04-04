@@ -26,7 +26,7 @@ namespace Warden.Integrations.SendGrid
         /// </summary>
         /// <param name="replacementTag">Name of the replacement tag.</param>
         /// <param name="values">Replacement tag values.</param>
-        /// <returns>Instance of SendGridIntegration.</returns>
+        /// <returns>Instance of EmailTemplateParameter.</returns>
         public static EmailTemplateParameter Create(string replacementTag, IEnumerable<string> values)
             => new EmailTemplateParameter(replacementTag, values);
     }

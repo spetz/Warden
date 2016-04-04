@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Warden
+namespace Warden.Watchers
 {
     /// <summary>
     /// Contains the specified watcher name and it's type. 

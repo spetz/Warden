@@ -1,4 +1,6 @@
 ﻿using System;
+using Warden.Core;
+using Warden.Watchers;
 
 namespace Warden
 {

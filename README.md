@@ -1,3 +1,4 @@
+
 # **[Warden](http://spetz.github.io/warden/)**
 
 [![Build status](https://ci.appveyor.com/api/projects/status/47l3ldatuj526tf5/branch/master?svg=true)](https://ci.appveyor.com/project/spetz/Warden/branch/master)
@@ -5,12 +6,12 @@
 > Define "health checks" for your applications, resources and
 > infrastructure. Keep your **Warden** on the watch.
 
-**Please note that it's just a preview version of the library (work in progress), containing a basic "documentation".**
+**Please note that it's just a preview version of the library (work in progress).**
 
 **What is Warden?**
 ----------------
 
-Warden is a simple library built to solve the problem of monitoring the resources such as the websites, API, databases, CPU etc. It allows to quickly define the **watchers** responsible for performing checks on a specific resources, and use these information e.g. to alert about any issues related to the possible downtime of your system.
+Warden is a simple library built to solve the problem of monitoring the resources such as the websites, API, databases, CPU etc. It allows to quickly define the **[watchers](https://github.com/spetz/Warden/wiki/watcher)** responsible for performing checks on specific resources and **[integrations](https://github.com/spetz/Warden/wiki/integration)** to easily notify about any issues related to the possible downtime of your system. On top of that, you may use all of this information to collect the custom metrics thanks to the **[hooks](https://github.com/spetz/Warden/wiki/Hooks)**.
 
 **What kind of monitoring is available?**
 ----------------
@@ -21,7 +22,15 @@ Currently available **[watchers](https://github.com/spetz/Warden/wiki/watcher)**
  - **[Redis](https://github.com/spetz/Warden/wiki/Watcher-type-Redis)**
  - **[Web](https://github.com/spetz/Warden/wiki/Watcher-type-Web)**
 
-Please note that many more are coming soon (CPU, Memory, File etc.)
+More watchers are coming soon (CPU, Memory, File etc.)
+
+**What are the integrations with external services?**
+----------------
+As for now, you may use the following **[integrations](https://github.com/spetz/Warden/wiki/integration)**:
+
+ - **[SendGrid](https://github.com/spetz/Warden/wiki/Integration-with-SendGrid)**
+
+More integrations are coming soon.
 
 **Is there any documentation?**
 ----------------
@@ -31,69 +40,48 @@ Yes, please navigate to the **[wiki](https://github.com/spetz/Warden/wiki)** pag
 **Quick start**:
 ----------------
 
-Define the **watchers** that will monitor your resources by using the provided configuration classes.
+Configure the **[Warden](https://github.com/spetz/Warden/wiki/Warden)** by adding the  **[watchers](https://github.com/spetz/Warden/wiki/Watcher)** and setting up the **[hooks](https://github.com/spetz/Warden/wiki/Hooks)** and **[integrations](https://github.com/spetz/Warden/wiki/Integration)**  to get notified about failures, successful checks, exceptions etc. - use that information e.g. in order to let your system administrator know when something goes wrong or to build your custom metrics.
 ```csharp
-//Define a watcher for the website 
-var websiteWatcherConfiguration = WebWatcherConfiguration
-    .Create("http://my-website.com")
-    .Build();
-var websiteWatcher = WebWatcher.Create("My website watcher", websiteWatcherConfiguration);
-
-//Define a watcher for the API 
-var apiWatcherConfiguration = WebWatcherConfiguration
-    .Create("http://my-api.com", HttpRequest.Post("users", new {name = "test"},
-        headers: new Dictionary<string, string>
-        {
-            ["Authorization"] = "Token MyBase64EncodedString",
-        }))
-    .EnsureThat(response => response.Headers.Any())
-    .Build();
-var apiWatcher = WebWatcher.Create("My API watcher", apiWatcherConfiguration);
-
-//Define a watcher for the MSSQL database 
-var mssqlWatcherConfiguration = MsSqlWatcherConfiguration
-    .Create(@"Data Source=.\sqlexpress;Initial Catalog=MyDatabase;Integrated Security=True")
-    .WithQuery("select * from users where id = @id", new Dictionary<string, object> {["id"] = 1})
-    .EnsureThat(users => users.Any(user => user.Name == "admin"))
-    .Build();
-var mssqlWatcher = MsSqlWatcher.Create("My database watcher", mssqlWatcherConfiguration);
-```
-
-Configure the **[Warden](https://github.com/spetz/Warden/wiki/Warden)** by adding the previously defined **watchers**, setting up the **[hooks](https://github.com/spetz/Warden/wiki/Hooks)** (callbacks) to get notified about failures, successful checks, exceptions etc. - use that information e.g. in order to let your system administrator know when something goes wrong or to build your custom metrics.
-```csharp
-var wardenConfiguration = WardenConfiguration
+var configuration = WardenConfiguration
     .Create()
-    .SetHooks(hooks =>
+    .AddWebWatcher("http://my-website.com")
+    .AddMongoDbWatcher("mongodb://localhost:27017", "MyDatabase", cfg =>
     {
-        //Configure the Warden hooks
-        hooks.OnError(exception => Logger.Error(exception));
-        hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration));
+        cfg.WithQuery("Users", "{\"name\": \"admin\"}")
+            .EnsureThat(users => users.Any(user => user.role == "admin"));
     })
-    .AddWatcher(apiWatcher)
-    .AddWatcher(mssqlWatcher)
-    .AddWatcher(websiteWatcher, hooks =>
+    .IntegrateWithSendGrid("api-key", "noreply@system.com", cfg =>
     {
-        //Configure the hooks for this particular watcher
-        hooks.OnStartAsync(check => WebsiteHookOnStartAsync(check));
-        hooks.OnFailureAsync(result => WebsiteHookOnFailureAsync(result));
-        hooks.OnSuccessAsync(result => WebsiteHookOnSuccessAsync(result));
-        hooks.OnCompletedAsync(result => WebsiteHookOnCompletedAsync(result));
+        cfg.WithDefaultSubject("Monitoring status")
+            .WithDefaultReceivers("admin@system.com");
     })
     .SetGlobalWatcherHooks(hooks =>
     {
-        //Configure the common hooks for all of the watchers
-        hooks.OnStart(check => GlobalHookOnStart(check));
-        hooks.OnFailure(result => GlobalHookOnFailure(result));
-        hooks.OnSuccess(result => GlobalHookOnSuccess(result));
-        hooks.OnCompleted(result => GlobalHookOnCompleted(result));
-        hooks.OnError(exception => Logger.Error(exception));
+        hooks.OnStart(check => GlobalHookOnStart(check))
+             .OnCompleted(result => GlobalHookOnCompleted(result));
+    })
+    .SetAggregatedWatcherHooks((hooks, integrations) =>
+    {
+        hooks.OnFirstFailureAsync(
+            results => integrations.SendGrid().SendEmailAsync("Monitoring errors have occured."))
+             .OnFirstSuccessAsync(
+                results => integrations.SendGrid().SendEmailAsync("Everything is up and running again!"));
+    })
+    .SetHooks(hooks =>
+    {
+        hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration))
+             .OnError(exception => Logger.Error(exception));
     })
     .Build();
 ```
 
 Start the **Warden** and let him do his job - now **you have the full control** over your system monitoring!
 ```csharp
-var Warden = Warden.Create(WardenConfiguration);
-await Warden.StartAsync();
+var warden = Warden.Create(configuration);
+await warden.StartAsync();
 ```
 Please check out the **[examples](https://github.com/spetz/Warden/wiki/Examples)** by cloning the repository.
+
+
+
+

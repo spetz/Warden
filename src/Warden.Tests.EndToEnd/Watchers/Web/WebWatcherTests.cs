@@ -1,6 +1,7 @@
 ﻿using System;
 using Machine.Specifications;
 using Warden.Core;
+using Warden.Watchers;
 using Warden.Watchers.Web;
 using It = Machine.Specifications.It;
 

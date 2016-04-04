@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Machine.Specifications;
 using Moq;
+using Warden.Watchers;
 using Warden.Watchers.Redis;
 using It = Machine.Specifications.It;
 

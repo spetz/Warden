@@ -1,4 +1,4 @@
-﻿namespace Warden.Core
+﻿namespace Warden.Watchers
 {
     /// <summary>
     /// Base class for defining the configuration builders for the watchers.

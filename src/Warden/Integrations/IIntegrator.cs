@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Warden
+namespace Warden.Integrations
 {
     public interface IIntegrator
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Warden.Core
+namespace Warden.Watchers
 {
     /// <summary>
     /// Custom class for the exceptions thrown by watchers.

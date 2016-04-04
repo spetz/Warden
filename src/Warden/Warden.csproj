@@ -41,27 +41,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Extensions.cs" />
-    <Compile Include="Core\IterationProcessorConfiguration.cs" />
-    <Compile Include="Core\WardenHooksConfiguration.cs" />
-    <Compile Include="Core\WatcherConfigurator.cs" />
-    <Compile Include="Core\AggregatedWatcherHooksConfiguration.cs" />
-    <Compile Include="Core\WatcherHooksConfiguration.cs" />
-    <Compile Include="Core\WardenConfiguration.cs" />
+    <Compile Include="Configurations\IterationProcessorConfiguration.cs" />
+    <Compile Include="Configurations\WardenHooksConfiguration.cs" />
+    <Compile Include="Watchers\WatcherConfigurator.cs" />
+    <Compile Include="Watchers\AggregatedWatcherHooksConfiguration.cs" />
+    <Compile Include="Watchers\WatcherHooksConfiguration.cs" />
+    <Compile Include="Configurations\WardenConfiguration.cs" />
     <Compile Include="Core\WardenException.cs" />
-    <Compile Include="Core\WatcherConfiguration.cs" />
-    <Compile Include="Core\WatcherException.cs" />
-    <Compile Include="IIntegration.cs" />
-    <Compile Include="IIntegrator.cs" />
+    <Compile Include="Watchers\WatcherConfiguration.cs" />
+    <Compile Include="Watchers\WatcherException.cs" />
+    <Compile Include="Integrations\IIntegration.cs" />
+    <Compile Include="Integrations\IIntegrator.cs" />
     <Compile Include="IWarden.cs" />
     <Compile Include="IWardenCheckResult.cs" />
     <Compile Include="IWardenIteration.cs" />
     <Compile Include="IIterationProcessor.cs" />
-    <Compile Include="ITimestampable.cs" />
-    <Compile Include="IValidatable.cs" />
-    <Compile Include="IWatcher.cs" />
-    <Compile Include="IWatcherCheckResult.cs" />
+    <Compile Include="Core\ITimestampable.cs" />
+    <Compile Include="Core\IValidatable.cs" />
+    <Compile Include="Watchers\IWatcher.cs" />
+    <Compile Include="Watchers\IWatcherCheckResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="IWatcherCheck.cs" />
+    <Compile Include="Watchers\IWatcherCheck.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Machine.Specifications;
 using Moq;
+using Warden.Watchers;
 using Warden.Watchers.Web;
 using It = Machine.Specifications.It;
 
