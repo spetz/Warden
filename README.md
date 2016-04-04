@@ -35,7 +35,7 @@ More integrations are coming soon.
 **Is there any documentation?**
 ----------------
 
-Yes, please navigate to the **[wiki](https://github.com/spetz/Warden/wiki)** page where you can find detailed information about configuring and running the Warden.
+Yes, please navigate to the **[wiki](https://github.com/spetz/Warden/wiki)** page where you can find detailed information about configuring and running the **Warden**.
 
 **Quick start**:
 ----------------
@@ -48,12 +48,12 @@ var configuration = WardenConfiguration
     .AddMongoDbWatcher("mongodb://localhost:27017", "MyDatabase", cfg =>
     {
         cfg.WithQuery("Users", "{\"name\": \"admin\"}")
-            .EnsureThat(users => users.Any(user => user.role == "admin"));
+           .EnsureThat(users => users.Any(user => user.role == "admin"));
     })
     .IntegrateWithSendGrid("api-key", "noreply@system.com", cfg =>
     {
         cfg.WithDefaultSubject("Monitoring status")
-            .WithDefaultReceivers("admin@system.com");
+           .WithDefaultReceivers("admin@system.com");
     })
     .SetGlobalWatcherHooks(hooks =>
     {
@@ -62,10 +62,10 @@ var configuration = WardenConfiguration
     })
     .SetAggregatedWatcherHooks((hooks, integrations) =>
     {
-        hooks.OnFirstFailureAsync(
-            results => integrations.SendGrid().SendEmailAsync("Monitoring errors have occured."))
-             .OnFirstSuccessAsync(
-                results => integrations.SendGrid().SendEmailAsync("Everything is up and running again!"));
+        hooks.OnFirstFailureAsync(results => 
+                integrations.SendGrid().SendEmailAsync("Monitoring errors have occured."))
+             .OnFirstSuccessAsync(results => 
+                integrations.SendGrid().SendEmailAsync("Everything is up and running again!"));
     })
     .SetHooks(hooks =>
     {
