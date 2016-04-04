@@ -1,32 +1,32 @@
-# **[Sentry](http://spetz.github.io/sentry/)**
+# **[Warden](http://spetz.github.io/warden/)**
 
-[![Build status](https://ci.appveyor.com/api/projects/status/47l3ldatuj526tf5/branch/master?svg=true)](https://ci.appveyor.com/project/spetz/sentry/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/47l3ldatuj526tf5/branch/master?svg=true)](https://ci.appveyor.com/project/spetz/Warden/branch/master)
 
 > Define "health checks" for your applications, resources and
-> infrastructure. Keep your **Sentry** on the watch.
+> infrastructure. Keep your **Warden** on the watch.
 
 **Please note that it's just a preview version of the library (work in progress), containing a basic "documentation".**
 
-**What is Sentry?**
+**What is Warden?**
 ----------------
 
-Sentry is a simple library built to solve the problem of monitoring the resources such as the websites, API, databases, CPU etc. It allows to quickly define the **watchers** responsible for performing checks on a specific resources, and use these information e.g. to alert about any issues related to the possible downtime of your system.
+Warden is a simple library built to solve the problem of monitoring the resources such as the websites, API, databases, CPU etc. It allows to quickly define the **watchers** responsible for performing checks on a specific resources, and use these information e.g. to alert about any issues related to the possible downtime of your system.
 
 **What kind of monitoring is available?**
 ----------------
-Currently available **[watchers](https://github.com/spetz/Sentry/wiki/Watchers)**:
+Currently available **[watchers](https://github.com/spetz/Warden/wiki/Watchers)**:
 
- - **[MongoDB](https://github.com/spetz/Sentry/wiki/Watcher-type-MongoDB)**
- - **[MSSQL](https://github.com/spetz/Sentry/wiki/Watcher-type-MSSQL)**
- - **[Redis](https://github.com/spetz/Sentry/wiki/Watcher-type-Redis)**
- - **[Web](https://github.com/spetz/Sentry/wiki/Watcher-type-Web)**
+ - **[MongoDB](https://github.com/spetz/Warden/wiki/Watcher-type-MongoDB)**
+ - **[MSSQL](https://github.com/spetz/Warden/wiki/Watcher-type-MSSQL)**
+ - **[Redis](https://github.com/spetz/Warden/wiki/Watcher-type-Redis)**
+ - **[Web](https://github.com/spetz/Warden/wiki/Watcher-type-Web)**
 
 Please note that many more are coming soon (CPU, Memory, File etc.)
 
 **Is there any documentation?**
 ----------------
 
-Yes, please navigate to the **[wiki](https://github.com/spetz/Sentry/wiki)** page where you can find detailed information about configuring and running the Sentry.
+Yes, please navigate to the **[wiki](https://github.com/spetz/Warden/wiki)** page where you can find detailed information about configuring and running the Warden.
 
 **Quick start**:
 ----------------
@@ -59,13 +59,13 @@ var mssqlWatcherConfiguration = MsSqlWatcherConfiguration
 var mssqlWatcher = MsSqlWatcher.Create("My database watcher", mssqlWatcherConfiguration);
 ```
 
-Configure the **[Sentry](https://github.com/spetz/Sentry/wiki/Sentry)** by adding the previously defined **watchers**, setting up the **[hooks](https://github.com/spetz/Sentry/wiki/Hooks)** (callbacks) to get notified about failures, successful checks, exceptions etc. - use that information e.g. in order to let your system administrator know when something goes wrong or to build your custom metrics.
+Configure the **[Warden](https://github.com/spetz/Warden/wiki/Warden)** by adding the previously defined **watchers**, setting up the **[hooks](https://github.com/spetz/Warden/wiki/Hooks)** (callbacks) to get notified about failures, successful checks, exceptions etc. - use that information e.g. in order to let your system administrator know when something goes wrong or to build your custom metrics.
 ```csharp
-var sentryConfiguration = SentryConfiguration
+var WardenConfiguration = WardenConfiguration
     .Create()
     .SetHooks(hooks =>
     {
-        //Configure the Sentry hooks
+        //Configure the Warden hooks
         hooks.OnError(exception => Logger.Error(exception));
         hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration));
     })
@@ -91,9 +91,9 @@ var sentryConfiguration = SentryConfiguration
     .Build();
 ```
 
-Start the **Sentry** and let him do his job - now **you have the full control** over your system monitoring!
+Start the **Warden** and let him do his job - now **you have the full control** over your system monitoring!
 ```csharp
-var sentry = Sentry.Create(sentryConfiguration);
-await sentry.StartAsync();
+var Warden = Warden.Create(WardenConfiguration);
+await Warden.StartAsync();
 ```
-Please check out the **[examples](https://github.com/spetz/Sentry/wiki/Examples)** by cloning the repository.
+Please check out the **[examples](https://github.com/spetz/Warden/wiki/Examples)** by cloning the repository.
