@@ -14,7 +14,7 @@ Warden is a simple library built to solve the problem of monitoring the resource
 
 **What kind of monitoring is available?**
 ----------------
-Currently available **[watchers](https://github.com/spetz/Warden/wiki/Watchers)**:
+Currently available **[watchers](https://github.com/spetz/Warden/wiki/watcher)**:
 
  - **[MongoDB](https://github.com/spetz/Warden/wiki/Watcher-type-MongoDB)**
  - **[MSSQL](https://github.com/spetz/Warden/wiki/Watcher-type-MSSQL)**
@@ -61,7 +61,7 @@ var mssqlWatcher = MsSqlWatcher.Create("My database watcher", mssqlWatcherConfig
 
 Configure the **[Warden](https://github.com/spetz/Warden/wiki/Warden)** by adding the previously defined **watchers**, setting up the **[hooks](https://github.com/spetz/Warden/wiki/Hooks)** (callbacks) to get notified about failures, successful checks, exceptions etc. - use that information e.g. in order to let your system administrator know when something goes wrong or to build your custom metrics.
 ```csharp
-var WardenConfiguration = WardenConfiguration
+var wardenConfiguration = WardenConfiguration
     .Create()
     .SetHooks(hooks =>
     {
