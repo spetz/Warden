@@ -84,8 +84,11 @@ namespace Warden
                 }
                 catch (Exception exception)
                 {
+                    var completedAt = _configuration.DateTimeProvider();
+                    wardenCheckResult = WardenCheckResult.Create(WatcherCheckResult.Create(watcher, false),
+                        startedAt, completedAt, exception);
                     results.Add(new WatcherExecutionResult(watcher, WatcherResultState.Error,
-                        GetPreviousWatcherState(watcher), null, exception));
+                        GetPreviousWatcherState(watcher), wardenCheckResult, exception));
                     await UpdateWatcherResultStateAndExecuteHooksPossibleAsync(watcher, WatcherResultState.Error,
                         () => InvokeOnFirstErrorHooksAsync(watcherConfiguration, exception));
                     var wardenException = new WardenException("There was an error while executing Warden " +
@@ -95,14 +98,6 @@ namespace Warden
                 }
                 finally
                 {
-                    if (wardenCheckResult == null)
-                    {
-                        wardenCheckResult = WardenCheckResult.Create(WatcherCheckResult.Create(watcher, false),
-                            startedAt, _configuration.DateTimeProvider());
-                        results.Add(new WatcherExecutionResult(watcher, WatcherResultState.Failure,
-                            GetPreviousWatcherState(watcher), wardenCheckResult));
-                    }
-
                     await InvokeOnCompletedHooksAsync(watcherConfiguration, wardenCheckResult);
                 }
             });

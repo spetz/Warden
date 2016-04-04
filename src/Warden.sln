@@ -31,6 +31,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integrations", "Integration
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warden.Integrations.SendGrid", "Warden.Integrations.SendGrid\Warden.Integrations.SendGrid.csproj", "{C432ACAE-0393-4756-AD72-155FAE0C974D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warden.Watchers.Cpu", "Warden.Watchers.Cpu\Warden.Watchers.Cpu.csproj", "{A0EA5508-989C-4911-8C6D-043BA3D8D9BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{C432ACAE-0393-4756-AD72-155FAE0C974D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C432ACAE-0393-4756-AD72-155FAE0C974D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C432ACAE-0393-4756-AD72-155FAE0C974D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0EA5508-989C-4911-8C6D-043BA3D8D9BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0EA5508-989C-4911-8C6D-043BA3D8D9BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0EA5508-989C-4911-8C6D-043BA3D8D9BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0EA5508-989C-4911-8C6D-043BA3D8D9BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,5 +97,6 @@ Global
 		{D372FDD0-C172-4486-B8BE-1BCF33DBAFF9} = {A2DFC5AE-3A65-4723-9B32-5FD5B2586606}
 		{866489F8-7CFA-40CD-9BF7-4990FC97D383} = {A2DFC5AE-3A65-4723-9B32-5FD5B2586606}
 		{C432ACAE-0393-4756-AD72-155FAE0C974D} = {92982777-8F88-4ACC-BD01-D1AA051E0190}
+		{A0EA5508-989C-4911-8C6D-043BA3D8D9BD} = {A2DFC5AE-3A65-4723-9B32-5FD5B2586606}
 	EndGlobalSection
 EndGlobal

@@ -90,6 +90,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Warden.Watchers.Cpu\Warden.Watchers.Cpu.csproj">
+      <Project>{a0ea5508-989c-4911-8c6d-043ba3d8d9bd}</Project>
+      <Name>Warden.Watchers.Cpu</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warden.Watchers.MongoDb\Warden.Watchers.MongoDb.csproj">
       <Project>{C9C8420E-6A1F-4B9D-BB38-291D6F7E0467}</Project>
       <Name>Warden.Watchers.MongoDb</Name>

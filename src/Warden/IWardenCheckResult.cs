@@ -16,6 +16,11 @@ namespace Warden
         /// Can be casted down to its custom result type in order to get the specialized data.
         /// </summary>
         IWatcherCheckResult WatcherCheckResult { get; }
+
+        /// <summary>
+        /// Exception that might occurred during the execution of the watcher check. 
+        /// </summary>
+        Exception Exception { get; }
     }
 
     /// <summary>
@@ -24,13 +29,14 @@ namespace Warden
     public class WardenCheckResult : IWardenCheckResult
     {
         public IWatcherCheckResult WatcherCheckResult { get; }
+        public Exception Exception { get; }
         public DateTime StartedAt { get; }
         public DateTime CompletedAt { get; }
         public TimeSpan ExecutionTime => CompletedAt - StartedAt;
-        public bool IsValid => WatcherCheckResult.IsValid;
+        public bool IsValid => Exception == null && WatcherCheckResult.IsValid;
 
         protected WardenCheckResult(IWatcherCheckResult watcherCheckResult, DateTime startedAt,
-            DateTime completedAt)
+            DateTime completedAt, Exception exception = null)
         {
             if (watcherCheckResult == null)
                 throw new ArgumentNullException(nameof(watcherCheckResult), "Watcher check result can not be null.");
@@ -38,6 +44,7 @@ namespace Warden
             WatcherCheckResult = watcherCheckResult;
             StartedAt = startedAt;
             CompletedAt = completedAt;
+            Exception = exception;
         }
 
         /// <summary>
@@ -45,7 +52,7 @@ namespace Warden
         /// </summary>
         /// <returns>Instance of IWardenCheckResult.</returns>
         public static IWardenCheckResult Create(IWatcherCheckResult watcherCheckResult, DateTime startedAt,
-            DateTime completedAt)
-            => new WardenCheckResult(watcherCheckResult, startedAt, completedAt);
+            DateTime completedAt, Exception exception = null)
+            => new WardenCheckResult(watcherCheckResult, startedAt, completedAt, exception);
     }
 }

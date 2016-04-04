@@ -8,6 +8,7 @@ using Warden.Configurations;
 using Warden.Core;
 using Warden.Integrations.SendGrid;
 using Warden.Watchers;
+using Warden.Watchers.Cpu;
 using Warden.Watchers.MongoDb;
 using Warden.Watchers.MsSql;
 using Warden.Watchers.Redis;
@@ -73,6 +74,7 @@ namespace Warden.Examples.Console
 
             var wardenConfiguration = WardenConfiguration
                 .Create()
+                .AddCpuWatcher(hooks => hooks.OnCompleted(result => Logger.Info(result.WatcherCheckResult.Description)))
                 .AddWebWatcher("http://my-website.com", hooks =>
                 {
                     hooks.OnFailureAsync(result => WebsiteHookOnFailureAsync(result));
