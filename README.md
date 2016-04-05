@@ -19,10 +19,11 @@ Currently available **[watchers](https://github.com/spetz/Warden/wiki/watcher)**
 
  - **[MongoDB](https://github.com/spetz/Warden/wiki/Watcher-type-MongoDB)**
  - **[MSSQL](https://github.com/spetz/Warden/wiki/Watcher-type-MSSQL)**
+ - **[Performance](https://github.com/spetz/Warden/wiki/Watcher-type-Performance)**
  - **[Redis](https://github.com/spetz/Warden/wiki/Watcher-type-Redis)**
  - **[Web](https://github.com/spetz/Warden/wiki/Watcher-type-Web)**
 
-More watchers are coming soon (CPU, Memory, File etc.)
+More watchers are coming soon (File, Network etc.)
 
 **What are the integrations with external services?**
 ----------------

@@ -10,7 +10,7 @@ namespace Warden.Watchers.Performance
         /// <summary>
         /// Delay between resource usage calculation while using the default performance counter (100 ms by default).
         /// </summary>
-        public TimeSpan Delay { get; protected set; }
+        public TimeSpan Delay { get; }
 
         /// <summary>
         /// Usage of the resources such as CPU and RAM.
