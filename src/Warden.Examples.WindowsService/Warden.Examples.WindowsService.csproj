@@ -90,7 +90,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Warden.Watchers.Cpu\Warden.Watchers.Performance.csproj">
+    <ProjectReference Include="..\Warden.Watchers.Performance\Warden.Watchers.Performance.csproj">
       <Project>{a0ea5508-989c-4911-8c6d-043ba3d8d9bd}</Project>
       <Name>Warden.Watchers.Performance</Name>
     </ProjectReference>
