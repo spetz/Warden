@@ -90,10 +90,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Warden.Watchers.Cpu\Warden.Watchers.Performance.csproj">
-      <Project>{a0ea5508-989c-4911-8c6d-043ba3d8d9bd}</Project>
-      <Name>Warden.Watchers.Performance</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Warden.Watchers.MongoDb\Warden.Watchers.MongoDb.csproj">
       <Project>{C9C8420E-6A1F-4B9D-BB38-291D6F7E0467}</Project>
       <Name>Warden.Watchers.MongoDb</Name>
@@ -101,6 +97,10 @@
     <ProjectReference Include="..\Warden.Watchers.MsSql\Warden.Watchers.MsSql.csproj">
       <Project>{5ED102ED-B897-4B97-AE8C-A1E4AA37CCFC}</Project>
       <Name>Warden.Watchers.MsSql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warden.Watchers.Performance\Warden.Watchers.Performance.csproj">
+      <Project>{a0ea5508-989c-4911-8c6d-043ba3d8d9bd}</Project>
+      <Name>Warden.Watchers.Performance</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warden.Watchers.Redis\Warden.Watchers.Redis.csproj">
       <Project>{866489f8-7cfa-40cd-9bf7-4990fc97d383}</Project>
