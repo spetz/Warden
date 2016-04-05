@@ -28,7 +28,7 @@ namespace Warden.Watchers.MongoDb
         /// </summary>
         public IEnumerable<dynamic> QueryResult { get; }
 
-        protected MongoDbWatcherCheckResult(IWatcher watcher, bool isValid, string description,
+        protected MongoDbWatcherCheckResult(MongoDbWatcher watcher, bool isValid, string description,
             string database, string connectionString, string query, IEnumerable<dynamic> queryResult)
             : base(watcher, isValid, description)
         {
@@ -41,13 +41,13 @@ namespace Warden.Watchers.MongoDb
         /// <summary>
         /// Factory method for creating a new instance of MongoDbWatcherCheckResult.
         /// </summary>
-        /// <param name="watcher">Instance of IWatcher.</param>
+        /// <param name="watcher">Instance of MongoDbWatcher.</param>
         /// <param name="isValid">Flag determining whether the performed check was valid.</param>
         /// <param name="database">Name of the MongoDB database.</param>
         /// <param name="connectionString">Connection string of the MongoDB server.</param>
         /// <param name="description">Custom description of the performed check.</param>
         /// <returns>Instance of MongoDbWatcherCheckResult.</returns>
-        public static MongoDbWatcherCheckResult Create(IWatcher watcher, bool isValid,
+        public static MongoDbWatcherCheckResult Create(MongoDbWatcher watcher, bool isValid,
             string database, string connectionString, string description = "")
             => new MongoDbWatcherCheckResult(watcher, isValid, description, database,
                 connectionString, string.Empty, Enumerable.Empty<dynamic>());
@@ -55,7 +55,7 @@ namespace Warden.Watchers.MongoDb
         /// <summary>
         /// Factory method for creating a new instance of MongoDbWatcherCheckResult.
         /// </summary>
-        /// <param name="watcher">Instance of IWatcher.</param>
+        /// <param name="watcher">Instance of MongoDbWatcher.</param>
         /// <param name="isValid">Flag determining whether the performed check was valid.</param>
         /// <param name="database">Name of the MongoDB database.</param>
         /// <param name="connectionString">Connection string of the MongoDB server.</param>
@@ -63,7 +63,7 @@ namespace Warden.Watchers.MongoDb
         /// <param name="queryResult">Collection of dynamic results of the MongoDB query.</param>
         /// <param name="description">Custom description of the performed check.</param>
         /// <returns>Instance of MongoDbWatcherCheckResult.</returns>
-        public static MongoDbWatcherCheckResult Create(IWatcher watcher, bool isValid, string database,
+        public static MongoDbWatcherCheckResult Create(MongoDbWatcher watcher, bool isValid, string database,
             string connectionString, string query, IEnumerable<dynamic> queryResult, string description = "")
             => new MongoDbWatcherCheckResult(watcher, isValid, description, database, connectionString, query,
                 queryResult);

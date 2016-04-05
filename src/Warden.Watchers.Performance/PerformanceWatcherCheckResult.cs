@@ -17,7 +17,7 @@ namespace Warden.Watchers.Performance
         /// </summary>
         public ResourceUsage ResourceUsage { get; }
 
-        protected PerformanceWatcherCheckResult(IWatcher watcher, bool isValid, string description,
+        protected PerformanceWatcherCheckResult(PerformanceWatcher watcher, bool isValid, string description,
             TimeSpan delay, ResourceUsage resourceUsage)
             : base(watcher, isValid, description)
         {

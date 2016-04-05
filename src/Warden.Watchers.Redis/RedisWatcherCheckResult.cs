@@ -28,7 +28,7 @@ namespace Warden.Watchers.Redis
         /// </summary>
         public IEnumerable<dynamic> QueryResult { get; }
 
-        protected RedisWatcherCheckResult(IWatcher watcher, bool isValid, string description,
+        protected RedisWatcherCheckResult(RedisWatcher watcher, bool isValid, string description,
             int database, string connectionString, string query, IEnumerable<dynamic> queryResult)
             : base(watcher, isValid, description)
         {
@@ -41,13 +41,13 @@ namespace Warden.Watchers.Redis
         /// <summary>
         /// Factory method for creating a new instance of RedisWatcherCheckResult.
         /// </summary>
-        /// <param name="watcher">Instance of IWatcher.</param>
+        /// <param name="watcher">Instance of RedisWatcher.</param>
         /// <param name="isValid">Flag determining whether the performed check was valid.</param>
         /// <param name="database">Id of the Redis database.</param>
         /// <param name="connectionString">Connection string of the Redis server.</param>
         /// <param name="description">Custom description of the performed check.</param>
         /// <returns>Instance of RedisWatcherCheckResult.</returns>
-        public static RedisWatcherCheckResult Create(IWatcher watcher, bool isValid,
+        public static RedisWatcherCheckResult Create(RedisWatcher watcher, bool isValid,
             int database, string connectionString, string description = "")
             => new RedisWatcherCheckResult(watcher, isValid, description, database,
                 connectionString, string.Empty, Enumerable.Empty<dynamic>());
@@ -55,7 +55,7 @@ namespace Warden.Watchers.Redis
         /// <summary>
         /// Factory method for creating a new instance of RedisWatcherCheckResult.
         /// </summary>
-        /// <param name="watcher">Instance of IWatcher.</param>
+        /// <param name="watcher">Instance of RedisWatcher.</param>
         /// <param name="isValid">Flag determining whether the performed check was valid.</param>
         /// <param name="connectionString">Connection string of the Redis server.</param>
         /// <param name="database">Id of the Redis database.</param>
@@ -63,7 +63,7 @@ namespace Warden.Watchers.Redis
         /// <param name="queryResult">Collection of dynamic results of the Redis query.</param>
         /// <param name="description">Custom description of the performed check.</param>
         /// <returns>Instance of RedisWatcherCheckResult.</returns>
-        public static RedisWatcherCheckResult Create(IWatcher watcher, bool isValid,
+        public static RedisWatcherCheckResult Create(RedisWatcher watcher, bool isValid,
             int database, string connectionString, string query, IEnumerable<dynamic> queryResult,
             string description = "")
             => new RedisWatcherCheckResult(watcher, isValid, description, database, connectionString, query,
