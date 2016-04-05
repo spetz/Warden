@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Warden.Watchers.MsSql")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Warden watcher for MSSQL.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Piotr Gankiewicz")]
 [assembly: AssemblyProduct("Warden.Watchers.MsSql")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]

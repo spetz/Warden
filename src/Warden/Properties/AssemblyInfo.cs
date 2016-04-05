@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Warden")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Warden is an open source library built to solve the problem of monitoring the resources.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Piotr Gankiewicz")]
 [assembly: AssemblyProduct("Warden")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]

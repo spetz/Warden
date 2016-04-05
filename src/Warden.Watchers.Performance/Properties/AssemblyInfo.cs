@@ -6,10 +6,10 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Warden.Watchers.Performance")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Warden watcher for Performance.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Warden.Watchers.Cpu")]
+[assembly: AssemblyCompany("Piotr Gankiewicz")]
+[assembly: AssemblyProduct("Warden.Watchers.Performance")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
