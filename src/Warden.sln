@@ -31,7 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integrations", "Integration
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warden.Integrations.SendGrid", "Warden.Integrations.SendGrid\Warden.Integrations.SendGrid.csproj", "{C432ACAE-0393-4756-AD72-155FAE0C974D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warden.Watchers.Cpu", "Warden.Watchers.Cpu\Warden.Watchers.Cpu.csproj", "{A0EA5508-989C-4911-8C6D-043BA3D8D9BD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warden.Watchers.Performance", "Warden.Watchers.Performance\Warden.Watchers.Performance.csproj", "{A0EA5508-989C-4911-8C6D-043BA3D8D9BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
