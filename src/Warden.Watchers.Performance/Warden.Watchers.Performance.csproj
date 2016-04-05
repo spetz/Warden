@@ -41,8 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IPerformance.cs" />
+    <Compile Include="PerformanceWatcherCheckResult.cs" />
+    <Compile Include="ResourceUsage.cs" />
     <Compile Include="PerformanceWatcher.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="PerformanceWatcherConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

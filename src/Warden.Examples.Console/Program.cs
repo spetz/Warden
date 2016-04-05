@@ -73,7 +73,8 @@ namespace Warden.Examples.Console
 
             var wardenConfiguration = WardenConfiguration
                 .Create()
-                .AddPerformanceWatcher(hooks => hooks.OnCompleted(result => Logger.Info(result.WatcherCheckResult.Description)))
+                .AddPerformanceWatcher(cfg => cfg.EnsureThat(usage => usage.Cpu < 50 && usage.Ram < 5000),
+                hooks => hooks.OnCompleted(result => Logger.Info(result.WatcherCheckResult.Description)))
                 .AddWebWatcher("http://my-website.com", hooks =>
                 {
                     hooks.OnFailureAsync(result => WebsiteHookOnFailureAsync(result));
