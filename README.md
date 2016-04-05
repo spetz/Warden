@@ -38,6 +38,16 @@ More integrations are coming soon.
 
 Yes, please navigate to the **[wiki](https://github.com/spetz/Warden/wiki)** page where you can find detailed information about configuring and running the **Warden**.
 
+**Installation**
+----------------
+
+Available as a **[NuGet package](https://www.nuget.org/packages/Warden/)**. 
+```
+Install-Package Warden -Pre
+```
+
+**Watchers** and **integrations** are available as a separate _NuGet packages_ listed **[here](https://www.nuget.org/profiles/Spetz)**.
+
 **Quick start**:
 ----------------
 
