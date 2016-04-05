@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using MongoDB.Driver;
-using Warden.Core;
 
 namespace Warden.Watchers.MongoDb
 {

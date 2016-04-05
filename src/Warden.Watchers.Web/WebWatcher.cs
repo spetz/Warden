@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Warden.Core;
 
 namespace Warden.Watchers.Web
 {
@@ -22,7 +21,7 @@ namespace Warden.Watchers.Web
             if (configuration == null)
             {
                 throw new ArgumentNullException(nameof(configuration),
-                    "Web watcher configuration has not been provided.");
+                    "Web Watcher configuration has not been provided.");
             }
 
             Name = name;

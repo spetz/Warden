@@ -27,7 +27,7 @@ namespace Warden.Tests.Watchers.Web
         Because of = () => Exception = Catch.Exception(() => Watcher = WebWatcher.Create("test", Configuration));
 
         It should_fail = () => Exception.ShouldBeOfExactType<ArgumentNullException>();
-        It should_have_a_specific_reason = () => Exception.Message.ShouldContain("Web watcher configuration has not been provided.");
+        It should_have_a_specific_reason = () => Exception.Message.ShouldContain("Web Watcher configuration has not been provided.");
     }
 
     [Subject("Web watcher initialization")]

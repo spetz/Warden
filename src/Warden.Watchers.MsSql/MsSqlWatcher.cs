@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
-using Warden.Core;
 
 namespace Warden.Watchers.MsSql
 {

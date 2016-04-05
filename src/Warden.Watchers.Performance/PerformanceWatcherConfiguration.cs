@@ -86,7 +86,7 @@ namespace Warden.Watchers.Performance
             /// <param name="performanceProvider">Custom provider for the IPerformance.</param>
             /// <returns>Lambda expression returning an instance of the IPerformance.</returns>
             /// <returns>Instance of fluent builder for the PerformanceWatcherConfiguration.</returns>
-            public T WithConnectionProvider(Func<IPerformance> performanceProvider)
+            public T WithPerformanceProvider(Func<IPerformance> performanceProvider)
             {
                 if (performanceProvider == null)
                 {

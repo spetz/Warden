@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using StackExchange.Redis;
-using Warden.Core;
 
 namespace Warden.Watchers.Redis
 {
