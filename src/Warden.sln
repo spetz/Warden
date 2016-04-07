@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warden.Integrations.SendGri
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warden.Watchers.Performance", "Warden.Watchers.Performance\Warden.Watchers.Performance.csproj", "{A0EA5508-989C-4911-8C6D-043BA3D8D9BD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warden.Watchers.Disk", "Warden.Watchers.Disk\Warden.Watchers.Disk.csproj", "{FBEC9501-92E5-4860-ADF5-F9DECD430B25}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{A0EA5508-989C-4911-8C6D-043BA3D8D9BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0EA5508-989C-4911-8C6D-043BA3D8D9BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0EA5508-989C-4911-8C6D-043BA3D8D9BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBEC9501-92E5-4860-ADF5-F9DECD430B25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBEC9501-92E5-4860-ADF5-F9DECD430B25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBEC9501-92E5-4860-ADF5-F9DECD430B25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBEC9501-92E5-4860-ADF5-F9DECD430B25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -98,5 +104,6 @@ Global
 		{866489F8-7CFA-40CD-9BF7-4990FC97D383} = {A2DFC5AE-3A65-4723-9B32-5FD5B2586606}
 		{C432ACAE-0393-4756-AD72-155FAE0C974D} = {92982777-8F88-4ACC-BD01-D1AA051E0190}
 		{A0EA5508-989C-4911-8C6D-043BA3D8D9BD} = {A2DFC5AE-3A65-4723-9B32-5FD5B2586606}
+		{FBEC9501-92E5-4860-ADF5-F9DECD430B25} = {A2DFC5AE-3A65-4723-9B32-5FD5B2586606}
 	EndGlobalSection
 EndGlobal

@@ -7,6 +7,7 @@ using NLog;
 using Warden.Configurations;
 using Warden.Integrations.SendGrid;
 using Warden.Watchers;
+using Warden.Watchers.Disk;
 using Warden.Watchers.MongoDb;
 using Warden.Watchers.MsSql;
 using Warden.Watchers.Performance;
