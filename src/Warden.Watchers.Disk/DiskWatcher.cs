@@ -29,7 +29,25 @@ namespace Warden.Watchers.Disk
 
         public async Task<IWatcherCheckResult> ExecuteAsync()
         {
-            throw new NotImplementedException();
+
+            try
+            {
+                var diskChecker = _configuration.DiskCheckerProvider();
+                var diskCheck = await diskChecker.CheckAsync();
+                var isValid = true;
+
+                if (_configuration.EnsureThatAsync != null)
+                    isValid = await _configuration.EnsureThatAsync?.Invoke(diskCheck);
+
+                isValid = isValid && (_configuration.EnsureThat?.Invoke(diskCheck) ?? true);
+
+                return DiskWatcherCheckResult.Create(this, isValid, diskCheck, "Disk check has completed.");
+            }
+            catch (Exception exception)
+            {
+                throw new WatcherException($"There was an error while trying to check disk.",
+                    exception);
+            }
         }
 
         /// <summary>

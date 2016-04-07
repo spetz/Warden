@@ -41,6 +41,23 @@ namespace Warden.Watchers.Disk
             return builder;
         }
 
+        /// <summary>
+        /// Extension method for adding the Disk watcher to the the WardenConfiguration.
+        /// </summary>
+        /// <param name="builder">Instance of the Warden configuration builder.</param>
+        /// <param name="configurator">Lambda expression for configuring the DiskWatcher.</param>
+        /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
+        public static WardenConfiguration.Builder AddDiskWatcher(
+            this WardenConfiguration.Builder builder,
+            Action<DiskWatcherConfiguration.Default> configurator,
+            Action<WatcherHooksConfiguration.Builder> hooks = null)
+        {
+            builder.AddWatcher(DiskWatcher.Create(configurator), hooks);
+
+            return builder;
+        }
+
 
         /// <summary>
         /// Extension method for adding the Disk watcher to the the WardenConfiguration.

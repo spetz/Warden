@@ -82,6 +82,7 @@ namespace Warden.Examples.Console
                     hooks.OnSuccessAsync(result => WebsiteHookOnSuccessAsync(result));
                     hooks.OnCompletedAsync(result => WebsiteHookOnCompletedAsync(result));
                 })
+                .AddDiskWatcher(hooks => hooks.OnCompletedAsync(result => DiskHookOnCompletedAsync(result)))
                 .AddWebWatcher("http://my-api.com", HttpRequest.Post("users", new {name = "test"},
                     headers: new Dictionary<string, string>
                     {
@@ -173,6 +174,13 @@ namespace Warden.Examples.Console
         private static async Task WebsiteHookOnFailureAsync(IWardenCheckResult check)
         {
             Logger.Info($"Invoking the hook OnFailureAsync() by watcher: '{check.WatcherCheckResult.WatcherName}'.");
+            await Task.CompletedTask;
+        }
+
+        private static async Task DiskHookOnCompletedAsync(IWardenCheckResult check)
+        {
+            var result = check.WatcherCheckResult as DiskWatcherCheckResult;
+            Logger.Info($"Invoking the hook OnCompletedAsync() by watcher: '{result.WatcherName}'.");
             await Task.CompletedTask;
         }
 

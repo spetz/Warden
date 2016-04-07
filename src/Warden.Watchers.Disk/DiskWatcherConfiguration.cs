@@ -1,12 +1,31 @@
-﻿namespace Warden.Watchers.Disk
+﻿using System;
+using System.Threading.Tasks;
+
+namespace Warden.Watchers.Disk
 {
     /// <summary>
     /// Configuration of the DiskWatcher.
     /// </summary>
     public class DiskWatcherConfiguration
     {
+        /// <summary>
+        /// Predicate that has to be satisfied in order to return the valid result.
+        /// </summary>
+        public Func<DiskCheck, bool> EnsureThat { get; protected set; }
+
+        /// <summary>
+        /// Async predicate that has to be satisfied in order to return the valid result.
+        /// </summary>
+        public Func<DiskCheck, Task<bool>> EnsureThatAsync { get; protected set; }
+
+        /// <summary>
+        /// Custom provider for the IDiskChecker.
+        /// </summary>
+        public Func<IDiskChecker> DiskCheckerProvider { get; protected set; }
+
         protected internal DiskWatcherConfiguration()
         {
+            DiskCheckerProvider = () => new DiskChecker();
         }
 
         /// <summary>
