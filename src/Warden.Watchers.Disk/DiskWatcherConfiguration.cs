@@ -43,6 +43,9 @@ namespace Warden.Watchers.Disk
         protected internal DiskWatcherConfiguration()
         {
             DiskCheckerProvider = () => new DiskChecker();
+            PartitionsToCheck = Enumerable.Empty<string>();
+            DirectoriesToCheck = Enumerable.Empty<string>();
+            FilesToCheck = Enumerable.Empty<string>();
         }
 
         /// <summary>
@@ -67,7 +70,7 @@ namespace Warden.Watchers.Disk
 
             public T WithPartitionsToCheck(params string[] partitions)
             {
-                if (partitions?.Any() == false || partitions.Any(string.IsNullOrWhiteSpace))
+                if (partitions == null || partitions.Any() == false || partitions.Any(string.IsNullOrWhiteSpace))
                     throw new ArgumentException("Partitions to check can not be empty.", nameof(partitions));
 
                 Configuration.PartitionsToCheck = partitions;
@@ -77,7 +80,7 @@ namespace Warden.Watchers.Disk
 
             public T WithDirectoriesToCheck(params string[] directories)
             {
-                if (directories?.Any() == false || directories.Any(string.IsNullOrWhiteSpace))
+                if (directories == null || directories.Any() == false || directories.Any(string.IsNullOrWhiteSpace))
                     throw new ArgumentException("Directories to check can not be empty.", nameof(directories));
 
                 Configuration.DirectoriesToCheck = directories;
@@ -87,15 +90,64 @@ namespace Warden.Watchers.Disk
 
             public T WithFilesToCheck(params string[] files)
             {
-                if (files?.Any() == false || files.Any(string.IsNullOrWhiteSpace))
+                if (files == null || files.Any() == false || files.Any(string.IsNullOrWhiteSpace))
                     throw new ArgumentException("Files to check can not be empty.", nameof(files));
 
                 Configuration.FilesToCheck = files;
 
                 return Configurator;
             }
+
+            /// <summary>
+            /// Sets the predicate that has to be satisfied in order to return the valid result.
+            /// </summary>
+            /// <param name="ensureThat">Lambda expression predicate.</param>
+            /// <returns>Instance of fluent builder for the DiskWatcherConfiguration.</returns>
+            public T EnsureThat(Func<DiskCheck, bool> ensureThat)
+            {
+                if (ensureThat == null)
+                    throw new ArgumentException("Ensure that predicate can not be null.", nameof(ensureThat));
+
+                Configuration.EnsureThat = ensureThat;
+
+                return Configurator;
+            }
+
+            /// <summary>
+            /// Sets the async predicate that has to be satisfied in order to return the valid result.
+            /// </summary>
+            /// <param name="ensureThat">Lambda expression predicate.</param>
+            /// <returns>Instance of fluent builder for the DiskWatcherConfiguration.</returns>
+            public T EnsureThatAsync(Func<DiskCheck, Task<bool>> ensureThat)
+            {
+                if (ensureThat == null)
+                    throw new ArgumentException("Ensure that async predicate can not be null.", nameof(ensureThat));
+
+                Configuration.EnsureThatAsync = ensureThat;
+
+                return Configurator;
+            }
+
+            /// <summary>
+            /// Sets the custom provider for the IDiskChecker.
+            /// </summary>
+            /// <param name="diskCheckerProvider">Custom provider for the IDiskChecker.</param>
+            /// <returns>Lambda expression returning an instance of the IDiskChecker.</returns>
+            /// <returns>Instance of fluent builder for the DiskWatcherConfiguration.</returns>
+            public T WithDiskCheckerProvider(Func<IDiskChecker> diskCheckerProvider)
+            {
+                if (diskCheckerProvider == null)
+                    throw new ArgumentNullException(nameof(diskCheckerProvider), "Disk checker provider can not be null.");
+
+                Configuration.DiskCheckerProvider = diskCheckerProvider;
+
+                return Configurator;
+            }
         }
 
+        /// <summary>
+        /// Default DiskWatcherConfiguration fluent builder used while configuring watcher via lambda expression.
+        /// </summary>
         public class Default : Configurator<Default>
         {
             public Default(DiskWatcherConfiguration configuration) : base(configuration)

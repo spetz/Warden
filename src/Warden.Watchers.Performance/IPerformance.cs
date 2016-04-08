@@ -4,11 +4,17 @@ using System.Threading.Tasks;
 
 namespace Warden.Watchers.Performance
 {
+    /// <summary>
+    /// Custom performance analyzer.
+    /// </summary>
     public interface IPerformance
     {
         Task<ResourceUsage> GetResourceUsageAsync();
     }
 
+    /// <summary>
+    /// Default implementation of the IPerformance based on PerformanceCounter.
+    /// </summary>
     public class Performance : IPerformance
     {
         private readonly TimeSpan _delay;

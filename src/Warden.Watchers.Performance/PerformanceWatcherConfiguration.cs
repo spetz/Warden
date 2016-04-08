@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 
 namespace Warden.Watchers.Performance
 {
+    /// <summary>
+    /// Configuration of the PerformanceWatcher.
+    /// </summary>
     public class PerformanceWatcherConfiguration
     {
         /// <summary>

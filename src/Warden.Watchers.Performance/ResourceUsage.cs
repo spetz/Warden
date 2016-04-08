@@ -21,6 +21,12 @@
             Ram = ram;
         }
 
+        ///<summary>
+        /// Factory method for creating a new instance of ResourceUsage.
+        /// </summary>
+        /// <param name="cpu">Percentage usage of the CPU.</param>
+        /// <param name="memory">Megabytes usage of the RAM.</param>
+        /// <returns>Instance of ResourceUsage.</returns>
         public static ResourceUsage Create(double cpu, double memory)
             => new ResourceUsage(cpu, memory);
     }

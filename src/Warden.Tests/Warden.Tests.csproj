@@ -92,6 +92,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Watchers\MongoDb\MongoDbWatcherTests.cs" />
     <Compile Include="Watchers\MsSql\MsSqlWatcherTests.cs" />
+    <Compile Include="Watchers\Disk\PerformanceWatcherTests.cs" />
     <Compile Include="Watchers\Performance\PerformanceWatcherTests.cs" />
     <Compile Include="Watchers\Redis\RedisWatcherTests.cs" />
     <Compile Include="Watchers\Web\WebWatcherTests.cs" />
@@ -102,6 +103,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Warden.Watchers.Disk\Warden.Watchers.Disk.csproj">
+      <Project>{fbec9501-92e5-4860-adf5-f9decd430b25}</Project>
+      <Name>Warden.Watchers.Disk</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warden.Watchers.MongoDb\Warden.Watchers.MongoDb.csproj">
       <Project>{C9C8420E-6A1F-4B9D-BB38-291D6F7E0467}</Project>
       <Name>Warden.Watchers.MongoDb</Name>
