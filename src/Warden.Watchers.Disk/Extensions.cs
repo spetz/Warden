@@ -10,7 +10,6 @@ namespace Warden.Watchers.Disk
     {
         /// <summary>
         /// Extension method for adding the Disk watcher to the the WardenConfiguration with the default name of Disk Watcher.
-        /// Uses the default HTTP GET request.
         /// </summary>
         /// <param name="builder">Instance of the Warden configuration builder.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>

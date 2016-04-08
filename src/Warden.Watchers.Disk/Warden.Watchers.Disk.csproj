@@ -41,11 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DirectoryInfo.cs" />
     <Compile Include="DiskCheck.cs" />
     <Compile Include="DiskWatcher.cs" />
     <Compile Include="DiskWatcherConfiguration.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="FileInfo.cs" />
     <Compile Include="IDiskChecker.cs" />
+    <Compile Include="PartitionInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DiskWatcherCheckResult.cs" />
   </ItemGroup>

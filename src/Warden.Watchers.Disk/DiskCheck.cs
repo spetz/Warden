@@ -2,13 +2,39 @@
 
 namespace Warden.Watchers.Disk
 {
+    /// <summary>
+    /// Details of the performed disk analysis.
+    /// </summary>
     public class DiskCheck
     {
+        /// <summary>
+        /// Total free space in bytes available on disk.
+        /// </summary>
         public long FreeSpace { get; }
+
+        /// <summary>
+        /// Total used space in bytes on disk.
+        /// </summary>
         public long UsedSpace { get; }
+
+        /// <summary>
+        /// Total space in bytes on disk.
+        /// </summary>
         public long TotalSpace => UsedSpace + FreeSpace;
+
+        /// <summary>
+        /// Collection of partitions that have been checked.
+        /// </summary>
         public IEnumerable<PartitionInfo> Partitions { get; }
+
+        /// <summary>
+        /// Collection of directories that have been checked.
+        /// </summary>
         public IEnumerable<DirectoryInfo> Directories { get; }
+
+        /// <summary>
+        /// Collection of files that have been checked.
+        /// </summary>
         public IEnumerable<FileInfo> Files { get; }
 
         protected DiskCheck(long freeSpace, long usedSpace, 
@@ -23,88 +49,19 @@ namespace Warden.Watchers.Disk
             Files = files;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="freeSpace">Total free space in bytes available on disk.</param>
+        /// <param name="usedSpace">Total used space in bytes on disk.</param>
+        /// <param name="partitions">Collection of partitions that have been checked.</param>
+        /// <param name="directories">Collection of directories that have been checked.</param>
+        /// <param name="files">Collection of files that have been checked.</param>
+        /// <returns></returns>
         public static DiskCheck Create(long freeSpace, long usedSpace,
             IEnumerable<PartitionInfo> partitions,
             IEnumerable<DirectoryInfo> directories,
             IEnumerable<FileInfo> files)
             => new DiskCheck(freeSpace, usedSpace, partitions, directories, files);
-    }
-
-    public class PartitionInfo
-    {
-        public string Name { get; }
-        public long UsedSpace { get; }
-        public long FreeSpace { get; }
-        public long TotalSpace => UsedSpace + FreeSpace;
-        public bool Exists { get; }
-
-        public PartitionInfo(string name, long usedSpace, long freeSpace, bool exists)
-        {
-            Name = name;
-            UsedSpace = usedSpace;
-            FreeSpace = freeSpace;
-            Exists = exists;
-        }
-
-        public static PartitionInfo NotFound(string name)
-            => new PartitionInfo(name, 0, 0, false);
-
-        public static PartitionInfo Create(string name, long usedSpace, long freeSpace)
-            => new PartitionInfo(name, usedSpace, freeSpace, true);
-    }
-
-    public class FileInfo
-    {
-        public string Name { get; }
-        public string Path { get; }
-        public string Extension { get; }
-        public bool Exists { get; }
-        public long Size { get; }
-        public string Partition { get; }
-        public string Directory { get; }
-
-        protected FileInfo(string path, string name, string extension,
-            bool exists, long size, string partition, string directory)
-        {
-            Path = path;
-            Name = name;
-            Partition = partition;
-            Extension = extension;
-            Exists = exists;
-            Size = size;
-            Partition = partition;
-            Directory = directory;
-        }
-
-        public static FileInfo NotFound(string name, string path, string extension, string partition, string directory)
-            => new FileInfo(name, path, extension, false, 0, partition, directory);
-
-        public static FileInfo Create(string path, string name, string extension, long sizeBytes,
-            string partition, string directory)
-            => new FileInfo(name, path, extension, true, sizeBytes, partition, directory);
-    }
-
-    public class DirectoryInfo
-    {
-        public string Name { get; }
-        public string Path { get; }
-        public int FilesCount { get; }
-        public long Size { get; }
-        public bool Exists { get; }
-
-        public DirectoryInfo(string name, string path, int filesCount, long size, bool exists)
-        {
-            Name = name;
-            Path = path;
-            FilesCount = filesCount;
-            Size = size;
-            Exists = exists;
-        }
-
-        public static DirectoryInfo NotFound(string name, string path)
-            => new DirectoryInfo(path, name, 0, 0, false);
-
-        public static DirectoryInfo Create(string name, string path, int filesCount, long sizeBytes)
-            => new DirectoryInfo(path, name, filesCount, sizeBytes, true);
     }
 }

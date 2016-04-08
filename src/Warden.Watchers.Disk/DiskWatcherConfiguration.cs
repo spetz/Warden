@@ -10,8 +10,19 @@ namespace Warden.Watchers.Disk
     /// </summary>
     public class DiskWatcherConfiguration
     {
+        /// <summary>
+        /// Collection of partition names that should be checked.
+        /// </summary>
         public IEnumerable<string> PartitionsToCheck { get; protected set; }
+
+        /// <summary>
+        /// Collection of directory paths that should be checked.
+        /// </summary>
         public IEnumerable<string> DirectoriesToCheck { get; protected set; }
+
+        /// <summary>
+        /// Collection of file paths that should be checked.
+        /// </summary>
         public IEnumerable<string> FilesToCheck { get; protected set; }
 
         /// <summary>

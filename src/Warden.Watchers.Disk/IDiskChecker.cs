@@ -5,12 +5,18 @@ using System.Threading.Tasks;
 
 namespace Warden.Watchers.Disk
 {
+    /// <summary>
+    /// Custom disk checker for disk analysis.
+    /// </summary>
     public interface IDiskChecker
     {
         Task<DiskCheck> CheckAsync(IEnumerable<string> partitions = null,
             IEnumerable<string> directories = null, IEnumerable<string> files = null);
     }
 
+    /// <summary>
+    /// Default implementation of the IDiskChecker based on System.IO.
+    /// </summary>
     public class DiskChecker : IDiskChecker
     {
         public async Task<DiskCheck> CheckAsync(IEnumerable<string> partitions = null,
