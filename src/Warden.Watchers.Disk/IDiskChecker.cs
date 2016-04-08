@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -6,28 +7,22 @@ namespace Warden.Watchers.Disk
 {
     public interface IDiskChecker
     {
-        Task<DiskCheck> CheckAsync(IEnumerable<string> partitions = null, IEnumerable<string> directories = null,
-            IEnumerable<string> files = null);
+        Task<DiskCheck> CheckAsync(IEnumerable<string> partitions = null,
+            IEnumerable<string> directories = null, IEnumerable<string> files = null);
     }
 
     public class DiskChecker : IDiskChecker
     {
         public async Task<DiskCheck> CheckAsync(IEnumerable<string> partitions = null,
             IEnumerable<string> directories = null, IEnumerable<string> files = null)
-            => DiskCheck.Create(GetFreeSpace(), GetUsedSpace(), CheckPartitions(partitions),
-                CheckDirectories(directories), CheckFiles(files));
+            => await Task.Factory.StartNew(() => DiskCheck.Create(GetFreeSpace(), GetUsedSpace(),
+                CheckPartitions(partitions), CheckDirectories(directories), CheckFiles(files)));
 
-        private long GetFreeSpace()
-        {
-            //TODO: implement free space checking
-            return 0;
-        }
+        private static long GetFreeSpace()
+            => DriveInfo.GetDrives().Sum(x => x.TotalFreeSpace);
 
-        private long GetUsedSpace()
-        {
-            //TODO: implement used space checking
-            return 0;
-        }
+        private static long GetUsedSpace()
+            => DriveInfo.GetDrives().Sum(x => x.TotalSize) - GetFreeSpace();
 
         private IEnumerable<PartitionInfo> CheckPartitions(IEnumerable<string> partitions = null)
             => partitions?.Select(CheckPartition) ?? Enumerable.Empty<PartitionInfo>();
@@ -37,21 +32,35 @@ namespace Warden.Watchers.Disk
             if (string.IsNullOrWhiteSpace(partition))
                 return null;
 
-            //TODO: implement partition checking
-            return null;
+            if (partition.EndsWith(":"))
+                partition += @"\";
+            else if (!partition.EndsWith(@":\"))
+                partition += @":\";
+
+            var name = partition.ToUpperInvariant();
+            var drives = DriveInfo.GetDrives();
+            var info = drives.FirstOrDefault(x => x.Name.Equals(name));
+
+            return info == null
+                ? PartitionInfo.NotFound(name)
+                : PartitionInfo.Create(info.Name, info.TotalSize - info.TotalFreeSpace, info.TotalFreeSpace);
         }
 
         private IEnumerable<DirectoryInfo> CheckDirectories(IEnumerable<string> directories = null)
             => directories?.Select(CheckDirectory) ?? Enumerable.Empty<DirectoryInfo>();
-
 
         private DirectoryInfo CheckDirectory(string directory)
         {
             if (string.IsNullOrWhiteSpace(directory))
                 return null;
 
-            //TODO: implement directory checking
-            return null;
+            var info = new System.IO.DirectoryInfo(directory);
+            if (!info.Exists)
+                return DirectoryInfo.NotFound(info.Name, info.FullName);
+
+            var files = info.GetFiles();
+
+            return DirectoryInfo.Create(info.Name, info.FullName, files.Length, files.Sum(x => x.Length));
         }
 
         private IEnumerable<FileInfo> CheckFiles(IEnumerable<string> files = null)
@@ -62,7 +71,7 @@ namespace Warden.Watchers.Disk
             if (string.IsNullOrWhiteSpace(file))
                 return null;
 
-            var partition = file.Contains(":") ? file.Split(':').First().ToUpperInvariant() : string.Empty;
+            var partition = file.Contains(":") ? $@"{file.Split(':').First().ToUpperInvariant()}:\" : string.Empty;
             var info = new System.IO.FileInfo(file);
             if (!info.Exists)
                 return FileInfo.NotFound(info.Name, info.FullName, info.Extension, partition, info.DirectoryName);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Warden.Watchers.Disk
@@ -29,11 +30,11 @@ namespace Warden.Watchers.Disk
 
         public async Task<IWatcherCheckResult> ExecuteAsync()
         {
-
             try
             {
                 var diskChecker = _configuration.DiskCheckerProvider();
-                var diskCheck = await diskChecker.CheckAsync(files: _configuration.FilesToCheck);
+                var diskCheck = await diskChecker.CheckAsync(_configuration.PartitionsToCheck,
+                    _configuration.DirectoriesToCheck, _configuration.FilesToCheck);
                 var isValid = true;
 
                 if (_configuration.EnsureThatAsync != null)
@@ -41,7 +42,10 @@ namespace Warden.Watchers.Disk
 
                 isValid = isValid && (_configuration.EnsureThat?.Invoke(diskCheck) ?? true);
 
-                return DiskWatcherCheckResult.Create(this, isValid, diskCheck, "Disk check has completed.");
+                return DiskWatcherCheckResult.Create(this, isValid, diskCheck,
+                    $"Disk check has completed for {_configuration.PartitionsToCheck.Count()} partition(s)," +
+                    $"{_configuration.DirectoriesToCheck.Count()} directory/ies " +
+                    $"and {_configuration.FilesToCheck.Count()} file(s).");
             }
             catch (Exception exception)
             {

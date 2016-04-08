@@ -82,7 +82,12 @@ namespace Warden.Examples.Console
                     hooks.OnSuccessAsync(result => WebsiteHookOnSuccessAsync(result));
                     hooks.OnCompletedAsync(result => WebsiteHookOnCompletedAsync(result));
                 })
-                .AddDiskWatcher(cfg => cfg.WithFilesToCheck(@"D:\Test\File1.txt", @"D:\Test\File2.txt"),
+                .AddDiskWatcher(cfg =>
+                {
+                    cfg.WithFilesToCheck(@"D:\Test\File1.txt", @"D:\Test\File2.txt")
+                       .WithPartitionsToCheck("D", @"E:\")
+                       .WithDirectoriesToCheck(@"E:\Instalki");
+                },
                     hooks => hooks.OnCompletedAsync(result => DiskHookOnCompletedAsync(result)))
                 .AddWebWatcher("http://my-api.com", HttpRequest.Post("users", new {name = "test"},
                     headers: new Dictionary<string, string>

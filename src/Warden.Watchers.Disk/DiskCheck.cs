@@ -6,6 +6,7 @@ namespace Warden.Watchers.Disk
     {
         public long FreeSpace { get; }
         public long UsedSpace { get; }
+        public long TotalSpace => UsedSpace + FreeSpace;
         public IEnumerable<PartitionInfo> Partitions { get; }
         public IEnumerable<DirectoryInfo> Directories { get; }
         public IEnumerable<FileInfo> Files { get; }
@@ -34,6 +35,7 @@ namespace Warden.Watchers.Disk
         public string Name { get; }
         public long UsedSpace { get; }
         public long FreeSpace { get; }
+        public long TotalSpace => UsedSpace + FreeSpace;
         public bool Exists { get; }
 
         public PartitionInfo(string name, long usedSpace, long freeSpace, bool exists)
@@ -57,19 +59,19 @@ namespace Warden.Watchers.Disk
         public string Path { get; }
         public string Extension { get; }
         public bool Exists { get; }
-        public long SizeBytes { get; }
+        public long Size { get; }
         public string Partition { get; }
         public string Directory { get; }
 
         protected FileInfo(string path, string name, string extension,
-            bool exists, long sizeBytes, string partition, string directory)
+            bool exists, long size, string partition, string directory)
         {
             Path = path;
             Name = name;
             Partition = partition;
             Extension = extension;
             Exists = exists;
-            SizeBytes = sizeBytes;
+            Size = size;
             Partition = partition;
             Directory = directory;
         }
@@ -87,15 +89,15 @@ namespace Warden.Watchers.Disk
         public string Name { get; }
         public string Path { get; }
         public int FilesCount { get; }
-        public long SizeBytes { get; }
+        public long Size { get; }
         public bool Exists { get; }
 
-        public DirectoryInfo(string name, string path, int filesCount, long sizeBytes, bool exists)
+        public DirectoryInfo(string name, string path, int filesCount, long size, bool exists)
         {
             Name = name;
             Path = path;
             FilesCount = filesCount;
-            SizeBytes = sizeBytes;
+            Size = size;
             Exists = exists;
         }
 
