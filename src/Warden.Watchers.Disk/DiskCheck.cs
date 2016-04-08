@@ -4,13 +4,13 @@ namespace Warden.Watchers.Disk
 {
     public class DiskCheck
     {
-        public double FreeSpace { get; }
-        public double UsedSpace { get; }
+        public long FreeSpace { get; }
+        public long UsedSpace { get; }
         public IEnumerable<PartitionInfo> Partitions { get; }
         public IEnumerable<DirectoryInfo> Directories { get; }
         public IEnumerable<FileInfo> Files { get; }
 
-        public DiskCheck(double freeSpace, double usedSpace, 
+        public DiskCheck(long freeSpace, long usedSpace, 
             IEnumerable<PartitionInfo> partitions, 
             IEnumerable<DirectoryInfo> directories,
             IEnumerable<FileInfo> files)
@@ -26,11 +26,11 @@ namespace Warden.Watchers.Disk
     public class PartitionInfo
     {
         public string Name { get; }
-        public double UsedSpace { get; }
-        public double FreeSpace { get; }
+        public long UsedSpace { get; }
+        public long FreeSpace { get; }
         public bool Exists { get; }
 
-        public PartitionInfo(string name, double usedSpace, double freeSpace, bool exists)
+        public PartitionInfo(string name, long usedSpace, long freeSpace, bool exists)
         {
             Name = name;
             UsedSpace = usedSpace;
@@ -45,21 +45,29 @@ namespace Warden.Watchers.Disk
         public string Path { get; }
         public string Extension { get; }
         public bool Exists { get; }
-        public double SizeBytes { get; }
+        public long SizeBytes { get; }
         public string Partition { get; }
         public string Directory { get; }
 
-        public FileInfo(string name, string path, string extension, bool exists, double sizeBytes, 
-            string partition, string directory)
+        protected FileInfo(string path, string name, string extension,
+            bool exists, long sizeBytes, string partition, string directory)
         {
-            Name = name;
             Path = path;
+            Name = name;
+            Partition = partition;
             Extension = extension;
             Exists = exists;
             SizeBytes = sizeBytes;
             Partition = partition;
             Directory = directory;
         }
+
+        public static FileInfo NotFound(string path, string name, string extension, string partition, string directory)
+            => new FileInfo(path, name, extension, false, 0, partition, directory);
+
+        public static FileInfo Create(string path, string name, string extension, long sizeBytes,
+            string partition, string directory)
+            => new FileInfo(path, name, extension, true, sizeBytes, partition, directory);
     }
 
     public class DirectoryInfo
@@ -67,10 +75,10 @@ namespace Warden.Watchers.Disk
         public string Name { get; }
         public string Path { get; }
         public int FilesCount { get; }
-        public double SizeBytes { get; }
+        public long SizeBytes { get; }
         public bool Exists { get; }
 
-        public DirectoryInfo(string name, string path, int filesCount, double sizeBytes, bool exists)
+        public DirectoryInfo(string name, string path, int filesCount, long sizeBytes, bool exists)
         {
             Name = name;
             Path = path;

@@ -33,7 +33,7 @@ namespace Warden.Watchers.Disk
             try
             {
                 var diskChecker = _configuration.DiskCheckerProvider();
-                var diskCheck = await diskChecker.CheckAsync();
+                var diskCheck = await diskChecker.CheckAsync(files: _configuration.FilesToCheck);
                 var isValid = true;
 
                 if (_configuration.EnsureThatAsync != null)

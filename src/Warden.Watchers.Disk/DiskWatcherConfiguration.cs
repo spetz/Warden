@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Warden.Watchers.Disk
@@ -8,6 +10,10 @@ namespace Warden.Watchers.Disk
     /// </summary>
     public class DiskWatcherConfiguration
     {
+        public IEnumerable<string> PartitionsToCheck { get; protected set; }
+        public IEnumerable<string> DirectoriesToCheck { get; protected set; }
+        public IEnumerable<string> FilesToCheck { get; protected set; }
+
         /// <summary>
         /// Predicate that has to be satisfied in order to return the valid result.
         /// </summary>
@@ -46,6 +52,36 @@ namespace Warden.Watchers.Disk
 
             protected Configurator(DiskWatcherConfiguration configuration) : base(configuration)
             {
+            }
+
+            public T WithPartitionsToCheck(params string[] partitions)
+            {
+                if (partitions?.Any() == false || partitions.Any(string.IsNullOrWhiteSpace))
+                    throw new ArgumentException("Partitions to check can not be empty.", nameof(partitions));
+
+                Configuration.PartitionsToCheck = partitions;
+
+                return Configurator;
+            }
+
+            public T WithDirectoriesToCheck(params string[] directories)
+            {
+                if (directories?.Any() == false || directories.Any(string.IsNullOrWhiteSpace))
+                    throw new ArgumentException("Directories to check can not be empty.", nameof(directories));
+
+                Configuration.DirectoriesToCheck = directories;
+
+                return Configurator;
+            }
+
+            public T WithFilesToCheck(params string[] files)
+            {
+                if (files?.Any() == false || files.Any(string.IsNullOrWhiteSpace))
+                    throw new ArgumentException("Files to check can not be empty.", nameof(files));
+
+                Configuration.FilesToCheck = files;
+
+                return Configurator;
             }
         }
 

@@ -75,14 +75,15 @@ namespace Warden.Examples.Console
             var wardenConfiguration = WardenConfiguration
                 .Create()
                 .AddPerformanceWatcher(cfg => cfg.EnsureThat(usage => usage.Cpu < 50 && usage.Ram < 5000),
-                hooks => hooks.OnCompleted(result => Logger.Info(result.WatcherCheckResult.Description)))
+                    hooks => hooks.OnCompleted(result => Logger.Info(result.WatcherCheckResult.Description)))
                 .AddWebWatcher("http://my-website.com", hooks =>
                 {
                     hooks.OnFailureAsync(result => WebsiteHookOnFailureAsync(result));
                     hooks.OnSuccessAsync(result => WebsiteHookOnSuccessAsync(result));
                     hooks.OnCompletedAsync(result => WebsiteHookOnCompletedAsync(result));
                 })
-                .AddDiskWatcher(hooks => hooks.OnCompletedAsync(result => DiskHookOnCompletedAsync(result)))
+                .AddDiskWatcher(cfg => cfg.WithFilesToCheck(@"D:\Test\File1.txt", @"D:\Test\File2.txt"),
+                    hooks => hooks.OnCompletedAsync(result => DiskHookOnCompletedAsync(result)))
                 .AddWebWatcher("http://my-api.com", HttpRequest.Post("users", new {name = "test"},
                     headers: new Dictionary<string, string>
                     {
@@ -125,7 +126,7 @@ namespace Warden.Examples.Console
                 .SetHooks(hooks =>
                 {
                     hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration))
-                         .OnError(exception => Logger.Error(exception));
+                        .OnError(exception => Logger.Error(exception));
                 })
                 .Build();
 
@@ -160,7 +161,7 @@ namespace Warden.Examples.Console
 
         private static async Task WebsiteHookOnSuccessAsync(IWardenCheckResult check)
         {
-            var websiteWatcherCheckResult = (WebWatcherCheckResult)check.WatcherCheckResult;
+            var websiteWatcherCheckResult = (WebWatcherCheckResult) check.WatcherCheckResult;
             Logger.Info($"Invoking the hook OnSuccessAsync() by watcher: '{websiteWatcherCheckResult.WatcherName}'.");
             await Task.CompletedTask;
         }
