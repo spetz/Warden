@@ -14,7 +14,7 @@ namespace Warden.Watchers.Disk
     {
         public async Task<DiskCheck> CheckAsync(IEnumerable<string> partitions = null,
             IEnumerable<string> directories = null, IEnumerable<string> files = null)
-            => new DiskCheck(GetFreeSpace(), GetUsedSpace(), CheckPartitions(partitions),
+            => DiskCheck.Create(GetFreeSpace(), GetUsedSpace(), CheckPartitions(partitions),
                 CheckDirectories(directories), CheckFiles(files));
 
         private long GetFreeSpace()
@@ -65,9 +65,9 @@ namespace Warden.Watchers.Disk
             var partition = file.Contains(":") ? file.Split(':').First().ToUpperInvariant() : string.Empty;
             var info = new System.IO.FileInfo(file);
             if (!info.Exists)
-                return FileInfo.NotFound(info.FullName, info.Name, info.Extension, partition, info.DirectoryName);
+                return FileInfo.NotFound(info.Name, info.FullName, info.Extension, partition, info.DirectoryName);
 
-            return FileInfo.Create(info.FullName, info.Name, info.Extension, info.Length, partition,
+            return FileInfo.Create(info.Name, info.FullName, info.Extension, info.Length, partition,
                 info.DirectoryName);
         }
     }
