@@ -59,6 +59,11 @@ namespace Warden.Integrations.SendGrid
         public bool UseHtmlBody { get; protected set; }
 
         /// <summary>
+        /// Custom provider for the IEmailSender.
+        /// </summary>
+        public Func<IEmailSender> EmailSenderProvider { get; protected set; }
+
+        /// <summary>
         /// Factory method for creating a new instance of fluent builder for the SendGridIntegrationConfiguration.
         /// </summary>
         /// <param name="username">Username of the SendGrid account.</param>
@@ -82,11 +87,9 @@ namespace Warden.Integrations.SendGrid
             if (string.IsNullOrWhiteSpace(password))
                 throw new ArgumentException("Password can not be empty.", nameof(password));
 
-            ValidateAndSetSender(sender);
+            ValidateAndSetDefaultParameters(sender);
             Username = username;
             Password = password;
-            Sender = sender;
-            DefaultReceivers = Enumerable.Empty<string>().ToArray();
         }
 
         protected SendGridIntegrationConfiguration(string apiKey, string sender)
@@ -94,13 +97,11 @@ namespace Warden.Integrations.SendGrid
             if (string.IsNullOrWhiteSpace(apiKey))
                 throw new ArgumentException("API key can not be empty.", nameof(apiKey));
 
-            ValidateAndSetSender(sender);
+            ValidateAndSetDefaultParameters(sender);
             ApiKey = apiKey;
-            Sender = sender;
-            DefaultReceivers = Enumerable.Empty<string>().ToArray();
         }
 
-        private void ValidateAndSetSender(string sender)
+        private void ValidateAndSetDefaultParameters(string sender)
         {
             if (string.IsNullOrWhiteSpace(sender))
                 throw new ArgumentException("Email message sender can not be empty.", nameof(sender));
@@ -108,6 +109,7 @@ namespace Warden.Integrations.SendGrid
                 throw new ArgumentException("Invalid email of the message sender.", nameof(sender));
 
             Sender = sender;
+            EmailSenderProvider = () => new EmailSender();
         }
 
         /// <summary>
@@ -210,6 +212,25 @@ namespace Warden.Integrations.SendGrid
             public Builder WithHtmlBody()
             {
                 Configuration.UseHtmlBody = true;
+
+                return this;
+            }
+
+            /// <summary>
+            /// Sets the custom provider for the IEmailSender.
+            /// </summary>
+            /// <param name="emailSenderProvider">Custom provider for the IEmailSender.</param>
+            /// <returns>Lambda expression returning an instance of the IEmailSender.</returns>
+            /// <returns>Instance of fluent builder for the SendGridIntegrationConfiguration.</returns>
+            public Builder WithEmailSenderProvider(Func<IEmailSender> emailSenderProvider)
+            {
+                if (emailSenderProvider == null)
+                {
+                    throw new ArgumentNullException(nameof(emailSenderProvider),
+                        "Email sender provider can not be null.");
+                }
+
+                Configuration.EmailSenderProvider = emailSenderProvider;
 
                 return this;
             }

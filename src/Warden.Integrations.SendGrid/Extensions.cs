@@ -94,8 +94,8 @@ namespace Warden.Integrations.SendGrid
             var invalidEmailReceivers = values.GetInvalidEmails();
             if (invalidEmailReceivers.Any())
             {
-                throw new ArgumentException("Invalid email(s): " +
-                                            $"{string.Join(", ", invalidEmailReceivers)}", nameof(parameterName));
+                throw new ArgumentException($"Invalid email(s): {string.Join(", ", invalidEmailReceivers)}.",
+                    nameof(parameterName));
             }
         }
     }

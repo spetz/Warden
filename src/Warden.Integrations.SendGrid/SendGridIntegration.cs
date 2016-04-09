@@ -17,6 +17,12 @@ namespace Warden.Integrations.SendGrid
 
         public SendGridIntegration(SendGridIntegrationConfiguration configuration)
         {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration),
+                    "SendGrid Integration configuration has not been provided.");
+            }
+
             _configuration = configuration;
         }
 
@@ -197,11 +203,15 @@ namespace Warden.Integrations.SendGrid
 
         private async Task SendMessageAsync(SendGridMessage message)
         {
-            var transportWeb = string.IsNullOrWhiteSpace(_configuration.ApiKey)
-                ? new Web(new NetworkCredential(_configuration.Username, _configuration.Password))
-                : new Web(_configuration.ApiKey);
+            var emailSender = _configuration.EmailSenderProvider();
+            if (string.IsNullOrWhiteSpace(_configuration.ApiKey))
+            {
+                await emailSender.SendMessageAsync(_configuration.Username, _configuration.Password, message);
 
-            await transportWeb.DeliverAsync(message);
+                return;
+            }
+
+            await emailSender.SendMessageAsync(_configuration.ApiKey, message);
         }
 
         /// <summary>

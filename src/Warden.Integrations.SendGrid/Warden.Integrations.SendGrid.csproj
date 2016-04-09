@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EmailTemplateParameter.cs" />
+    <Compile Include="IEmailSender.cs" />
     <Compile Include="SendGridIntegrationConfiguration.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="SendGridIntegration.cs" />
