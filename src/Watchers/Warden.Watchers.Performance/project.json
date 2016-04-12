@@ -1,5 +1,5 @@
 ﻿{
-  "version": "1.0.0-alpha2",
+  "version": "1.0.0-alpha4",
   "description": "Warden watcher for Performance.",
   "authors": [ "Piotr Gankiewicz" ],
   "tags": [ "Warden" ],
