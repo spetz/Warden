@@ -113,6 +113,15 @@
           "lib/net45/StackExchange.Redis.dll": {}
         }
       },
+      "System.Linq/4.0.1-beta-23516": {
+        "type": "package",
+        "compile": {
+          "ref/net45/_._": {}
+        },
+        "runtime": {
+          "lib/net45/_._": {}
+        }
+      },
       "System.Net.Http/4.0.0": {
         "type": "package",
         "frameworkAssemblies": [
@@ -305,6 +314,15 @@
           "lib/net45/StackExchange.Redis.dll": {}
         }
       },
+      "System.Linq/4.0.1-beta-23516": {
+        "type": "package",
+        "compile": {
+          "ref/net45/_._": {}
+        },
+        "runtime": {
+          "lib/net45/_._": {}
+        }
+      },
       "System.Net.Http/4.0.0": {
         "type": "package",
         "frameworkAssemblies": [
@@ -495,6 +513,15 @@
         },
         "runtime": {
           "lib/net45/StackExchange.Redis.dll": {}
+        }
+      },
+      "System.Linq/4.0.1-beta-23516": {
+        "type": "package",
+        "compile": {
+          "ref/net45/_._": {}
+        },
+        "runtime": {
+          "lib/net45/_._": {}
         }
       },
       "System.Net.Http/4.0.0": {
@@ -742,6 +769,48 @@
         "StackExchange.Redis.nuspec"
       ]
     },
+    "System.Linq/4.0.1-beta-23516": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "AJaoyeAHLpurbTWnmvOhK/QC2sswKJrIA5RlPea+UdfXpHOw3srPNEPpseZDMV/EviVqAwUfFNkc5QxpGZtsLA==",
+      "files": [
+        "lib/dotnet5.4/System.Linq.dll",
+        "lib/net45/_._",
+        "lib/netcore50/System.Linq.dll",
+        "lib/win8/_._",
+        "lib/wp80/_._",
+        "lib/wpa81/_._",
+        "ref/dotnet5.1/de/System.Linq.xml",
+        "ref/dotnet5.1/es/System.Linq.xml",
+        "ref/dotnet5.1/fr/System.Linq.xml",
+        "ref/dotnet5.1/it/System.Linq.xml",
+        "ref/dotnet5.1/ja/System.Linq.xml",
+        "ref/dotnet5.1/ko/System.Linq.xml",
+        "ref/dotnet5.1/ru/System.Linq.xml",
+        "ref/dotnet5.1/System.Linq.dll",
+        "ref/dotnet5.1/System.Linq.xml",
+        "ref/dotnet5.1/zh-hans/System.Linq.xml",
+        "ref/dotnet5.1/zh-hant/System.Linq.xml",
+        "ref/net45/_._",
+        "ref/netcore50/de/System.Linq.xml",
+        "ref/netcore50/es/System.Linq.xml",
+        "ref/netcore50/fr/System.Linq.xml",
+        "ref/netcore50/it/System.Linq.xml",
+        "ref/netcore50/ja/System.Linq.xml",
+        "ref/netcore50/ko/System.Linq.xml",
+        "ref/netcore50/ru/System.Linq.xml",
+        "ref/netcore50/System.Linq.dll",
+        "ref/netcore50/System.Linq.xml",
+        "ref/netcore50/zh-hans/System.Linq.xml",
+        "ref/netcore50/zh-hant/System.Linq.xml",
+        "ref/win8/_._",
+        "ref/wp80/_._",
+        "ref/wpa81/_._",
+        "System.Linq.4.0.1-beta-23516.nupkg",
+        "System.Linq.4.0.1-beta-23516.nupkg.sha512",
+        "System.Linq.nuspec"
+      ]
+    },
     "System.Net.Http/4.0.0": {
       "type": "package",
       "serviceable": true,
@@ -787,6 +856,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
+      "System.Linq >= 4.0.1-beta-23516",
       "TopShelf >= 3.3.1",
       "Warden >= 1.0.0-*",
       "Warden.Integrations.SendGrid >= 1.0.0-*",

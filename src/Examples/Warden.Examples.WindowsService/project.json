@@ -1,16 +1,12 @@
-﻿{
+{
   "version": "1.0.0-*",
   "description": "Example of Warden Windows Service.",
   "authors": [ "Piotr Gankiewicz" ],
   "tags": [ "Warden" ],
   "projectUrl": "https://github.com/spetz/warden",
   "licenseUrl": "https://github.com/spetz/Warden/blob/master/LICENSE",
-
-  "compilationOptions": {
-    "emitEntryPoint": true
-  },
-
   "dependencies": {
+    "System.Linq": "4.0.1-beta-23516",
     "TopShelf": "3.3.1",
     "Warden": "1.0.0-*",
     "Warden.Integrations.SendGrid": "1.0.0-*",

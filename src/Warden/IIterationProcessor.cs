@@ -109,7 +109,16 @@ namespace Warden
             });
 
             await Task.WhenAll(iterationTasks);
+            await ExecuteAggregatedHooksAsync(results);
+            var iterationCompletedAt = _configuration.DateTimeProvider();
+            var iteration = WardenIteration.Create(ordinal, results.Select(x => x.WardenCheckResult),
+                iterationStartedAt, iterationCompletedAt);
 
+            return iteration;
+        }
+
+        private async Task ExecuteAggregatedHooksAsync(IEnumerable<WatcherExecutionResult> results)
+        {
             var aggregatedHooksTasks = new[]
             {
                 InvokeAggregatedOnFirstSuccessHooksAsync(results),
@@ -120,12 +129,15 @@ namespace Warden
                 InvokeAggregatedOnErrorHooksAsync(results),
                 InvokeAggregatedOnCompletedHooksAsync(results)
             };
-            await Task.WhenAll(aggregatedHooksTasks);
-            var iterationCompletedAt = _configuration.DateTimeProvider();
-            var iteration = WardenIteration.Create(ordinal, results.Select(x => x.WardenCheckResult),
-                iterationStartedAt, iterationCompletedAt);
 
-            return iteration;
+            try
+            {
+                await Task.WhenAll(aggregatedHooksTasks);
+            }
+            catch (Exception exception)
+            {
+                //Think what to do about it
+            }
         }
 
         private class WatcherExecutionResult

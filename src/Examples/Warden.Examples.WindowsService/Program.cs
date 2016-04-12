@@ -1,13 +1,19 @@
-﻿using Topshelf;
+﻿using System.Linq;
+using Topshelf;
 
 namespace Warden.Examples.WindowsService
 {
-    class Program
+    public class Program
     {
-        private static void Main(string[] args)
+        private const string ServiceName = "Warden";
+
+        public int Main(string[] args)
         {
-            HostFactory.Run(x =>
+            args = args.Where(a => a != ServiceName).ToArray();
+
+            return (int) HostFactory.Run(x =>
             {
+                x.ApplyCommandLine(string.Join(" ", args));
                 x.Service<WardenService>(service =>
                 {
                     service.ConstructUsing(name => new WardenService());
@@ -17,9 +23,9 @@ namespace Warden.Examples.WindowsService
                     service.WhenStopped(async warden => await warden.StopAsync());
                 });
                 x.RunAsLocalSystem();
-                x.SetDescription("Warden");
-                x.SetDisplayName("Warden");
-                x.SetServiceName("Warden");
+                x.SetDescription(ServiceName);
+                x.SetDisplayName(ServiceName);
+                x.SetServiceName(ServiceName);
             });
         }
     }

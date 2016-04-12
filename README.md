@@ -11,25 +11,26 @@
 **What is Warden?**
 ----------------
 
-Warden is a simple, next-gen, (yet to be) cross-platform library built to solve the problem of monitoring the resources such as the websites, API, databases, CPU etc. It allows to quickly define the **[watchers](https://github.com/spetz/Warden/wiki/watcher)** responsible for performing checks on specific resources and **[integrations](https://github.com/spetz/Warden/wiki/integration)** to easily notify about any issues related to the possible downtime of your system. On top of that, you may use all of this information to collect the custom metrics thanks to the **[hooks](https://github.com/spetz/Warden/wiki/Hooks)**.
+**Warden** is a simple, **cross-platform** (yet to be) library, built to **solve the problem of monitoring the resources** such as the websites, API, databases, CPU etc. 
+
+It allows to quickly define the **[watchers](https://github.com/spetz/Warden/wiki/watcher)** responsible for performing checks on specific resources and **[integrations](https://github.com/spetz/Warden/wiki/integration)** to easily notify about any issues related to the possible downtime of your system. 
+
+On top of that, you may use all of this information to collect the custom metrics thanks to the **[hooks](https://github.com/spetz/Warden/wiki/Hooks)**.
 
 
 **What kind of monitoring is available?**
 ----------------
-Currently available **[watchers](https://github.com/spetz/Warden/wiki/watcher)**:
-
+ - **[Disk](https://github.com/spetz/Warden/wiki/Watcher-type-Disk)**
  - **[MongoDB](https://github.com/spetz/Warden/wiki/Watcher-type-MongoDB)**
  - **[MSSQL](https://github.com/spetz/Warden/wiki/Watcher-type-MSSQL)**
  - **[Performance](https://github.com/spetz/Warden/wiki/Watcher-type-Performance)**
  - **[Redis](https://github.com/spetz/Warden/wiki/Watcher-type-Redis)**
  - **[Web](https://github.com/spetz/Warden/wiki/Watcher-type-Web)**
 
-More watchers are coming soon (File, Network etc.)
+More watchers are coming soon.
 
 **What are the integrations with external services?**
 ----------------
-As for now, you may use the following **[integrations](https://github.com/spetz/Warden/wiki/integration)**:
-
  - **[SendGrid](https://github.com/spetz/Warden/wiki/Integration-with-SendGrid)**
 
 More integrations are coming soon.
@@ -49,7 +50,7 @@ Install-Package Warden -Pre
 
 **Watchers** and **integrations** are available as a separate _NuGet packages_ listed **[here](https://www.nuget.org/profiles/Spetz)**.
 
-**Cross-platform availability**
+**Cross-platform support**
 ----------------
 
 | Project              |   .NET 4.5.1  |  DotNet 5.4  |            Comment              |      

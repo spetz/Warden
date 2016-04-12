@@ -108,3 +108,5 @@ UpgradeLog*.XML
 
 packages/
 .nuget/
+/src/.vs/config/applicationhost.config
+*.lock.json
