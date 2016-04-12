@@ -1,0 +1,802 @@
+{
+  "locked": false,
+  "version": 2,
+  "targets": {
+    "DNX,Version=v4.5.1": {
+      "Dapper/1.50.0-beta9": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core",
+          "System.Data",
+          "System.Xml",
+          "System.Xml.Linq"
+        ],
+        "compile": {
+          "lib/net451/Dapper.dll": {}
+        },
+        "runtime": {
+          "lib/net451/Dapper.dll": {}
+        }
+      },
+      "Microsoft.AspNet.WebApi.Client/5.2.3": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "6.0.4"
+        },
+        "frameworkAssemblies": [
+          "System.Net.Http"
+        ],
+        "compile": {
+          "lib/net45/System.Net.Http.Formatting.dll": {}
+        },
+        "runtime": {
+          "lib/net45/System.Net.Http.Formatting.dll": {}
+        }
+      },
+      "MongoDB.Bson/2.2.3": {
+        "type": "package",
+        "compile": {
+          "lib/net45/MongoDB.Bson.dll": {}
+        },
+        "runtime": {
+          "lib/net45/MongoDB.Bson.dll": {}
+        }
+      },
+      "MongoDB.Driver/2.2.3": {
+        "type": "package",
+        "dependencies": {
+          "MongoDB.Bson": "2.2.3",
+          "MongoDB.Driver.Core": "2.2.3"
+        },
+        "compile": {
+          "lib/net45/MongoDB.Driver.dll": {}
+        },
+        "runtime": {
+          "lib/net45/MongoDB.Driver.dll": {}
+        }
+      },
+      "MongoDB.Driver.Core/2.2.3": {
+        "type": "package",
+        "dependencies": {
+          "MongoDB.Bson": "2.2.3"
+        },
+        "compile": {
+          "lib/net45/MongoDB.Driver.Core.dll": {}
+        },
+        "runtime": {
+          "lib/net45/MongoDB.Driver.Core.dll": {}
+        }
+      },
+      "Newtonsoft.Json/7.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        }
+      },
+      "Sendgrid/6.3.4": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNet.WebApi.Client": "5.2.3",
+          "Newtonsoft.Json": "7.0.0",
+          "SendGrid.SmtpApi": "1.3.1"
+        },
+        "compile": {
+          "lib/SendGrid.dll": {},
+          "lib/SendGridMail.dll": {}
+        },
+        "runtime": {
+          "lib/SendGrid.dll": {},
+          "lib/SendGridMail.dll": {}
+        }
+      },
+      "SendGrid.SmtpApi/1.3.1": {
+        "type": "package",
+        "compile": {
+          "lib/net40/SendGrid.SmtpApi.dll": {}
+        },
+        "runtime": {
+          "lib/net40/SendGrid.SmtpApi.dll": {}
+        }
+      },
+      "StackExchange.Redis/1.1.572": {
+        "type": "package",
+        "compile": {
+          "lib/net45/StackExchange.Redis.dll": {}
+        },
+        "runtime": {
+          "lib/net45/StackExchange.Redis.dll": {}
+        }
+      },
+      "System.Net.Http/4.0.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.Net.Http"
+        ],
+        "compile": {
+          "ref/net45/_._": {}
+        },
+        "runtime": {
+          "lib/net45/_._": {}
+        }
+      },
+      "TopShelf/3.3.1": {
+        "type": "package",
+        "compile": {
+          "lib/net40-full/Topshelf.dll": {}
+        },
+        "runtime": {
+          "lib/net40-full/Topshelf.dll": {}
+        }
+      },
+      "Warden/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1"
+      },
+      "Warden.Integrations.SendGrid/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Sendgrid": "6.3.4",
+          "Warden": "1.0.0"
+        }
+      },
+      "Warden.Watchers.Disk/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Warden": "1.0.0"
+        }
+      },
+      "Warden.Watchers.MongoDb/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "MongoDB.Driver": "2.2.3",
+          "Warden": "1.0.0"
+        }
+      },
+      "Warden.Watchers.MsSql/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Dapper": "1.50.0-beta9",
+          "Warden": "1.0.0"
+        }
+      },
+      "Warden.Watchers.Performance/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Warden": "1.0.0"
+        }
+      },
+      "Warden.Watchers.Redis/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "StackExchange.Redis": "1.1.572",
+          "Warden": "1.0.0"
+        }
+      },
+      "Warden.Watchers.Web/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Newtonsoft.Json": "7.0.1",
+          "System.Net.Http": "4.0.0",
+          "Warden": "1.0.0"
+        }
+      }
+    },
+    "DNX,Version=v4.5.1/win7-x86": {
+      "Dapper/1.50.0-beta9": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core",
+          "System.Data",
+          "System.Xml",
+          "System.Xml.Linq"
+        ],
+        "compile": {
+          "lib/net451/Dapper.dll": {}
+        },
+        "runtime": {
+          "lib/net451/Dapper.dll": {}
+        }
+      },
+      "Microsoft.AspNet.WebApi.Client/5.2.3": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "6.0.4"
+        },
+        "frameworkAssemblies": [
+          "System.Net.Http"
+        ],
+        "compile": {
+          "lib/net45/System.Net.Http.Formatting.dll": {}
+        },
+        "runtime": {
+          "lib/net45/System.Net.Http.Formatting.dll": {}
+        }
+      },
+      "MongoDB.Bson/2.2.3": {
+        "type": "package",
+        "compile": {
+          "lib/net45/MongoDB.Bson.dll": {}
+        },
+        "runtime": {
+          "lib/net45/MongoDB.Bson.dll": {}
+        }
+      },
+      "MongoDB.Driver/2.2.3": {
+        "type": "package",
+        "dependencies": {
+          "MongoDB.Bson": "2.2.3",
+          "MongoDB.Driver.Core": "2.2.3"
+        },
+        "compile": {
+          "lib/net45/MongoDB.Driver.dll": {}
+        },
+        "runtime": {
+          "lib/net45/MongoDB.Driver.dll": {}
+        }
+      },
+      "MongoDB.Driver.Core/2.2.3": {
+        "type": "package",
+        "dependencies": {
+          "MongoDB.Bson": "2.2.3"
+        },
+        "compile": {
+          "lib/net45/MongoDB.Driver.Core.dll": {}
+        },
+        "runtime": {
+          "lib/net45/MongoDB.Driver.Core.dll": {}
+        }
+      },
+      "Newtonsoft.Json/7.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        }
+      },
+      "Sendgrid/6.3.4": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNet.WebApi.Client": "5.2.3",
+          "Newtonsoft.Json": "7.0.0",
+          "SendGrid.SmtpApi": "1.3.1"
+        },
+        "compile": {
+          "lib/SendGrid.dll": {},
+          "lib/SendGridMail.dll": {}
+        },
+        "runtime": {
+          "lib/SendGrid.dll": {},
+          "lib/SendGridMail.dll": {}
+        }
+      },
+      "SendGrid.SmtpApi/1.3.1": {
+        "type": "package",
+        "compile": {
+          "lib/net40/SendGrid.SmtpApi.dll": {}
+        },
+        "runtime": {
+          "lib/net40/SendGrid.SmtpApi.dll": {}
+        }
+      },
+      "StackExchange.Redis/1.1.572": {
+        "type": "package",
+        "compile": {
+          "lib/net45/StackExchange.Redis.dll": {}
+        },
+        "runtime": {
+          "lib/net45/StackExchange.Redis.dll": {}
+        }
+      },
+      "System.Net.Http/4.0.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.Net.Http"
+        ],
+        "compile": {
+          "ref/net45/_._": {}
+        },
+        "runtime": {
+          "lib/net45/_._": {}
+        }
+      },
+      "TopShelf/3.3.1": {
+        "type": "package",
+        "compile": {
+          "lib/net40-full/Topshelf.dll": {}
+        },
+        "runtime": {
+          "lib/net40-full/Topshelf.dll": {}
+        }
+      },
+      "Warden/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1"
+      },
+      "Warden.Integrations.SendGrid/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Sendgrid": "6.3.4",
+          "Warden": "1.0.0"
+        }
+      },
+      "Warden.Watchers.Disk/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Warden": "1.0.0"
+        }
+      },
+      "Warden.Watchers.MongoDb/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "MongoDB.Driver": "2.2.3",
+          "Warden": "1.0.0"
+        }
+      },
+      "Warden.Watchers.MsSql/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Dapper": "1.50.0-beta9",
+          "Warden": "1.0.0"
+        }
+      },
+      "Warden.Watchers.Performance/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Warden": "1.0.0"
+        }
+      },
+      "Warden.Watchers.Redis/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "StackExchange.Redis": "1.1.572",
+          "Warden": "1.0.0"
+        }
+      },
+      "Warden.Watchers.Web/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Newtonsoft.Json": "7.0.1",
+          "System.Net.Http": "4.0.0",
+          "Warden": "1.0.0"
+        }
+      }
+    },
+    "DNX,Version=v4.5.1/win7-x64": {
+      "Dapper/1.50.0-beta9": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core",
+          "System.Data",
+          "System.Xml",
+          "System.Xml.Linq"
+        ],
+        "compile": {
+          "lib/net451/Dapper.dll": {}
+        },
+        "runtime": {
+          "lib/net451/Dapper.dll": {}
+        }
+      },
+      "Microsoft.AspNet.WebApi.Client/5.2.3": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "6.0.4"
+        },
+        "frameworkAssemblies": [
+          "System.Net.Http"
+        ],
+        "compile": {
+          "lib/net45/System.Net.Http.Formatting.dll": {}
+        },
+        "runtime": {
+          "lib/net45/System.Net.Http.Formatting.dll": {}
+        }
+      },
+      "MongoDB.Bson/2.2.3": {
+        "type": "package",
+        "compile": {
+          "lib/net45/MongoDB.Bson.dll": {}
+        },
+        "runtime": {
+          "lib/net45/MongoDB.Bson.dll": {}
+        }
+      },
+      "MongoDB.Driver/2.2.3": {
+        "type": "package",
+        "dependencies": {
+          "MongoDB.Bson": "2.2.3",
+          "MongoDB.Driver.Core": "2.2.3"
+        },
+        "compile": {
+          "lib/net45/MongoDB.Driver.dll": {}
+        },
+        "runtime": {
+          "lib/net45/MongoDB.Driver.dll": {}
+        }
+      },
+      "MongoDB.Driver.Core/2.2.3": {
+        "type": "package",
+        "dependencies": {
+          "MongoDB.Bson": "2.2.3"
+        },
+        "compile": {
+          "lib/net45/MongoDB.Driver.Core.dll": {}
+        },
+        "runtime": {
+          "lib/net45/MongoDB.Driver.Core.dll": {}
+        }
+      },
+      "Newtonsoft.Json/7.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        }
+      },
+      "Sendgrid/6.3.4": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNet.WebApi.Client": "5.2.3",
+          "Newtonsoft.Json": "7.0.0",
+          "SendGrid.SmtpApi": "1.3.1"
+        },
+        "compile": {
+          "lib/SendGrid.dll": {},
+          "lib/SendGridMail.dll": {}
+        },
+        "runtime": {
+          "lib/SendGrid.dll": {},
+          "lib/SendGridMail.dll": {}
+        }
+      },
+      "SendGrid.SmtpApi/1.3.1": {
+        "type": "package",
+        "compile": {
+          "lib/net40/SendGrid.SmtpApi.dll": {}
+        },
+        "runtime": {
+          "lib/net40/SendGrid.SmtpApi.dll": {}
+        }
+      },
+      "StackExchange.Redis/1.1.572": {
+        "type": "package",
+        "compile": {
+          "lib/net45/StackExchange.Redis.dll": {}
+        },
+        "runtime": {
+          "lib/net45/StackExchange.Redis.dll": {}
+        }
+      },
+      "System.Net.Http/4.0.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.Net.Http"
+        ],
+        "compile": {
+          "ref/net45/_._": {}
+        },
+        "runtime": {
+          "lib/net45/_._": {}
+        }
+      },
+      "TopShelf/3.3.1": {
+        "type": "package",
+        "compile": {
+          "lib/net40-full/Topshelf.dll": {}
+        },
+        "runtime": {
+          "lib/net40-full/Topshelf.dll": {}
+        }
+      },
+      "Warden/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1"
+      },
+      "Warden.Integrations.SendGrid/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Sendgrid": "6.3.4",
+          "Warden": "1.0.0"
+        }
+      },
+      "Warden.Watchers.Disk/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Warden": "1.0.0"
+        }
+      },
+      "Warden.Watchers.MongoDb/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "MongoDB.Driver": "2.2.3",
+          "Warden": "1.0.0"
+        }
+      },
+      "Warden.Watchers.MsSql/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Dapper": "1.50.0-beta9",
+          "Warden": "1.0.0"
+        }
+      },
+      "Warden.Watchers.Performance/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Warden": "1.0.0"
+        }
+      },
+      "Warden.Watchers.Redis/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "StackExchange.Redis": "1.1.572",
+          "Warden": "1.0.0"
+        }
+      },
+      "Warden.Watchers.Web/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Newtonsoft.Json": "7.0.1",
+          "System.Net.Http": "4.0.0",
+          "Warden": "1.0.0"
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Warden/1.0.0": {
+      "type": "project",
+      "path": "../../Warden/project.json"
+    },
+    "Warden.Integrations.SendGrid/1.0.0": {
+      "type": "project",
+      "path": "../../Integrations/Warden.Integrations.SendGrid/project.json"
+    },
+    "Warden.Watchers.Disk/1.0.0": {
+      "type": "project",
+      "path": "../../Watchers/Warden.Watchers.Disk/project.json"
+    },
+    "Warden.Watchers.MongoDb/1.0.0": {
+      "type": "project",
+      "path": "../../Watchers/Warden.Watchers.MongoDb/project.json"
+    },
+    "Warden.Watchers.MsSql/1.0.0": {
+      "type": "project",
+      "path": "../../Watchers/Warden.Watchers.MsSql/project.json"
+    },
+    "Warden.Watchers.Performance/1.0.0": {
+      "type": "project",
+      "path": "../../Watchers/Warden.Watchers.Performance/project.json"
+    },
+    "Warden.Watchers.Redis/1.0.0": {
+      "type": "project",
+      "path": "../../Watchers/Warden.Watchers.Redis/project.json"
+    },
+    "Warden.Watchers.Web/1.0.0": {
+      "type": "project",
+      "path": "../../Watchers/Warden.Watchers.Web/project.json"
+    },
+    "Dapper/1.50.0-beta9": {
+      "type": "package",
+      "sha512": "Sh+RD5rBdjd5k1CYchuJbU+WBrlGI7QN13pMiPMd/9dKXihZ8JENXmuaD5F7vWERG/fchCMNIVD2CR4rxuMJvA==",
+      "files": [
+        "Dapper.1.50.0-beta9.nupkg",
+        "Dapper.1.50.0-beta9.nupkg.sha512",
+        "Dapper.nuspec",
+        "lib/dotnet5.4/Dapper.dll",
+        "lib/dotnet5.4/Dapper.xml",
+        "lib/net40/Dapper.dll",
+        "lib/net40/Dapper.xml",
+        "lib/net45/Dapper.dll",
+        "lib/net45/Dapper.xml",
+        "lib/net451/Dapper.dll",
+        "lib/net451/Dapper.xml"
+      ]
+    },
+    "Microsoft.AspNet.WebApi.Client/5.2.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "3kiI8peSXbXHDDrRuo+QaX0iCEVRe0nvn2dBDRw656uPX32UalbBlSIDUDlJxu05eau4tnuhsikiUuugvvoUoQ==",
+      "files": [
+        "lib/net45/System.Net.Http.Formatting.dll",
+        "lib/net45/System.Net.Http.Formatting.xml",
+        "lib/portable-wp8+netcore45+net45+wp81+wpa81/System.Net.Http.Formatting.dll",
+        "lib/portable-wp8+netcore45+net45+wp81+wpa81/System.Net.Http.Formatting.xml",
+        "Microsoft.AspNet.WebApi.Client.5.2.3.nupkg",
+        "Microsoft.AspNet.WebApi.Client.5.2.3.nupkg.sha512",
+        "Microsoft.AspNet.WebApi.Client.nuspec"
+      ]
+    },
+    "MongoDB.Bson/2.2.3": {
+      "type": "package",
+      "sha512": "AwxyD8qYgy1GQkxQV2uMzymm19QwaNNAER6gf/w8f2dDjcboEve1kv9GEz7mtn2K8p6hYQjhgnvGc+xeh0KLmg==",
+      "files": [
+        "lib/net45/MongoDB.Bson.dll",
+        "lib/net45/MongoDB.Bson.XML",
+        "License.rtf",
+        "MongoDB.Bson.2.2.3.nupkg",
+        "MongoDB.Bson.2.2.3.nupkg.sha512",
+        "MongoDB.Bson.nuspec"
+      ]
+    },
+    "MongoDB.Driver/2.2.3": {
+      "type": "package",
+      "sha512": "ZgRSAv+vxCCYnL/V4mChGNnx8rBnnpDO2S8Fex+G3IrVWRRgJb3rEFOEoyuyR5C5qtOHGVMlGRSSngQwbgV2Dw==",
+      "files": [
+        "lib/net45/MongoDB.Driver.dll",
+        "lib/net45/MongoDB.Driver.XML",
+        "License.rtf",
+        "MongoDB.Driver.2.2.3.nupkg",
+        "MongoDB.Driver.2.2.3.nupkg.sha512",
+        "MongoDB.Driver.nuspec"
+      ]
+    },
+    "MongoDB.Driver.Core/2.2.3": {
+      "type": "package",
+      "sha512": "o9/7behJkN5TEG9KvRHM6HUdnsXgLl31pKRQwiCi4xgd7gAleI3sagBcujh7x40gl1NL/u4+uMPRZFpGAaGEQw==",
+      "files": [
+        "lib/net45/MongoDB.Driver.Core.dll",
+        "License.rtf",
+        "MongoDB.Driver.Core.2.2.3.nupkg",
+        "MongoDB.Driver.Core.2.2.3.nupkg.sha512",
+        "MongoDB.Driver.Core.nuspec"
+      ]
+    },
+    "Newtonsoft.Json/7.0.1": {
+      "type": "package",
+      "sha512": "q3V4KLetMLnt1gpAVWgtXnHjKs0UG/RalBc29u2ZKxd5t5Ze4JBL5WiiYIklJyK/5CRiIiNwigVQUo0FgbsuWA==",
+      "files": [
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.xml",
+        "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll",
+        "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.xml",
+        "Newtonsoft.Json.7.0.1.nupkg",
+        "Newtonsoft.Json.7.0.1.nupkg.sha512",
+        "Newtonsoft.Json.nuspec",
+        "tools/install.ps1"
+      ]
+    },
+    "Sendgrid/6.3.4": {
+      "type": "package",
+      "sha512": "wL1GufLMA4cCNYgmXluwdmEPMmUuW2AGiWPW4fqQTCupdP3xkqBQJw/G4B2rAUrXpcQzCPmI/JN5Dl92fli5Fg==",
+      "files": [
+        "lib/SendGrid.dll",
+        "lib/SendGridMail.dll",
+        "Sendgrid.6.3.4.nupkg",
+        "Sendgrid.6.3.4.nupkg.sha512",
+        "Sendgrid.nuspec"
+      ]
+    },
+    "SendGrid.SmtpApi/1.3.1": {
+      "type": "package",
+      "sha512": "SxBvvuwGnGpNd88Y70edON4idaNk9wLi7n9gokpHcImjZM+5Z4CFpjvf/1N3D1ZkuFKacXAoNnyYFvFfgeNtDg==",
+      "files": [
+        "lib/net40/SendGrid.SmtpApi.dll",
+        "lib/portable-net4+wp81/SendGrid.SmtpApi.dll",
+        "SendGrid.SmtpApi.1.3.1.nupkg",
+        "SendGrid.SmtpApi.1.3.1.nupkg.sha512",
+        "SendGrid.SmtpApi.nuspec"
+      ]
+    },
+    "StackExchange.Redis/1.1.572": {
+      "type": "package",
+      "sha512": "yhjI/cgg0ImlgFi4WS6HIJ6DlFEZbPIPTcnVtg8LhtRU0x6Av7v3mb4y0lmxThqK6NRcOlF5G3g8TH0tyQSaBg==",
+      "files": [
+        "lib/net40/StackExchange.Redis.dll",
+        "lib/net40/StackExchange.Redis.dll.config",
+        "lib/net40/StackExchange.Redis.pdb",
+        "lib/net40/StackExchange.Redis.xml",
+        "lib/net45/StackExchange.Redis.dll",
+        "lib/net45/StackExchange.Redis.pdb",
+        "lib/net45/StackExchange.Redis.xml",
+        "lib/net46/StackExchange.Redis.dll",
+        "lib/net46/StackExchange.Redis.dll.config",
+        "lib/net46/StackExchange.Redis.pdb",
+        "lib/net46/StackExchange.Redis.xml",
+        "StackExchange.Redis.1.1.572.nupkg",
+        "StackExchange.Redis.1.1.572.nupkg.sha512",
+        "StackExchange.Redis.nuspec"
+      ]
+    },
+    "System.Net.Http/4.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "mZuAl7jw/mFY8jUq4ITKECxVBh9a8SJt9BC/+lJbmo7cRKspxE3PsITz+KiaCEsexN5WYPzwBOx0oJH/0HlPyQ==",
+      "files": [
+        "lib/DNXCore50/System.Net.Http.dll",
+        "lib/net45/_._",
+        "lib/netcore50/System.Net.Http.dll",
+        "lib/win8/_._",
+        "lib/wpa81/_._",
+        "ref/dotnet/de/System.Net.Http.xml",
+        "ref/dotnet/es/System.Net.Http.xml",
+        "ref/dotnet/fr/System.Net.Http.xml",
+        "ref/dotnet/it/System.Net.Http.xml",
+        "ref/dotnet/ja/System.Net.Http.xml",
+        "ref/dotnet/ko/System.Net.Http.xml",
+        "ref/dotnet/ru/System.Net.Http.xml",
+        "ref/dotnet/System.Net.Http.dll",
+        "ref/dotnet/System.Net.Http.xml",
+        "ref/dotnet/zh-hans/System.Net.Http.xml",
+        "ref/dotnet/zh-hant/System.Net.Http.xml",
+        "ref/net45/_._",
+        "ref/netcore50/System.Net.Http.dll",
+        "ref/netcore50/System.Net.Http.xml",
+        "ref/win8/_._",
+        "ref/wpa81/_._",
+        "System.Net.Http.4.0.0.nupkg",
+        "System.Net.Http.4.0.0.nupkg.sha512",
+        "System.Net.Http.nuspec"
+      ]
+    },
+    "TopShelf/3.3.1": {
+      "type": "package",
+      "sha512": "HcBcgYHICNnMSzFcVPjz1J6nQFA7dooPam6vDbrjXJGD8rXPQ+xABGZ6PqAWvoc5s8pnsYPafumNjvymGE/ulA==",
+      "files": [
+        "lib/net35/Topshelf.dll",
+        "lib/net40-full/Topshelf.dll",
+        "Topshelf.3.3.1.nupkg",
+        "Topshelf.3.3.1.nupkg.sha512",
+        "Topshelf.nuspec"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    "": [
+      "TopShelf >= 3.3.1",
+      "Warden >= 1.0.0-*",
+      "Warden.Integrations.SendGrid >= 1.0.0-*",
+      "Warden.Watchers.Disk >= 1.0.0-*",
+      "Warden.Watchers.MongoDb >= 1.0.0-*",
+      "Warden.Watchers.MsSql >= 1.0.0-*",
+      "Warden.Watchers.Performance >= 1.0.0-*",
+      "Warden.Watchers.Redis >= 1.0.0-*",
+      "Warden.Watchers.Web >= 1.0.0-*"
+    ],
+    "DNX,Version=v4.5.1": []
+  }
+}

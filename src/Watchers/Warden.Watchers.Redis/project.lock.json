@@ -1,0 +1,84 @@
+{
+  "locked": false,
+  "version": 2,
+  "targets": {
+    ".NETFramework,Version=v4.5.1": {
+      "StackExchange.Redis/1.1.572": {
+        "type": "package",
+        "compile": {
+          "lib/net45/StackExchange.Redis.dll": {}
+        },
+        "runtime": {
+          "lib/net45/StackExchange.Redis.dll": {}
+        }
+      },
+      "Warden/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1"
+      }
+    },
+    ".NETFramework,Version=v4.5.1/win7-x86": {
+      "StackExchange.Redis/1.1.572": {
+        "type": "package",
+        "compile": {
+          "lib/net45/StackExchange.Redis.dll": {}
+        },
+        "runtime": {
+          "lib/net45/StackExchange.Redis.dll": {}
+        }
+      },
+      "Warden/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1"
+      }
+    },
+    ".NETFramework,Version=v4.5.1/win7-x64": {
+      "StackExchange.Redis/1.1.572": {
+        "type": "package",
+        "compile": {
+          "lib/net45/StackExchange.Redis.dll": {}
+        },
+        "runtime": {
+          "lib/net45/StackExchange.Redis.dll": {}
+        }
+      },
+      "Warden/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1"
+      }
+    }
+  },
+  "libraries": {
+    "Warden/1.0.0": {
+      "type": "project",
+      "path": "../../Warden/project.json"
+    },
+    "StackExchange.Redis/1.1.572": {
+      "type": "package",
+      "sha512": "yhjI/cgg0ImlgFi4WS6HIJ6DlFEZbPIPTcnVtg8LhtRU0x6Av7v3mb4y0lmxThqK6NRcOlF5G3g8TH0tyQSaBg==",
+      "files": [
+        "lib/net40/StackExchange.Redis.dll",
+        "lib/net40/StackExchange.Redis.dll.config",
+        "lib/net40/StackExchange.Redis.pdb",
+        "lib/net40/StackExchange.Redis.xml",
+        "lib/net45/StackExchange.Redis.dll",
+        "lib/net45/StackExchange.Redis.pdb",
+        "lib/net45/StackExchange.Redis.xml",
+        "lib/net46/StackExchange.Redis.dll",
+        "lib/net46/StackExchange.Redis.dll.config",
+        "lib/net46/StackExchange.Redis.pdb",
+        "lib/net46/StackExchange.Redis.xml",
+        "StackExchange.Redis.1.1.572.nupkg",
+        "StackExchange.Redis.1.1.572.nupkg.sha512",
+        "StackExchange.Redis.nuspec"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    "": [
+      "Warden >= 1.0.0-*",
+      "StackExchange.Redis >= 1.1.572"
+    ],
+    ".NETFramework,Version=v4.5.1": []
+  }
+}

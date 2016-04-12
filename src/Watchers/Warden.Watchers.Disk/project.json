@@ -1,0 +1,14 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "Warden.Watchers.Disk Class Library",
+  "authors": [ "Spetz" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+  "dependencies": {
+    "Warden": "1.0.0-*"
+  },
+  "frameworks": {
+    "net451": { }
+  }
+}

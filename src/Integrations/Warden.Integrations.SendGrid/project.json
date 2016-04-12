@@ -1,0 +1,15 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "Warden.Integrations.SendGrid Class Library",
+  "authors": [ "Spetz" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+  "dependencies": {
+    "Warden": "1.0.0-*",
+    "Sendgrid": "6.3.4"
+  },
+  "frameworks": {
+    "net451": { }
+  }
+}
