@@ -1,11 +1,10 @@
 {
   "version": "1.0.0-*",
-  "description": "Warden.Tests.EndToEnd Class Library",
-  "authors": [ "Spetz" ],
-  "tags": [ "" ],
-  "projectUrl": "",
-  "licenseUrl": "",
-
+  "description": "Warden End-to-End tests.",
+  "authors": [ "Piotr Gankiewicz" ],
+  "tags": [ "Warden" ],
+  "projectUrl": "https://github.com/spetz/warden",
+  "licenseUrl": "https://github.com/spetz/Warden/blob/master/LICENSE",
   "dependencies": {
     "FluentAssertions": "4.3.2",
     "NUnitLite": "3.2.0",

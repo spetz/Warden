@@ -43,7 +43,7 @@ namespace Warden.Watchers.Disk
                 isValid = isValid && (_configuration.EnsureThat?.Invoke(diskCheck) ?? true);
 
                 return DiskWatcherCheckResult.Create(this, isValid, diskCheck,
-                    $"Disk check has completed for {_configuration.PartitionsToCheck.Count()} partition(s)," +
+                    $"Disk check has completed for {_configuration.PartitionsToCheck.Count()} partition(s), " +
                     $"{_configuration.DirectoriesToCheck.Count()} directory/ies " +
                     $"and {_configuration.FilesToCheck.Count()} file(s).");
             }

@@ -11,7 +11,8 @@
 **What is Warden?**
 ----------------
 
-Warden is a simple library built to solve the problem of monitoring the resources such as the websites, API, databases, CPU etc. It allows to quickly define the **[watchers](https://github.com/spetz/Warden/wiki/watcher)** responsible for performing checks on specific resources and **[integrations](https://github.com/spetz/Warden/wiki/integration)** to easily notify about any issues related to the possible downtime of your system. On top of that, you may use all of this information to collect the custom metrics thanks to the **[hooks](https://github.com/spetz/Warden/wiki/Hooks)**.
+Warden is a simple, next-gen, (yet to be) cross-platform library built to solve the problem of monitoring the resources such as the websites, API, databases, CPU etc. It allows to quickly define the **[watchers](https://github.com/spetz/Warden/wiki/watcher)** responsible for performing checks on specific resources and **[integrations](https://github.com/spetz/Warden/wiki/integration)** to easily notify about any issues related to the possible downtime of your system. On top of that, you may use all of this information to collect the custom metrics thanks to the **[hooks](https://github.com/spetz/Warden/wiki/Hooks)**.
+
 
 **What kind of monitoring is available?**
 ----------------
@@ -47,6 +48,21 @@ Install-Package Warden -Pre
 ```
 
 **Watchers** and **integrations** are available as a separate _NuGet packages_ listed **[here](https://www.nuget.org/profiles/Spetz)**.
+
+**Cross-platform availability**
+----------------
+
+| Project              |   .NET 4.5.1  |  DotNet 5.4  |            Comment              |      
+|----------------------|:-------------:|:------------:|---------------------------------
+| **[Warden Core](https://github.com/spetz/Warden/wiki/Warden)**         |        +      |        +     |     
+| **[Disk Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Disk)**         |        +      |        -     | _System.IO not compatible_
+| **[MongoDB Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-MongoDB)**      |        +      |        -     | _MongoDB Driver not compatible_
+| **[MSSQL Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-MSSQL)**        |        +      |        -     | _Dapper not compatible_
+| **[Performance Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Performance)**  |        +      |        -     | _PerformanceCounter not compatible_
+| **[Redis Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Redis)**        |        +      |        -     | _StackExchange.Redis not compatible_
+| **[Web Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Web)**          |        +      |        +     |
+| **[SendGrid Integration](https://github.com/spetz/Warden/wiki/Integration-with-SendGrid)** |        +      |        -     | _SendGrid not compatible_
+
 
 **Quick start**:
 ----------------
@@ -92,7 +108,3 @@ var warden = Warden.Create(configuration);
 await warden.StartAsync();
 ```
 Please check out the **[examples](https://github.com/spetz/Warden/wiki/Examples)** by cloning the repository.
-
-
-
-
