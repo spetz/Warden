@@ -99,36 +99,4 @@ namespace Warden.Integrations.SendGrid
             }
         }
     }
-
-    public class Point
-    {
-        public int X { get; protected set; }
-        public int Y { get; protected set; }
-
-        public Point(int x, int y)
-        {
-            X = x;
-            Y = y;
-        }
-    }
-
-    public class Point3D : Point
-    {
-        public int Z { get; protected set; }
-
-        public Point3D(int x, int y, int z) : base(x,y)
-        {
-            Z = z;
-            CheckZeroValue();
-        }
-
-        private void CheckZeroValue()
-        {
-            if (Z == 0)
-            {
-                X = 0;
-                Y = 0;
-            }
-        }
-    }
 }

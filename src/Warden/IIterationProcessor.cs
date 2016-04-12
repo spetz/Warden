@@ -8,6 +8,9 @@ using Warden.Watchers;
 
 namespace Warden
 {
+    /// <summary>
+    /// Processor responsible for executing all of the configured watchers and theirs hooks in a cycle called the iteration.
+    /// </summary>
     public interface IIterationProcessor
     {
         /// <summary>
@@ -18,6 +21,10 @@ namespace Warden
         Task<IWardenIteration> ExecuteAsync(long ordinal);
     }
 
+
+    /// <summary>
+    /// Default implementation of the IIterationProcessor.
+    /// </summary>
     public class IterationProcessor : IIterationProcessor
     {
         private readonly IterationProcessorConfiguration _configuration;
@@ -114,15 +121,7 @@ namespace Warden
                 InvokeAggregatedOnErrorHooksAsync(results),
                 InvokeAggregatedOnCompletedHooksAsync(results)
             };
-            try
-            {
-                await Task.WhenAll(aggregatedHooksTasks);
-            }
-            catch (Exception exception)
-            {
-
-            }
-
+            await Task.WhenAll(aggregatedHooksTasks);
             var iterationCompletedAt = _configuration.DateTimeProvider();
             var iteration = WardenIteration.Create(ordinal, results.Select(x => x.WardenCheckResult),
                 iterationStartedAt, iterationCompletedAt);

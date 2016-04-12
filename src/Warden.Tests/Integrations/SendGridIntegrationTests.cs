@@ -176,10 +176,12 @@ namespace Warden.Tests.Integrations
             Integration = SendGridIntegration.Create(Configuration);
         };
 
-        Because of = async () =>
-        {
-            await Integration.SendEmailAsync().Await().AsTask;
-        };
+        Because of = () => Exception = Catch.Exception(() => Integration.SendEmailAsync().Await().AsTask);
+
+        It should_fail = () => Exception.ShouldBeAssignableTo<ArgumentException>();
+
+        It should_have_a_specific_reason =
+            () => Exception.Message.ShouldContain("Email message receivers have not been defined.");
 
         It should_not_invoke_send_message_async_method = () => EmailSenderMock.Verify(x =>
             x.SendMessageAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<SendGridMessage>()), Times.Never);
@@ -204,6 +206,11 @@ namespace Warden.Tests.Integrations
         {
             await Integration.SendEmailAsync().Await().AsTask;
         };
+
+        It should_fail = () => Exception.ShouldBeAssignableTo<ArgumentException>();
+
+        It should_have_a_specific_reason =
+            () => Exception.Message.ShouldContain("Email message receivers have not been defined.");
 
         It should_not_invoke_send_message_async_method = () => EmailSenderMock.Verify(x =>
             x.SendMessageAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<string>(),

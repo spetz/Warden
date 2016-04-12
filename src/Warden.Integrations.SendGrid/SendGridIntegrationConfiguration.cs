@@ -110,6 +110,8 @@ namespace Warden.Integrations.SendGrid
 
             Sender = sender;
             EmailSenderProvider = () => new EmailSender();
+            DefaultReceivers = Enumerable.Empty<string>().ToArray();
+            DefaultTemplateParameters = Enumerable.Empty<EmailTemplateParameter>().ToArray();
         }
 
         /// <summary>

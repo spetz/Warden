@@ -5,6 +5,9 @@ using Warden.Core;
 
 namespace Warden
 {
+    /// <summary>
+    /// Core interface responsible for executing the watchers, hooks and integrations.
+    /// </summary>
     public interface IWarden
     {
         /// <summary>
@@ -26,6 +29,9 @@ namespace Warden
         Task StopAsync();
     }
 
+    /// <summary>
+    /// Default implementation of the IWarden interface.
+    /// </summary>
     public class Warden : IWarden
     {
         private readonly WardenConfiguration _configuration;
@@ -68,7 +74,6 @@ namespace Warden
                     if (!canExecuteNextIteration)
                         break;
 
-                    await Task.Delay(_configuration.IterationDelay);
                     _iterationOrdinal++;
                 }
                 catch (Exception exception)
@@ -82,6 +87,10 @@ namespace Warden
                     {
                         //Think what to do about it
                     }
+                }
+                finally
+                {
+                    await Task.Delay(_configuration.IterationDelay);
                 }
             }
         }

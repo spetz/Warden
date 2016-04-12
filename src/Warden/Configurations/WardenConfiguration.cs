@@ -11,6 +11,8 @@ namespace Warden.Configurations
     /// </summary>
     public class WardenConfiguration
     {
+        private static readonly IIntegrator DefaultIntegrator = new Integrator();
+
         /// <summary>
         /// Set of unique watcher configurations.
         /// </summary>
@@ -64,7 +66,7 @@ namespace Warden.Configurations
             Watchers = new HashSet<WatcherConfiguration>();
             IterationDelay = new TimeSpan(0, 0, 5);
             DateTimeProvider = () => DateTime.UtcNow;
-            IntegratorProvider = () => new Integrator();
+            IntegratorProvider = () => DefaultIntegrator;
         }
 
         /// <summary>
@@ -111,7 +113,7 @@ namespace Warden.Configurations
             /// </summary>
             /// <param name="integration">Instance of IIntegration.</param>
             /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
-            public Builder AddIntegration(IIntegration integration)
+            public Builder AddIntegration<T>(T integration) where T : class, IIntegration
             {
                 _configuration.IntegratorProvider().Register(integration);
 
@@ -140,7 +142,7 @@ namespace Warden.Configurations
             public Builder SetHooks(Action<WardenHooksConfiguration.Builder, IIntegrator> hooks)
             {
                 var hooksConfigurationBuilder = new WardenHooksConfiguration.Builder();
-                hooks(hooksConfigurationBuilder, new Integrator());
+                hooks(hooksConfigurationBuilder, _configuration.IntegratorProvider());
                 _configuration.Hooks = hooksConfigurationBuilder.Build();
 
                 return this;
@@ -168,7 +170,7 @@ namespace Warden.Configurations
             public Builder SetGlobalWatcherHooks(Action<WatcherHooksConfiguration.Builder, IIntegrator> hooks)
             {
                 var hooksConfigurationBuilder = new WatcherHooksConfiguration.Builder();
-                hooks(hooksConfigurationBuilder, new Integrator());
+                hooks(hooksConfigurationBuilder, _configuration.IntegratorProvider());
                 _configuration.GlobalWatcherHooks = hooksConfigurationBuilder.Build();
 
                 return this;
@@ -196,7 +198,7 @@ namespace Warden.Configurations
             public Builder SetAggregatedWatcherHooks(Action<AggregatedWatcherHooksConfiguration.Builder, IIntegrator> hooks)
             {
                 var hooksConfigurationBuilder = new AggregatedWatcherHooksConfiguration.Builder();
-                hooks(hooksConfigurationBuilder, new Integrator());
+                hooks(hooksConfigurationBuilder, _configuration.IntegratorProvider());
                 _configuration.AggregatedWatcherHooks = hooksConfigurationBuilder.Build();
 
                 return this;

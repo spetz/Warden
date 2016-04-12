@@ -11,26 +11,30 @@ namespace Warden.Integrations
 
     public class Integrator : IIntegrator
     {
-        protected readonly IDictionary<Type, IIntegration> Integrations = new Dictionary<Type, IIntegration>(); 
+        protected readonly IDictionary<Type, IIntegration> Integrations = new Dictionary<Type, IIntegration>();
 
         public void Register<T>(T integration) where T : class, IIntegration
         {
-            if (Integrations.ContainsKey(typeof (T)))
+            var key = GetKey<T>();
+            if (Integrations.ContainsKey(key))
             {
                 throw new InvalidOperationException($"Integration: {typeof(T).Name} has been already registered.");
             }
 
-            Integrations[typeof (T)] = integration;
+            Integrations[key] = integration;
         }
 
         public T Resolve<T>() where T : class, IIntegration
         {
-            if (!Integrations.ContainsKey(typeof(T)))
+            var key = GetKey<T>();
+            if (!Integrations.ContainsKey(key))
             {
                 throw new InvalidOperationException($"Integration: {typeof(T).Name} has not been registered.");
             }
 
-            return Integrations[typeof (T)] as T;
+            return Integrations[key] as T;
         }
+
+        private static Type GetKey<T>() => typeof(T);
     }
 }

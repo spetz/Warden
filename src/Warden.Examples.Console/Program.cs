@@ -86,7 +86,7 @@ namespace Warden.Examples.Console
                 {
                     cfg.WithFilesToCheck(@"D:\Test\File1.txt", @"D:\Test\File2.txt")
                        .WithPartitionsToCheck("D", @"E:\")
-                       .WithDirectoriesToCheck(@"E:\Instalki");
+                       .WithDirectoriesToCheck(@"E:\Test");
                 },
                     hooks => hooks.OnCompletedAsync(result => DiskHookOnCompletedAsync(result)))
                 .AddWebWatcher("http://my-api.com", HttpRequest.Post("users", new {name = "test"},

@@ -67,7 +67,7 @@ namespace Warden.Integrations.SendGrid
             string message = null, params string[] receivers)
         {
             var emailMessage = CreateMessage(subject, receivers);
-            var body = _configuration.DefaultMessage + emailMessage;
+            var body = _configuration.DefaultMessage + message;
             if (_configuration.UseHtmlBody)
                 emailMessage.Html = body;
             else
