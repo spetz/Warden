@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Warden.Integrations.Api
@@ -51,13 +52,14 @@ namespace Warden.Integrations.Api
         /// Factory method for creating a new instance of HttpApiIntegration.
         /// </summary>
         /// <param name="url">URL of the HTTP API.</param>
-        /// <param name="apiKey">API key of the HTTP API.</param>
+        /// <param name="apiKey">Optional API key of the HTTP API passed inside the custom "X-Api-Key" header.</param>
+        /// <param name="headers">Optional request headers.</param>
         /// <param name="configurator">Lambda expression for configuring the HttpApiIntegration integration.</param>
         /// <returns>Instance of HttpApiIntegration.</returns>
-        public static HttpApiIntegration Create(string url, string apiKey,
+        public static HttpApiIntegration Create(string url, string apiKey = null, IDictionary<string, string> headers = null,
             Action<HttpApiIntegrationConfiguration.Builder> configurator = null)
         {
-            var config = new HttpApiIntegrationConfiguration.Builder(url, apiKey);
+            var config = new HttpApiIntegrationConfiguration.Builder(url, apiKey, headers);
             configurator?.Invoke(config);
 
             return Create(config.Build());

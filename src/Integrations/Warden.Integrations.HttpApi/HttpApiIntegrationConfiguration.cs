@@ -7,6 +7,9 @@ using Newtonsoft.Json.Serialization;
 
 namespace Warden.Integrations.Api
 {
+    /// <summary>
+    /// Configuration of the HttpApiIntegration.
+    /// </summary>
     public class HttpApiIntegrationConfiguration
     {
         public static readonly JsonSerializerSettings DefaultJsonSerializerSettings = new JsonSerializerSettings
@@ -67,6 +70,16 @@ namespace Warden.Integrations.Api
         /// </summary>
         public Func<IHttpService> HttpServiceProvider { get; protected set; }
 
+        /// <summary>
+        /// Factory method for creating a new instance of fluent builder for the HttpApiIntegrationConfiguration.
+        /// </summary>
+        /// <param name="url">URL of the HTTP API.</param>
+        /// <param name="apiKey">Optional API key of the HTTP API passed inside the custom "X-Api-Key" header.</param>
+        /// <param name="headers">Optional request headers.</param>
+        /// <returns>Instance of fluent builder for the HttpApiIntegrationConfiguration.</returns>
+        public static Builder Create(string url, string apiKey = null, IDictionary<string, string> headers = null)
+            => new Builder(url, apiKey, headers);
+
         protected HttpApiIntegrationConfiguration(string url, string apiKey = null,
             IDictionary<string, string> headers = null)
         {
@@ -90,9 +103,9 @@ namespace Warden.Integrations.Api
         {
             protected readonly HttpApiIntegrationConfiguration Configuration;
 
-            public Builder(string url, string apiKey)
+            public Builder(string url, string apiKey = null, IDictionary<string, string> headers = null)
             {
-                Configuration = new HttpApiIntegrationConfiguration(url, apiKey);
+                Configuration = new HttpApiIntegrationConfiguration(url, apiKey, headers);
             }
 
             /// <summary>
