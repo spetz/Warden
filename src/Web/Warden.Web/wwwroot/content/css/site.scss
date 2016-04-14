@@ -1,0 +1,16 @@
+﻿$primary-color: #7272D8;
+$background-color: #FAFAFF;
+
+body {
+    background-color: $background-color;
+}
+
+nav {
+    color: $primary-color;
+    background-color: $primary-color;
+}
+
+.nav-wrapper > ul > li {
+    color: $primary-color;
+    background-color: $primary-color;
+}

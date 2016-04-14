@@ -110,3 +110,6 @@ packages/
 .nuget/
 /src/.vs/config/applicationhost.config
 *.lock.json
+/src/Web/Warden.Web/node_modules
+/src/Web/Warden.Web/bower_components
+/src/Web/Warden.Web/wwwroot/content/lib
