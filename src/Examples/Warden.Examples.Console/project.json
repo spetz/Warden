@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "1.0.0-*",
   "description": "Example of Warden Console Application.",
   "authors": [ "Piotr Gankiewicz" ],
@@ -12,6 +12,7 @@
 
   "dependencies": {
     "Warden": "1.0.0-*",
+    "Warden.Integrations.HttpApi": "1.0.0-alpha4",
     "Warden.Integrations.SendGrid": "1.0.0-*",
     "Warden.Watchers.Disk": "1.0.0-*",
     "Warden.Watchers.MongoDb": "1.0.0-*",

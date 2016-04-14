@@ -237,6 +237,10 @@ namespace Warden.Integrations.SendGrid
                 return this;
             }
 
+            /// <summary>
+            /// Builds the SendGridIntegrationConfiguration and return its instance.
+            /// </summary>
+            /// <returns>Instance of SendGridIntegrationConfiguration.</returns>
             public SendGridIntegrationConfiguration Build() => Configuration;
         }
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Warden.Configurations;
-using Warden.Integrations.SendGrid;
+using Warden.Integrations.Api;
 using Warden.Watchers;
 using Warden.Watchers.Disk;
 using Warden.Watchers.MongoDb;
@@ -77,6 +77,7 @@ namespace Warden.Examples.Console
                 //        .OnFirstSuccessAsync(results =>
                 //            integrations.SendGrid().SendEmailAsync("Everything is up and running again!"));
                 //})
+                .IntegrateWithHttpApi("http://localhost:8080/api", "api-key")
                 .SetGlobalWatcherHooks(hooks =>
                 {
                     hooks.OnStart(check => GlobalHookOnStart(check))
@@ -84,9 +85,10 @@ namespace Warden.Examples.Console
                         .OnSuccess(result => GlobalHookOnSuccess(result))
                         .OnCompleted(result => GlobalHookOnCompleted(result));
                 })
-                .SetHooks(hooks =>
+                .SetHooks((hooks, integrations) =>
                 {
                     hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration))
+                        .OnIterationCompletedAsync(iteration => integrations.HttpApi().PostAsync("/iterations", iteration))
                         .OnError(exception => System.Console.WriteLine(exception));
                 })
                 .Build();
