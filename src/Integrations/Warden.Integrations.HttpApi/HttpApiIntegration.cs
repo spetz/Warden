@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace Warden.Integrations.Api
 {
     /// <summary>
-    /// Integration with the HTTP API for pushing information about performed checks.
+    /// Integration with the HTTP API for sending information about performed checks.
     /// </summary>
     public class HttpApiIntegration : IIntegration
     {
@@ -22,14 +22,29 @@ namespace Warden.Integrations.Api
         }
 
         /// <summary>
-        /// Sends a POST request to the HTTP API.
+        /// Sends a POST request to the base URL of the HTTP API.
+        /// </summary>
+        /// <param name="data">Request data that will be serialized to the JSON.</param>
+        /// <returns></returns>
+        public async Task PostAsync(object data)
+        {
+            await PostAsync(string.Empty, data);
+        }
+
+        /// <summary>
+        /// Sends a POST request to the specified endpoint in the HTTP API.
         /// </summary>
         /// <param name="endpoint">Endpoint of the HTTP operation (e.g. /iterations).</param>
         /// <param name="data">Request data that will be serialized to the JSON.</param>
         /// <returns></returns>
         public async Task PostAsync(string endpoint, object data)
         {
-            var serializedData = data.ToJson();
+            var baseUrl = _configuration.Uri.ToString();
+            var fullUrl = baseUrl.GetFullUrl(endpoint);
+
+            await _configuration.HttpServiceProvider().PostAsync(fullUrl,
+                data.ToJson(_configuration.JsonSerializerSettings), _configuration.Headers,
+                _configuration.Timeout, _configuration.FailFast);
         }
 
         /// <summary>

@@ -103,7 +103,6 @@ namespace Warden.Watchers.Web
                 return Configurator;
             }
 
-
             /// <summary>
             /// Timeout of the HTTP request.
             /// </summary>

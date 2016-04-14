@@ -11,34 +11,30 @@ namespace Warden.Integrations.Api
     /// </summary>
     public static class Extensions
     {
-        private static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings
+
+
+        internal static string GetFullUrl(this string baseUrl, string endpoint)
         {
-            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-            ContractResolver = new CamelCasePropertyNamesContractResolver(),
-            DateFormatString = "yyyy-MM-dd H:mm:ss",
-            Formatting = Formatting.Indented,
-            DefaultValueHandling = DefaultValueHandling.Populate,
-            NullValueHandling = NullValueHandling.Include,
-            Converters = new List<JsonConverter>
-            {
-                new Newtonsoft.Json.Converters.StringEnumConverter
-                {
-                    AllowIntegerValues = true,
-                    CamelCaseText = true
-                }
-            }
-        };
+            if (string.IsNullOrWhiteSpace(endpoint))
+                return baseUrl;
+
+            if (baseUrl.EndsWith("/"))
+                return $"{baseUrl}{(endpoint.StartsWith("/") ? endpoint.Substring(1) : $"{endpoint}")}";
+
+            return $"{baseUrl}{(endpoint.StartsWith("/") ? endpoint : $"/{endpoint}")}";
+        }
 
         /// <summary>
         /// Extension method for adding the HTTP API integration to the the WardenConfiguration.
         /// </summary>
         /// <param name="builder">Instance of the Warden configuration builder.</param>
         /// <param name="url">URL of the HTTP API.</param>
-        /// <param name="apiKey">API key of the HTTP API.</param>
+        /// <param name="apiKey">Optional API key of the HTTP API passed inside the custom "X-Api-Key" header.</param>
+        /// <param name="headers">Optional request headers.</param>
         /// <param name="configurator">Optional lambda expression for configuring the HttpApiIntegration.</param>
         public static WardenConfiguration.Builder IntegrateWithHttpApi(
             this WardenConfiguration.Builder builder,
-            string url, string apiKey,
+            string url, string apiKey = null, IDictionary<string, string> headers = null,
             Action<HttpApiIntegrationConfiguration.Builder> configurator = null)
         {
             builder.AddIntegration(HttpApiIntegration.Create(url, apiKey));
@@ -55,16 +51,6 @@ namespace Warden.Integrations.Api
             => integrator.Resolve<HttpApiIntegration>();
 
         /// <summary>
-        /// Serialize object to the JSON string.
-        /// </summary>
-        /// <param name="data">Data to be serialized.</param>
-        /// <returns>JSON string.</returns>
-        public static string ToJson(this object data)
-        {
-            return data.ToJson(null);
-        }
-
-        /// <summary>
         /// Serialize object to the JSON.
         /// </summary>
         /// <param name="data">Data to be serialized.</param>
@@ -72,8 +58,6 @@ namespace Warden.Integrations.Api
         /// <returns>JSON string.</returns>
         public static string ToJson(this object data, JsonSerializerSettings serializerSettings)
         {
-            serializerSettings = serializerSettings ?? JsonSerializerSettings;
-
             return JsonConvert.SerializeObject(data, serializerSettings);
         }
     }
