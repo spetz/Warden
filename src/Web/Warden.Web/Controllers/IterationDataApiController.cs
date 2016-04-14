@@ -8,8 +8,10 @@ namespace Warden.Web.Controllers
     public class IterationDataApiController : Controller
     {
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody]WardenIterationDto item)
+        public async Task<IActionResult> Create([FromBody]WardenIterationDto iterationDto)
         {
+            //TODO: Store in database
+
             return new HttpStatusCodeResult(204);
         }
     }

@@ -9,6 +9,6 @@ namespace Warden.Web.Dto
         public DateTime StartedAt { get; set; }
         public DateTime CompletedAt { get; set; }
         public TimeSpan ExecutionTime { get; set; }
-        public dynamic Exception { get; set; }
+        public ExceptionDto Exception { get; set; }
     }
 }
