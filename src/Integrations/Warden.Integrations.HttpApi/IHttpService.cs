@@ -43,15 +43,27 @@ namespace Warden.Integrations.Api
         {
             SetRequestHeaders(headers);
             SetTimeout(timeout);
-            var response = await _client.PostAsync(url, new StringContent(
-                data, Encoding.UTF8, "application/json"));
-            if (response.IsSuccessStatusCode)
-                return;
-            if (!failFast)
-                return;
+            try
+            {
+                var response = await _client.PostAsync(url, new StringContent(
+                    data, Encoding.UTF8, "application/json"));
 
-            throw new Exception($"Received invalid HTTP response with status code: {response.StatusCode}. " +
-                                $"Reason phrase: {response.ReasonPhrase}");
+                if (response.IsSuccessStatusCode)
+                    return;
+                if (!failFast)
+                    return;
+
+                throw new Exception($"Received invalid HTTP response with status code: {response.StatusCode}. " +
+                    $"Reason phrase: {response.ReasonPhrase}");
+            }
+            catch (Exception exception)
+            {
+                if (!failFast)
+                    return;
+
+                throw new Exception($"There was an error while executing the PostAsync(): " +
+                                    $"{exception}", exception);
+            }
         }
 
         private void SetTimeout(TimeSpan? timeout)

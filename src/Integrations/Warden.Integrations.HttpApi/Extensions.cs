@@ -37,7 +37,7 @@ namespace Warden.Integrations.Api
             string url, 
             Action<HttpApiIntegrationConfiguration.Builder> configurator = null)
         {
-            builder.AddIntegration(HttpApiIntegration.Create(url));
+            builder.AddIntegration(HttpApiIntegration.Create(url, configurator: configurator));
 
             return builder;
         }
@@ -54,7 +54,7 @@ namespace Warden.Integrations.Api
             string url, string apiKey, 
             Action<HttpApiIntegrationConfiguration.Builder> configurator = null)
         {
-            builder.AddIntegration(HttpApiIntegration.Create(url));
+            builder.AddIntegration(HttpApiIntegration.Create(url, configurator: configurator));
 
             return builder;
         }
@@ -72,7 +72,7 @@ namespace Warden.Integrations.Api
             string url, string apiKey, IDictionary<string, string> headers,
             Action<HttpApiIntegrationConfiguration.Builder> configurator = null)
         {
-            builder.AddIntegration(HttpApiIntegration.Create(url, apiKey, headers));
+            builder.AddIntegration(HttpApiIntegration.Create(url, apiKey, headers, configurator));
 
             return builder;
         }
