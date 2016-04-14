@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Web.Http;
 using Microsoft.AspNet.Mvc;
 using Warden.Web.Dto;
 using Warden.Web.Services.DataStorage;
@@ -16,11 +18,17 @@ namespace Warden.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody]WardenIterationDto iterationDto)
+        public async Task<IActionResult> Create([FromBody]WardenIterationDto iteration)
         {
-            await _dataStorage.SaveIterationAsync(iterationDto);
+            await _dataStorage.SaveIterationAsync(iteration);
 
             return new HttpStatusCodeResult(204);
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<WardenIterationDto>> GetAll([FromUri]WardenIterationFiltersDto filters)
+        {
+            return await _dataStorage.GetIterationsAsync(filters);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "1.0.0-*",
   "compilationOptions": {
     "emitEntryPoint": true
@@ -9,7 +9,9 @@
     "Microsoft.AspNet.Server.Kestrel": "1.0.0-rc1-final",
     "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
     "Microsoft.AspNet.StaticFiles": "1.0.0-rc1-final",
-    "MongoDB.Driver": "2.2.3"
+    "MongoDB.Driver": "2.2.3",
+    "Microsoft.CSharp": "4.0.0",
+    "Microsoft.AspNet.Mvc.WebApiCompatShim": "6.0.0-rc1-final"
   },
 
   "commands": {
