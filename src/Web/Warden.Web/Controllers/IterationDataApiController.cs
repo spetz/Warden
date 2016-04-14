@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using Warden.Web.Dto;
-using Warden.Web.Services;
 using Warden.Web.Services.DataStorage;
 
 namespace Warden.Web.Controllers
