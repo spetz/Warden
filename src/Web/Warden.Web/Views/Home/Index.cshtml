@@ -1,93 +1,90 @@
 ﻿<div class="row">
-    <div class="col s12">
-        <canvas id="main-chart" width="1200" height="600"></canvas>
+    <div class="col s3">
+        <div class="card-panel">
+            <div>
+                <label>Total uptime</label>
+                <ul class="collection">
+                    <li class="collection-item">99%</li>
+                </ul>
+            </div>
+            <div>
+                <label>Total downtime</label>
+                <ul class="collection">
+                    <li class="collection-item">1%</li>
+                </ul>
+            </div>
+            <div>
+                <label>Valid resources</label>
+                <ul class="collection">
+                    <li class="collection-item">6/7</li>
+                </ul>
+            </div>
+            <div>
+                <label>Most failing resources</label>
+                <ul class="collection">
+                    <li class="collection-item">RAM (10%)</li>
+                    <li class="collection-item">API (7%)</li>
+                </ul>
+            </div>
+            <div>
+                <label>Latest check at</label>
+                <ul class="collection">
+                    <li class="collection-item">2016-04-15T10:36:51Z</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col s9">
+        <canvas class="card-panel" id="main-chart" width="1200" height="600"></canvas>
     </div>
 </div>
 <div class="row">
-    <div class="col s4">
-        <canvas id="watcher-chart-1" width="300" height="200"></canvas>
+    <div class="col s8">
+        <div class="card-panel">
+            <div>
+                <label>Watcher name</label>
+                <ul class="collection">
+                    <li class="collection-item" data-bind="text: selectedWardenCheckResult().watcherCheckResult.watcherName"></li>
+                </ul>
+            </div>
+            <div>
+                <label>Watcher type</label>
+                <ul class="collection">
+                    <li class="collection-item" data-bind="text: selectedWardenCheckResult().watcherCheckResult.watcherType"></li>
+                </ul>
+            </div>
+            <div>
+                <label>Is valid</label>
+                <ul class="collection">
+                    <li class="collection-item" data-bind="text: selectedWardenCheckResult().watcherCheckResult.isValid"></li>
+                </ul>
+            </div>
+            <div>
+                <label>Description</label>
+                <ul class="collection">
+                    <li class="collection-item" data-bind="text: selectedWardenCheckResult().watcherCheckResult.description"></li>
+                </ul>
+            </div>
+            <div>
+                <label>Completed at</label>
+                <ul class="collection">
+                    <li class="collection-item" data-bind="text: selectedWardenCheckResult().completedAt"></li>
+                </ul>
+            </div>
+        </div>
     </div>
-    <div class="col s4">
-        <canvas id="watcher-chart-2" width="300" height="200"></canvas>
-    </div>
-    <div class="col s4">
-        <canvas id="watcher-chart-3" width="300" height="200"></canvas>
-    </div>
-    <div class="col s4">
-        <canvas id="watcher-chart-4" width="300" height="200"></canvas>
-    </div>
-    <div class="col s4">
-        <canvas id="watcher-chart-5" width="300" height="200"></canvas>
-    </div>
-    <div class="col s4">
-        <canvas id="watcher-chart-6" width="300" height="200"></canvas>
+    <div class="col s3 offset-s1">
+        <canvas class="card-panel" id="watchers-chart" width="300" height="400"></canvas>
     </div>
 </div>
 
 @section scripts {
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+    <script type="text/javascript" src="@Url.Content("~/content/lib/knockout/dist/knockout.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/content/js/app.js")"></script>
     <script type="text/javascript">
-        $(function () {
-
-            renderMainChart();
-            for (var i = 1; i <= 6; i++) {
-                renderWatcherChart(i);
-            }
-
-            function renderMainChart() {
-                var data = {
-                    labels: ["January", "February", "March", "April", "May", "June", "July"],
-                    datasets: [
-                        {
-                            label: "My First dataset",
-                            fillColor: "rgba(220,220,220,0.2)",
-                            strokeColor: "rgba(220,220,220,1)",
-                            pointColor: "rgba(220,220,220,1)",
-                            pointStrokeColor: "#fff",
-                            pointHighlightFill: "#fff",
-                            pointHighlightStroke: "rgba(220,220,220,1)",
-                            data: [65, 59, 80, 81, 56, 55, 40]
-                        },
-                        {
-                            label: "My Second dataset",
-                            fillColor: "rgba(151,187,205,0.2)",
-                            strokeColor: "rgba(151,187,205,1)",
-                            pointColor: "rgba(151,187,205,1)",
-                            pointStrokeColor: "#fff",
-                            pointHighlightFill: "#fff",
-                            pointHighlightStroke: "rgba(151,187,205,1)",
-                            data: [28, 48, 40, 19, 86, 27, 90]
-                        }
-                    ]
-                };
-                var ctx = document.getElementById("main-chart").getContext("2d");
-                var mainChart = new Chart(ctx).Line(data);
-            };
-
-            function renderWatcherChart(number) {
-                var data = [
-                    {
-                        value: 300,
-                        color: "#F7464A",
-                        highlight: "#FF5A5E",
-                        label: "Red"
-                    },
-                    {
-                        value: 50,
-                        color: "#46BFBD",
-                        highlight: "#5AD3D1",
-                        label: "Green"
-                    },
-                    {
-                        value: 100,
-                        color: "#FDB45C",
-                        highlight: "#FFC870",
-                        label: "Yellow"
-                    }
-                ];
-                var ctx = document.getElementById("watcher-chart-" + number).getContext("2d");
-                var watcherChart = new Chart(ctx).Pie(data);
-            };
+        $(function() {
+            dashboard.init();
         });
     </script>
 }

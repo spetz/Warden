@@ -21,7 +21,6 @@ namespace Warden.Tests.Core
     [Subject("Warden initialization")]
     public class when_initializing_without_configuration : Warden_specs
     {
-
         Establish context = () => WardenConfiguration = null;
 
         Because of = () => Exception = Catch.Exception(() => Warden = new Warden(WardenConfiguration));

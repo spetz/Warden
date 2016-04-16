@@ -152,7 +152,7 @@ namespace Warden.Examples.Console
         private static void OnIterationCompleted(IWardenIteration wardenIteration)
         {
             var newLine = Environment.NewLine;
-            System.Console.WriteLine($"Warden iteration {wardenIteration.Ordinal} has completed.");
+            System.Console.WriteLine($"{wardenIteration.WardenName} iteration {wardenIteration.Ordinal} has completed.");
             foreach (var result in wardenIteration.Results)
             {
                 System.Console.WriteLine($"Watcher: '{result.WatcherCheckResult.WatcherName}'{newLine}" +

@@ -62,6 +62,14 @@ namespace Warden.Web.Services.DataStorage
                 iterations = iterations.Where(x => x.CompletedAt >= filters.From);
             if (filters.To.HasValue)
                 iterations = iterations.Where(x => x.CompletedAt <= filters.To);
+            if (filters.Page <= 0)
+                filters.Page = 1;
+            if (filters.Results <= 0)
+                filters.Results = 10;
+
+            iterations = iterations.OrderByDescending(x => x.CompletedAt)
+                .Skip((filters.Page - 1)*filters.Results)
+                .Take(filters.Results);
 
             return await iterations.ToListAsync();
         }

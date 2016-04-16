@@ -3,26 +3,26 @@
   "version": 2,
   "targets": {
     ".NETFramework,Version=v4.5.1": {
-      "Warden/1.0.0": {
+      "Warden/1.0.0-alpha4": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       }
     },
     ".NETFramework,Version=v4.5.1/win7-x86": {
-      "Warden/1.0.0": {
+      "Warden/1.0.0-alpha4": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       }
     },
     ".NETFramework,Version=v4.5.1/win7-x64": {
-      "Warden/1.0.0": {
+      "Warden/1.0.0-alpha4": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       }
     }
   },
   "libraries": {
-    "Warden/1.0.0": {
+    "Warden/1.0.0-alpha4": {
       "type": "project",
       "path": "../../Warden/project.json"
     }

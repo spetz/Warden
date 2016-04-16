@@ -7,6 +7,7 @@ namespace Warden.Web.Dto
     [BsonIgnoreExtraElements]
     public class WardenIterationDto
     {
+        public string WardenName { get; set; }
         public long Ordinal { get; set; }
         public DateTime StartedAt { get; set; }
         public DateTime CompletedAt { get; set; }

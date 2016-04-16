@@ -12,6 +12,11 @@ namespace Warden
     public interface IWardenIteration : IValidatable, ITimestampable
     {
         /// <summary>
+        /// Name of the Warden that has executed the iteration.
+        /// </summary>
+        string WardenName { get; }
+
+        /// <summary>
         /// Number of the iteration.
         /// </summary>
         long Ordinal { get; }
@@ -24,6 +29,7 @@ namespace Warden
 
     public class WardenIteration : IWardenIteration
     {
+        public string WardenName { get; }
         public long Ordinal { get; }
         public IEnumerable<IWardenCheckResult> Results { get; }
         public DateTime StartedAt { get; }
@@ -31,14 +37,18 @@ namespace Warden
         public TimeSpan ExecutionTime => CompletedAt - StartedAt;
         public bool IsValid => Results.All(x => x.IsValid);
 
-        protected WardenIteration(long ordinal, IEnumerable<IWardenCheckResult> results, DateTime startedAt,
-            DateTime completedAt)
+        protected WardenIteration(string wardenName, long ordinal, IEnumerable<IWardenCheckResult> results,
+            DateTime startedAt, DateTime completedAt)
         {
+            if (string.IsNullOrWhiteSpace(wardenName))
+                throw new ArgumentException("Warden name can not be empty.", nameof(wardenName));
             if (ordinal < 0)
             {
                 throw new ArgumentException($"Warden iteration ordinal can not be less than 0 ({ordinal}).",
                     nameof(ordinal));
             }
+
+            WardenName = wardenName;
             Ordinal = ordinal;
             Results = results;
             StartedAt = startedAt;
@@ -48,13 +58,14 @@ namespace Warden
         /// <summary>
         /// Factory method for creating a new instance of the IWardenIteration.
         /// </summary>
+        /// <param name="wardenName">Name of the Warden that has executed the iteration.</param>
         /// <param name="ordinal">Number of executed iteration.</param>
         /// <param name="results">Collection of IWardenCheckResult that were created during the iteration.</param>
         /// <param name="startedAt">Date and time at which the iteration started.</param>
         /// <param name="completedAt">Date and time at which the iteration completedAt.</param>
         /// <returns>Instance of IWardenIteration.</returns>
-        public static IWardenIteration Create(long ordinal, IEnumerable<IWardenCheckResult> results,
+        public static IWardenIteration Create(string wardenName, long ordinal, IEnumerable<IWardenCheckResult> results,
             DateTime startedAt, DateTime completedAt)
-            => new WardenIteration(ordinal, results, startedAt, completedAt);
+            => new WardenIteration(wardenName, ordinal, results, startedAt, completedAt);
     }
 }

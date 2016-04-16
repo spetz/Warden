@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Warden.Configurations;
 using Warden.Core;
@@ -10,6 +11,11 @@ namespace Warden
     /// </summary>
     public interface IWarden
     {
+        /// <summary>
+        /// Customizable name of the Warden.
+        /// </summary>
+        string Name { get; }
+
         /// <summary>
         /// Start the Warden. It will be running iterations in a loop (infinite by default but can bo changed) and executing all of the configured hooks.
         /// </summary>
@@ -34,18 +40,50 @@ namespace Warden
     /// </summary>
     public class Warden : IWarden
     {
+        private const string UnixComputerNameEnvironmentVariable = "HOSTNAME";
+        private const string WindowsComputerNameEnvironmentVariable = "COMPUTERNAME";
         private readonly WardenConfiguration _configuration;
         private long _iterationOrdinal = 1;
         private bool _running = false;
+
+        public string Name { get; }
+        public static string DefaultName = GetDefaultName();
+
+        private static string GetDefaultName()
+        {
+            var environment = string.Empty;
+#if DNXCORE50
+            environment = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+                ? Environment.GetEnvironmentVariable(WindowsComputerNameEnvironmentVariable)
+                : Environment.GetEnvironmentVariable(UnixComputerNameEnvironmentVariable);
+#else
+            environment = Environment.GetEnvironmentVariable(WindowsComputerNameEnvironmentVariable);
+#endif
+
+            return $"Warden @{environment}";
+        }
+
+        /// <summary>
+        /// Initialize a new instance of the Warden using the provided configuration and default name of "Warden @{COMPUTER NAME}".
+        /// </summary>
+        /// <param name="configuration">Configuration of Warden</param>
+        public Warden(WardenConfiguration configuration) : this(DefaultName, configuration)
+        {
+        }
+
         /// <summary>
         /// Initialize a new instance of the Warden using the provided configuration.
         /// </summary>
+        /// <param name="name">Customizable name of the Warden.</param>
         /// <param name="configuration">Configuration of Warden</param>
-        public Warden(WardenConfiguration configuration)
+        public Warden(string name, WardenConfiguration configuration)
         {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Warden name can not be empty.", nameof(name));
             if (configuration == null)
                 throw new ArgumentNullException(nameof(configuration), "Warden configuration has not been provided.");
 
+            Name = name;
             _configuration = configuration;
         }
 
@@ -67,7 +105,7 @@ namespace Warden
                 {
                     _configuration.Hooks.OnIterationStart.Execute(_iterationOrdinal);
                     await _configuration.Hooks.OnIterationStartAsync.ExecuteAsync(_iterationOrdinal);
-                    var iteration = await iterationProcessor.ExecuteAsync(_iterationOrdinal);
+                    var iteration = await iterationProcessor.ExecuteAsync(Name, _iterationOrdinal);
                     _configuration.Hooks.OnIterationCompleted.Execute(iteration);
                     await _configuration.Hooks.OnIterationCompletedAsync.ExecuteAsync(iteration);
                     var canExecuteNextIteration = CanExecuteIteration(_iterationOrdinal + 1);
@@ -133,23 +171,40 @@ namespace Warden
         }
 
         /// <summary>
-        /// Factory method for creating a new Warden instance with provided configuration.
+        /// Factory method for creating a new Warden instance with provided configuration and default name of "Warden @{COMPUTER NAME}".
         /// </summary>
         /// <param name="configuration">Configuration of Warden.</param>
         /// <returns>Instance of IWarden.</returns>
-        public static IWarden Create(WardenConfiguration configuration) => new Warden(configuration);
+        public static IWarden Create(WardenConfiguration configuration) => Create(DefaultName, configuration);
+
+        /// <summary>
+        /// Factory method for creating a new Warden instance with provided configuration.
+        /// </summary>
+        /// <param name="name">Name of the Warden.</param>
+        /// <param name="configuration">Configuration of Warden.</param>
+        /// <returns>Instance of IWarden.</returns>
+        public static IWarden Create(string name, WardenConfiguration configuration) => new Warden(name, configuration);
+
+        /// <summary>
+        /// Factory method for creating a new Warden instance with default name of "Warden @{COMPUTER NAME}",
+        /// for which the configuration can be provided via the lambda expression.
+        /// </summary>
+        /// <param name="configurator">Lambda expression to build the configuration of Warden.</param>
+        /// <returns>Instance of IWarden.</returns>
+        public static IWarden Create(Action<WardenConfiguration.Builder> configurator) => Create(DefaultName, configurator);
 
         /// <summary>
         /// Factory method for creating a new Warden instance, for which the configuration can be provided via the lambda expression.
         /// </summary>
-        /// <param name="configuration">Lambda expression to build configuration of Warden</param>
+        /// <param name="name">Name of the Warden.</param>
+        /// <param name="configurator">Lambda expression to build the configuration of Warden.</param>
         /// <returns>Instance of IWarden.</returns>
-        public static IWarden Create(Action<WardenConfiguration.Builder> configuration)
+        public static IWarden Create(string name, Action<WardenConfiguration.Builder> configurator)
         {
             var config = new WardenConfiguration.Builder();
-            configuration?.Invoke(config);
+            configurator?.Invoke(config);
 
-            return Create(config.Build());
+            return Create(name, config.Build());
         }
     }
 }

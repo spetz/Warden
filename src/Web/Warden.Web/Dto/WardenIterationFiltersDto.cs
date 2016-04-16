@@ -9,6 +9,8 @@ namespace Warden.Web.Dto
         public DateTime? From { get; set; }
         public DateTime? To { get; set; }
         public ResultType ResultType { get; set; }
+        public int Results { get; set; }
+        public int Page { get; set; }
     }
 
     public enum ResultType

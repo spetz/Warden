@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Warden.Configurations;
+using Warden.Integrations.Api;
 using Warden.Integrations.SendGrid;
 using Warden.Watchers;
 using Warden.Watchers.Disk;
@@ -92,6 +93,8 @@ namespace Warden.Examples.WindowsService
                 //        .OnFirstSuccessAsync(results =>
                 //            integrations.SendGrid().SendEmailAsync("Everything is up and running again!"));
                 //})
+                //Set proper URL of the Warden Web API
+                .IntegrateWithHttpApi("http://localhost:11223/api")
                 .SetGlobalWatcherHooks(hooks =>
                 {
                     hooks.OnStart(check => GlobalHookOnStart(check))
@@ -99,10 +102,11 @@ namespace Warden.Examples.WindowsService
                         .OnSuccess(result => GlobalHookOnSuccess(result))
                         .OnCompleted(result => GlobalHookOnCompleted(result));
                 })
-                .SetHooks(hooks =>
+                .SetHooks((hooks, integrations) =>
                 {
                     hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration))
-                        .OnError(exception => Console.WriteLine(exception));
+                        .OnIterationCompletedAsync(iteration => integrations.HttpApi().PostAsync("/data/iterations", iteration))
+                        .OnError(exception => System.Console.WriteLine(exception));
                 })
                 .Build();
 
@@ -164,7 +168,7 @@ namespace Warden.Examples.WindowsService
         private static void OnIterationCompleted(IWardenIteration wardenIteration)
         {
             var newLine = Environment.NewLine;
-            Console.WriteLine($"Warden iteration {wardenIteration.Ordinal} has completed.");
+            Console.WriteLine($"{wardenIteration.WardenName} iteration {wardenIteration.Ordinal} has completed.");
             foreach (var result in wardenIteration.Results)
             {
                 Console.WriteLine($"Watcher: '{result.WatcherCheckResult.WatcherName}'{newLine}" +

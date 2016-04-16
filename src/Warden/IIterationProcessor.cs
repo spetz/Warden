@@ -16,9 +16,10 @@ namespace Warden
         /// <summary>
         /// Run a single iteration (cycle) that will execute all of the watchers and theirs hooks.
         /// </summary>
-        /// <param name="ordinal">Number (ordinal) of executed iteration</param>
-        /// <returns>Single iteration containing its ordinal and results of all executed watcher checks</returns>
-        Task<IWardenIteration> ExecuteAsync(long ordinal);
+        /// <param name="wardenName">Name of the Warden that will execute the iteration.</param>
+        /// <param name="ordinal">Number (ordinal) of executed iteration.</param>
+        /// <returns>Single iteration containing the warden name, its ordinal and results of all executed watcher checks.</returns>
+        Task<IWardenIteration> ExecuteAsync(string wardenName, long ordinal);
     }
 
     /// <summary>
@@ -51,9 +52,10 @@ namespace Warden
         /// <summary>
         /// Run a single iteration (cycle) that will execute all of the watchers and theirs hooks.
         /// </summary>
+        /// <param name="wardenName">Name of the Warden that will execute the iteration.</param>
         /// <param name="ordinal">Number (ordinal) of executed iteration</param>
         /// <returns>Single iteration containing its ordinal and results of all executed watcher checks</returns>
-        public async Task<IWardenIteration> ExecuteAsync(long ordinal)
+        public async Task<IWardenIteration> ExecuteAsync(string wardenName, long ordinal)
         {
             var iterationStartedAt = _configuration.DateTimeProvider();
             var results = new List<WatcherExecutionResult>();
@@ -111,7 +113,7 @@ namespace Warden
             await Task.WhenAll(iterationTasks);
             await ExecuteAggregatedHooksAsync(results);
             var iterationCompletedAt = _configuration.DateTimeProvider();
-            var iteration = WardenIteration.Create(ordinal, results.Select(x => x.WardenCheckResult),
+            var iteration = WardenIteration.Create(wardenName, ordinal, results.Select(x => x.WardenCheckResult),
                 iterationStartedAt, iterationCompletedAt);
 
             return iteration;
