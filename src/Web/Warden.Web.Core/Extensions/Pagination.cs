@@ -25,7 +25,7 @@ namespace Warden.Web.Core.Extensions
                 return PagedResult<T>.Empty;
 
             var totalResults = await collection.CountAsync();
-            var totalPages = (int)Math.Ceiling((decimal)totalResults / resultsPerPage);
+            var totalPages = (int)Math.Ceiling((double)totalResults / resultsPerPage);
             var data = await collection.Limit(page, resultsPerPage).ToListAsync();
 
             return PagedResult<T>.Create(data, page, resultsPerPage, totalPages, totalResults);
