@@ -2,8 +2,10 @@
 using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.AspNet.Mvc;
-using Warden.Web.Dto;
-using Warden.Web.Services.DataStorage;
+using Warden.Web.Core.Dto;
+using Warden.Web.Core.Models;
+using Warden.Web.Core.Queries;
+using Warden.Web.Core.Services;
 
 namespace Warden.Web.Controllers
 {
@@ -26,9 +28,11 @@ namespace Warden.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<WardenIterationDto>> GetAll([FromUri]WardenIterationFiltersDto filters)
+        public async Task<IEnumerable<WardenIterationDto>> GetAll([FromUri]BrowseWardenIterations query)
         {
-            return await _dataStorage.GetIterationsAsync(filters);
+            var pagedResult = await _dataStorage.GetIterationsAsync(query);
+
+            return pagedResult.Items;
         }
     }
 }

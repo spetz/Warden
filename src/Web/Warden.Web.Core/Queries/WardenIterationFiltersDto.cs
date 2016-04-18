@@ -1,16 +1,15 @@
 ﻿using System;
+using Warden.Web.Core.Models;
 
-namespace Warden.Web.Dto
+namespace Warden.Web.Core.Queries
 {
-    public class WardenIterationFiltersDto
+    public class BrowseWardenIterations : PagedQueryBase
     {
         public string WatcherName { get; set; }
         public string WatcherTypeName { get; set; }
         public DateTime? From { get; set; }
         public DateTime? To { get; set; }
         public ResultType ResultType { get; set; }
-        public int Results { get; set; }
-        public int Page { get; set; }
     }
 
     public enum ResultType

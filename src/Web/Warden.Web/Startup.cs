@@ -3,7 +3,7 @@ using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using Newtonsoft.Json.Serialization;
-using Warden.Web.Services.DataStorage;
+using Warden.Web.Core.Services;
 
 namespace Warden.Web
 {

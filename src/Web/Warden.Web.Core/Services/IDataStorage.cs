@@ -1,12 +1,20 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Warden.Web.Core.Dto;
+using Warden.Web.Core.Models;
+using Warden.Web.Core.Queries;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using Warden.Web.Dto;
+using Warden.Web.Core.Extensions;
+using System.Linq;
 
-namespace Warden.Web.Services.DataStorage
+namespace Warden.Web.Core.Services
 {
+    public interface IDataStorage
+    {
+        Task SaveIterationAsync(WardenIterationDto iteration);
+        Task<PagedResult<WardenIterationDto>> GetIterationsAsync(BrowseWardenIterations query);
+    }
+
     public class MongoDbDataStorage : IDataStorage
     {
         private const string CollectionName = "Iterations";
@@ -28,13 +36,13 @@ namespace Warden.Web.Services.DataStorage
             await _database.GetCollection<WardenIterationDto>(CollectionName).InsertOneAsync(iteration);
         }
 
-        public async Task<IEnumerable<WardenIterationDto>> GetIterationsAsync(WardenIterationFiltersDto filters)
+        public async Task<PagedResult<WardenIterationDto>> GetIterationsAsync(BrowseWardenIterations query)
         {
-            if (filters == null)
-                return Enumerable.Empty<WardenIterationDto>();
+            if (query == null)
+                return PagedResult<WardenIterationDto>.Empty;
 
             var iterations = _database.GetCollection<WardenIterationDto>(CollectionName).AsQueryable();
-            switch (filters.ResultType)
+            switch (query.ResultType)
             {
                 case ResultType.Valid:
                     iterations = iterations.Where(x => x.IsValid);
@@ -44,34 +52,28 @@ namespace Warden.Web.Services.DataStorage
                     break;
             }
 
-            var watcherName = filters.WatcherName?.Trim() ?? string.Empty;
+            var watcherName = query.WatcherName?.Trim() ?? string.Empty;
             if (!string.IsNullOrWhiteSpace(watcherName))
             {
                 iterations = iterations.Where(x =>
                     x.Results.Any(r => r.WatcherCheckResult.WatcherName == watcherName));
             }
 
-            var watcherTypeName = filters.WatcherTypeName?.Trim().ToLowerInvariant() ?? string.Empty;
+            var watcherTypeName = query.WatcherTypeName?.Trim().ToLowerInvariant() ?? string.Empty;
             if (!string.IsNullOrWhiteSpace(watcherTypeName))
             {
                 iterations = iterations.Where(x =>
                     x.Results.Any(r => r.WatcherCheckResult.WatcherType == watcherTypeName));
             }
 
-            if (filters.From.HasValue)
-                iterations = iterations.Where(x => x.CompletedAt >= filters.From);
-            if (filters.To.HasValue)
-                iterations = iterations.Where(x => x.CompletedAt <= filters.To);
-            if (filters.Page <= 0)
-                filters.Page = 1;
-            if (filters.Results <= 0)
-                filters.Results = 10;
+            if (query.From.HasValue)
+                iterations = iterations.Where(x => x.CompletedAt >= query.From);
+            if (query.To.HasValue)
+                iterations = iterations.Where(x => x.CompletedAt <= query.To);
 
-            iterations = iterations.OrderByDescending(x => x.CompletedAt)
-                .Skip((filters.Page - 1)*filters.Results)
-                .Take(filters.Results);
-
-            return await iterations.ToListAsync();
+            return await iterations
+                .OrderByDescending(x => x.CompletedAt)
+                .PaginateAsync(query);
         }
 
         private static void SetWatcherType(WatcherCheckResultDto watcherCheck)
@@ -84,4 +86,5 @@ namespace Warden.Web.Services.DataStorage
                     : watcherCheck.WatcherType).Trim().ToLowerInvariant().Replace(WatcherNameSuffix, string.Empty);
         }
     }
+
 }

@@ -1,4 +1,4 @@
-﻿namespace Warden.Web.Dto
+﻿namespace Warden.Web.Core.Dto
 {
     public class ExceptionDto
     {

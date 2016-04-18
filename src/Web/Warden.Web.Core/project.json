@@ -1,0 +1,14 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "Warden.Web.Core Class Library",
+  "authors": [ "Spetz" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+  "dependencies": {
+    "MongoDB.Driver": "2.2.3"
+  },
+  "frameworks": {
+    "net451": { }
+  }
+}

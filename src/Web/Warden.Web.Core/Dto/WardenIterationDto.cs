@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Warden.Web.Dto
+namespace Warden.Web.Core.Dto
 {
     [BsonIgnoreExtraElements]
     public class WardenIterationDto
