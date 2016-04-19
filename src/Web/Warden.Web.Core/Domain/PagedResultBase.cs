@@ -1,4 +1,4 @@
-﻿namespace Warden.Web.Core.Models
+﻿namespace Warden.Web.Core.Domain
 {
     public abstract class PagedResultBase
     {

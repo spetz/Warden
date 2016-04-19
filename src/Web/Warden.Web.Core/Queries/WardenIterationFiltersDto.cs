@@ -1,12 +1,12 @@
 ﻿using System;
-using Warden.Web.Core.Models;
+using Warden.Web.Core.Domain;
 
 namespace Warden.Web.Core.Queries
 {
     public class BrowseWardenIterations : PagedQueryBase
     {
         public string WatcherName { get; set; }
-        public string WatcherTypeName { get; set; }
+        public WatcherType? WatcherTypeName { get; set; }
         public DateTime? From { get; set; }
         public DateTime? To { get; set; }
         public ResultType ResultType { get; set; }

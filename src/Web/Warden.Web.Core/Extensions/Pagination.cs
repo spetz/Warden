@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Warden.Web.Core.Models;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using Warden.Web.Core.Domain;
 
 namespace Warden.Web.Core.Extensions
 {

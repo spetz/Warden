@@ -1,11 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Warden.Web.Core.Dto;
-using Warden.Web.Core.Models;
 using Warden.Web.Core.Queries;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using Warden.Web.Core.Extensions;
 using System.Linq;
+using Warden.Web.Core.Domain;
 
 namespace Warden.Web.Core.Services
 {
@@ -33,7 +32,11 @@ namespace Warden.Web.Core.Services
             var watcherCheckResults = (iteration.Results?.Select(x => x.WatcherCheckResult)
                                        ?? Enumerable.Empty<WatcherCheckResultDto>()).ToList();
             watcherCheckResults.ForEach(SetWatcherType);
-            await _database.GetCollection<WardenIterationDto>(CollectionName).InsertOneAsync(iteration);
+
+            //TODO: Create warden iteration entity
+            var wardenIteration = new WardenIteration();
+
+            await _database.GetCollection<WardenIteration>(CollectionName).InsertOneAsync(wardenIteration);
         }
 
         public async Task<PagedResult<WardenIterationDto>> GetIterationsAsync(BrowseWardenIterations query)
@@ -41,7 +44,7 @@ namespace Warden.Web.Core.Services
             if (query == null)
                 return PagedResult<WardenIterationDto>.Empty;
 
-            var iterations = _database.GetCollection<WardenIterationDto>(CollectionName).AsQueryable();
+            var iterations = _database.GetCollection<WardenIteration>(CollectionName).AsQueryable();
             switch (query.ResultType)
             {
                 case ResultType.Valid:
@@ -59,11 +62,10 @@ namespace Warden.Web.Core.Services
                     x.Results.Any(r => r.WatcherCheckResult.WatcherName == watcherName));
             }
 
-            var watcherTypeName = query.WatcherTypeName?.Trim().ToLowerInvariant() ?? string.Empty;
-            if (!string.IsNullOrWhiteSpace(watcherTypeName))
+            if (query.WatcherTypeName.HasValue)
             {
                 iterations = iterations.Where(x =>
-                    x.Results.Any(r => r.WatcherCheckResult.WatcherType == watcherTypeName));
+                    x.Results.Any(r => r.WatcherCheckResult.WatcherType == query.WatcherTypeName));
             }
 
             if (query.From.HasValue)
@@ -71,9 +73,12 @@ namespace Warden.Web.Core.Services
             if (query.To.HasValue)
                 iterations = iterations.Where(x => x.CompletedAt <= query.To);
 
-            return await iterations
-                .OrderByDescending(x => x.CompletedAt)
-                .PaginateAsync(query);
+            //TODO: Mapping
+            //return await iterations
+            //    .OrderByDescending(x => x.CompletedAt)
+            //    .PaginateAsync(query);
+
+            return PagedResult<WardenIterationDto>.Empty;
         }
 
         private static void SetWatcherType(WatcherCheckResultDto watcherCheck)
