@@ -1,4 +1,6 @@
-﻿namespace Warden.Web.Core.Domain
+﻿using Warden.Web.Core.Extensions;
+
+namespace Warden.Web.Core.Domain
 {
     public class ExceptionInfo
     {
@@ -14,6 +16,9 @@
         protected ExceptionInfo(string message, string source, string stackTrace,
             ExceptionInfo innerException = null)
         {
+            if (message.Empty())
+                throw new DomainException("Exception message can not be empty.");
+
             Message = message;
             Source = source;
             StackTrace = stackTrace;

@@ -3,6 +3,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using Warden.Web.Core.Domain;
+using Warden.Web.Core.Extensions;
 
 namespace Warden.Web.Core.Services
 {

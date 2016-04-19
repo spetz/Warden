@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using MongoDB.Bson.Serialization.Attributes;
 
 namespace Warden.Web.Core.Dto
 {
-    [BsonIgnoreExtraElements]
     public class WardenIterationDto
     {
         public string WardenName { get; set; }

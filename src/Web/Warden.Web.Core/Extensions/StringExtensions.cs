@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Warden.Web.Core.Domain
+namespace Warden.Web.Core.Extensions
 {
     public static class StringExtensions
     {

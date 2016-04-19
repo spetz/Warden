@@ -33,8 +33,9 @@ namespace Warden.Web.Core.Services
                                        ?? Enumerable.Empty<WatcherCheckResultDto>()).ToList();
             watcherCheckResults.ForEach(SetWatcherType);
 
-            //TODO: Create warden iteration entity
-            var wardenIteration = new WardenIteration();
+            //TODO: Create warden iteration entity with valid organization
+            var wardenIteration = new WardenIteration(iteration.WardenName, null,
+                iteration.Ordinal, iteration.StartedAt, iteration.CompletedAt, iteration.IsValid);
 
             await _database.GetCollection<WardenIteration>(CollectionName).InsertOneAsync(wardenIteration);
         }
@@ -59,13 +60,13 @@ namespace Warden.Web.Core.Services
             if (!string.IsNullOrWhiteSpace(watcherName))
             {
                 iterations = iterations.Where(x =>
-                    x.Results.Any(r => r.WatcherCheckResult.WatcherName == watcherName));
+                    x.Results.Any(r => r.WatcherCheckResult.Watcher.Name == watcherName));
             }
 
             if (query.WatcherTypeName.HasValue)
             {
                 iterations = iterations.Where(x =>
-                    x.Results.Any(r => r.WatcherCheckResult.WatcherType == query.WatcherTypeName));
+                    x.Results.Any(r => r.WatcherCheckResult.Watcher.Type == query.WatcherTypeName));
             }
 
             if (query.From.HasValue)
