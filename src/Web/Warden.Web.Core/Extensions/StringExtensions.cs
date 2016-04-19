@@ -57,6 +57,6 @@ namespace Warden.Web.Core.Extensions
         public static string AggregateLines(this IEnumerable<string> values)
             => values.Aggregate((x, y) => $"{x.Trim()}\n{y.Trim()}");
 
-        public static bool IsEmail(this string value) => EmailRegex.IsMatch(value);
+        public static bool IsEmail(this string value) => value.NotEmpty() && EmailRegex.IsMatch(value);
     }
 }

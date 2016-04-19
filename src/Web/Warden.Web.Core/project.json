@@ -6,7 +6,8 @@
   "projectUrl": "",
   "licenseUrl": "",
   "dependencies": {
-    "MongoDB.Driver": "2.2.3"
+    "MongoDB.Driver": "2.2.3",
+    "Newtonsoft.Json": "8.0.3"
   },
   "frameworks": {
     "net451": { }

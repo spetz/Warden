@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.AspNet.Mvc;
@@ -6,22 +7,22 @@ using Warden.Web.Core.Dto;
 using Warden.Web.Core.Queries;
 using Warden.Web.Core.Services;
 
-namespace Warden.Web.Controllers
+namespace Warden.Web.Api
 {
     [Route("api/data/iterations")]
-    public class IterationDataApiController : Controller
+    public class IterationDataController : Controller
     {
-        private readonly IDataStorage _dataStorage;
+        private readonly IWardenIterationService _wardenIterationService;
 
-        public IterationDataApiController(IDataStorage dataStorage)
+        public IterationDataController(IWardenIterationService wardenIterationService)
         {
-            _dataStorage = dataStorage;
+            _wardenIterationService = wardenIterationService;
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody]WardenIterationDto iteration)
         {
-            await _dataStorage.SaveIterationAsync(iteration);
+            await _wardenIterationService.SaveIterationAsync(iteration, Guid.Empty);
 
             return new HttpStatusCodeResult(204);
         }
@@ -29,7 +30,7 @@ namespace Warden.Web.Controllers
         [HttpGet]
         public async Task<IEnumerable<WardenIterationDto>> GetAll([FromUri]BrowseWardenIterations query)
         {
-            var pagedResult = await _dataStorage.GetIterationsAsync(query);
+            var pagedResult = await _wardenIterationService.GetIterationsAsync(query);
 
             return pagedResult.Items;
         }

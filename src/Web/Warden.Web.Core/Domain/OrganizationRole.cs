@@ -3,7 +3,7 @@
     public enum OrganizationRole
     {
         User = 1,
-        Moderator = 2,
-        Admin = 3
+        Admin = 2,
+        Owner = 3
     }
 }

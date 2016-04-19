@@ -3,6 +3,7 @@ using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using Newtonsoft.Json.Serialization;
+using Warden.Web.Core.Mongo;
 using Warden.Web.Core.Services;
 
 namespace Warden.Web
@@ -14,7 +15,8 @@ namespace Warden.Web
             services.AddMvc();
             services.AddMvcCore().AddJsonFormatters(formatter =>
                 formatter.ContractResolver = new CamelCasePropertyNamesContractResolver());
-            services.AddScoped<IDataStorage, MongoDbDataStorage>();
+            services.AddScoped<IWardenIterationService, WardenIterationService>();
+            services.AddSingleton<IEncrypter>(provider => new Encrypter("abcd"));
             services.AddSingleton(provider => new MongoClient("mongodb://localhost:27017"));
             services.AddScoped(provider => provider.GetService<MongoClient>().GetDatabase("Warden"));
         }
@@ -24,6 +26,7 @@ namespace Warden.Web
             app.UseIISPlatformHandler();
             app.UseMvcWithDefaultRoute();
             app.UseStaticFiles();
+            MongoConfigurator.Initialize();
         }
 
         public static void Main(string[] args) => WebApplication.Run<Startup>(args);

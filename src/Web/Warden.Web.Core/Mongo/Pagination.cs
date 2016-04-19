@@ -4,7 +4,7 @@ using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Warden.Web.Core.Domain;
 
-namespace Warden.Web.Core.Extensions
+namespace Warden.Web.Core.Mongo
 {
     public static class Pagination
     {

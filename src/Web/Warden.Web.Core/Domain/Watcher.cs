@@ -20,7 +20,7 @@ namespace Warden.Web.Core.Domain
             Type = type;
         }
 
-        public static Watcher Create()
-            => new Watcher();
+        public static Watcher Create(string name, WatcherType type)
+            => new Watcher(name, type);
     }
 }

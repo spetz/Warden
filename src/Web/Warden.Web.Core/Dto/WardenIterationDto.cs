@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Warden.Web.Core.Domain;
 
 namespace Warden.Web.Core.Dto
 {
@@ -12,5 +14,20 @@ namespace Warden.Web.Core.Dto
         public TimeSpan ExecutionTime { get; set; }
         public bool IsValid { get; set; }
         public IEnumerable<WardenCheckResultDto> Results { get; set; }
+
+        public WardenIterationDto()
+        {
+        }
+
+        public WardenIterationDto(WardenIteration iteration)
+        {
+            WardenName = iteration.Warden.Name;
+            Ordinal = iteration.Ordinal;
+            StartedAt = iteration.StartedAt;
+            CompletedAt = iteration.CompletedAt;
+            ExecutionTime = iteration.ExecutionTime;
+            IsValid = iteration.IsValid;
+            Results = iteration.Results.Select(x => new WardenCheckResultDto(x));
+        }
     }
 }

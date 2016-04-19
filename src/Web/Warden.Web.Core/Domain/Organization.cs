@@ -37,9 +37,10 @@ namespace Warden.Web.Core.Domain
         {
         }
 
-        public Organization(string name)
+        public Organization(string name, User owner)
         {
             SetName(name);
+            SetOwner(owner);
             CreatedAt = DateTime.UtcNow;
             UpdatedAt = DateTime.UtcNow;
         }
@@ -50,6 +51,15 @@ namespace Warden.Web.Core.Domain
                 throw new DomainException("Organization name can not be empty.");
 
             Name = name;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void SetOwner(User owner)
+        {
+            if (owner == null)
+                throw new DomainException("Organization owner can not be null.");
+
+            AddUser(owner, OrganizationRole.Owner);
             UpdatedAt = DateTime.UtcNow;
         }
 
@@ -108,7 +118,7 @@ namespace Warden.Web.Core.Domain
             if (name.Empty())
                 throw new DomainException("Can not add a warden without a name to the organization.");
 
-            var warden = GetWardenByNameOrFail(name);
+            var warden = GetWardenByName(name);
             if (warden != null)
                 throw new DomainException($"Warden with name: '{name}' has been already added.");
 
@@ -145,12 +155,13 @@ namespace Warden.Web.Core.Domain
             if (name.Empty())
                 throw new DomainException("Warden name can not be empty.");
 
-            var warden = Wardens.FirstOrDefault(x => x.Name.EqualsCaseInvariant(name));
+            var warden = GetWardenByName(name);
             if (warden == null)
                 throw new DomainException($"Warden with name: '{name}' has not been found.");
 
             return warden;
         }
 
+        public Warden GetWardenByName(string name) => Wardens.FirstOrDefault(x => x.Name.EqualsCaseInvariant(name));
     }
 }
