@@ -8,3 +8,9 @@ nav {
 .nav-wrapper > ul > li {
   color: #7272D8;
   background-color: #7272D8; }
+
+.custom {
+  background-color: #7272D8; }
+
+.custom-text {
+  color: #7272D8; }

@@ -1,9 +1,18 @@
 ﻿<nav>
     <div class="nav-wrapper">
         <div class="col s12">
-            <a ref="@Url.Action("Index", "Home")" class="brand-logo">Warden</a>
+            <a href="@Url.Action("Index", "Home")" class="brand-logo">Warden</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="@Url.Action("Index", "Home")">Dashboard</a></li>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li><a href="@Url.Action("Index", "Home")">Dashboard</a></li>
+                    <li><a href="@Url.Action("Logout", "Account")">Sign out</a></li>
+                }
+                else
+                {
+                    <li><a href="@Url.Action("Login", "Account")">Sign in</a></li>
+                    <li><a href="@Url.Action("Register", "Account")">Sign up</a></li>
+                }
                 <li><a href="@Url.Action("About", "Home")">About</a></li>
             </ul>
         </div>

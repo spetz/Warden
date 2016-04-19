@@ -19,18 +19,25 @@ namespace Warden.Web.Controllers
             _encrypter = encrypter;
         }
 
+        [HttpGet]
         [Route("")]
         public IActionResult Index()
         {
+            if (User.Identity.IsAuthenticated)
+                return RedirectToAction("Index", "Dashboard");
+
             return View();
         }
 
+        [HttpGet]
         [Route("about")]
         public IActionResult About()
         {
             return View();
         }
 
+        //TODO: remove temp method
+        [HttpGet]
         [Route("seed-data")]
         public async Task RunSeedData()
         {
