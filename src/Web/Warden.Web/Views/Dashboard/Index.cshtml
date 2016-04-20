@@ -1,4 +1,6 @@
-﻿<div class="row">
+﻿@model Warden.Web.ViewModels.DashboardViewModel
+
+<div class="row">
     <div class="col s3">
         <div class="card-panel">
             <div>
@@ -84,7 +86,9 @@
     <script type="text/javascript" src="@Url.Content("~/content/js/dashboard.js")"></script>
     <script type="text/javascript">
         $(function() {
-            dashboard.init();
+            dashboard.init({
+                apiKey: "@Html.Raw(Model.ApiKey)"
+            });
         });
     </script>
 }

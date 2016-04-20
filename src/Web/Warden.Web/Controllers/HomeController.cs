@@ -2,7 +2,7 @@
 
 namespace Warden.Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : ControllerBase
     {
         [HttpGet]
         [Route("")]

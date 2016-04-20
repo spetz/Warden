@@ -9,7 +9,7 @@ using Warden.Web.ViewModels;
 
 namespace Warden.Web.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : ControllerBase
     {
         private readonly IUserService _userService;
         private readonly IOrganizationService _organizationService;
@@ -43,7 +43,7 @@ namespace Warden.Web.Controllers
             {
                 await _userService.LoginAsync(viewModel.Email, viewModel.Password);
                 var user = await _userService.GetAsync(viewModel.Email);
-                var claims = new[] { new Claim(ClaimTypes.Name, user.Id.ToString("N")) };
+                var claims = new[] { new Claim(ClaimTypes.Name, user.Id.ToString("N")), new Claim(ClaimTypes.NameIdentifier, ""),  };
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 await HttpContext.Authentication.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(identity));

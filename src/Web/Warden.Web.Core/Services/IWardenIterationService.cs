@@ -13,7 +13,7 @@ namespace Warden.Web.Core.Services
 {
     public interface IWardenIterationService
     {
-        Task SaveIterationAsync(WardenIterationDto iteration, Guid organizationId);
+        Task SaveIterationAsync(WardenIterationDto iteration, Guid organizationId, bool registerWardenIfNotFound = true);
         Task<PagedResult<WardenIterationDto>> GetIterationsAsync(BrowseWardenIterations query);
     }
 
@@ -27,7 +27,7 @@ namespace Warden.Web.Core.Services
             _database = database;
         }
 
-        public async Task SaveIterationAsync(WardenIterationDto iteration, Guid organizationId)
+        public async Task SaveIterationAsync(WardenIterationDto iteration, Guid organizationId, bool registerWardenIfNotFound = true)
         {
             if (iteration == null)
                 return;
@@ -39,6 +39,15 @@ namespace Warden.Web.Core.Services
             var organization = await _database.Organizations().GetByIdAsync(organizationId);
             if (organization == null)
                 throw new ServiceException($"Organization has not been found for given id: '{organizationId}'.");
+
+            var warden = organization.GetWardenByName(iteration.WardenName);
+            if (warden == null && !registerWardenIfNotFound)
+                throw new ServiceException($"Warden with name: '{iteration.WardenName}' has not been registered.");
+            if (warden == null)
+            {
+                organization.AddWarden(iteration.WardenName);
+                await _database.Organizations().ReplaceOneAsync(x => x.Id == organizationId, organization);
+            }
 
             var wardenIteration = new WardenIteration(iteration.WardenName, organization,
                 iteration.Ordinal, iteration.StartedAt, iteration.CompletedAt, iteration.IsValid);

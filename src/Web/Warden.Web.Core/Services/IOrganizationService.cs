@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using Warden.Web.Core.Domain;
@@ -15,6 +16,7 @@ namespace Warden.Web.Core.Services
         Task CreateDefaultAsync(Guid ownerId);
         Task CreateAsync(string name, Guid ownerId);
         Task AddWarden(Guid organizationId, string name, bool enabled = true);
+        Task<bool> IsUserInOrganizationAsync(Guid organizationId, Guid userId);
     }
 
     public class OrganizationService : IOrganizationService
@@ -30,8 +32,15 @@ namespace Warden.Web.Core.Services
         public async Task<OrganizationDto> GetAsync(Guid organizationId)
         {
             var organization = await _database.Organizations().GetByIdAsync(organizationId);
+            if (organization == null)
+                return null;
 
-            return organization == null ? null : new OrganizationDto(organization);
+            var apiKeys = await _database.ApiKeys().GetAllForOrganizationAsync(organizationId);
+
+            return new OrganizationDto(organization)
+            {
+                ApiKeys = apiKeys.Select(x => x.Key)
+            };
         }
 
         public async Task<OrganizationDto> GetDefaultAsync(Guid ownerId)
@@ -72,6 +81,13 @@ namespace Warden.Web.Core.Services
 
             organization.AddWarden(name, enabled);
             await _database.Organizations().ReplaceOneAsync(x => x.Id == organization.Id, organization);
+        }
+
+        public async Task<bool> IsUserInOrganizationAsync(Guid organizationId, Guid userId)
+        {
+            var organization = await _database.Organizations().GetByIdAsync(organizationId);
+
+            return organization != null && organization.Users.Any(x => x.Id == userId);
         }
     }
 }

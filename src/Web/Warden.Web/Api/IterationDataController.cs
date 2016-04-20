@@ -10,26 +10,28 @@ using Warden.Web.Core.Services;
 namespace Warden.Web.Api
 {
     [Route("api/data/iterations")]
-    public class IterationDataController : Controller
+    public class IterationDataController : ApiController
     {
         private readonly IWardenIterationService _wardenIterationService;
 
-        public IterationDataController(IWardenIterationService wardenIterationService)
+        public IterationDataController(IWardenIterationService wardenIterationService, IApiKeyService apiKeyService)
+            : base(apiKeyService)
         {
             _wardenIterationService = wardenIterationService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody]WardenIterationDto iteration)
+        public async Task<IActionResult> Create([FromBody] WardenIterationDto iteration)
         {
-            await _wardenIterationService.SaveIterationAsync(iteration, Guid.Empty);
+            await _wardenIterationService.SaveIterationAsync(iteration, OrganizationId);
 
             return new HttpStatusCodeResult(204);
         }
 
         [HttpGet]
-        public async Task<IEnumerable<WardenIterationDto>> GetAll([FromUri]BrowseWardenIterations query)
+        public async Task<IEnumerable<WardenIterationDto>> GetAll([FromUri] BrowseWardenIterations query)
         {
+            query.OrganizationId = OrganizationId;
             var pagedResult = await _wardenIterationService.GetIterationsAsync(query);
 
             return pagedResult.Items;

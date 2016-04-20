@@ -54,7 +54,7 @@ namespace Warden.Integrations.Api
             string url, string apiKey, 
             Action<HttpApiIntegrationConfiguration.Builder> configurator = null)
         {
-            builder.AddIntegration(HttpApiIntegration.Create(url, configurator: configurator));
+            builder.AddIntegration(HttpApiIntegration.Create(url, apiKey, configurator: configurator));
 
             return builder;
         }
