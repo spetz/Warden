@@ -11,6 +11,7 @@ namespace Warden.Web.Core.Domain
         private HashSet<Warden> _wardens = new HashSet<Warden>();
 
         public string Name { get; protected set; }
+        public Guid OwnerId { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
         public DateTime UpdatedAt { get; protected set; }
 
@@ -52,6 +53,7 @@ namespace Warden.Web.Core.Domain
             if (owner == null)
                 throw new DomainException("Organization owner can not be null.");
 
+            OwnerId = owner.Id;
             AddUser(owner, OrganizationRole.Owner);
             UpdatedAt = DateTime.UtcNow;
         }

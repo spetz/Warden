@@ -12,10 +12,16 @@ namespace Warden.Web.Controllers
     public class AccountController : Controller
     {
         private readonly IUserService _userService;
+        private readonly IOrganizationService _organizationService;
+        private readonly IApiKeyService _apiKeyService;
 
-        public AccountController(IUserService userService)
+        public AccountController(IUserService userService,
+            IOrganizationService organizationService,
+            IApiKeyService apiKeyService)
         {
             _userService = userService;
+            _organizationService = organizationService;
+            _apiKeyService = apiKeyService;
         }
 
         [HttpGet]
@@ -60,10 +66,30 @@ namespace Warden.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("register")]
-        public IActionResult Register(RegisterViewModel viewModel)
+        public async Task<IActionResult> Register(RegisterViewModel viewModel)
         {
             if (!ModelState.IsValid)
                 return RedirectToAction("Register");
+
+            try
+            {
+                await _userService.RegisterAsync(viewModel.Email, viewModel.Password);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Register");
+            }
+            try
+            {
+                var user = await _userService.GetAsync(viewModel.Email);
+                await _organizationService.CreateDefaultAsync(user.Id);
+                var organization = await _organizationService.GetDefaultAsync(user.Id);
+                await _apiKeyService.CreateAsync(organization.Id);
+            }
+            catch (Exception ex)
+            {
+                //Not important
+            }
 
             return RedirectToAction("Login");
         }
