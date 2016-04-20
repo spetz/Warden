@@ -7,19 +7,12 @@ namespace Warden.Web.Core.Domain
 {
     public class Organization : Entity, ITimestampable
     {
-        private HashSet<ApiKey> _apiKeys = new HashSet<ApiKey>();
         private HashSet<UserInOrganization> _users = new HashSet<UserInOrganization>();
         private HashSet<Warden> _wardens = new HashSet<Warden>();
 
         public string Name { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
         public DateTime UpdatedAt { get; protected set; }
-
-        public IEnumerable<ApiKey> ApiKeys
-        {
-            get { return _apiKeys; }
-            protected set { _apiKeys = new HashSet<ApiKey>(value); }
-        }
 
         public IEnumerable<UserInOrganization> Users
         {
@@ -60,31 +53,6 @@ namespace Warden.Web.Core.Domain
                 throw new DomainException("Organization owner can not be null.");
 
             AddUser(owner, OrganizationRole.Owner);
-            UpdatedAt = DateTime.UtcNow;
-        }
-
-        public void AddApiKey(string key)
-        {
-            if (key.Empty())
-                throw new DomainException("API key can not be empty.");
-
-            if (ApiKeys.Any(x => x.Key.EqualsCaseInvariant(key)))
-                return;
-
-            _apiKeys.Add(ApiKey.Create(key));
-            UpdatedAt = DateTime.UtcNow;
-        }
-
-        public void RemoveApiKey(string key)
-        {
-            if (key.Empty())
-                throw new DomainException("API key can not be empty.");
-
-            var apiKey = ApiKeys.FirstOrDefault(x => x.Key.EqualsCaseInvariant(key));
-            if (apiKey == null)
-                return;
-
-            _apiKeys.Remove(apiKey);
             UpdatedAt = DateTime.UtcNow;
         }
 

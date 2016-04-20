@@ -9,6 +9,7 @@ namespace Warden.Web.Core.Services
 {
     public interface IEncrypter
     {
+        string GetRandomSecureKey();
         string GetSalt(string data);
         string GetHash(string data, string salt);
         string Encrypt(string text, string salt);
@@ -21,6 +22,9 @@ namespace Warden.Web.Core.Services
         private const int DeriveBytesIterationsCount = 10000;
         private const int MinSaltSize = 10;
         private const int MaxSaltSize = 20;
+        private const int MinSecureKeySize = 40;
+        private const int MaxSecureKeySize = 60;
+        private static readonly Random Random = new Random();
 
         public Encrypter(string key)
         {
@@ -30,10 +34,19 @@ namespace Warden.Web.Core.Services
             _key = key;
         }
 
+        public string GetRandomSecureKey()
+        {
+            var size = Random.Next(MinSecureKeySize, MaxSecureKeySize);
+            var bytes = new byte[size];
+            var rng = new RNGCryptoServiceProvider();
+            rng.GetNonZeroBytes(bytes);
+
+            return Convert.ToBase64String(bytes);
+        }
+
         public string GetSalt(string data)
         {
-            var random = new Random();
-            var saltSize = random.Next(MinSaltSize, MaxSaltSize);
+            var saltSize = Random.Next(MinSaltSize, MaxSaltSize);
             var saltBytes = new byte[saltSize];
             var rng = new RNGCryptoServiceProvider();
             rng.GetNonZeroBytes(saltBytes);

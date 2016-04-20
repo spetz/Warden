@@ -17,6 +17,7 @@ namespace Warden.Web
             services.AddMvcCore().AddJsonFormatters(formatter =>
                 formatter.ContractResolver = new CamelCasePropertyNamesContractResolver());
             services.AddScoped<IWardenIterationService, WardenIterationService>();
+            services.AddScoped<IApiKeyService, ApiKeyService>();
             services.AddSingleton<IEncrypter>(provider => new Encrypter("abcd"));
             services.AddSingleton(provider => new MongoClient("mongodb://localhost:27017"));
             services.AddScoped(provider => provider.GetService<MongoClient>().GetDatabase("Warden"));

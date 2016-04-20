@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Driver;
@@ -12,11 +13,13 @@ namespace Warden.Web.Controllers
     {
         private readonly IMongoDatabase _database;
         private readonly IEncrypter _encrypter;
+        private readonly IApiKeyService _apiKeyService;
 
-        public HomeController(IMongoDatabase database, IEncrypter encrypter)
+        public HomeController(IMongoDatabase database, IEncrypter encrypter, IApiKeyService apiKeyService)
         {
             _database = database;
             _encrypter = encrypter;
+            _apiKeyService = apiKeyService;
         }
 
         [HttpGet]
@@ -46,7 +49,10 @@ namespace Warden.Web.Controllers
             organization.AddWarden("Test Warden");
             await _database.Users().InsertOneAsync(user);
             await _database.Organizations().InsertOneAsync(organization);
-            await Response.WriteAsync($"Organization id: {organization.Id}.");
+            await _apiKeyService.CreateAsync(organization.Id);
+            var apiKeys = await _apiKeyService.GetAllForOrganizationAsync(organization.Id);
+            await Response.WriteAsync($"Organization id: {organization.Id}\n" +
+                                      $"API key: {apiKeys.First()}");
         }
     }
 }
