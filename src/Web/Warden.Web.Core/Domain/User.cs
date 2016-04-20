@@ -58,5 +58,12 @@ namespace Warden.Web.Core.Domain
             Password = hash;
             Salt = salt;
         }
+
+        public bool ValidatePassword(string password, IEncrypter encrypter)
+        {
+            var hashedPassword = encrypter.GetHash(password, Salt);
+
+            return Password.Equals(hashedPassword);
+        }
     }
 }

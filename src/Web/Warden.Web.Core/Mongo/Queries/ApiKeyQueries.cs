@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
@@ -26,7 +27,7 @@ namespace Warden.Web.Core.Mongo.Queries
             Guid organizationId)
         {
             if (organizationId == Guid.Empty)
-                return null;
+                return Enumerable.Empty<ApiKey>();
 
             return await keys.AsQueryable()
                 .Where(x => x.OrganizationId == organizationId)

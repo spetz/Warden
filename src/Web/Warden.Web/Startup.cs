@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Http;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using Newtonsoft.Json.Serialization;
@@ -18,6 +17,8 @@ namespace Warden.Web
                 formatter.ContractResolver = new CamelCasePropertyNamesContractResolver());
             services.AddScoped<IWardenIterationService, WardenIterationService>();
             services.AddScoped<IApiKeyService, ApiKeyService>();
+            services.AddScoped<IOrganizationService, OrganizationService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddSingleton<IEncrypter>(provider => new Encrypter("abcd"));
             services.AddSingleton(provider => new MongoClient("mongodb://localhost:27017"));
             services.AddScoped(provider => provider.GetService<MongoClient>().GetDatabase("Warden"));
@@ -26,14 +27,16 @@ namespace Warden.Web
         public void Configure(IApplicationBuilder app)
         {
             app.UseIISPlatformHandler();
-            app.UseMvcWithDefaultRoute();
             app.UseStaticFiles();
-            app.UseCookieAuthentication((cookieOptions) =>
+            app.UseCookieAuthentication(options =>
             {
-                cookieOptions.CookieName = ".Warden";
-                cookieOptions.LoginPath = new PathString("/login");
-                cookieOptions.LoginPath = new PathString("/logout");
+                options.AutomaticAuthenticate = true;
+                options.AutomaticChallenge = true;
+                options.CookieName = ".Warden";
+                options.LoginPath = "/login";
+                options.LogoutPath = "/logout";
             });
+            app.UseMvcWithDefaultRoute();
             MongoConfigurator.Initialize();
         }
 

@@ -24,11 +24,18 @@ namespace Warden.Web.Core.Mongo.Queries
         public static async Task<User> GetByEmailAsync(this IMongoCollection<User> users,
             string email)
         {
-            if (email.IsEmail())
+            if (!email.IsEmail())
                 return null;
 
             var fixedEmail = email.TrimToLower();
             return await users.AsQueryable().FirstOrDefaultAsync(x => x.Email == fixedEmail);
+        }
+
+        public static async Task<bool> ExistsAsync(this IMongoCollection<User> users,
+            string email)
+        {
+            var fixedEmail = email.TrimToLower();
+            return await users.AsQueryable().AnyAsync(x => x.Email == fixedEmail);
         }
     }
 }
