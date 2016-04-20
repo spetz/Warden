@@ -94,15 +94,12 @@ namespace Warden.Web.Controllers
             return RedirectToAction("Login");
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpDelete]
         [Authorize]
         [Route("logout")]
-        public async Task<IActionResult> Logout()
+        public async Task Logout()
         {
             await HttpContext.Authentication.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-            return RedirectToAction("Login");
         }
     }
 }

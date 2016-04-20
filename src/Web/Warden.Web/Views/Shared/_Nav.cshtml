@@ -6,7 +6,7 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <li><a href="@Url.Action("Index", "Home")">Dashboard</a></li>
-                    <li><a href="@Url.Action("Logout", "Account")">Sign out</a></li>
+                    <li><a href="#!" data-logout>Sign out</a></li>
                 }
                 else
                 {

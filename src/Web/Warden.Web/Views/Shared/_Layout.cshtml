@@ -15,6 +15,15 @@
 </div>
 <script type="text/javascript" src="@Url.Content("~/content/lib/jquery/dist/jquery.min.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/content/lib/materialize/dist/js/materialize.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/content/js/nav.js")"></script>
+<script type="text/javascript">
+    $(function() {
+        nav.init({
+            loginPath: "/login",
+            logoutPath: "/logout"
+        });
+    });
+</script>
 @RenderSection("scripts", false)
 </body>
 </html>
