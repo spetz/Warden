@@ -8,8 +8,8 @@ namespace Warden.Web.Core.Domain
     {
         public string Email { get; protected set; }
         public Role Role { get; protected set; }
-        public byte[] Password { get; protected set; }
-        public byte[] Salt { get; protected set; }
+        public string Password { get; protected set; }
+        public string Salt { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
         public DateTime UpdatedAt { get; protected set; }
 
