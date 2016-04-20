@@ -28,12 +28,19 @@
     self.selectedWardenCheckResult = ko.observable(emptyWardenCheckResult);
 
     getIterations().then(function(iterations) {
-      self.iterations(iterations);
-      allIterations.push(iterations);
-      displayMainChart();
-      renderWatchersChart(iterations[0]);
-      setTimeout(updateMainChart, 5000);
-    });
+        if (iterations.length === 0) {
+          renderEmptyMainChart();
+          renderEmptyWatchersChart();
+
+          return;
+        }
+
+        self.iterations(iterations);
+        allIterations.push(iterations);
+        displayMainChart();
+        renderWatchersChart(iterations[0]);
+        setTimeout(updateMainChart, 5000);
+      });
 
     function updateMainChart() {
       getIterations().then(function (iterations) {
@@ -50,6 +57,29 @@
         renderWatchersChart(iteration);
         setTimeout(updateMainChart, 5000);
       });
+    };
+
+    function renderEmptyMainChart() {
+      var data = {
+        labels: ["Missing data"],
+        datasets: [
+            {
+              label: "Warden",
+              fillColor: "rgba(75, 74, 73, 0.1)",
+              strokeColor: "rgba(220,220,220,1)",
+              pointColor: "rgba(220,220,220,1)",
+              pointStrokeColor: "#fff",
+              pointHighlightFill: "#fff",
+              pointHighlightStroke: "rgba(220,220,220,1)",
+              data: [0,1]
+            }
+        ]
+      };
+
+      var options = {
+        responsive: true
+      };
+      mainChart = new Chart(mainChartContext).Line(data, options);
     };
 
     function displayMainChart() {
@@ -95,6 +125,21 @@
         console.log(point);
       });
     };
+
+    function renderEmptyWatchersChart() {
+      var data = [];
+      data.push({
+        value: 1,
+        color: "rgba(75, 74, 73, 0.1)",
+        highlight: "rgba(75, 74, 73, 0.2)",
+        label: "Missing data"
+      });
+
+      var options = {
+        responsive: true
+      };
+      watchersChart = new Chart(watchersChartContext).Pie(data, options);
+  };
 
     function renderWatchersChart(iteration) {
       var invalidResults = iteration.results.filter(function (result) {
