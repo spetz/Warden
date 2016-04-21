@@ -5,7 +5,7 @@
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <li><a href="@Url.Action("Index", "Home")">Dashboards</a></li>
+                    <li><a href="@Url.Action("Default", "Dashboard")">Dashboard</a></li>
                     <li><a href="@Url.Action("Index", "Organization")">Organizations</a></li>
                     <li><a href="#!" data-logout>Sign out</a></li>
                 }
