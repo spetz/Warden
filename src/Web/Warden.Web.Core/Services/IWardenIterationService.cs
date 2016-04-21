@@ -13,7 +13,7 @@ namespace Warden.Web.Core.Services
 {
     public interface IWardenIterationService
     {
-        Task CreateAsync(WardenIterationDto iteration, Guid organizationId, bool registerWardenIfNotFound = true);
+        Task CreateAsync(WardenIterationDto iteration, Guid organizationId);
         Task<PagedResult<WardenIterationDto>> BrowseAsync(BrowseWardenIterations query);
     }
 
@@ -27,7 +27,7 @@ namespace Warden.Web.Core.Services
             _database = database;
         }
 
-        public async Task CreateAsync(WardenIterationDto iteration, Guid organizationId, bool registerWardenIfNotFound = true)
+        public async Task CreateAsync(WardenIterationDto iteration, Guid organizationId)
         {
             if (iteration == null)
                 return;
@@ -41,7 +41,7 @@ namespace Warden.Web.Core.Services
                 throw new ServiceException($"Organization has not been found for given id: '{organizationId}'.");
 
             var warden = organization.GetWardenByName(iteration.WardenName);
-            if (warden == null && !registerWardenIfNotFound)
+            if (warden == null && !organization.AutoRegisterNewWarden)
                 throw new ServiceException($"Warden with name: '{iteration.WardenName}' has not been registered.");
             if (warden == null)
             {

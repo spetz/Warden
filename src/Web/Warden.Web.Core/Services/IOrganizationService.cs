@@ -17,7 +17,7 @@ namespace Warden.Web.Core.Services
         Task<OrganizationDto> GetAsync(Guid organizationId);
         Task<OrganizationDto> GetDefaultAsync(Guid ownerId);
         Task CreateDefaultAsync(Guid ownerId);
-        Task CreateAsync(string name, Guid ownerId);
+        Task CreateAsync(string name, Guid ownerId, bool autoRegisterNewWarden = true);
         Task AddWarden(Guid organizationId, string name, bool enabled = true);
         Task<bool> IsUserInOrganizationAsync(Guid organizationId, Guid userId);
         Task<PagedResult<OrganizationDto>> BrowseAsync(BrowseOrganizations query);
@@ -73,7 +73,7 @@ namespace Warden.Web.Core.Services
             await CreateAsync(DefaultName, ownerId);
         }
 
-        public async Task CreateAsync(string name, Guid ownerId)
+        public async Task CreateAsync(string name, Guid ownerId, bool autoRegisterNewWarden = true)
         {
             if (name.Empty())
                 throw new ServiceException("Organization name can not be empty.");
@@ -87,7 +87,7 @@ namespace Warden.Web.Core.Services
                 throw new ServiceException($"There's already an organization with name: '{name}' " +
                                            $"for owner with id: '{ownerId}'.");
 
-            organization = new Organization(name, owner);
+            organization = new Organization(name, owner, autoRegisterNewWarden);
             await _database.Organizations().InsertOneAsync(organization);
         }
 

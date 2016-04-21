@@ -12,6 +12,7 @@ namespace Warden.Web.Core.Domain
 
         public string Name { get; protected set; }
         public Guid OwnerId { get; protected set; }
+        public bool AutoRegisterNewWarden { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
         public DateTime UpdatedAt { get; protected set; }
 
@@ -31,12 +32,14 @@ namespace Warden.Web.Core.Domain
         {
         }
 
-        public Organization(string name, User owner)
+        public Organization(string name, User owner, bool autoRegisterNewWarden = true)
         {
             SetName(name);
             SetOwner(owner);
             CreatedAt = DateTime.UtcNow;
             UpdatedAt = DateTime.UtcNow;
+            if(autoRegisterNewWarden)
+                EnableAutoRegisterNewWarden();
         }
 
         public void SetName(string name)
@@ -133,5 +136,23 @@ namespace Warden.Web.Core.Domain
         }
 
         public Warden GetWardenByName(string name) => Wardens.FirstOrDefault(x => x.Name.EqualsCaseInvariant(name));
+
+        public void EnableAutoRegisterNewWarden()
+        {
+            if(AutoRegisterNewWarden)
+                return;
+
+            AutoRegisterNewWarden = true;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void DisableAutoRegisterNewWarden()
+        {
+            if (!AutoRegisterNewWarden)
+                return;
+
+            AutoRegisterNewWarden = false;
+            UpdatedAt = DateTime.UtcNow;
+        }
     }
 }
