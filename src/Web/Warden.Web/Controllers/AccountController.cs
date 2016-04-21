@@ -85,7 +85,6 @@ namespace Warden.Web.Controllers
                 await _organizationService.CreateDefaultAsync(user.Id);
                 var organization = await _organizationService.GetDefaultAsync(user.Id);
                 await _apiKeyService.CreateAsync(organization.Id);
-                await _userService.SetRecentlyViewedOrganization(user.Id, organization.Id);
             }
             catch (Exception ex)
             {

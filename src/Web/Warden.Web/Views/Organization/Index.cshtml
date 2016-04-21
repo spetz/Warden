@@ -5,10 +5,15 @@
         <h4 class="custom-text">Organizations (@Model.Items.Count())</h4>
     </div>
     <div class="s12">
+        <a href="@Url.Action("Create", "Organization")" class="btn waves-effect waves-light custom">Create</a>
+    </div>
+    <div class="s12">
         <div class="collection">
             @foreach (var organization in Model.Items)
             {
-                <a href="@Url.Action("Details", new {id = @organization.Id})" class="collection-item">@organization.Name</a>
+                <a href="@Url.Action("Details", new {id = @organization.Id})" class="collection-item">
+                    <span class="custom-text">@organization.Name</span>
+                </a>
             }
         </div>
     </div>

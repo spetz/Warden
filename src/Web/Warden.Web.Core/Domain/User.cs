@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Warden.Web.Core.Extensions;
 using Warden.Web.Core.Services;
 
@@ -13,6 +14,7 @@ namespace Warden.Web.Core.Domain
         public DateTime CreatedAt { get; protected set; }
         public DateTime UpdatedAt { get; protected set; }
         public Guid RecentlyViewedOrganizationId { get; protected set; }
+        public Guid RecentlyViewedWardenId { get; protected set; }
 
         protected User()
         {
@@ -67,13 +69,15 @@ namespace Warden.Web.Core.Domain
             return Password.Equals(hashedPassword);
         }
 
-        public void SetRecentlyViewedOrganization(Organization organization)
+        public void SetRecentlyViewedWardenInOrganization(Organization organization, Guid wardenId)
         {
             var organizationId = organization?.Id ?? Guid.Empty;
-            if (RecentlyViewedOrganizationId == organizationId)
+            var foundWardenId = organization?.Wardens.Any(x => x.Id == wardenId) == true ? wardenId : Guid.Empty;
+            if (RecentlyViewedOrganizationId == organizationId && RecentlyViewedWardenId == foundWardenId)
                 return;
 
             RecentlyViewedOrganizationId = organizationId;
+            RecentlyViewedWardenId = foundWardenId;
             UpdatedAt = DateTime.UtcNow;
         }
     }

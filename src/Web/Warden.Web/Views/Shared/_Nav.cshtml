@@ -7,14 +7,15 @@
                 {
                     <li><a href="@Url.Action("Default", "Dashboard")">Dashboard</a></li>
                     <li><a href="@Url.Action("Index", "Organization")">Organizations</a></li>
+                    <li><a href="#!">Settings</a></li>
                     <li><a href="#!" data-logout>Sign out</a></li>
                 }
                 else
                 {
                     <li><a href="@Url.Action("Login", "Account")">Sign in</a></li>
                     <li><a href="@Url.Action("Register", "Account")">Sign up</a></li>
+                    <li><a href="@Url.Action("About", "Home")">About</a></li>
                 }
-                <li><a href="@Url.Action("About", "Home")">About</a></li>
             </ul>
         </div>
     </div>

@@ -34,30 +34,45 @@ namespace Warden.Web.Controllers
         public async Task<IActionResult> Default()
         {
             var user = await _userService.GetAsync(UserId);
-            if (user.RecentlyViewedOrganizationId == Guid.Empty)
+            if (user.RecentlyViewedOrganizationId == Guid.Empty && user.RecentlyViewedWardenId == Guid.Empty)
                 return RedirectToAction("Index");
 
-            return RedirectToAction("Details", new { id = user.RecentlyViewedOrganizationId });
+            var organization = await _organizationService.GetAsync(user.RecentlyViewedOrganizationId);
+
+            return organization.Wardens.Any(x => x.Id == user.RecentlyViewedWardenId)
+                ? RedirectToAction("Details", new
+                {
+                    organizationId = user.RecentlyViewedOrganizationId,
+                    wardenId = user.RecentlyViewedWardenId
+                })
+                : RedirectToAction("Index");
         }
 
         [HttpGet]
-        [Route("organizations/{id}")]
-        public async Task<IActionResult> Details(Guid id)
+        [Route("organizations/{organizationId}/wardens/{wardenId}")]
+        public async Task<IActionResult> Details(Guid organizationId, Guid wardenId)
         {
-            if (id == Guid.Empty)
+            if (organizationId == Guid.Empty)
                 return HttpNotFound();
-            var isUserInOrganization = await _organizationService.IsUserInOrganizationAsync(id, UserId);
+            var isUserInOrganization = await _organizationService.IsUserInOrganizationAsync(organizationId, UserId);
             if(!isUserInOrganization)
                 return HttpNotFound();
-            var organization = await _organizationService.GetAsync(id);
+            var organization = await _organizationService.GetAsync(organizationId);
             if(organization == null)
                 return HttpNotFound();
             if(!organization.ApiKeys.Any())
                 return HttpNotFound();
+            var warden = organization.Wardens.FirstOrDefault(x => x.Id == wardenId);
+            if(warden == null)
+                return HttpNotFound();
+
+            await _userService.SetRecentlyViewedWardenInOrganizationAsync(UserId, organizationId, wardenId);
             var viewModel = new DashboardViewModel
             {
-                OrganizationId = id,
+                OrganizationId = organizationId,
                 OrganizationName = organization.Name,
+                WardenId = warden.Id,
+                WardenName = warden.Name,
                 ApiKey = organization.ApiKeys.First()
             };
 

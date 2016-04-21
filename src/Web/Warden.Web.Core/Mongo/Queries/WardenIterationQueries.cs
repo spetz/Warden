@@ -26,6 +26,9 @@ namespace Warden.Web.Core.Mongo.Queries
             BrowseWardenIterations query)
         {
             var values = iterations.AsQueryable();
+            if (query.OrganizationId != Guid.Empty)
+                values = values.Where(x => x.Warden.OrganizationId == query.OrganizationId);
+
             switch (query.ResultType)
             {
                 case ResultType.Valid:

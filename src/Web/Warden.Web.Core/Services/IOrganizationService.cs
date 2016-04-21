@@ -15,6 +15,7 @@ namespace Warden.Web.Core.Services
     public interface IOrganizationService
     {
         Task<OrganizationDto> GetAsync(Guid organizationId);
+        Task<OrganizationDto> GetAsync(string name, Guid ownerId);
         Task<OrganizationDto> GetDefaultAsync(Guid ownerId);
         Task CreateDefaultAsync(Guid ownerId);
         Task CreateAsync(string name, Guid ownerId, bool autoRegisterNewWarden = true);
@@ -36,22 +37,32 @@ namespace Warden.Web.Core.Services
         public async Task<OrganizationDto> GetAsync(Guid organizationId)
         {
             var organization = await _database.Organizations().GetByIdAsync(organizationId);
+
+            return await GetOrganizationWithApiKeysAsync(organization);
+        }
+
+        public async Task<OrganizationDto> GetDefaultAsync(Guid ownerId)
+            => await GetAsync(DefaultName, ownerId);
+
+
+        public async Task<OrganizationDto> GetAsync(string name, Guid ownerId)
+        {
+            var organization = await _database.Organizations().GetByNameForOwnerAsync(name, ownerId);
+
+            return await GetOrganizationWithApiKeysAsync(organization);
+        }
+
+        private async Task<OrganizationDto> GetOrganizationWithApiKeysAsync(Organization organization)
+        {
             if (organization == null)
                 return null;
 
-            var apiKeys = await _database.ApiKeys().GetAllForOrganizationAsync(organizationId);
+            var apiKeys = await _database.ApiKeys().GetAllForOrganizationAsync(organization.Id);
 
             return new OrganizationDto(organization)
             {
                 ApiKeys = apiKeys.Select(x => x.Key)
             };
-        }
-
-        public async Task<OrganizationDto> GetDefaultAsync(Guid ownerId)
-        {
-            var organization = await _database.Organizations().GetByNameForOwnerAsync(DefaultName, ownerId);
-
-            return organization == null ? null : new OrganizationDto(organization);
         }
 
         public async Task<PagedResult<OrganizationDto>> BrowseAsync(BrowseOrganizations query)
@@ -61,7 +72,7 @@ namespace Warden.Web.Core.Services
 
             var organizations = await _database.Organizations()
                 .Query(query)
-                .OrderByDescending(x => x.Name)
+                .OrderBy(x => x.Name)
                 .PaginateAsync(query);
 
             return PagedResult<OrganizationDto>.From(organizations,

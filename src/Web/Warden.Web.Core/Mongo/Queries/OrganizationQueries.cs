@@ -29,7 +29,8 @@ namespace Warden.Web.Core.Mongo.Queries
             if (name.Empty() || ownerId == Guid.Empty)
                 return null;
 
-            return await organizations.AsQueryable().FirstOrDefaultAsync(x => x.Name == name && x.OwnerId == ownerId);
+            var fixedName = name.TrimToLower();
+            return await organizations.AsQueryable().FirstOrDefaultAsync(x => x.Name.ToLower() == fixedName && x.OwnerId == ownerId);
         }
 
         public static IMongoQueryable<Organization> Query(this IMongoCollection<Organization> organizations,
@@ -37,9 +38,9 @@ namespace Warden.Web.Core.Mongo.Queries
         {
             var values = organizations.AsQueryable();
             if (query.UserId != Guid.Empty)
-                values.Where(x => x.Users.Any(u => u.Id == query.UserId));
+                values = values.Where(x => x.Users.Any(u => u.Id == query.UserId));
             if (query.OwnerId != Guid.Empty)
-                values.Where(x => x.OwnerId == query.OwnerId);
+                values = values.Where(x => x.OwnerId == query.OwnerId);
 
             return values;
         }

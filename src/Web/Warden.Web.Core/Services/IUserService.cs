@@ -14,7 +14,7 @@ namespace Warden.Web.Core.Services
         Task<UserDto> GetAsync(Guid id);
         Task RegisterAsync(string email, string password, Role role = Role.User);
         Task LoginAsync(string email, string password);
-        Task SetRecentlyViewedOrganization(Guid userId, Guid organizationId);
+        Task SetRecentlyViewedWardenInOrganizationAsync(Guid userId, Guid organizationId, Guid wardenId);
     }
 
     public class UserService : IUserService
@@ -72,11 +72,11 @@ namespace Warden.Web.Core.Services
                 throw new ServiceException("Invalid password.");
         }
 
-        public async Task SetRecentlyViewedOrganization(Guid userId, Guid organizationId)
+        public async Task SetRecentlyViewedWardenInOrganizationAsync(Guid userId, Guid organizationId, Guid wardenId)
         {
             var user = await _database.Users().GetByIdAsync(userId);
             var organization = await _database.Organizations().GetByIdAsync(organizationId);
-            user.SetRecentlyViewedOrganization(organization);
+            user.SetRecentlyViewedWardenInOrganization(organization, wardenId);
             await _database.Users().ReplaceOneAsync(x => x.Id == userId, user);
         }
     }

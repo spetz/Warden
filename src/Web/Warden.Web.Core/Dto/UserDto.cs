@@ -9,6 +9,7 @@ namespace Warden.Web.Core.Dto
         public string Email { get; set; }
         public Role Role { get; set; }
         public Guid RecentlyViewedOrganizationId { get; set; }
+        public Guid RecentlyViewedWardenId { get; set; }
 
         public UserDto()
         {
@@ -20,6 +21,7 @@ namespace Warden.Web.Core.Dto
             Email = user.Email;
             Role = user.Role;
             RecentlyViewedOrganizationId = user.RecentlyViewedOrganizationId;
+            RecentlyViewedWardenId = user.RecentlyViewedWardenId;
         }
     }
 }

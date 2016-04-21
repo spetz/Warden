@@ -47,7 +47,7 @@ namespace Warden.Web.Core.Domain
             if (name.Empty())
                 throw new DomainException("Organization name can not be empty.");
 
-            Name = name;
+            Name = name.Trim();
             UpdatedAt = DateTime.UtcNow;
         }
 

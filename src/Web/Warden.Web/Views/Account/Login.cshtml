@@ -1,25 +1,25 @@
 ﻿@model Warden.Web.ViewModels.LoginViewModel
+@addTagHelper "*, Microsoft.AspNet.Mvc.TagHelpers"
 
 <div class="row">
     <div class="col s12 m8 l6 offset-m2 offset-l3">
         <div class="row card-panel">
             <h5 class="center-align custom-text">Sign in</h5>
-            <form asp-controller="Account" asp-action="Login" method="POST">
-                @Html.AntiForgeryToken()
+            <form asp-controller="Account" asp-action="Login" asp-anti-forgery="true" method="POST">
                 <div class="row">
                     <div class="input-field col s12">
-                        <input type="email" class="validate" name="Email" asp-for="Email"/>
+                        <input type="email" class="validate" asp-for="Email"/>
                         <label asp-for="Email">Email</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                        <input type="password" class="validate" name="Password" asp-for="Password"/>
+                        <input type="password" class="validate" asp-for="Password"/>
                         <label asp-for="Password">Password</label>
                     </div>
                     <div class="col s12">
                         <p>
-                            <input type="checkbox" id="RememberMe" name="RememberMe" data-checked="false">
+                            <input type="checkbox" id="RememberMe" data-checked="false">
                             <label for="RememberMe">Remember me</label>
                         </p>
                     </div>
@@ -27,7 +27,7 @@
                     <div class="row">
                         <div class="col s12">
                             <div class="section">
-                                <button class="btn waves-effect waves-light custom right" type="submit" name="action">Login</button>
+                                <button class="btn waves-effect waves-light custom right" type="submit">Login</button>
                             </div>
                         </div>
                     </div>

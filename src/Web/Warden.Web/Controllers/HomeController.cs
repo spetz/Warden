@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using Warden.Web.Core.Services;
@@ -8,10 +9,13 @@ namespace Warden.Web.Controllers
     public class HomeController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IOrganizationService _organizationService;
 
-        public HomeController(IUserService userService)
+        public HomeController(IUserService userService, 
+            IOrganizationService organizationService)
         {
             _userService = userService;
+            _organizationService = organizationService;
         }
 
         [HttpGet]
@@ -22,10 +26,18 @@ namespace Warden.Web.Controllers
                 return View();
 
             var user = await _userService.GetAsync(UserId);
-            if (user.RecentlyViewedOrganizationId == Guid.Empty)
+            if (user.RecentlyViewedOrganizationId == Guid.Empty && user.RecentlyViewedWardenId == Guid.Empty)
                 return RedirectToAction("Index", "Organization");
 
-            return RedirectToAction("Details", "Dashboard", new {id = user.RecentlyViewedOrganizationId});
+            var organization = await _organizationService.GetAsync(user.RecentlyViewedOrganizationId);
+
+            return organization.Wardens.Any(x => x.Id == user.RecentlyViewedWardenId)
+                ? RedirectToAction("Details", "Dashboard", new
+                {
+                    organizationId = user.RecentlyViewedOrganizationId,
+                    wardenId = user.RecentlyViewedWardenId
+                })
+                : RedirectToAction("Details", "Organization", new {id = user.RecentlyViewedOrganizationId});
         }
 
         [HttpGet]
