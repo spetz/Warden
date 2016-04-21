@@ -26,6 +26,7 @@ namespace Warden.Web
 
         public void Configure(IApplicationBuilder app)
         {
+            app.UseDeveloperExceptionPage();
             app.UseIISPlatformHandler();
             app.UseStaticFiles();
             app.UseCookieAuthentication(options =>

@@ -2,10 +2,13 @@
 using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using Warden.Web.Core.Domain;
 using Warden.Web.Core.Dto;
 using Warden.Web.Core.Extensions;
+using Warden.Web.Core.Mongo;
 using Warden.Web.Core.Mongo.Queries;
+using Warden.Web.Core.Queries;
 
 namespace Warden.Web.Core.Services
 {
@@ -17,6 +20,7 @@ namespace Warden.Web.Core.Services
         Task CreateAsync(string name, Guid ownerId);
         Task AddWarden(Guid organizationId, string name, bool enabled = true);
         Task<bool> IsUserInOrganizationAsync(Guid organizationId, Guid userId);
+        Task<PagedResult<OrganizationDto>> BrowseAsync(BrowseOrganizations query);
     }
 
     public class OrganizationService : IOrganizationService
@@ -48,6 +52,20 @@ namespace Warden.Web.Core.Services
             var organization = await _database.Organizations().GetByNameForOwnerAsync(DefaultName, ownerId);
 
             return organization == null ? null : new OrganizationDto(organization);
+        }
+
+        public async Task<PagedResult<OrganizationDto>> BrowseAsync(BrowseOrganizations query)
+        {
+            if (query == null)
+                return PagedResult<OrganizationDto>.Empty;
+
+            var organizations = await _database.Organizations()
+                .Query(query)
+                .OrderByDescending(x => x.Name)
+                .PaginateAsync(query);
+
+            return PagedResult<OrganizationDto>.From(organizations,
+                organizations.Items.Select(x => new OrganizationDto(x)));
         }
 
         public async Task CreateDefaultAsync(Guid ownerId)

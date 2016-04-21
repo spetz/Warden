@@ -13,8 +13,8 @@ namespace Warden.Web.Core.Services
 {
     public interface IWardenIterationService
     {
-        Task SaveIterationAsync(WardenIterationDto iteration, Guid organizationId, bool registerWardenIfNotFound = true);
-        Task<PagedResult<WardenIterationDto>> GetIterationsAsync(BrowseWardenIterations query);
+        Task CreateAsync(WardenIterationDto iteration, Guid organizationId, bool registerWardenIfNotFound = true);
+        Task<PagedResult<WardenIterationDto>> BrowseAsync(BrowseWardenIterations query);
     }
 
     public class WardenIterationService : IWardenIterationService
@@ -27,7 +27,7 @@ namespace Warden.Web.Core.Services
             _database = database;
         }
 
-        public async Task SaveIterationAsync(WardenIterationDto iteration, Guid organizationId, bool registerWardenIfNotFound = true)
+        public async Task CreateAsync(WardenIterationDto iteration, Guid organizationId, bool registerWardenIfNotFound = true)
         {
             if (iteration == null)
                 return;
@@ -90,7 +90,7 @@ namespace Warden.Web.Core.Services
                     dto.StackTrace, CreatExceptionInfo(dto.InnerException));
         }
 
-        public async Task<PagedResult<WardenIterationDto>> GetIterationsAsync(BrowseWardenIterations query)
+        public async Task<PagedResult<WardenIterationDto>> BrowseAsync(BrowseWardenIterations query)
         {
             if (query == null)
                 return PagedResult<WardenIterationDto>.Empty;

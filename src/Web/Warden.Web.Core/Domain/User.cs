@@ -12,6 +12,7 @@ namespace Warden.Web.Core.Domain
         public string Salt { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
         public DateTime UpdatedAt { get; protected set; }
+        public Guid RecentlyViewedOrganizationId { get; protected set; }
 
         protected User()
         {
@@ -64,6 +65,16 @@ namespace Warden.Web.Core.Domain
             var hashedPassword = encrypter.GetHash(password, Salt);
 
             return Password.Equals(hashedPassword);
+        }
+
+        public void SetRecentlyViewedOrganization(Organization organization)
+        {
+            var organizationId = organization?.Id ?? Guid.Empty;
+            if (RecentlyViewedOrganizationId == organizationId)
+                return;
+
+            RecentlyViewedOrganizationId = organizationId;
+            UpdatedAt = DateTime.UtcNow;
         }
     }
 }

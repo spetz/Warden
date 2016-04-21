@@ -23,7 +23,7 @@ namespace Warden.Web.Api
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] WardenIterationDto iteration)
         {
-            await _wardenIterationService.SaveIterationAsync(iteration, OrganizationId);
+            await _wardenIterationService.CreateAsync(iteration, OrganizationId);
 
             return new HttpStatusCodeResult(204);
         }
@@ -32,7 +32,7 @@ namespace Warden.Web.Api
         public async Task<IEnumerable<WardenIterationDto>> GetAll([FromUri] BrowseWardenIterations query)
         {
             query.OrganizationId = OrganizationId;
-            var pagedResult = await _wardenIterationService.GetIterationsAsync(query);
+            var pagedResult = await _wardenIterationService.BrowseAsync(query);
 
             return pagedResult.Items;
         }

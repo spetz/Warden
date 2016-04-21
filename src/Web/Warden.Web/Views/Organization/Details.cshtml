@@ -1,0 +1,10 @@
+﻿@model Warden.Web.Core.Dto.OrganizationDto
+
+<div class="row card-panel">
+    <div class="s12">
+        <h4 class="custom-text">Organization: @Model.Name</h4>
+    </div>
+    <div class="s12">
+        <a href="@Url.Action("Details", "Dashboard", new {id = Model.Id})" class="btn waves-effect waves-light custom">Dashboard</a>
+    </div>
+</div>

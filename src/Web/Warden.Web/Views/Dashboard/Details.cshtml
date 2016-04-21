@@ -1,0 +1,94 @@
+﻿@model Warden.Web.ViewModels.DashboardViewModel
+
+<div class="row">
+    <div class="col s3">
+        <div class="card-panel">
+            <div>
+                <label>Total uptime</label>
+                <ul class="collection">
+                    <li class="collection-item">99%</li>
+                </ul>
+            </div>
+            <div>
+                <label>Total downtime</label>
+                <ul class="collection">
+                    <li class="collection-item">1%</li>
+                </ul>
+            </div>
+            <div>
+                <label>Valid resources</label>
+                <ul class="collection">
+                    <li class="collection-item">6/7</li>
+                </ul>
+            </div>
+            <div>
+                <label>Most failing resources</label>
+                <ul class="collection">
+                    <li class="collection-item">RAM (10%)</li>
+                    <li class="collection-item">API (7%)</li>
+                </ul>
+            </div>
+            <div>
+                <label>Latest check at</label>
+                <ul class="collection">
+                    <li class="collection-item">2016-04-15T10:36:51Z</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col s9">
+        <canvas class="card-panel" id="main-chart" width="1200" height="600"></canvas>
+    </div>
+</div>
+<div class="row">
+    <div class="col s8">
+        <div class="card-panel">
+            <div>
+                <label>Watcher name</label>
+                <ul class="collection">
+                    <li class="collection-item" data-bind="text: selectedWardenCheckResult().watcherCheckResult.watcherName"></li>
+                </ul>
+            </div>
+            <div>
+                <label>Watcher type</label>
+                <ul class="collection">
+                    <li class="collection-item" data-bind="text: selectedWardenCheckResult().watcherCheckResult.watcherType"></li>
+                </ul>
+            </div>
+            <div>
+                <label>Is valid</label>
+                <ul class="collection">
+                    <li class="collection-item" data-bind="text: selectedWardenCheckResult().watcherCheckResult.isValid"></li>
+                </ul>
+            </div>
+            <div>
+                <label>Description</label>
+                <ul class="collection">
+                    <li class="collection-item" data-bind="text: selectedWardenCheckResult().watcherCheckResult.description"></li>
+                </ul>
+            </div>
+            <div>
+                <label>Completed at</label>
+                <ul class="collection">
+                    <li class="collection-item" data-bind="text: selectedWardenCheckResult().completedAt"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col s3 offset-s1">
+        <canvas class="card-panel" id="watchers-chart" width="300" height="400"></canvas>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+    <script type="text/javascript" src="@Url.Content("~/content/lib/knockout/dist/knockout.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/content/js/dashboard.js")"></script>
+    <script type="text/javascript">
+        $(function() {
+            dashboard.init({
+                apiKey: "@Html.Raw(Model.ApiKey)"
+            });
+        });
+    </script>
+}

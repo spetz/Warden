@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using MongoDB.Driver;
 using Warden.Web.Core.Domain;
 using Warden.Web.Core.Dto;
@@ -10,8 +11,10 @@ namespace Warden.Web.Core.Services
     public interface IUserService
     {
         Task<UserDto> GetAsync(string email);
+        Task<UserDto> GetAsync(Guid id);
         Task RegisterAsync(string email, string password, Role role = Role.User);
         Task LoginAsync(string email, string password);
+        Task SetRecentlyViewedOrganization(Guid userId, Guid organizationId);
     }
 
     public class UserService : IUserService
@@ -28,6 +31,13 @@ namespace Warden.Web.Core.Services
         public async Task<UserDto> GetAsync(string email)
         {
             var user = await _database.Users().GetByEmailAsync(email);
+
+            return user == null ? null : new UserDto(user);
+        }
+
+        public async Task<UserDto> GetAsync(Guid id)
+        {
+            var user = await _database.Users().GetByIdAsync(id);
 
             return user == null ? null : new UserDto(user);
         }
@@ -60,6 +70,14 @@ namespace Warden.Web.Core.Services
 
             if(!user.ValidatePassword(password, _encrypter))
                 throw new ServiceException("Invalid password.");
+        }
+
+        public async Task SetRecentlyViewedOrganization(Guid userId, Guid organizationId)
+        {
+            var user = await _database.Users().GetByIdAsync(userId);
+            var organization = await _database.Organizations().GetByIdAsync(organizationId);
+            user.SetRecentlyViewedOrganization(organization);
+            await _database.Users().ReplaceOneAsync(x => x.Id == userId, user);
         }
     }
 }
