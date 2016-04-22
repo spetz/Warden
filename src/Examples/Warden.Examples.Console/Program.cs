@@ -89,7 +89,7 @@ namespace Warden.Examples.Console
                 .SetHooks((hooks, integrations) =>
                 {
                     hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration))
-                        .OnIterationCompletedAsync(iteration => integrations.HttpApi().PostAsync("/data/iterations", iteration))
+                        .OnIterationCompletedAsync(iteration => integrations.HttpApi().PostAsync("/wardens/iterations", iteration))
                         .OnError(exception => System.Console.WriteLine(exception));
                 })
                 .Build();

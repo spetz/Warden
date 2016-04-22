@@ -9,12 +9,12 @@ using Warden.Web.Core.Services;
 
 namespace Warden.Web.Api
 {
-    [Route("api/data/iterations")]
-    public class IterationDataController : ApiController
+    [Route("api/wardens/iterations")]
+    public class WardenIterationController : ApiController
     {
         private readonly IWardenIterationService _wardenIterationService;
 
-        public IterationDataController(IWardenIterationService wardenIterationService, IApiKeyService apiKeyService)
+        public WardenIterationController(IWardenIterationService wardenIterationService, IApiKeyService apiKeyService)
             : base(apiKeyService)
         {
             _wardenIterationService = wardenIterationService;

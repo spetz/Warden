@@ -87,6 +87,7 @@
     <script type="text/javascript">
         $(function() {
             dashboard.init({
+                wardenName: "@Model.WardenName",
                 apiKey: "@Html.Raw(Model.ApiKey)"
             });
         });

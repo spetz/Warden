@@ -4,6 +4,7 @@ using System.Linq;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Warden.Web.Core.Domain;
+using Warden.Web.Core.Extensions;
 using Warden.Web.Core.Queries;
 
 namespace Warden.Web.Core.Mongo.Queries
@@ -28,6 +29,11 @@ namespace Warden.Web.Core.Mongo.Queries
             var values = iterations.AsQueryable();
             if (query.OrganizationId != Guid.Empty)
                 values = values.Where(x => x.Warden.OrganizationId == query.OrganizationId);
+            if (query.WardenName.NotEmpty())
+            {
+                var fixedWardenName = query.WardenName.TrimToLower();
+                values = values.Where(x => x.Warden.Name.ToLower() == fixedWardenName);
+            }
 
             switch (query.ResultType)
             {

@@ -1,8 +1,10 @@
 ﻿var dashboard = (function() {
 
+  var wardenName = "";
   var apiKey = "";
 
   var init = function(options) {
+    wardenName = options.wardenName || "";
     apiKey = options.apiKey || "";
     var viewModel = new ViewModel();
     ko.applyBindings(viewModel);
@@ -200,12 +202,12 @@
 
   function getIterations() {
     return $.ajax({
-      url: '/api/data/iterations',
+      url: '/api/wardens/iterations',
       headers: {
         "X-Api-Key": apiKey
       },
       method: 'GET',
-      data: { results: 10 },
+      data: { wardenName, results: 10 },
       success: function(response) {
         return response;
       }
