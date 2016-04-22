@@ -67,7 +67,7 @@ namespace Warden.Web.Core.Domain
                 throw new DomainException("Can not add empty user to the organization.");
 
             if (Users.Any(x => x.Id == user.Id))
-                return;
+                throw new DomainException($"User '{user.Email}' is already in the organization.");
 
             _users.Add(UserInOrganization.Create(user, role));
             UpdatedAt = DateTime.UtcNow;
@@ -80,7 +80,7 @@ namespace Warden.Web.Core.Domain
 
             var userInOrganization = Users.FirstOrDefault(x => x.Id == user.Id);
             if (userInOrganization == null)
-                return;
+                throw new DomainException($"User '{user.Email}' was not found in the organization.");
 
             _users.Remove(userInOrganization);
             UpdatedAt = DateTime.UtcNow;

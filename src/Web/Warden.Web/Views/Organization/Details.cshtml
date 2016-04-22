@@ -12,6 +12,9 @@
 <div class="row card-panel">
     <div class="s12">
         <h5 class="custom-text">Users (@Model.Users.Count())</h5>
+        <div class="s12">
+            <a href="@Url.Action("AddUser", new {id = Model.Id})" class="btn waves-effect waves-light custom">New User</a>
+        </div>
         <ul class="collection">
             @foreach (var user in Model.Users)
             {
