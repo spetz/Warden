@@ -21,6 +21,8 @@ namespace Warden.Web.Core.Services
         Task CreateAsync(string name, Guid ownerId, bool autoRegisterNewWarden = true);
         Task AddWardenAsync(Guid organizationId, string name, bool enabled = true);
         Task AddUserAsync(Guid organizationId, string email, OrganizationRole role = OrganizationRole.User);
+        Task EnableWardenAsync(Guid organizationId, string name);
+        Task DisableWardenAsync(Guid organizationId, string name);
         Task<bool> IsUserInOrganizationAsync(Guid organizationId, Guid userId);
         Task<PagedResult<OrganizationDto>> BrowseAsync(BrowseOrganizations query);
     }
@@ -124,6 +126,28 @@ namespace Warden.Web.Core.Services
                 throw new ServiceException($"User has not been found for email: '{email}'.");
 
             organization.AddUser(user, role);
+            await _database.Organizations().ReplaceOneAsync(x => x.Id == organization.Id, organization);
+        }
+
+        public async Task EnableWardenAsync(Guid organizationId, string name)
+        {
+            var organization = await _database.Organizations().GetByIdAsync(organizationId);
+            if (organization == null)
+                throw new ServiceException($"Organization has not been found for given id: '{organizationId}'.");
+
+            var warden = organization.GetWardenByNameOrFail(name);
+            warden.Enable();
+            await _database.Organizations().ReplaceOneAsync(x => x.Id == organization.Id, organization);
+        }
+
+        public async Task DisableWardenAsync(Guid organizationId, string name)
+        {
+            var organization = await _database.Organizations().GetByIdAsync(organizationId);
+            if (organization == null)
+                throw new ServiceException($"Organization has not been found for given id: '{organizationId}'.");
+
+            var warden = organization.GetWardenByNameOrFail(name);
+            warden.Disable();
             await _database.Organizations().ReplaceOneAsync(x => x.Id == organization.Id, organization);
         }
 

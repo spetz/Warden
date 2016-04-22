@@ -48,6 +48,40 @@ namespace Warden.Web.Controllers
             return View(viewModel);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("{wardenId}/disable")]
+        public async Task<IActionResult> Disable(Guid organizationId, Guid wardenId)
+        {
+            if (!ModelState.IsValid)
+                return RedirectToAction("Details", new { organizationId, wardenId });
+
+            var warden = await GetWardenForUserAsync(organizationId, wardenId);
+            if (warden == null)
+                return HttpNotFound();
+
+            await _organizationService.DisableWardenAsync(organizationId, warden.Name);
+
+            return RedirectToAction("Details", new { organizationId, wardenId });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("{wardenId}/enable")]
+        public async Task<IActionResult> Enable(Guid organizationId, Guid wardenId)
+        {
+            if(!ModelState.IsValid)
+                return RedirectToAction("Details", new { organizationId, wardenId });
+
+            var warden = await GetWardenForUserAsync(organizationId, wardenId);
+            if (warden == null)
+                return HttpNotFound();
+
+            await _organizationService.EnableWardenAsync(organizationId, warden.Name);
+
+            return RedirectToAction("Details", new {organizationId, wardenId});
+        }
+
         [HttpGet]
         [Route("{wardenId}/iterations/{iterationId}")]
         public async Task<IActionResult> Iteration(Guid organizationId, Guid wardenId, Guid iterationId)

@@ -1,6 +1,7 @@
 ﻿@using System.Threading.Tasks
 @using Warden.Web.ViewModels
 @model Warden.Web.ViewModels.WardenViewModel
+@addTagHelper "*, Microsoft.AspNet.Mvc.TagHelpers"
 
 <div class="row card-panel">
     <div class="col s12 m12 l12">
@@ -12,11 +13,18 @@
     <div class="col s12 m1 offset-m9">
         @if (Model.Enabled)
         {
-            <a href="#!" class="btn waves-effect waves-light orange lighten-2"><i class="material-icons">stop</i></a>
+            <form asp-controller="Warden" asp-action="Disable" asp-anti-forgery="true" method="POST">
+                <button class="btn waves-effect waves-light orange lighten-2" type="submit" name="action" title="Disable"
+                        ><i class="material-icons">stop</i></button>
+            </form>
         }
         else
         {
-            <a href="#!" class="btn waves-effect waves-light green lighten-2"><i class="material-icons">play_arrow</i></a>
+            <form asp-controller="Warden" asp-action="Enable" asp-anti-forgery="true" method="POST">
+                <button class="btn waves-effect waves-light green lighten-2" type="submit" name="action" title="Enable">
+                    <i class="material-icons">play_arrow</i>
+                </button>
+            </form>
         }
     </div>
 </div>

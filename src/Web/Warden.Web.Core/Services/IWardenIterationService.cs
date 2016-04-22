@@ -48,7 +48,8 @@ namespace Warden.Web.Core.Services
             {
                 organization.AddWarden(iteration.WardenName);
                 await _database.Organizations().ReplaceOneAsync(x => x.Id == organizationId, organization);
-            }
+            }else if(!warden.Enabled)
+                throw new ServiceException($"Warden with name: '{iteration.WardenName}' is disabled.");
 
             var wardenIteration = new WardenIteration(iteration.WardenName, organization,
                 iteration.Ordinal, iteration.StartedAt, iteration.CompletedAt, iteration.IsValid);
