@@ -3,20 +3,18 @@
 @addTagHelper "*, Microsoft.AspNet.Mvc.TagHelpers"
 
 <div class="row card-panel">
-    <div class="s12">
+    <div class="col s12">
         <h4 class="custom-text">Organization: @Model.Name</h4>
     </div>
 </div>
 <div class="row card-panel">
-    <div class="s12">
+    <div class="col s12">
         <h5 class="custom-text">Wardens (@Model.Wardens.Count())</h5>
-        <div class="s12">
-            <a href="@Url.Action("AddWarden", new {id = Model.Id})" class="btn waves-effect waves-light custom">New Warden</a>
-        </div>
+        <a href="@Url.Action("AddWarden", new {id = Model.Id})" class="btn waves-effect waves-light custom">New Warden</a>
         <div class="collection">
             @foreach (var warden in Model.Wardens)
             {
-                <a href="@Url.Action("Details", "Dashboard", new {organizationId = Model.Id, wardenId = warden.Id})" class="collection-item">
+                <a href="@Url.Action("Details", "Warden", new {organizationId = Model.Id, wardenId = warden.Id})" class="collection-item">
                     <span class="custom-text">@warden.Name</span>
                 </a>
             }
@@ -24,11 +22,9 @@
     </div>
 </div>
 <div class="row card-panel">
-    <div class="s12">
+    <div class="col s12">
         <h5 class="custom-text">Users (@Model.Users.Count())</h5>
-        <div class="s12">
-            <a href="@Url.Action("AddUser", new {id = Model.Id})" class="btn waves-effect waves-light custom">New User</a>
-        </div>
+        <a href="@Url.Action("AddUser", new {id = Model.Id})" class="btn waves-effect waves-light custom">New User</a>
         <ul class="collection">
             @foreach (var user in Model.Users)
             {
@@ -44,7 +40,7 @@
     </div>
 </div>
 <div class="row card-panel">
-    <div class="s12">
+    <div class="col s12">
         <h5 class="custom-text">API keys (@Model.ApiKeys.Count())</h5>
         <form asp-controller="Organization" asp-action="CreateApiKey" asp-route-id="@Model.Id" asp-anti-forgery="true" method="POST">
             <button class="btn waves-effect waves-light custom" type="submit" name="action">New API key</button>

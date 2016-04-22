@@ -1,0 +1,45 @@
+﻿@using System.Threading.Tasks
+@using Warden.Web.ViewModels
+@model Warden.Web.ViewModels.WardenViewModel
+
+<div class="row card-panel">
+    <div class="col s12 m12 l12">
+        <h5 class="custom-text">Warden: @Model.Name</h5>
+    </div>
+    <div class="col s12 m2">
+        <a href="@Url.Action("Details", "Dashboard", new {organizationId = Model.OrganizationId, wardenId = Model.Id})" class="btn waves-effect waves-light custom">Dashboard</a>
+    </div>
+    <div class="col s12 m1 offset-m9">
+        @if (Model.Enabled)
+        {
+            <a href="#!" class="btn waves-effect waves-light orange lighten-2"><i class="material-icons">stop</i></a>
+        }
+        else
+        {
+            <a href="#!" class="btn waves-effect waves-light green lighten-2"><i class="material-icons">play_arrow</i></a>
+        }
+    </div>
+</div>
+<div class="row card-panel">
+    <div class="col s12">
+        <h5 class="custom-text">Iterations (@Model.Iterations.TotalResults)</h5>
+        <div class="collection">
+            @foreach (var iteration in Model.Iterations.Items)
+            {
+                <a href="@Url.Action("Iteration", "Warden", new {organizationId = Model.OrganizationId, wardenId = Model.Id, iterationId = iteration.Id})" class="collection-item">
+                    <span class="custom-text">
+                        Completed at: @iteration.CompletedAt, Watchers: @iteration.Results.Count() (@iteration.Results.Count(x => x.IsValid) valid, @iteration.Results.Count(x => !x.IsValid) invalid)
+                        @if (iteration.IsValid)
+                        {
+                            <i class="material-icons green-text lighten-2 right">thumb_up</i>
+                        }
+                        else
+                        {
+                            <i class="material-icons red-text lighten-2 right">thumb_down</i>
+                        }
+                </span>
+                </a>
+            }
+        </div>
+    </div>
+</div>

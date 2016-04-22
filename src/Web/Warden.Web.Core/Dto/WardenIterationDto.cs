@@ -7,6 +7,7 @@ namespace Warden.Web.Core.Dto
 {
     public class WardenIterationDto
     {
+        public Guid Id { get; set; }
         public string WardenName { get; set; }
         public long Ordinal { get; set; }
         public DateTime StartedAt { get; set; }
@@ -21,6 +22,7 @@ namespace Warden.Web.Core.Dto
 
         public WardenIterationDto(WardenIteration iteration)
         {
+            Id = iteration.Id;
             WardenName = iteration.Warden.Name;
             Ordinal = iteration.Ordinal;
             StartedAt = iteration.StartedAt;
