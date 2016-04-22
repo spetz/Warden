@@ -15,6 +15,7 @@ namespace Warden.Web.Core.Services
     {
         Task CreateAsync(WardenIterationDto iteration, Guid organizationId);
         Task<PagedResult<WardenIterationDto>> BrowseAsync(BrowseWardenIterations query);
+        Task<WardenIterationDto> GetAsync(Guid id);
     }
 
     public class WardenIterationService : IWardenIterationService
@@ -104,6 +105,13 @@ namespace Warden.Web.Core.Services
 
             return PagedResult<WardenIterationDto>.From(iterations,
                 iterations.Items.Select(x => new WardenIterationDto(x)));
+        }
+
+        public async Task<WardenIterationDto> GetAsync(Guid id)
+        {
+            var iteration = await _database.WardenIterations().GetByIdAsync(id);
+
+            return iteration == null ? null : new WardenIterationDto(iteration);
         }
     }
 }

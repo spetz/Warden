@@ -1,1 +1,57 @@
-﻿
+﻿@model Warden.Web.Core.Dto.WardenIterationDto
+
+<div class="row card-panel">
+    <div class="col s12">
+        <h5 class="custom-text">Warden: @Model.WardenName</h5>
+        <h5 class="custom-text">Iteration for @Model.Results.Count() watchers (@Model.Results.Count(x => x.IsValid) valid, @Model.Results.Count(x => !x.IsValid) invalid), completed at: @Model.CompletedAt
+            @if (Model.IsValid)
+            {
+                <i class="material-icons green-text lighten-2 right">thumb_up</i>
+            }
+            else
+            {
+                <i class="material-icons red-text lighten-2 right">thumb_down</i>
+            }
+        </h5>
+    </div>
+</div>
+@foreach (var result in Model.Results.OrderBy(x => x.WatcherCheckResult.WatcherType))
+{
+    <div class="row card-panel">
+
+        <div class="col s12">
+            <label>Watcher name</label>
+            <ul class="collection">
+                <li class="collection-item">@result.WatcherCheckResult.WatcherName</li>
+            </ul>
+            <label>Watcher type</label>
+            <ul class="collection">
+                <li class="collection-item">@result.WatcherCheckResult.WatcherType</li>
+            </ul>
+            <label>Is valid</label>
+            <ul class="collection">
+                <li class="collection-item">
+                    @result.WatcherCheckResult.IsValid
+                    @if (result.WatcherCheckResult.IsValid)
+                    {
+                        <i class="material-icons green-text lighten-2 right">thumb_up</i>
+                    }
+                    else
+                    {
+                        <i class="material-icons red-text lighten-2 right">thumb_down</i>
+                    }
+                </li>
+            </ul>
+            <label>Description</label>
+            <ul class="collection">
+                <li class="collection-item">@result.WatcherCheckResult.Description</li>
+            </ul>
+            <label>Completed at</label>
+            <ul class="collection">
+                <li class="collection-item">@result.CompletedAt</li>
+            </ul>
+        </div>
+    </div>
+}
+
+

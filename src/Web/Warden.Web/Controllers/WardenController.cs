@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using System.Linq;
+using Warden.Web.Core.Dto;
 using Warden.Web.Core.Queries;
 using Warden.Web.Core.Services;
 using Warden.Web.ViewModels;
@@ -25,17 +26,7 @@ namespace Warden.Web.Controllers
         [Route("{wardenId}")]
         public async Task<IActionResult> Details(Guid organizationId, Guid wardenId)
         {
-            if (organizationId == Guid.Empty)
-                return HttpNotFound();
-            var isUserInOrganization = await _organizationService.IsUserInOrganizationAsync(organizationId, UserId);
-            if (!isUserInOrganization)
-                return HttpNotFound();
-            var organization = await _organizationService.GetAsync(organizationId);
-            if (organization == null)
-                return HttpNotFound();
-            if (!organization.ApiKeys.Any())
-                return HttpNotFound();
-            var warden = organization.Wardens.FirstOrDefault(x => x.Id == wardenId);
+            var warden = await GetWardenForUserAsync(organizationId, wardenId);
             if (warden == null)
                 return HttpNotFound();
 
@@ -61,7 +52,27 @@ namespace Warden.Web.Controllers
         [Route("{wardenId}/iterations/{iterationId}")]
         public async Task<IActionResult> Iteration(Guid organizationId, Guid wardenId, Guid iterationId)
         {
-            return View();
+            var warden = await GetWardenForUserAsync(organizationId, wardenId);
+            if (warden == null)
+                return HttpNotFound();
+            var iteration = await _wardenIterationService.GetAsync(iterationId);
+            if (iteration == null)
+                return HttpNotFound();
+
+            return View(iteration);
+        }
+
+        private async Task<WardenDto> GetWardenForUserAsync(Guid organizationId, Guid wardenId)
+        {
+            if (organizationId == Guid.Empty)
+                return null;
+            var isUserInOrganization = await _organizationService.IsUserInOrganizationAsync(organizationId, UserId);
+            if (!isUserInOrganization)
+                return null;
+            var organization = await _organizationService.GetAsync(organizationId);
+            var warden = organization?.Wardens.FirstOrDefault(x => x.Id == wardenId);
+
+            return warden;
         }
     }
 }
