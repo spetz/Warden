@@ -112,6 +112,34 @@ namespace Warden.Web.Controllers
             return RedirectToAction("Details", new { id });
         }
 
+        [HttpGet]
+        [Route("{id}/wardens")]
+        public async Task<IActionResult> AddWarden(Guid id)
+        {
+            var organization = await GetOrganizationForUserAsync(id);
+            if (organization == null)
+                return HttpBadRequest($"Invalid organization id: '{id}'.");
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("{id}/wardens")]
+        public async Task<IActionResult> AddWarden(Guid id, AddWardenToOrganizationViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+                return RedirectToAction("AddWarden");
+
+            var organization = await GetOrganizationForUserAsync(id);
+            if (organization == null)
+                return HttpBadRequest($"Invalid organization id: '{id}'.");
+
+            await _organizationService.AddWardenAsync(id, viewModel.Name);
+
+            return RedirectToAction("Details", new { id });
+        }
+
         private async Task<OrganizationDto> GetOrganizationForUserAsync(Guid id)
         {
             if (id == Guid.Empty)

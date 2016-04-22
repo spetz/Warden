@@ -11,6 +11,22 @@
 </div>
 <div class="row card-panel">
     <div class="s12">
+        <h5 class="custom-text">Wardens (@Model.Wardens.Count())</h5>
+        <div class="s12">
+            <a href="@Url.Action("AddWarden", new {id = Model.Id})" class="btn waves-effect waves-light custom">New Warden</a>
+        </div>
+        <div class="collection">
+            @foreach (var warden in Model.Wardens)
+            {
+                <a href="@Url.Action("Details", "Dashboard", new {organizationId = Model.Id, wardenId = warden.Id})" class="collection-item">
+                    <span class="custom-text">@warden.Name</span>
+                </a>
+            }
+        </div>
+    </div>
+</div>
+<div class="row card-panel">
+    <div class="s12">
         <h5 class="custom-text">Users (@Model.Users.Count())</h5>
         <div class="s12">
             <a href="@Url.Action("AddUser", new {id = Model.Id})" class="btn waves-effect waves-light custom">New User</a>
@@ -27,22 +43,6 @@
                 </li>
             }
         </ul>
-    </div>
-</div>
-<div class="row card-panel">
-    <div class="s12">
-        <h5 class="custom-text">Wardens (@Model.Wardens.Count())</h5>
-        <div class="s12">
-            <a href="#!" class="btn waves-effect waves-light custom">New Warden</a>
-        </div>
-        <div class="collection">
-            @foreach (var warden in Model.Wardens)
-            {
-                <a href="@Url.Action("Details", "Dashboard", new {organizationId = Model.Id, wardenId = warden.Id})" class="collection-item">
-                    <span class="custom-text">@warden.Name</span>
-                </a>
-            }
-        </div>
     </div>
 </div>
 <div class="row card-panel">
