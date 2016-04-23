@@ -10,12 +10,14 @@
                     <div class="input-field col s12">
                         <input type="email" class="validate" asp-for="Email"/>
                         <label asp-for="Email">Email</label>
+                        <span asp-validation-for="Email"></span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
                         <input type="password" class="validate" asp-for="Password"/>
                         <label asp-for="Password">Password</label>
+                        <span asp-validation-for="Password"></span>
                     </div>
                     <div class="col s12">
                         <p>

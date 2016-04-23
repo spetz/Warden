@@ -5,6 +5,8 @@ using Microsoft.AspNet.Authentication.Cookies;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 using Warden.Web.Core.Services;
+using Warden.Web.Framework;
+using Warden.Web.Framework.Filters;
 using Warden.Web.ViewModels;
 
 namespace Warden.Web.Controllers
@@ -26,6 +28,7 @@ namespace Warden.Web.Controllers
 
         [HttpGet]
         [Route("login")]
+        [ImportModelStateFromTempData]
         public IActionResult Login()
         {
             return View();
@@ -33,11 +36,16 @@ namespace Warden.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExportModelStateToTempData]
         [Route("login")]
         public async Task<IActionResult> Login(LoginViewModel viewModel)
         {
             if (!ModelState.IsValid)
+            {
+                Notify(FlashNotificationType.Error, "Invalid credentials.");
+
                 return RedirectToAction("Login");
+            }
 
             try
             {
@@ -50,6 +58,7 @@ namespace Warden.Web.Controllers
             }
             catch (Exception ex)
             {
+                Notify(FlashNotificationType.Error, "Invalid credentials.");
                 return RedirectToAction("Login");
             }
 
@@ -58,6 +67,7 @@ namespace Warden.Web.Controllers
 
         [HttpGet]
         [Route("register")]
+        [ImportModelStateFromTempData]
         public IActionResult Register()
         {
             return View();
@@ -65,11 +75,16 @@ namespace Warden.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ExportModelStateToTempData]
         [Route("register")]
         public async Task<IActionResult> Register(RegisterViewModel viewModel)
         {
             if (!ModelState.IsValid)
+            {
+                Notify(FlashNotificationType.Error, "Invalid password and/or email.");
+
                 return RedirectToAction("Register");
+            }
 
             try
             {
@@ -77,6 +92,8 @@ namespace Warden.Web.Controllers
             }
             catch (Exception ex)
             {
+                Notify(FlashNotificationType.Error, "Invalid password and/or email already in use.");
+
                 return RedirectToAction("Register");
             }
             try

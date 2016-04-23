@@ -1,4 +1,5 @@
 ﻿@using System.Threading.Tasks
+@using Newtonsoft.Json
 @using Warden.Web.Framework
 @{
     var notificationsKey = "Notifications";
@@ -8,7 +9,7 @@
     @{
         if (TempData.ContainsKey(notificationsKey))
         {
-            var notifications = TempData[notificationsKey] as IEnumerable<KeyValuePair<FlashNotificationType, string>>;
+            var notifications = JsonConvert.DeserializeObject<List<KeyValuePair<FlashNotificationType, string>>>(TempData[notificationsKey].ToString());
             if (notifications != null)
             {
                 foreach (var notification in notifications)
