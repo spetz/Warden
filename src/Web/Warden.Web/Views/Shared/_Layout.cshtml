@@ -5,6 +5,8 @@
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="~/content/lib/materialize/dist/css/materialize.min.css" media="screen,projection"/>
     <link type="text/css" rel="stylesheet" href="~/content/css/site.min.css" media="screen,projection"/>
+    <script type="text/javascript" src="@Url.Content("~/content/lib/jquery/dist/jquery.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/content/lib/materialize/dist/js/materialize.min.js")"></script>
     @RenderSection("head", false)
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
@@ -13,8 +15,7 @@
 <div class="container">
     @RenderBody()
 </div>
-<script type="text/javascript" src="@Url.Content("~/content/lib/jquery/dist/jquery.min.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/content/lib/materialize/dist/js/materialize.min.js")"></script>
+@Html.Partial("_Notifications")
 <script type="text/javascript" src="@Url.Content("~/content/js/nav.js")"></script>
 <script type="text/javascript">
     $(function() {

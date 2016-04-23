@@ -15,6 +15,8 @@ namespace Warden.Web
             services.AddMvc();
             services.AddMvcCore().AddJsonFormatters(formatter =>
                 formatter.ContractResolver = new CamelCasePropertyNamesContractResolver());
+            services.AddCaching();
+            services.AddSession();
             services.AddScoped<IWardenIterationService, WardenIterationService>();
             services.AddScoped<IApiKeyService, ApiKeyService>();
             services.AddScoped<IOrganizationService, OrganizationService>();
@@ -37,6 +39,7 @@ namespace Warden.Web
                 options.LoginPath = "/login";
                 options.LogoutPath = "/logout";
             });
+            app.UseSession();
             app.UseMvcWithDefaultRoute();
             MongoConfigurator.Initialize();
         }

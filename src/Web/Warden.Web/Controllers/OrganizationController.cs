@@ -5,6 +5,7 @@ using Microsoft.AspNet.Mvc;
 using Warden.Web.Core.Dto;
 using Warden.Web.Core.Queries;
 using Warden.Web.Core.Services;
+using Warden.Web.Framework;
 using Warden.Web.ViewModels;
 
 namespace Warden.Web.Controllers
