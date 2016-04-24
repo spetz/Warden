@@ -24,7 +24,7 @@ namespace Warden.Web.Controllers
 
         [HttpGet]
         [Route("{wardenId}")]
-        public async Task<IActionResult> Details(Guid organizationId, Guid wardenId)
+        public async Task<IActionResult> Details(Guid organizationId, Guid wardenId, int page = 1, int results = 10)
         {
             var warden = await GetWardenForUserAsync(organizationId, wardenId);
             if (warden == null)
@@ -33,7 +33,9 @@ namespace Warden.Web.Controllers
             var iterations = await _wardenIterationService.BrowseAsync(new BrowseWardenIterations
             {
                 OrganizationId = organizationId,
-                WardenName = warden.Name
+                WardenName = warden.Name,
+                Page = page,
+                Results = results
             });
             var viewModel = new WardenViewModel
             {

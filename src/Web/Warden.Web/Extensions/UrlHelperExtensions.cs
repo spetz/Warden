@@ -1,90 +1,113 @@
-﻿//using Microsoft.AspNet.Mvc;
-//using Microsoft.AspNet.Mvc.Rendering;
-//using Microsoft.AspNet.Routing;
-//using Warden.Web.Core.Domain;
+﻿using System.Collections.Generic;
+using Microsoft.AspNet.Html.Abstractions;
+using Microsoft.AspNet.Mvc;
+using Microsoft.AspNet.Mvc.Rendering;
+using Warden.Web.Core.Domain;
+using Warden.Web.Core.Extensions;
 
-//namespace Warden.Web.Extensions
-//{
-//    public static class UrlHelperExtensions
-//    {
-//        public static HtmlString Paginate(this IUrlHelper urlHelper, PagedResultBase viewModel,
-//            string routeName, PagedQueryBase query = null)
-//        {
-//            var listTag = new TagBuilder("ul");
-//            listTag.AddCssClass("pagination");
-//            var results = viewModel.ResultsPerPage;
+namespace Warden.Web.Extensions
+{
+    public static class UrlHelperExtensions
+    {
+        public static IHtmlContent Paginate(this IUrlHelper urlHelper, PagedResultBase viewModel,
+            string action) => urlHelper.Paginate(viewModel, action, string.Empty);
 
-//            var previousPageItem = new TagBuilder("li");
-//            var previousPageTag = new TagBuilder("a");
-//            var previousPageIcon = new TagBuilder("i");
-//            previousPageIcon.AddCssClass("material-icons");
-//            previousPageIcon.SetInnerText("chevron_left");
-//            if (viewModel.CurrentPage > 1)
-//            {
-//                previousPageTag.MergeAttribute("href", QueryUrl(urlHelper, routeName,
-//                    viewModel.CurrentPage - 1, results, query));
-//            }
-//            else
-//            {
-//                previousPageItem.AddCssClass("disabled");
-//            }
+        public static IHtmlContent Paginate(this IUrlHelper urlHelper, PagedResultBase viewModel,
+            string action, string controller)
+        {
+            var listTag = new TagBuilder("ul");
+            listTag.AddCssClass("pagination");
+            var previousPageTag = GetPreviousPageTag(urlHelper, viewModel, action, controller);
+            listTag.InnerHtml.Append(previousPageTag);
+            var pageTags = GetPageTags(urlHelper, viewModel, action, controller);
+            foreach (var pageTag in pageTags)
+            {
+                listTag.InnerHtml.Append(pageTag);
+            }
+            var nextPageTag = GetNextPageTag(urlHelper, viewModel, action, controller);
+            listTag.InnerHtml.Append(nextPageTag);
 
-//            previousPageTag.InnerHtml += previousPageIcon.ToString();
-//            previousPageItem.InnerHtml += previousPageTag.ToString();
-//            listTag.InnerHtml += previousPageItem.ToString();
-//            var totalPages = viewModel.TotalPages <= 0 ? 1 : viewModel.TotalPages;
-//            var currentPage = viewModel.CurrentPage <= 0 ? 1 : viewModel.CurrentPage;
+            return listTag;
+        }
 
-//            for (var i = 1; i <= totalPages; i++)
-//            {
-//                var pageItem = new TagBuilder("li");
-//                var pageTag = new TagBuilder("a");
-//                pageTag.MergeAttribute("href", QueryUrl(urlHelper, routeName, i, results, query));
-//                pageTag.AddCssClass("item");
-//                var pageClass = currentPage == i ? "active" : "waves-effect";
-//                pageItem.AddCssClass(pageClass);
+        private static TagBuilder GetPreviousPageTag(this IUrlHelper urlHelper, PagedResultBase viewModel,
+            string action, string controller)
+        {
+            var listItemTag = new TagBuilder("li");
+            var linkTag = new TagBuilder("a");
+            var iconTag = new TagBuilder("i");
+            iconTag.AddCssClass("material-icons");
+            iconTag.InnerHtml.Append("chevron_left");
+            if (viewModel.CurrentPage > 1)
+            {
+                linkTag.MergeAttribute("href", GetUrl(urlHelper, action, controller,
+                    viewModel.CurrentPage - 1, viewModel.ResultsPerPage));
+            }
+            else
+            {
+                listItemTag.AddCssClass("disabled");
+            }
 
-//                pageTag.SetInnerText(i.ToString());
-//                pageItem.InnerHtml += pageTag.ToString();
-//                listTag.InnerHtml += pageItem.ToString();
-//            }
+            linkTag.InnerHtml.Append(iconTag);
+            listItemTag.InnerHtml.Append(linkTag);
 
+            return listItemTag;
+        }
 
-//            var nextPageItem = new TagBuilder("li");
-//            var nextPageTag = new TagBuilder("a");
-//            var nextPageIcon = new TagBuilder("i");
-//            nextPageIcon.AddCssClass("material-icons");
-//            nextPageIcon.SetInnerText("chevron_right");
-//            if (currentPage < totalPages)
-//            {
-//                nextPageTag.MergeAttribute("href", QueryUrl(urlHelper, routeName,
-//                    currentPage + 1, results, query));
-//            }
-//            else
-//            {
-//                nextPageItem.AddCssClass("disabled");
-//            }
+        private static IEnumerable<TagBuilder> GetPageTags(this IUrlHelper urlHelper, PagedResultBase viewModel,
+            string action, string controller)
+        {
+            var totalPages = viewModel.TotalPages <= 0 ? 1 : viewModel.TotalPages;
+            var currentPage = viewModel.CurrentPage <= 0 ? 1 : viewModel.CurrentPage;
+            for (var i = 1; i <= totalPages; i++)
+            {
+                var isCurrentPage = currentPage == i;
+                var listItemTag = new TagBuilder("li");
+                var linkTag = new TagBuilder("a");
+                linkTag.MergeAttribute("href", GetUrl(urlHelper, action, controller, i, viewModel.ResultsPerPage));
+                linkTag.AddCssClass("item");
+                if (isCurrentPage)
+                    linkTag.AddCssClass("white-text");
 
-//            nextPageTag.InnerHtml += nextPageIcon.ToString();
-//            nextPageItem.InnerHtml += nextPageTag.ToString();
-//            listTag.InnerHtml += nextPageItem.ToString();
+                var pageClass = isCurrentPage ? "custom" : "waves-effect";
+                listItemTag.AddCssClass(pageClass);
 
-//            return new HtmlString(listTag.ToString());
-//        }
+                linkTag.InnerHtml.Append(i.ToString());
+                listItemTag.InnerHtml.Append(linkTag);
 
-//        private static string QueryUrl(IUrlHelper urlHelper, string routeName,
-//            int page, int results, PagedQueryBase query = null)
-//        {
-//            if (query == null)
-//                return urlHelper.RouteUrl(routeName, new { page, results });
+                yield return listItemTag;
+            }
+        }
 
-//            var args = new RouteValueDictionary
-//            {
-//                ["page"] = page,
-//                ["results"] = results
-//            };
+        private static TagBuilder GetNextPageTag(this IUrlHelper urlHelper, PagedResultBase viewModel,
+            string action, string controller)
+        {
+            var totalPages = viewModel.TotalPages <= 0 ? 1 : viewModel.TotalPages;
+            var currentPage = viewModel.CurrentPage <= 0 ? 1 : viewModel.CurrentPage;
+            var listItemTag = new TagBuilder("li");
+            var linkTag = new TagBuilder("a");
+            var iconTag = new TagBuilder("i");
+            iconTag.AddCssClass("material-icons");
+            iconTag.InnerHtml.Append("chevron_right");
+            if (currentPage < totalPages)
+            {
+                linkTag.MergeAttribute("href", GetUrl(urlHelper, action, controller,
+                    currentPage + 1, viewModel.ResultsPerPage));
+            }
+            else
+            {
+                listItemTag.AddCssClass("disabled");
+            }
 
-//            return urlHelper.RouteUrl(routeName, args);
-//        }
-//    }
-//}
+            linkTag.InnerHtml.Append(iconTag);
+            listItemTag.InnerHtml.Append(linkTag);
+
+            return listItemTag;
+        }
+
+        private static string GetUrl(IUrlHelper urlHelper, string action, string controller,
+            int page, int results) => controller.Empty()
+                ? urlHelper.Action(action, new {page, results})
+                : urlHelper.Action(action, controller, new {page, results});
+    }
+}

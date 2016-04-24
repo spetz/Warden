@@ -1,4 +1,5 @@
 ﻿@using System.Threading.Tasks
+@using Warden.Web.Extensions
 @using Warden.Web.ViewModels
 @model Warden.Web.ViewModels.WardenViewModel
 @addTagHelper "*, Microsoft.AspNet.Mvc.TagHelpers"
@@ -51,3 +52,4 @@
         </div>
     </div>
 </div>
+@Url.Paginate(Model.Iterations, "Details")
