@@ -13,22 +13,22 @@ namespace Warden.Web.Framework.Filters
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
             var tempData = filterContext.HttpContext.RequestServices.GetService<ITempDataDictionary>();
-            if (!filterContext.ModelState.IsValid)
-            {
-                if (filterContext.Result is RedirectToActionResult ||
-                    filterContext.Result is RedirectResult ||
-                    filterContext.Result is RedirectToRouteResult)
-                {
-                    var errors = filterContext.ModelState.ToList()
-                        .Where(item => item.Value.Errors.Any())
-                        .Select(item => new KeyValuePair<string, string>(item.Key, item.Value.Errors[0].ErrorMessage))
-                        .ToList();
+            if (filterContext.ModelState.IsValid)
+                return;
+            if (IsInvalidResult(filterContext))
+                return;
 
-                    tempData[ErrorsKey] = errors.ToJson();
-                }
-            }
+            var values = filterContext.ModelState.ToList()
+                .Select(item => new KeyValuePair<string, Entry>(item.Key, new Entry(item.Value)))
+                .ToDictionary(x => x.Key, x => x.Value);
+            tempData[ModelEntriesKey] = values.ToJson();
 
             base.OnActionExecuted(filterContext);
         }
+
+        private static bool IsInvalidResult(ActionExecutedContext context)
+            => !(context.Result is RedirectToActionResult) &&
+               !(context.Result is RedirectResult) &&
+               !(context.Result is RedirectToRouteResult);
     }
 }

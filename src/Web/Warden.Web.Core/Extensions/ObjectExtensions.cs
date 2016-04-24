@@ -25,9 +25,9 @@ namespace Warden.Web.Core.Extensions
             }
         };
 
-        public static string ToJson<T>(this T data, JsonSerializerSettings serializerSettings = null)
+        public static string ToJson<T>(this T value, JsonSerializerSettings serializerSettings = null)
         {
-            return JsonConvert.SerializeObject(data, serializerSettings ?? DefaultJsonSerializerSettings);
+            return JsonConvert.SerializeObject(value, serializerSettings ?? DefaultJsonSerializerSettings);
         }
 
         public static T FromJson<T>(this string value, JsonSerializerSettings serializerSettings = null)

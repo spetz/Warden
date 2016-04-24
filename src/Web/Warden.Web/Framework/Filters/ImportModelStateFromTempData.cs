@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Filters;
+using Microsoft.AspNet.Mvc.ModelBinding;
 using Microsoft.AspNet.Mvc.ViewFeatures;
 using Microsoft.Extensions.DependencyInjection;
 using Warden.Web.Core.Extensions;
@@ -12,26 +12,25 @@ namespace Warden.Web.Framework.Filters
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
             var tempData = filterContext.HttpContext.RequestServices.GetService<ITempDataDictionary>();
-            if(!tempData.ContainsKey(ErrorsKey))
-            {
-                base.OnActionExecuted(filterContext);
-
+            if (!tempData.ContainsKey(ModelEntriesKey))
                 return;
-            }
 
-            var errors = tempData[ErrorsKey].ToString().FromJson<List<KeyValuePair<string, string>>>();
-            if (errors != null)
+            var modelEntries = tempData[ModelEntriesKey].ToString().FromJson<Dictionary<string, Entry>>();
+            if (modelEntries == null)
+                return;
+
+            foreach (var modelEntry in modelEntries)
             {
-                if (filterContext.Result is ViewResult)
+                filterContext.ModelState.Add(modelEntry.Key, new ModelStateEntry
                 {
-                    foreach (var error in errors)
-                    {
-                        filterContext.ModelState.AddModelError(error.Key, error.Value);
-                    }
-                }
-                else
+                    AttemptedValue = modelEntry.Value.AttemptedValue,
+                    RawValue = modelEntry.Value.RawValue,
+                    ValidationState = modelEntry.Value.State
+                });
+
+                foreach (var error in modelEntry.Value.Errors)
                 {
-                    tempData.Remove(ErrorsKey);
+                    filterContext.ModelState.AddModelError(modelEntry.Key, error);
                 }
             }
 
