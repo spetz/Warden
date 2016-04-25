@@ -1,20 +1,12 @@
 ﻿@model Warden.Web.ViewModels.DashboardViewModel
 <div class="row">
-    <div class="input-field col s12 m6 ">
-        <select class="icons">
-            <option value="" disabled selected>Choose organization</option>
-            <option value="" data-icon="" class="circle">example 1</option>
-            <option value="" data-icon="" class="circle">example 2</option>
-            <option value="" data-icon="" class="circle">example 1</option>
+    <div class="input-field col s12 m6">
+        <select class="icons" data-bind="options: organizations, optionsText: 'name', value: selectedOrganization">
         </select>
         <label>Organizations</label>
     </div>
     <div class="input-field col s12 m6">
-        <select class="icons">
-            <option value="" disabled selected>Choose warden</option>
-            <option value="" data-icon="" class="left circle">example 1</option>
-            <option value="" data-icon="" class="left circle">example 2</option>
-            <option value="" data-icon="" class="left circle">example 3</option>
+        <select class="icons" data-bind="options: selectedOrganization().wardens, optionsText: 'name', value: selectedWarden">
         </select>
         <label>Wardens</label>
     </div>
@@ -105,7 +97,6 @@
     <script type="text/javascript" src="@Url.Content("~/content/js/dashboard.js")"></script>
     <script type="text/javascript">
         $(function () {
-            $('select').material_select();
             dashboard.init({
                 organizationId: "@Model.OrganizationId",
                 wardenName: "@Model.WardenName",

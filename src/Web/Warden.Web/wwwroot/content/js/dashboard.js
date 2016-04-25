@@ -21,6 +21,15 @@
     var mainChart = null;
     var watchersChart = null;
 
+    self.organizations = ko.observableArray([createEmptyOrganization()]);
+    self.selectedOrganization = ko.observable();
+    self.selectedWarden = ko.observable();
+    self.selectedOrganization.subscribe(function (organization) {
+    });
+    self.selectedWarden.subscribe(function (warden) {
+      $('select').material_select();
+    });
+
     self.totalUptime = ko.observable(99);
     self.totalUptimeFormatted = ko.computed(function () {
       return self.totalUptime().toFixed(2) + "%";
@@ -56,7 +65,28 @@
     };
     self.selectedWardenCheckResult = ko.observable(emptyWardenCheckResult);
 
+    function setDefaultWarden() {
+      self.organizations.remove(function (organization) {
+        return organization.name() === "";
+      });
+
+      var selectedOrganization = self.organizations().filter(function (organization) {
+        return organization.id() === organizationId;
+      })[0];
+
+      var selectedWarden = selectedOrganization.wardens().filter(function (warden) {
+        return warden.name() === wardenName;
+      })[0];
+      self.selectedOrganization(selectedOrganization);
+      self.selectedWarden(selectedWarden);
+    };
+
     getOrganizations().then(function (organizations) {
+      organizations.forEach(function(organization) {
+        self.organizations.push(new Organization(organization));
+      });
+      setDefaultWarden();
+      $('select').material_select();
     });
 
     getIterations()
@@ -226,7 +256,16 @@
     };
   };
 
+  function createEmptyOrganization() {
+    return new Organization({
+      id: "",
+      name: "",
+      wardens: []
+    });
+  }
+
   function Organization(organization) {
+    var self = this;
     self.id = ko.observable(organization.id);
     self.name = ko.observable(organization.name);
     self.wardens = ko.observableArray([]);
@@ -236,6 +275,7 @@
   };
 
   function WardenItem(warden) {
+    var self = this;
     self.id = ko.observable(warden.id);
     self.name = ko.observable(warden.name);
     self.enabled = ko.observable(warden.name);
@@ -243,7 +283,6 @@
 
   function ResourceItem(name, percent) {
     var self = this;
-
     self.name = ko.observable(name);
     self.percent = ko.observable(percent);
     self.infoFormatted = ko.computed(function () {
