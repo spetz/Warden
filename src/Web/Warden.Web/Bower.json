@@ -4,6 +4,7 @@
   "dependencies": {
     "jquery": "^2.2.3",
     "materialize": "^0.97.6",
-    "knockout": "^3.4.0"
+    "knockout": "^3.4.0",
+    "signalr": "2.2.0"
   }
 }

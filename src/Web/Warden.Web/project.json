@@ -14,10 +14,12 @@
     "Microsoft.AspNet.StaticFiles": "1.0.0-rc1-final",
     "Microsoft.AspNet.Diagnostics": "1.0.0-rc1-final",
     "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-rc1-final",
+    "Microsoft.AspNet.SignalR.Server": "3.0.0-rc1-final",
     "MongoDB.Driver": "2.2.3",
     "Microsoft.CSharp": "4.0.0",
     "Microsoft.AspNet.Mvc.WebApiCompatShim": "6.0.0-rc1-final",
-    "Warden.Web.Core": "1.0.0-*"
+    "Warden.Web.Core": "1.0.0-*",
+    "Newtonsoft.Json": "8.0.3"
   },
 
   "commands": {

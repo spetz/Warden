@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using Newtonsoft.Json.Serialization;
 using Warden.Web.Core.Mongo;
 using Warden.Web.Core.Services;
+using Microsoft.AspNet.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Warden.Web
 {
@@ -17,6 +18,7 @@ namespace Warden.Web
                 formatter.ContractResolver = new CamelCasePropertyNamesContractResolver());
             services.AddCaching();
             services.AddSession();
+            services.AddSignalR();
             services.AddScoped<IWardenIterationService, WardenIterationService>();
             services.AddScoped<IApiKeyService, ApiKeyService>();
             services.AddScoped<IOrganizationService, OrganizationService>();
@@ -26,7 +28,7 @@ namespace Warden.Web
             services.AddScoped(provider => provider.GetService<MongoClient>().GetDatabase("Warden"));
         }
 
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             app.UseDeveloperExceptionPage();
             app.UseIISPlatformHandler();
@@ -40,6 +42,7 @@ namespace Warden.Web
                 options.LogoutPath = "/logout";
             });
             app.UseSession();
+            app.UseSignalR();
             app.UseMvcWithDefaultRoute();
             MongoConfigurator.Initialize();
         }
