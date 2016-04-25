@@ -9,7 +9,7 @@ using Warden.Web.Core.Services;
 
 namespace Warden.Web.Api
 {
-    [Route("api/organizations/{organizationId}/wardens/iterations")]
+    [Route("api/organizations/{organizationId}/wardens/{wardenName}/iterations")]
     public class WardenIterationController : ApiController
     {
         private readonly IWardenIterationService _wardenIterationService;
@@ -25,19 +25,19 @@ namespace Warden.Web.Api
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Guid organizationId, [FromBody] WardenIterationDto iteration)
+        public async Task<IActionResult> Create(Guid organizationId, string wardenName, [FromBody] WardenIterationDto iteration)
         {
             var isAuthorized = await _organizationService.IsUserInOrganizationAsync(organizationId, UserId);
             if (!isAuthorized)
                 return HttpUnauthorized();
 
-            await _wardenIterationService.CreateAsync(iteration, UserId);
+            await _wardenIterationService.CreateAsync(iteration, organizationId);
 
             return new HttpStatusCodeResult(204);
         }
 
         [HttpGet]
-        public async Task<IEnumerable<WardenIterationDto>> GetAll(Guid organizationId, [FromUri] BrowseWardenIterations query)
+        public async Task<IEnumerable<WardenIterationDto>> GetAll(Guid organizationId, string wardenName, [FromUri] BrowseWardenIterations query)
         {
             var isAuthorized = await _organizationService.IsUserInOrganizationAsync(organizationId, UserId);
             if (!isAuthorized)
@@ -47,9 +47,9 @@ namespace Warden.Web.Api
                 return null;
             }
 
-            var pagedResult = await _wardenIterationService.BrowseAsync(query);
+            var iterations = await _wardenIterationService.BrowseAsync(query);
 
-            return pagedResult.Items;
+            return iterations.Items;
         }
     }
 }

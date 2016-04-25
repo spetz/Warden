@@ -78,7 +78,9 @@ namespace Warden.Examples.Console
                 //            integrations.SendGrid().SendEmailAsync("Everything is up and running again!"));
                 //})
                 //Set proper URL of the Warden Web API
-                .IntegrateWithHttpApi("http://localhost:11223/api", "SqCN0EzeqWYR4QZ4qc8EPif4zn+ge08t+BeqDSqY1exSKeGoexAYXnzfT2jY3q2/gRG0Q4oymg==")
+                .IntegrateWithHttpApi("http://localhost:11223/api",
+                "yroWbGkozycDLMI7+Jkyw0FzJv/O6xHzhR8+DcKTNEQECZHFBFmBbYCKJ2wiHYI=",
+                "20afbd7c-f803-4a2d-be64-640776930930")
                 .SetGlobalWatcherHooks(hooks =>
                 {
                     hooks.OnStart(check => GlobalHookOnStart(check))
@@ -89,7 +91,8 @@ namespace Warden.Examples.Console
                 .SetHooks((hooks, integrations) =>
                 {
                     hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration))
-                        .OnIterationCompletedAsync(iteration => integrations.HttpApi().PostAsync("/wardens/iterations", iteration))
+                        .OnIterationCompletedAsync(iteration => integrations.HttpApi()
+                            .PostIterationToWardenApiAsync(iteration))
                         .OnError(exception => System.Console.WriteLine(exception));
                 })
                 .Build();

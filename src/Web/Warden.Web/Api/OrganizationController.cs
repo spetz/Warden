@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using Warden.Web.Core.Dto;
+using Warden.Web.Core.Queries;
 using Warden.Web.Core.Services;
 
 namespace Warden.Web.Api
@@ -17,14 +19,15 @@ namespace Warden.Web.Api
         }
 
         [HttpGet]
-        [Route("current")]
-        public async Task<OrganizationDto> Get()
+        [Route("")]
+        public async Task<IEnumerable<OrganizationDto>> GetAll()
         {
-            var organization = await _organizationService.GetAsync(UserId);
-            if (organization != null) return organization;
-            Response.StatusCode = 404;
+            var organizations = await _organizationService.BrowseAsync(new BrowseOrganizations
+            {
+                UserId = UserId
+            });
 
-            return null;
+            return organizations.Items;
         }
     }
 }

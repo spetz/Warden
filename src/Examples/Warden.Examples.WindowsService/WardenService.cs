@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Warden.Configurations;
 using Warden.Integrations.Api;
-using Warden.Integrations.SendGrid;
 using Warden.Watchers;
 using Warden.Watchers.Disk;
 using Warden.Watchers.MongoDb;
@@ -94,7 +93,9 @@ namespace Warden.Examples.WindowsService
                 //            integrations.SendGrid().SendEmailAsync("Everything is up and running again!"));
                 //})
                 //Set proper URL of the Warden Web API
-                .IntegrateWithHttpApi("http://localhost:11223/api")
+                .IntegrateWithHttpApi("http://localhost:11223/api",
+                "yroWbGkozycDLMI7+Jkyw0FzJv/O6xHzhR8+DcKTNEQECZHFBFmBbYCKJ2wiHYI=",
+                "20afbd7c-f803-4a2d-be64-640776930930")
                 .SetGlobalWatcherHooks(hooks =>
                 {
                     hooks.OnStart(check => GlobalHookOnStart(check))
@@ -105,7 +106,7 @@ namespace Warden.Examples.WindowsService
                 .SetHooks((hooks, integrations) =>
                 {
                     hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration))
-                        .OnIterationCompletedAsync(iteration => integrations.HttpApi().PostAsync("/data/iterations", iteration))
+                        .OnIterationCompletedAsync(iteration => integrations.HttpApi().PostIterationToWardenApiAsync(iteration))
                         .OnError(exception => System.Console.WriteLine(exception));
                 })
                 .Build();

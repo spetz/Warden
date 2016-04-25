@@ -1,9 +1,11 @@
 ﻿var dashboard = (function() {
 
+  var organizationId = "";
   var wardenName = "";
   var apiKey = "";
 
-  var init = function(options) {
+  var init = function (options) {
+    organizationId = options.organizationId || "";
     wardenName = options.wardenName || "";
     apiKey = options.apiKey || "";
     var viewModel = new ViewModel();
@@ -54,7 +56,7 @@
     };
     self.selectedWardenCheckResult = ko.observable(emptyWardenCheckResult);
 
-    getOrganization().then(function(organization) {
+    getOrganizations().then(function (organizations) {
     });
 
     getIterations()
@@ -251,21 +253,21 @@
 
   function getIterations() {
     return $.ajax({
-      url: '/api/wardens/iterations',
+      url: '/api/organizations/' + organizationId + '/wardens/' + wardenName + '/iterations',
       headers: {
         "X-Api-Key": apiKey
       },
       method: 'GET',
-      data: { wardenName, results: 10 },
+      data: { results: 10 },
       success: function(response) {
         return response;
       }
     });
   };
 
-  function getOrganization() {
+  function getOrganizations() {
     return $.ajax({
-        url: '/api/organizations/current',
+        url: '/api/organizations',
         headers: {
         "X-Api-Key": apiKey
       },
