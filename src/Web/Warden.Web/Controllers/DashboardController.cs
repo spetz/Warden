@@ -55,15 +55,17 @@ namespace Warden.Web.Controllers
             if (organizationId == Guid.Empty)
                 return HttpNotFound();
             var isUserInOrganization = await _organizationService.IsUserInOrganizationAsync(organizationId, UserId);
-            if(!isUserInOrganization)
+            if (!isUserInOrganization)
                 return HttpNotFound();
             var organization = await _organizationService.GetAsync(organizationId);
-            if(organization == null)
-                return HttpNotFound();
-            if(!organization.ApiKeys.Any())
+            if (organization == null)
                 return HttpNotFound();
             var warden = organization.Wardens.FirstOrDefault(x => x.Id == wardenId);
-            if(warden == null)
+            if (warden == null)
+                return HttpNotFound();
+
+            var user = await _userService.GetAsync(UserId);
+            if(!user.ApiKeys.Any())
                 return HttpNotFound();
 
             await _userService.SetRecentlyViewedWardenInOrganizationAsync(UserId, organizationId, wardenId);
@@ -73,7 +75,7 @@ namespace Warden.Web.Controllers
                 OrganizationName = organization.Name,
                 WardenId = warden.Id,
                 WardenName = warden.Name,
-                ApiKey = organization.ApiKeys.First()
+                ApiKey = user.ApiKeys.First()
             };
 
             return View(viewModel);

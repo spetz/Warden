@@ -11,7 +11,8 @@ namespace Warden.Web.Core.Services
     public interface IApiKeyService
     {
         Task<ApiKey> GetAsync(string key);
-        Task CreateAsync(Guid organizationId);
+        Task CreateAsync(Guid id);
+        Task CreateAsync(string email);
         Task<IEnumerable<string>> GetAllForOrganizationAsync(Guid organizationId);
     }
 
@@ -34,12 +35,25 @@ namespace Warden.Web.Core.Services
             return apiKey;
         }
 
-        public async Task CreateAsync(Guid organizationId)
+        public async Task CreateAsync(Guid id)
         {
-            var organization = await _database.Organizations().GetByIdAsync(organizationId);
-            if (organization == null)
-                throw new ServiceException("Can not create an API key without organization.");
+            var user = await _database.Users().GetByIdAsync(id);
+            if (user == null)
+                throw new ServiceException($"User has not been found for id: '{id}'.");
 
+            await CreateAsync(user);
+        }
+
+        public async Task CreateAsync(string email)
+        {
+            var user = await _database.Users().GetByEmailAsync(email);
+            if (user == null)
+                throw new ServiceException($"User has not been found for email: '{email}'.");
+
+            await CreateAsync(user);
+        }
+        private async Task CreateAsync(User user)
+        {
             var isValid = false;
             var currentTry = 0;
             var key = string.Empty;
@@ -53,16 +67,16 @@ namespace Warden.Web.Core.Services
                 currentTry++;
             }
 
-            if(!isValid)
+            if (!isValid)
                 throw new ServiceException("Could not create an API key, please try again.");
 
-            var apiKey = new ApiKey(key, organization);
+            var apiKey = new ApiKey(key, user);
             await _database.ApiKeys().InsertOneAsync(apiKey);
         }
 
         public async Task<IEnumerable<string>> GetAllForOrganizationAsync(Guid organizationId)
         {
-            var apiKey = await _database.ApiKeys().GetAllForOrganizationAsync(organizationId);
+            var apiKey = await _database.ApiKeys().GetAllForUserAsync(organizationId);
 
             return apiKey.Select(x => x.Key);
         }

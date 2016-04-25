@@ -99,9 +99,8 @@ namespace Warden.Web.Controllers
             try
             {
                 var user = await _userService.GetAsync(viewModel.Email);
+                await _apiKeyService.CreateAsync(viewModel.Email);
                 await _organizationService.CreateDefaultAsync(user.Id);
-                var organization = await _organizationService.GetDefaultAsync(user.Id);
-                await _apiKeyService.CreateAsync(organization.Id);
             }
             catch (Exception ex)
             {

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Warden.Web.Core.Domain;
 
 namespace Warden.Web.Core.Dto
@@ -10,6 +12,7 @@ namespace Warden.Web.Core.Dto
         public Role Role { get; set; }
         public Guid RecentlyViewedOrganizationId { get; set; }
         public Guid RecentlyViewedWardenId { get; set; }
+        public IEnumerable<string> ApiKeys { get; set; }
 
         public UserDto()
         {
@@ -22,6 +25,7 @@ namespace Warden.Web.Core.Dto
             Role = user.Role;
             RecentlyViewedOrganizationId = user.RecentlyViewedOrganizationId;
             RecentlyViewedWardenId = user.RecentlyViewedWardenId;
+            ApiKeys = Enumerable.Empty<string>();
         }
     }
 }

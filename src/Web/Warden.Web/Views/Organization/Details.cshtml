@@ -39,26 +39,3 @@
         </ul>
     </div>
 </div>
-<div class="row card-panel">
-    <div class="col s12">
-        <h5 class="custom-text">API keys (@Model.ApiKeys.Count())</h5>
-        <form asp-controller="Organization" asp-action="CreateApiKey" asp-route-id="@Model.Id" asp-anti-forgery="true" method="POST">
-            <button class="btn waves-effect waves-light custom" type="submit" name="action">New API key</button>
-        </form>
-        <ul class="collection">
-            @foreach (var apiKey in Model.ApiKeys)
-            {
-                <li class="collection-item custom-text">
-                    <div class="row">
-                        <div class="col s12 m11 l11">
-                            @apiKey
-                        </div>
-                        <div class="col s12 m1 l1">
-                            <i class="material-icons dp48 right">delete</i>
-                        </div>
-                    </div>
-                </li>
-            }
-        </ul>
-    </div>
-</div>

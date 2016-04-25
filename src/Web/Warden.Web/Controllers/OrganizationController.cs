@@ -67,24 +67,8 @@ namespace Warden.Web.Controllers
 
             await _organizationService.CreateAsync(viewModel.Name, UserId);
             var organization = await _organizationService.GetAsync(viewModel.Name, UserId);
-            await _apiKeyService.CreateAsync(organization.Id);
 
             return RedirectToAction("Details", new {id = organization.Id});
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [ExportModelStateToTempData]
-        [Route("{id}/api-keys")]
-        public async Task<IActionResult> CreateApiKey(Guid id)
-        {
-            var organization = await GetOrganizationForUserAsync(id);
-            if (organization == null)
-                return HttpBadRequest($"Invalid organization id: '{id}'.");
-
-            await _apiKeyService.CreateAsync(id);
-
-            return RedirectToAction("Details", new {id});
         }
 
         [HttpGet]

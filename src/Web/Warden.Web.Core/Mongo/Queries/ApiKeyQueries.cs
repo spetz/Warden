@@ -23,14 +23,14 @@ namespace Warden.Web.Core.Mongo.Queries
             return await keys.AsQueryable().FirstOrDefaultAsync(x => x.Key == key);
         }
 
-        public static async Task<IEnumerable<ApiKey>> GetAllForOrganizationAsync(this IMongoCollection<ApiKey> keys,
-            Guid organizationId)
+        public static async Task<IEnumerable<ApiKey>> GetAllForUserAsync(this IMongoCollection<ApiKey> keys,
+            Guid userId)
         {
-            if (organizationId == Guid.Empty)
+            if (userId == Guid.Empty)
                 return Enumerable.Empty<ApiKey>();
 
             return await keys.AsQueryable()
-                .Where(x => x.OrganizationId == organizationId)
+                .Where(x => x.UserId == userId)
                 .ToListAsync();
         }
 

@@ -41,7 +41,7 @@ namespace Warden.Web.Core.Services
         {
             var organization = await _database.Organizations().GetByIdAsync(organizationId);
 
-            return await GetOrganizationWithApiKeysAsync(organization);
+            return  GetOrganizationDto(organization);
         }
 
         public async Task<OrganizationDto> GetDefaultAsync(Guid ownerId)
@@ -52,20 +52,12 @@ namespace Warden.Web.Core.Services
         {
             var organization = await _database.Organizations().GetByNameForOwnerAsync(name, ownerId);
 
-            return await GetOrganizationWithApiKeysAsync(organization);
+            return  GetOrganizationDto(organization);
         }
 
-        private async Task<OrganizationDto> GetOrganizationWithApiKeysAsync(Organization organization)
+        private OrganizationDto GetOrganizationDto(Organization organization)
         {
-            if (organization == null)
-                return null;
-
-            var apiKeys = await _database.ApiKeys().GetAllForOrganizationAsync(organization.Id);
-
-            return new OrganizationDto(organization)
-            {
-                ApiKeys = apiKeys.Select(x => x.Key)
-            };
+            return organization == null ? null : new OrganizationDto(organization);
         }
 
         public async Task<PagedResult<OrganizationDto>> BrowseAsync(BrowseOrganizations query)

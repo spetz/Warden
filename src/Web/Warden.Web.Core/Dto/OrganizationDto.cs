@@ -13,7 +13,6 @@ namespace Warden.Web.Core.Dto
         public bool AutoRegisterNewWarden { get; set; }
         public IEnumerable<UserInOrganizationDto> Users { get; set; }
         public IEnumerable<WardenDto> Wardens { get; set; }
-        public IEnumerable<string> ApiKeys { get; set; }
 
         public OrganizationDto()
         {
@@ -27,7 +26,6 @@ namespace Warden.Web.Core.Dto
             AutoRegisterNewWarden = organization.AutoRegisterNewWarden;
             Users = organization.Users.Select(x => new UserInOrganizationDto(x));
             Wardens = organization.Wardens.Select(x => new WardenDto(x));
-            ApiKeys = Enumerable.Empty<string>();
         }
     }
 }

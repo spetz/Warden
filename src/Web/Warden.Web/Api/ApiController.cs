@@ -33,7 +33,7 @@ namespace Warden.Web.Api
                 context.HttpContext.Response.StatusCode = 401;
                 return;
             }
-            OrganizationId = apiKey.OrganizationId;
+            OrganizationId = apiKey.UserId;
             await next();
         }
     }

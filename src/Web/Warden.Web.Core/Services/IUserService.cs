@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using MongoDB.Driver;
+using System.Linq;
 using Warden.Web.Core.Domain;
 using Warden.Web.Core.Dto;
 using Warden.Web.Core.Extensions;
@@ -32,14 +33,27 @@ namespace Warden.Web.Core.Services
         {
             var user = await _database.Users().GetByEmailAsync(email);
 
-            return user == null ? null : new UserDto(user);
+            return await GetUserWithApiKeysAsync(user);
         }
 
         public async Task<UserDto> GetAsync(Guid id)
         {
             var user = await _database.Users().GetByIdAsync(id);
 
-            return user == null ? null : new UserDto(user);
+            return await GetUserWithApiKeysAsync(user);
+        }
+
+        private async Task<UserDto> GetUserWithApiKeysAsync(User user)
+        {
+            if (user == null)
+                return null;
+
+            var apiKeys = await _database.ApiKeys().GetAllForUserAsync(user.Id);
+
+            return new UserDto(user)
+            {
+                ApiKeys = apiKeys.Select(x => x.Key)
+            };
         }
 
         public async Task RegisterAsync(string email, string password, Role role = Role.User)
