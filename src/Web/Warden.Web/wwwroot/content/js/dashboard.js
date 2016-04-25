@@ -8,6 +8,7 @@
     organizationId = options.organizationId || "";
     wardenName = options.wardenName || "";
     apiKey = options.apiKey || "";
+
     var viewModel = new ViewModel();
     ko.applyBindings(viewModel);
   };
@@ -102,26 +103,24 @@
         allIterations.push(iterations);
         displayMainChart();
         renderWatchersChart(iterations[0]);
-        setTimeout(updateMainChart, 5000);
       });
 
-    function updateMainChart() {
-      getIterations()
-        .then(function(iterations) {
+    //function updateMainChart() {
+    //  getIterations()
+    //    .then(function(iterations) {
 
-          var iteration = iterations[0];
-          allIterations.push(iteration);
-          var validResults = iteration.results.filter(function(result) {
-            return result.isValid;
-          });
-          var point = validResults.length;
-          var label = iteration.completedAt;
-          mainChart.removeData();
-          mainChart.addData([point], label);
-          renderWatchersChart(iteration);
-          setTimeout(updateMainChart, 5000);
-        });
-    };
+    //      var iteration = iterations[0];
+    //      allIterations.push(iteration);
+    //      var validResults = iteration.results.filter(function(result) {
+    //        return result.isValid;
+    //      });
+    //      var point = validResults.length;
+    //      var label = iteration.completedAt;
+    //      mainChart.removeData();
+    //      mainChart.addData([point], label);
+    //      renderWatchersChart(iteration);
+    //    });
+    //};
 
     function renderEmptyMainChart() {
       var data = {
@@ -291,31 +290,28 @@
   };
 
   function getIterations() {
+    var endpoint = organizationId + '/wardens/' + wardenName + '/iterations';
+
+    return getDataFromApi(endpoint, { results: 10 });
+  };
+
+  function getOrganizations() {
+    return getDataFromApi();
+  };
+
+  function getDataFromApi(endpoint, params) {
     return $.ajax({
-      url: '/api/organizations/' + organizationId + '/wardens/' + wardenName + '/iterations',
+      url: '/api/organizations/' + (endpoint || ""),
       headers: {
         "X-Api-Key": apiKey
       },
       method: 'GET',
-      data: { results: 10 },
-      success: function(response) {
+      data: params,
+      success: function (response) {
         return response;
       }
     });
-  };
-
-  function getOrganizations() {
-    return $.ajax({
-        url: '/api/organizations',
-        headers: {
-        "X-Api-Key": apiKey
-      },
-      method: 'GET',
-      success: function(response) {
-        return response;
-      }
-    });
-  };
+  }
 
   return {
     init
