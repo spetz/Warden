@@ -11,7 +11,7 @@ namespace Warden.Web.Api
     public abstract class ApiController : Controller
     {
         private readonly IApiKeyService _apiKeyService;
-        protected Guid OrganizationId { get; private set;  }
+        protected Guid UserId { get; private set;  }
 
         protected ApiController(IApiKeyService apiKeyService)
         {
@@ -33,7 +33,7 @@ namespace Warden.Web.Api
                 context.HttpContext.Response.StatusCode = 401;
                 return;
             }
-            OrganizationId = apiKey.UserId;
+            UserId = apiKey.UserId;
             await next();
         }
     }

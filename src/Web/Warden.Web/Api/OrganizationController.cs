@@ -20,7 +20,7 @@ namespace Warden.Web.Api
         [Route("current")]
         public async Task<OrganizationDto> Get()
         {
-            var organization = await _organizationService.GetAsync(OrganizationId);
+            var organization = await _organizationService.GetAsync(UserId);
             if (organization != null) return organization;
             Response.StatusCode = 404;
 
