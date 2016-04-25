@@ -19,6 +19,28 @@
     var mainChart = null;
     var watchersChart = null;
 
+    self.totalUptime = ko.observable(99);
+    self.totalUptimeFormatted = ko.computed(function () {
+      return self.totalUptime().toFixed(2) + "%";
+    });
+    self.totalDowntime = ko.observable(1);
+    self.totalDowntimeFormatted = ko.computed(function () {
+      return self.totalDowntime().toFixed(2) + "%";
+    });
+    self.validResources = ko.observable(5);
+    self.invalidResources = ko.observable(7);
+    self.totalResourcesFormatted = ko.computed(function () {
+      return self.validResources() + "/" + self.invalidResources();
+    });
+    self.latestCheckAt = ko.observable("2016-04-15T10:36:51Z");
+    self.latestCheckAtFormatted = ko.computed(function () {
+      return self.latestCheckAt();
+    });
+
+    self.failingResources = ko.observableArray([new ResourceItem("RAM", 10), new ResourceItem("API", 7)]);
+    self.mostFailingResources = ko.computed(function() {
+      return self.failingResources().slice(0, 2);
+    });
 
     self.iterations = ko.observableArray([]);
     var emptyWardenCheckResult = {
@@ -31,6 +53,9 @@
       }
     };
     self.selectedWardenCheckResult = ko.observable(emptyWardenCheckResult);
+
+    getOrganization().then(function(organization) {
+    });
 
     getIterations()
       .then(function(iterations) {
@@ -131,7 +156,6 @@
       $("#main-chart")
         .click(function(evt) {
           var point = mainChart.getPointsAtEvent(evt)[0];
-          console.log(point);
         });
     };
 
@@ -200,6 +224,31 @@
     };
   };
 
+  function Organization(organization) {
+    self.id = ko.observable(organization.id);
+    self.name = ko.observable(organization.name);
+    self.wardens = ko.observableArray([]);
+    organization.wardens.forEach(function (warden) {
+      self.wardens.push(new WardenItem(warden));
+    });
+  };
+
+  function WardenItem(warden) {
+    self.id = ko.observable(warden.id);
+    self.name = ko.observable(warden.name);
+    self.enabled = ko.observable(warden.name);
+  };
+
+  function ResourceItem(name, percent) {
+    var self = this;
+
+    self.name = ko.observable(name);
+    self.percent = ko.observable(percent);
+    self.infoFormatted = ko.computed(function () {
+      return self.name() + " (" + self.percent().toFixed(2) + "%" + ")";
+    });
+  };
+
   function getIterations() {
     return $.ajax({
       url: '/api/wardens/iterations',
@@ -208,6 +257,19 @@
       },
       method: 'GET',
       data: { wardenName, results: 10 },
+      success: function(response) {
+        return response;
+      }
+    });
+  };
+
+  function getOrganization() {
+    return $.ajax({
+        url: '/api/organizations/current',
+        headers: {
+        "X-Api-Key": apiKey
+      },
+      method: 'GET',
       success: function(response) {
         return response;
       }

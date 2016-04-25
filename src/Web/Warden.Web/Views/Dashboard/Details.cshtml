@@ -1,37 +1,56 @@
 ﻿@model Warden.Web.ViewModels.DashboardViewModel
-
+<div class="row">
+    <div class="input-field col s12 m6 ">
+        <select class="icons">
+            <option value="" disabled selected>Choose organization</option>
+            <option value="" data-icon="" class="circle">example 1</option>
+            <option value="" data-icon="" class="circle">example 2</option>
+            <option value="" data-icon="" class="circle">example 1</option>
+        </select>
+        <label>Organizations</label>
+    </div>
+    <div class="input-field col s12 m6">
+        <select class="icons">
+            <option value="" disabled selected>Choose warden</option>
+            <option value="" data-icon="" class="left circle">example 1</option>
+            <option value="" data-icon="" class="left circle">example 2</option>
+            <option value="" data-icon="" class="left circle">example 3</option>
+        </select>
+        <label>Wardens</label>
+    </div>
+</div>
 <div class="row">
     <div class="col s3">
         <div class="card-panel">
             <div>
                 <label>Total uptime</label>
                 <ul class="collection">
-                    <li class="collection-item">99%</li>
+                    <li class="collection-item" data-bind="text: totalUptimeFormatted"></li>
                 </ul>
             </div>
             <div>
                 <label>Total downtime</label>
                 <ul class="collection">
-                    <li class="collection-item">1%</li>
+                    <li class="collection-item" data-bind="text: totalDowntimeFormatted"></li>
                 </ul>
             </div>
             <div>
                 <label>Valid resources</label>
                 <ul class="collection">
-                    <li class="collection-item">6/7</li>
+                    <li class="collection-item" data-bind="text: totalResourcesFormatted">
+                    </li>
                 </ul>
             </div>
             <div>
                 <label>Most failing resources</label>
-                <ul class="collection">
-                    <li class="collection-item">RAM (10%)</li>
-                    <li class="collection-item">API (7%)</li>
+                <ul class="collection" data-bind="foreach: mostFailingResources">
+                    <li class="collection-item" data-bind="text: infoFormatted"></li>
                 </ul>
             </div>
             <div>
                 <label>Latest check at</label>
                 <ul class="collection">
-                    <li class="collection-item">2016-04-15T10:36:51Z</li>
+                    <li class="collection-item" data-bind="text: latestCheckAtFormatted"></li>
                 </ul>
             </div>
         </div>
@@ -85,7 +104,8 @@
     <script type="text/javascript" src="@Url.Content("~/content/lib/knockout/dist/knockout.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/content/js/dashboard.js")"></script>
     <script type="text/javascript">
-        $(function() {
+        $(function () {
+            $('select').material_select();
             dashboard.init({
                 wardenName: "@Model.WardenName",
                 apiKey: "@Html.Raw(Model.ApiKey)"
