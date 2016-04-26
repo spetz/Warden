@@ -1,20 +1,21 @@
 ﻿@model Warden.Web.ViewModels.DashboardViewModel
 <div class="row">
-    <div class="input-field col s12 m6">
-        <div class="card-panel">
+    <div class="section">
+        <div class="input-field col s12 m5">
             <select class="icons" data-bind="options: organizations, optionsText: 'name', value: selectedOrganization"></select>
             <label>Organizations</label>
         </div>
-    </div>
-    <div class="input-field col s12 m6">
-        <div class="card-panel">
+        <div class="input-field col s12 m5">
             <select class="icons" data-bind="options: selectedOrganization().wardens, optionsText: 'name', value: selectedWarden"></select>
             <label>Wardens</label>
+        </div>
+        <div class="input-field col s12 offset-m1 m1">
+            <a href="#!" data-bind="click: changeWarden" class="btn waves-effect waves-light custom" title="Change Warden"><i class="material-icons">play_arrow</i></a> 
         </div>
     </div>
 </div>
 <div class="row">
-    <div class="col s3">
+    <div class="col s12 m3">
         <div class="card-panel">
             <div>
                 <label>Total uptime</label>
@@ -49,12 +50,15 @@
             </div>
         </div>
     </div>
-    <div class="col s9">
-        <canvas class="card-panel" id="main-chart" width="1200" height="600"></canvas>
+    <div class="col s12 m9">
+        <canvas class="card-panel" id="main-chart" ></canvas>
+        @*<div class="card-panel">
+            <span class="custom-text">@Model.OrganizationName @Model.WardenName</span>
+        </div>*@
     </div>
 </div>
 <div class="row">
-    <div class="col s8">
+    <div class="col s12 m8">
         <div class="card-panel">
             <div>
                 <label>Watcher name</label>
@@ -88,7 +92,7 @@
             </div>
         </div>
     </div>
-    <div class="col s3 offset-s1">
+    <div class="col s12 m3 offset-m1">
         <canvas class="card-panel" id="watchers-chart" width="300" height="400"></canvas>
     </div>
 </div>

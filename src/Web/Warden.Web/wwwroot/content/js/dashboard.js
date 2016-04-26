@@ -3,13 +3,14 @@
     var organizationId = "";
     var wardenName = "";
     var apiKey = "";
+    var viewModel = null;
 
     var init = function(options) {
         organizationId = options.organizationId || "";
         wardenName = options.wardenName || "";
         apiKey = options.apiKey || "";
 
-        var viewModel = new ViewModel();
+        viewModel = new ViewModel();
         ko.applyBindings(viewModel);
         initWardenHub();
     };
@@ -45,7 +46,7 @@
         self.totalResourcesFormatted = ko.computed(function() {
             return self.validResources() + "/" + self.invalidResources();
         });
-        self.latestCheckAt = ko.observable("2016-04-15T10:36:51Z");
+        self.latestCheckAt = ko.observable();
         self.latestCheckAtFormatted = ko.computed(function() {
             return self.latestCheckAt();
         });
@@ -65,7 +66,37 @@
                 isValid: ko.observable("---")
             }
         };
+
         self.selectedWardenCheckResult = ko.observable(emptyWardenCheckResult);
+
+        self.setIterationDetails = function (iteration) {
+            allIterations.push(iteration);
+            self.latestCheckAt(iteration.completedAt);
+            updateResourcesInfo(iteration);
+            updateMainChart(iteration);
+        };
+
+        function setFailingResources() {
+            
+        };
+
+        self.changeWarden = function() {
+            var selectedOrganizationId = self.selectedOrganization().id();
+            var selectedWardenId = self.selectedWarden().id();
+            window.location = "/dashboards/organizations/" + selectedOrganizationId + "/wardens/" + selectedWardenId;
+        };
+
+        function updateResourcesInfo(iteration) {
+            var invalidResults = iteration.results.filter(function (result) {
+                return !result.isValid;
+            });
+            var validResults = iteration.results.filter(function (result) {
+                return result.isValid;
+            });
+
+            self.validResources(validResults.length);
+            self.invalidResources(iteration.results.length);
+        }
 
         function setDefaultWarden() {
             self.organizations.remove(function(organization) {
@@ -103,28 +134,24 @@
                     return;
                 }
 
+                var latestIteration = iterations[0];
                 self.iterations(iterations);
                 allIterations.push(iterations);
                 displayMainChart();
-                renderWatchersChart(iterations[0]);
+                renderWatchersChart(latestIteration);
+                self.setIterationDetails(latestIteration);
             });
 
-        //function updateMainChart() {
-        //  getIterations()
-        //    .then(function(iterations) {
-
-        //      var iteration = iterations[0];
-        //      allIterations.push(iteration);
-        //      var validResults = iteration.results.filter(function(result) {
-        //        return result.isValid;
-        //      });
-        //      var point = validResults.length;
-        //      var label = iteration.completedAt;
-        //      mainChart.removeData();
-        //      mainChart.addData([point], label);
-        //      renderWatchersChart(iteration);
-        //    });
-        //};
+        function updateMainChart(iteration) {
+              var validResults = iteration.results.filter(function(result) {
+                return result.isValid;
+              });
+              var point = validResults.length;
+              var label = iteration.completedAt;
+              mainChart.removeData();
+              mainChart.addData([point], label);
+            renderWatchersChart(iteration);
+        };
 
         function renderEmptyMainChart() {
             var data = {
@@ -322,7 +349,7 @@
         var chat = $.connection.wardenHub;
         chat.client.iterationCreated = function (iteration) {
             iteration = toCamelCase(iteration);
-            console.log(iteration);
+            viewModel.setIterationDetails(iteration);
         };
 
         $.connection.hub.start()
