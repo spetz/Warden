@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
 using Microsoft.AspNet.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
@@ -24,6 +22,7 @@ namespace Warden.Web
             services.AddMvc();
             services.AddMvcCore().AddJsonFormatters(formatter =>
             {
+                formatter.DateFormatString = "yyyy-MM-dd H:mm:ss";
                 formatter.Formatting = Formatting.Indented;
                 formatter.ContractResolver = new CamelCasePropertyNamesContractResolver();
             });

@@ -61,31 +61,37 @@
             <div>
                 <label>Watcher name</label>
                 <ul class="collection">
-                    <li class="collection-item" data-bind="text: selectedWardenCheckResult().watcherCheckResult.watcherName"></li>
+                    <li class="collection-item" data-bind="text: selectedWardenCheckResult().watcherName"></li>
                 </ul>
             </div>
             <div>
                 <label>Watcher type</label>
                 <ul class="collection">
-                    <li class="collection-item" data-bind="text: selectedWardenCheckResult().watcherCheckResult.watcherType"></li>
+                    <li class="collection-item" data-bind="text: selectedWardenCheckResult().watcherType"></li>
                 </ul>
             </div>
             <div>
                 <label>Is valid</label>
                 <ul class="collection">
-                    <li class="collection-item" data-bind="text: selectedWardenCheckResult().watcherCheckResult.isValid"></li>
+                    <li class="collection-item" data-bind="text: selectedWardenCheckResult().isValid"></li>
                 </ul>
             </div>
             <div>
                 <label>Description</label>
                 <ul class="collection">
-                    <li class="collection-item" data-bind="text: selectedWardenCheckResult().watcherCheckResult.description"></li>
+                    <li class="collection-item" data-bind="text: selectedWardenCheckResult().description"></li>
                 </ul>
             </div>
             <div>
                 <label>Completed at</label>
                 <ul class="collection">
                     <li class="collection-item" data-bind="text: selectedWardenCheckResult().completedAt"></li>
+                </ul>
+            </div>
+            <div>
+                <label>Exception</label>
+                <ul class="collection">
+                    <li class="collection-item" data-bind="html: selectedWardenCheckResult().exceptionFormatted"></li>
                 </ul>
             </div>
         </div>

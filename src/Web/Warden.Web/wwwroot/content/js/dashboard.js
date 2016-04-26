@@ -57,8 +57,7 @@
         });
 
         self.iterations = ko.observableArray([]);
-        self.selectedWardenCheckResult = ko.observable(createEmptyWardenCheckResult());
-
+        self.selectedWardenCheckResult = ko.observable(new WardenCheckResult(createEmptyWardenCheckResult()));
 
         self.setIterationDetails = function (iteration) {
             allIterations.push(iteration);
@@ -281,7 +280,7 @@
                     var wardenCheckResult = currentWardenCheckResults.filter(function(result) {
                         return result.watcherCheckResult.watcherName === watcherName;
                     })[0];
-                    self.selectedWardenCheckResult(wardenCheckResult);
+                    self.selectedWardenCheckResult(new WardenCheckResult(wardenCheckResult));
                 });
         };
     };
@@ -296,12 +295,12 @@
 
     function createEmptyWardenCheckResult() {
         return {
-            completedAt: ko.observable("---"),
+            completedAt: "---",
             watcherCheckResult: {
-                watcherName: ko.observable("---"),
-                watcherType: ko.observable("---"),
-                description: ko.observable("---"),
-                isValid: ko.observable("---")
+                watcherName: "---",
+                watcherType: "---",
+                description: "---",
+                isValid: "---"
             }
         };
     };
@@ -332,6 +331,42 @@
         self.infoFormatted = ko.computed(function() {
             return self.name() + " (" + self.totalDowntime().toFixed(2) + "%" + ")";
         });
+    };
+
+    function WardenCheckResult(result) {
+        var self = this;
+        self.watcherName = ko.observable(result.watcherCheckResult.watcherName);
+        self.watcherType = ko.observable(result.watcherCheckResult.watcherType);
+        self.isValid = ko.observable(result.watcherCheckResult.isValid);
+        self.description = ko.observable(result.watcherCheckResult.description);
+        self.completedAt = ko.observable(result.completedAt);
+        self.exception = ko.observable(result.exception);
+        self.exceptionFormatted = ko.computed(function () {
+            if (!self.exception())
+                return "---";
+
+            return formatExceptionMessage(self.exception());
+        });
+
+        function formatExceptionMessage(exception) {
+            return getExceptionDetails(exception) + "<br><br><hr><strong>Stack trace:</strong><br>" + exception.stackTraceString;
+        };
+
+        function getExceptionDetails(exception) {
+            if (!exception)
+                return "";
+
+            var innerException = getExceptionDetails(exception.innerException);
+            var innerExceptionMessage = "";
+            if (innerException)
+                innerExceptionMessage = "<br><br><hr><strong>*Inner exception*</strong><br><br>" + innerException;
+
+            return "<strong>Source:</strong><br>" +
+                exception.source +
+                "<br><br><strong>Message:</strong><br>" +
+                exception.message +
+                innerExceptionMessage;
+        };
     };
 
     function getStats() {
