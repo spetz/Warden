@@ -9,14 +9,14 @@ using Warden.Web.Core.Services;
 
 namespace Warden.Web.Api
 {
-    [Route("api/organizations/{organizationId}/wardens/{wardenName}/iterations")]
-    public class WardenIterationController : ApiController
+    [Route("api/organizations/{organizationId}/wardens/")]
+    public class WardenController : ApiController
     {
         private readonly IWardenService _wardenService;
         private readonly IOrganizationService _organizationService;
         private readonly ISignalRService _signalRService;
 
-        public WardenIterationController(IWardenService wardenService, 
+        public WardenController(IWardenService wardenService, 
             IOrganizationService organizationService,
             IApiKeyService apiKeyService,
             ISignalRService signalRService)
@@ -27,21 +27,10 @@ namespace Warden.Web.Api
             _signalRService = signalRService;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(Guid organizationId, string wardenName, [FromBody] WardenIterationDto iteration)
-        {
-            var isAuthorized = await _organizationService.IsUserInOrganizationAsync(organizationId, UserId);
-            if (!isAuthorized)
-                return HttpUnauthorized();
-
-            var createdIteration = await _wardenService.SaveIterationAsync(iteration, organizationId);
-            _signalRService.SendIterationCreated(organizationId, createdIteration);
-
-            return new HttpStatusCodeResult(204);
-        }
 
         [HttpGet]
-        public async Task<IEnumerable<WardenIterationDto>> GetAll(Guid organizationId, string wardenName, [FromUri] BrowseWardenIterations query)
+        [Route("{wardenName}/stats")]
+        public async Task<WardenStatsDto> GetStats(Guid organizationId, string wardenName, [FromUri] GetWardenStats query)
         {
             var isAuthorized = await _organizationService.IsUserInOrganizationAsync(organizationId, UserId);
             if (!isAuthorized)
@@ -51,9 +40,9 @@ namespace Warden.Web.Api
                 return null;
             }
 
-            var iterations = await _wardenService.BrowseIterationsAsync(query);
+            var stats = await _wardenService.GetStatsAsync(query);
 
-            return iterations.Items;
+            return stats;
         }
     }
 }

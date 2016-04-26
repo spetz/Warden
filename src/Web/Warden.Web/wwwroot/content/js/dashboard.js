@@ -33,27 +33,27 @@
             $('select').material_select();
         });
 
-        self.totalUptime = ko.observable(99);
+        self.totalUptime = ko.observable(0);
         self.totalUptimeFormatted = ko.computed(function() {
             return self.totalUptime().toFixed(2) + "%";
         });
-        self.totalDowntime = ko.observable(1);
+        self.totalDowntime = ko.observable(0);
         self.totalDowntimeFormatted = ko.computed(function() {
             return self.totalDowntime().toFixed(2) + "%";
         });
-        self.validResources = ko.observable(5);
-        self.invalidResources = ko.observable(7);
+        self.validResources = ko.observable(0);
+        self.invalidResources = ko.observable(0);
         self.totalResourcesFormatted = ko.computed(function() {
-            return self.validResources() + "/" + self.invalidResources();
+            return self.validResources() + " of " + self.invalidResources();
         });
-        self.latestCheckAt = ko.observable();
+        self.latestCheckAt = ko.observable("---");
         self.latestCheckAtFormatted = ko.computed(function() {
             return self.latestCheckAt();
         });
 
-        self.failingResources = ko.observableArray([new ResourceItem("RAM", 10), new ResourceItem("API", 7)]);
+        self.failingResources = ko.observableArray([]);
         self.mostFailingResources = ko.computed(function() {
-            return self.failingResources().slice(0, 2);
+            return self.failingResources.sort(function (left, right) { return left.totalDowntime() < right.totalDowntime() })().slice(0, 3);
         });
 
         self.iterations = ko.observableArray([]);
@@ -76,8 +76,13 @@
             updateMainChart(iteration);
         };
 
-        function setFailingResources() {
-            
+        function setStats(stats) {
+            self.totalUptime(stats.totalUptime);
+            self.totalDowntime(stats.totalDowntime);
+            stats.watchers.forEach(function(watcher) {
+                var watcherStats = new WatcherItem(watcher);
+                self.failingResources.push(watcherStats);
+            });
         };
 
         self.changeWarden = function() {
@@ -87,9 +92,6 @@
         };
 
         function updateResourcesInfo(iteration) {
-            var invalidResults = iteration.results.filter(function (result) {
-                return !result.isValid;
-            });
             var validResults = iteration.results.filter(function (result) {
                 return result.isValid;
             });
@@ -115,6 +117,11 @@
             self.selectedOrganization(selectedOrganization);
             self.selectedWarden(selectedWarden);
         };
+
+        getStats()
+            .then(function (stats) {
+                setStats(stats);
+            });
 
         getOrganizations()
             .then(function(organizations) {
@@ -311,13 +318,20 @@
         self.enabled = ko.observable(warden.name);
     };
 
-    function ResourceItem(name, percent) {
+    function WatcherItem(watcher) {
         var self = this;
-        self.name = ko.observable(name);
-        self.percent = ko.observable(percent);
+        self.name = ko.observable(watcher.name);
+        self.type = ko.observable(watcher.type);
+        self.totalDowntime = ko.observable(watcher.totalDowntime);
+        self.totalUptime = ko.observable(watcher.totalUptime);
         self.infoFormatted = ko.computed(function() {
-            return self.name() + " (" + self.percent().toFixed(2) + "%" + ")";
+            return self.name() + " (" + self.totalDowntime().toFixed(2) + "%" + ")";
         });
+    };
+
+    function getStats() {
+        var endpoint = organizationId + '/wardens/' + wardenName + '/stats';
+        return getDataFromApi(endpoint);
     };
 
     function getIterations() {

@@ -27,7 +27,7 @@ namespace Warden.Web
             services.AddCaching();
             services.AddSession();
             //services.AddSignalR();
-            services.AddScoped<IWardenIterationService, WardenIterationService>();
+            services.AddScoped<IWardenService, WardenService>();
             services.AddScoped<IApiKeyService, ApiKeyService>();
             services.AddScoped<IOrganizationService, OrganizationService>();
             services.AddScoped<IUserService, UserService>();

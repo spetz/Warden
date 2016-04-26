@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Warden.Web.Core.Dto;
 using Warden.Web.Core.Queries;
@@ -11,24 +12,25 @@ using Warden.Web.Core.Mongo.Queries;
 
 namespace Warden.Web.Core.Services
 {
-    public interface IWardenIterationService
+    public interface IWardenService
     {
-        Task<WardenIterationDto> CreateAsync(WardenIterationDto iteration, Guid organizationId);
-        Task<PagedResult<WardenIterationDto>> BrowseAsync(BrowseWardenIterations query);
-        Task<WardenIterationDto> GetAsync(Guid id);
+        Task<WardenIterationDto> SaveIterationAsync(WardenIterationDto iteration, Guid organizationId);
+        Task<PagedResult<WardenIterationDto>> BrowseIterationsAsync(BrowseWardenIterations query);
+        Task<WardenIterationDto> GetIterationAsync(Guid id);
+        Task<WardenStatsDto> GetStatsAsync(GetWardenStats query);
     }
 
-    public class WardenIterationService : IWardenIterationService
+    public class WardenService : IWardenService
     {
         private const string WatcherNameSuffix = "watcher";
         private readonly IMongoDatabase _database;
 
-        public WardenIterationService(IMongoDatabase database)
+        public WardenService(IMongoDatabase database)
         {
             _database = database;
         }
 
-        public async Task<WardenIterationDto> CreateAsync(WardenIterationDto iteration, Guid organizationId)
+        public async Task<WardenIterationDto> SaveIterationAsync(WardenIterationDto iteration, Guid organizationId)
         {
             if (iteration == null)
                 return null;
@@ -94,7 +96,7 @@ namespace Warden.Web.Core.Services
                     dto.StackTrace, CreatExceptionInfo(dto.InnerException));
         }
 
-        public async Task<PagedResult<WardenIterationDto>> BrowseAsync(BrowseWardenIterations query)
+        public async Task<PagedResult<WardenIterationDto>> BrowseIterationsAsync(BrowseWardenIterations query)
         {
             if (query == null)
                 return PagedResult<WardenIterationDto>.Empty;
@@ -110,11 +112,64 @@ namespace Warden.Web.Core.Services
                 iterations.Items.Select(x => new WardenIterationDto(x)));
         }
 
-        public async Task<WardenIterationDto> GetAsync(Guid id)
+        public async Task<WardenIterationDto> GetIterationAsync(Guid id)
         {
             var iteration = await _database.WardenIterations().GetByIdAsync(id);
 
             return iteration == null ? null : new WardenIterationDto(iteration);
+        }
+
+        public async Task<WardenStatsDto> GetStatsAsync(GetWardenStats query)
+        {
+            var iterations = await _database.WardenIterations()
+                .GetForWardenAsync(query.OrganizationId, query.WardenName);
+            var results = iterations.SelectMany(x => x.Results).ToList();
+            var stats = GetWardenStats(results);
+            stats.OrganizationId = query.OrganizationId;
+            stats.WardenName = query.WardenName;
+
+            return stats;
+        }
+
+        private WardenStatsDto GetWardenStats(IList<WardenCheckResult> results)
+        {
+            var wardenUptimeAndDowntime = GetTotalUptimeAndDowntime(results);
+            var stats = new WardenStatsDto
+            {
+
+                TotalUptime = wardenUptimeAndDowntime.Item1,
+                TotalDowntime = wardenUptimeAndDowntime.Item2
+            };
+            var watcherCheckResults = results.Select(x => x.WatcherCheckResult)
+                .GroupBy(x => x.Watcher.Name, x => x)
+                .ToList();
+            stats.Watchers = (from watcherGroup in watcherCheckResults
+                let watcher = watcherGroup.First().Watcher
+                let watcherUptimeAndDowntime = GetTotalUptimeAndDowntime(watcherGroup.ToList())
+                select new WatcherStatsDto
+                {
+                    Name = watcher.Name,
+                    Type = watcher.Type,
+                    TotalUptime = watcherUptimeAndDowntime.Item1,
+                    TotalDowntime = watcherUptimeAndDowntime.Item2
+                })
+                .OrderBy(x => x.Type);
+
+            return stats;
+        }
+
+        private Tuple<double, double> GetTotalUptimeAndDowntime<T>(IList<T> validatables) where T : IValidatable
+        {
+            if (!validatables.Any())
+                return new Tuple<double, double>(0, 0);
+
+            var totalResults = (double)validatables.Count;
+            var totalValidResults = (double)validatables.Count(r => r.IsValid);
+            var totalInvalidResults = totalResults - totalValidResults;
+            var totalUptime = totalValidResults * 100 / totalResults;
+            var totalDowntime = totalInvalidResults * 100 / totalResults;
+
+            return new Tuple<double, double>(totalUptime, totalDowntime);
         }
     }
 }

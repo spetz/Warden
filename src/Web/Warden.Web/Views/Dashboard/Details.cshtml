@@ -10,7 +10,7 @@
             <label>Wardens</label>
         </div>
         <div class="input-field col s12 offset-m1 m1">
-            <a href="#!" data-bind="click: changeWarden" class="btn waves-effect waves-light custom" title="Change Warden"><i class="material-icons">play_arrow</i></a> 
+            <a href="#!" data-bind="click: changeWarden" class="btn waves-effect waves-light custom" title="Run Dashboard"><i class="material-icons">play_arrow</i></a> 
         </div>
     </div>
 </div>
@@ -51,10 +51,8 @@
         </div>
     </div>
     <div class="col s12 m9">
-        <canvas class="card-panel" id="main-chart" ></canvas>
-        @*<div class="card-panel">
-            <span class="custom-text">@Model.OrganizationName @Model.WardenName</span>
-        </div>*@
+        <canvas class="card-panel" id="main-chart"></canvas>
+        <span class="custom-text"><strong>@Model.OrganizationName: @Model.WardenName</strong></span>
     </div>
 </div>
 <div class="row">

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using MongoDB.Driver;
@@ -21,6 +22,20 @@ namespace Warden.Web.Core.Mongo.Queries
                 return null;
 
             return await iterations.AsQueryable().FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+
+        public static async Task<IEnumerable<WardenIteration>> GetForWardenAsync(this IMongoCollection<WardenIteration> iterations,
+            Guid organizationId, string wardenName)
+        {
+            if (organizationId == Guid.Empty || wardenName.Empty())
+                return Enumerable.Empty<WardenIteration>();
+
+            wardenName = wardenName.Trim();
+
+            return await iterations.AsQueryable()
+                .Where(x => x.Warden.OrganizationId == organizationId && x.Warden.Name == wardenName)
+                .ToListAsync();
         }
 
         public static IMongoQueryable<WardenIteration> Query(this IMongoCollection<WardenIteration> iterations,

@@ -2,7 +2,7 @@
 
 namespace Warden.Web.Core.Domain
 {
-    public class WardenCheckResult
+    public class WardenCheckResult : IValidatable
     {
         public bool IsValid { get; protected set; }
         public WatcherCheckResult WatcherCheckResult { get; protected set; }

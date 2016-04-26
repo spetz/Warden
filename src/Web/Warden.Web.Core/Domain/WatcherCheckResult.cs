@@ -1,6 +1,6 @@
 ﻿namespace Warden.Web.Core.Domain
 {
-    public class WatcherCheckResult
+    public class WatcherCheckResult : IValidatable
     {
         public Watcher Watcher { get; protected set; }
         public string Description { get; protected set; }

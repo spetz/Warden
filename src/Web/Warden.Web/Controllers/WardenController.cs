@@ -13,13 +13,13 @@ namespace Warden.Web.Controllers
     public class WardenController : ControllerBase
     {
         private readonly IOrganizationService _organizationService;
-        private readonly IWardenIterationService _wardenIterationService;
+        private readonly IWardenService _wardenService;
 
         public WardenController(IOrganizationService organizationService,
-            IWardenIterationService wardenIterationService)
+            IWardenService wardenService)
         {
             _organizationService = organizationService;
-            _wardenIterationService = wardenIterationService;
+            _wardenService = wardenService;
         }
 
         [HttpGet]
@@ -30,7 +30,7 @@ namespace Warden.Web.Controllers
             if (warden == null)
                 return HttpNotFound();
 
-            var iterations = await _wardenIterationService.BrowseAsync(new BrowseWardenIterations
+            var iterations = await _wardenService.BrowseIterationsAsync(new BrowseWardenIterations
             {
                 OrganizationId = organizationId,
                 WardenName = warden.Name,
@@ -91,7 +91,7 @@ namespace Warden.Web.Controllers
             var warden = await GetWardenForUserAsync(organizationId, wardenId);
             if (warden == null)
                 return HttpNotFound();
-            var iteration = await _wardenIterationService.GetAsync(iterationId);
+            var iteration = await _wardenService.GetIterationAsync(iterationId);
             if (iteration == null)
                 return HttpNotFound();
 
