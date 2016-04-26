@@ -149,7 +149,7 @@ namespace Warden.Web.Core.Services
                 select new WatcherStatsDto
                 {
                     Name = watcher.Name,
-                    Type = watcher.Type,
+                    Type = watcher.Type.ToString().ToLowerInvariant(),
                     TotalUptime = watcherUptimeAndDowntime.Item1,
                     TotalDowntime = watcherUptimeAndDowntime.Item2
                 })

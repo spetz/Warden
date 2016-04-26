@@ -53,21 +53,12 @@
 
         self.failingResources = ko.observableArray([]);
         self.mostFailingResources = ko.computed(function() {
-            return self.failingResources.sort(function (left, right) { return left.totalDowntime() < right.totalDowntime() })().slice(0, 3);
+            return self.failingResources().slice(0, 3);
         });
 
         self.iterations = ko.observableArray([]);
-        var emptyWardenCheckResult = {
-            completedAt: ko.observable("---"),
-            watcherCheckResult: {
-                watcherName: ko.observable("---"),
-                watcherType: ko.observable("---"),
-                description: ko.observable("---"),
-                isValid: ko.observable("---")
-            }
-        };
+        self.selectedWardenCheckResult = ko.observable(createEmptyWardenCheckResult());
 
-        self.selectedWardenCheckResult = ko.observable(emptyWardenCheckResult);
 
         self.setIterationDetails = function (iteration) {
             allIterations.push(iteration);
@@ -83,6 +74,8 @@
                 var watcherStats = new WatcherItem(watcher);
                 self.failingResources.push(watcherStats);
             });
+
+            self.failingResources.sort(function (left, right) { return left.totalDowntime() < right.totalDowntime() });
         };
 
         self.changeWarden = function() {
@@ -299,7 +292,19 @@
             name: "",
             wardens: []
         });
-    }
+    };
+
+    function createEmptyWardenCheckResult() {
+        return {
+            completedAt: ko.observable("---"),
+            watcherCheckResult: {
+                watcherName: ko.observable("---"),
+                watcherType: ko.observable("---"),
+                description: ko.observable("---"),
+                isValid: ko.observable("---")
+            }
+        };
+    };
 
     function Organization(organization) {
         var self = this;

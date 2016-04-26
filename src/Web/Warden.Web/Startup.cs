@@ -23,7 +23,10 @@ namespace Warden.Web
         {
             services.AddMvc();
             services.AddMvcCore().AddJsonFormatters(formatter =>
-                formatter.ContractResolver = new CamelCasePropertyNamesContractResolver());
+            {
+                formatter.Formatting = Formatting.Indented;
+                formatter.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            });
             services.AddCaching();
             services.AddSession();
             //services.AddSignalR();

@@ -16,7 +16,7 @@ namespace Warden.Web.Core.Dto
         public WatcherCheckResultDto(WatcherCheckResult result)
         {
             WatcherName = result.Watcher.Name;
-            WatcherType = result.Watcher.Type.ToString();
+            WatcherType = result.Watcher.Type.ToString().ToLowerInvariant();
             Description = result.Description;
             IsValid = result.IsValid;
         }

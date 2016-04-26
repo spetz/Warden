@@ -5,7 +5,7 @@ namespace Warden.Web.Core.Dto
     public class WatcherDto
     {
         public string Name { get; set; }
-        public WatcherType Type { get; set; }
+        public string Type { get; set; }
 
         public WatcherDto()
         {
@@ -14,7 +14,7 @@ namespace Warden.Web.Core.Dto
         public WatcherDto(Watcher watcher)
         {
             Name = watcher.Name;
-            Type = watcher.Type;
+            Type = watcher.Type.ToString().ToLowerInvariant();
         }
     }
 }
