@@ -13,7 +13,7 @@ namespace Warden.Web.Core.Services
 {
     public interface IWardenIterationService
     {
-        Task CreateAsync(WardenIterationDto iteration, Guid organizationId);
+        Task<WardenIterationDto> CreateAsync(WardenIterationDto iteration, Guid organizationId);
         Task<PagedResult<WardenIterationDto>> BrowseAsync(BrowseWardenIterations query);
         Task<WardenIterationDto> GetAsync(Guid id);
     }
@@ -28,10 +28,10 @@ namespace Warden.Web.Core.Services
             _database = database;
         }
 
-        public async Task CreateAsync(WardenIterationDto iteration, Guid organizationId)
+        public async Task<WardenIterationDto> CreateAsync(WardenIterationDto iteration, Guid organizationId)
         {
             if (iteration == null)
-                return;
+                return null;
 
             var wardenCheckResults = (iteration.Results ?? Enumerable.Empty<WardenCheckResultDto>()).ToList();
             var watcherCheckResults = wardenCheckResults.Select(x => x.WatcherCheckResult).ToList();
@@ -72,6 +72,8 @@ namespace Warden.Web.Core.Services
             }
 
             await _database.WardenIterations().InsertOneAsync(wardenIteration);
+
+            return new WardenIterationDto(wardenIteration);
         }
 
         private static void SetWatcherTypeFromFullNamespace(WatcherCheckResultDto watcherCheck)

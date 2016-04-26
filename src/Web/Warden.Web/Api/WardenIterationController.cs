@@ -14,14 +14,17 @@ namespace Warden.Web.Api
     {
         private readonly IWardenIterationService _wardenIterationService;
         private readonly IOrganizationService _organizationService;
+        private readonly ISignalRService _signalRService;
 
         public WardenIterationController(IWardenIterationService wardenIterationService, 
             IOrganizationService organizationService,
-            IApiKeyService apiKeyService)
+            IApiKeyService apiKeyService,
+            ISignalRService signalRService)
             : base(apiKeyService)
         {
             _wardenIterationService = wardenIterationService;
             _organizationService = organizationService;
+            _signalRService = signalRService;
         }
 
         [HttpPost]
@@ -31,7 +34,8 @@ namespace Warden.Web.Api
             if (!isAuthorized)
                 return HttpUnauthorized();
 
-            await _wardenIterationService.CreateAsync(iteration, organizationId);
+            var createdIteration = await _wardenIterationService.CreateAsync(iteration, organizationId);
+            _signalRService.SendIterationCreated(organizationId, createdIteration);
 
             return new HttpStatusCodeResult(204);
         }
