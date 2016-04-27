@@ -2,13 +2,17 @@
 
     var organizationId = "";
     var wardenName = "";
+    var wardenId = "";
     var apiKey = "";
+    var refreshStatsIntervalSeconds = 0;
     var viewModel = null;
 
     var init = function(options) {
         organizationId = options.organizationId || "";
         wardenName = options.wardenName || "";
+        wardenId = options.wardenId || "";
         apiKey = options.apiKey || "";
+        refreshStatsIntervalSeconds = options.refreshStatsIntervalSeconds || 60;
 
         viewModel = new ViewModel();
         ko.applyBindings(viewModel);
@@ -17,7 +21,6 @@
 
     function ViewModel() {
         var self = this;
-        var allIterations = [];
         var currentWardenCheckResults = [];
         var mainChartContext = $("#main-chart")[0].getContext("2d");
         var watchersChartContext = $("#watchers-chart")[0].getContext("2d");
@@ -44,7 +47,7 @@
         self.validResources = ko.observable(0);
         self.invalidResources = ko.observable(0);
         self.totalResourcesFormatted = ko.computed(function() {
-            return self.validResources() + " of " + self.invalidResources();
+            return self.validResources() + " of " + self.invalidResources() + " watcher(s) returned valid result(s).";
         });
         self.latestCheckAt = ko.observable("---");
         self.latestCheckAtFormatted = ko.computed(function() {
@@ -52,15 +55,35 @@
         });
 
         self.failingResources = ko.observableArray([]);
-        self.mostFailingResources = ko.computed(function() {
-            return self.failingResources().slice(0, 3);
+        self.mostFailingResources = ko.computed(function () {
+            var failingResources = self.failingResources().filter(function (resource) {
+                return resource.totalDowntime() > 0;
+            });
+            return failingResources.slice(0, 3);
         });
-
         self.iterations = ko.observableArray([]);
         self.selectedWardenCheckResult = ko.observable(new WardenCheckResult(createEmptyWardenCheckResult()));
+        self.totalValidIterations = ko.observable(0);
+        self.totalInvalidIterations = ko.observable(0);
+        self.totalIterations = ko.computed(function() {
+            return self.totalValidIterations() + self.totalInvalidIterations();
+        });
+
+        self.totalIterationsFormatted = ko.computed(function() {
+
+            var validIterations = self.totalValidIterations();
+            var invalidIterations = self.totalInvalidIterations();
+            var totalIterations = self.totalIterations();
+
+            return totalIterations +
+                " (" +
+                validIterations +
+                " valid, " +
+                invalidIterations +
+                " invalid).";
+        });
 
         self.setIterationDetails = function (iteration) {
-            allIterations.push(iteration);
             self.latestCheckAt(iteration.completedAt);
             updateResourcesInfo(iteration);
             updateMainChart(iteration);
@@ -69,6 +92,9 @@
         function setStats(stats) {
             self.totalUptime(stats.totalUptime);
             self.totalDowntime(stats.totalDowntime);
+            self.totalValidIterations(stats.totalValidIterations);
+            self.totalInvalidIterations(stats.totalInvalidIterations);
+            self.failingResources([]);
             stats.watchers.forEach(function(watcher) {
                 var watcherStats = new WatcherItem(watcher);
                 self.failingResources.push(watcherStats);
@@ -110,10 +136,16 @@
             self.selectedWarden(selectedWarden);
         };
 
-        getStats()
-            .then(function (stats) {
-                setStats(stats);
-            });
+        //TODO: Push from server side.
+        function refreshStats() {
+            getStats()
+                .then(function(stats) {
+                    setStats(stats);
+                    setTimeout(refreshStats, refreshStatsIntervalSeconds * 1000);
+                });
+        };
+
+        refreshStats();
 
         getOrganizations()
             .then(function(organizations) {
@@ -135,7 +167,6 @@
 
                 var latestIteration = iterations[0];
                 self.iterations(iterations);
-                allIterations.push(iterations);
                 displayMainChart();
                 renderWatchersChart(latestIteration);
                 self.setIterationDetails(latestIteration);
@@ -217,6 +248,12 @@
             $("#main-chart")
                 .click(function(evt) {
                     var point = mainChart.getPointsAtEvent(evt)[0];
+                    var completedAt = point.label;
+                    var iteration = self.iterations().filter(function (iteration) {
+                        return iteration.completedAt === completedAt;
+                    })[0];
+                    var url = "/organizations/" + organizationId + "/wardens/" + wardenId + "/iterations/" + iteration.id;
+                    window.open(url, '_blank');
                 });
         };
 
@@ -328,6 +365,9 @@
         self.type = ko.observable(watcher.type);
         self.totalDowntime = ko.observable(watcher.totalDowntime);
         self.totalUptime = ko.observable(watcher.totalUptime);
+        self.url = ko.computed(function () {
+            return "/organizations/" + organizationId + "/wardens/" + wardenId + "/watchers/" + self.name();
+        });
         self.infoFormatted = ko.computed(function() {
             return self.name() + " (" + self.totalDowntime().toFixed(2) + "%" + ")";
         });
@@ -341,6 +381,9 @@
         self.description = ko.observable(result.watcherCheckResult.description);
         self.completedAt = ko.observable(result.completedAt);
         self.exception = ko.observable(result.exception);
+        self.url = ko.computed(function () {
+            return "/organizations/" + organizationId + "/wardens/" + wardenId + "/watchers/" + self.watcherName();
+        });
         self.exceptionFormatted = ko.computed(function () {
             if (!self.exception())
                 return "---";
@@ -400,9 +443,15 @@
     function initWardenHub() {
         $.connection.hub.qs = { organizationId, wardenName };
         var chat = $.connection.wardenHub;
-        chat.client.iterationCreated = function (iteration) {
+        chat.client.iterationCreated = function(iteration) {
             iteration = toCamelCase(iteration);
             viewModel.setIterationDetails(iteration);
+            viewModel.iterations.push(iteration);
+            if (iteration.isValid) {
+                viewModel.totalValidIterations(viewModel.totalValidIterations() + 1);
+            } else {
+                viewModel.totalInvalidIterations(viewModel.totalInvalidIterations() + 1);
+            }
         };
 
         $.connection.hub.start()

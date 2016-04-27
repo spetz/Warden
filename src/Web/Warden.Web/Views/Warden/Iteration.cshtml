@@ -13,6 +13,12 @@
         </ul>
     </div>
     <div class="col s12">
+        <label>Id</label>
+        <ul class="collection">
+            <li class="collection-item">@Model.Iteration.Id</li>
+        </ul>
+    </div>
+    <div class="col s12">
         <label>Is valid</label>
         <ul class="collection">
             <li class="collection-item">
@@ -29,13 +35,13 @@
         </ul>
     </div>
     <div class="col s12">
-        <label>Valid iterations</label>
+        <label>Valid checks</label>
         <ul class="collection">
             <li class="collection-item">@Model.Iteration.Results.Count(x => x.IsValid)</li>
         </ul>
     </div>
     <div class="col s12">
-        <label>Invalid iterations</label>
+        <label>Invalid checks</label>
         <ul class="collection">
             <li class="collection-item">@Model.Iteration.Results.Count(x => !x.IsValid)</li>
         </ul>

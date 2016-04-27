@@ -30,17 +30,17 @@
                 </ul>
             </div>
             <div>
-                <label>Valid resources</label>
+                <label>Total iterations</label>
                 <ul class="collection">
-                    <li class="collection-item" data-bind="text: totalResourcesFormatted">
+                    <li class="collection-item" data-bind="text: totalIterationsFormatted">
                     </li>
                 </ul>
             </div>
             <div>
                 <label>Most failing resources</label>
-                <ul class="collection" data-bind="foreach: mostFailingResources">
-                    <li class="collection-item" data-bind="text: infoFormatted"></li>
-                </ul>
+                <div class="collection" data-bind="foreach: mostFailingResources">
+                    <a data-bind="attr: { href: url }" target="_blank" class="collection-item"><span data-bind="text: infoFormatted" class="custom-text"></span></a>
+                </div>
             </div>
             <div>
                 <label>Latest check at</label>
@@ -52,7 +52,12 @@
     </div>
     <div class="col s12 m9">
         <canvas class="card-panel" id="main-chart"></canvas>
-        <span class="custom-text"><strong>@Model.OrganizationName: @Model.WardenName</strong></span>
+        <a href="@Url.Action("Details", "Organization", new {id = Model.OrganizationId})" target="_blank" class="collection-item">
+            <strong><span class="custom-text">@Model.OrganizationName</span></strong>
+        </a>
+        <a href="@Url.Action("Details", "Warden", new {organizationId = Model.OrganizationId, wardenId = Model.WardenId})" target="_blank" class="collection-item right">
+            <strong><span class="custom-text">@Model.WardenName</span></strong>
+        </a>
     </div>
 </div>
 <div class="row">
@@ -60,9 +65,9 @@
         <div class="card-panel">
             <div>
                 <label>Watcher name</label>
-                <ul class="collection">
-                    <li class="collection-item" data-bind="text: selectedWardenCheckResult().watcherName"></li>
-                </ul>
+                <div class="collection">
+                    <a data-bind="attr: { href: selectedWardenCheckResult().url }" target="_blank" class="collection-item"><span data-bind="text: selectedWardenCheckResult().watcherName" class="custom-text"></span></a>
+                </div>
             </div>
             <div>
                 <label>Watcher type</label>
@@ -98,6 +103,8 @@
     </div>
     <div class="col s12 m3 offset-m1">
         <canvas class="card-panel" id="watchers-chart" width="300" height="400"></canvas>
+        <strong class="custom-text" data-bind="text: totalResourcesFormatted">
+        </strong>
     </div>
 </div>
 
@@ -112,7 +119,9 @@
             dashboard.init({
                 organizationId: "@Model.OrganizationId",
                 wardenName: "@Model.WardenName",
-                apiKey: "@Html.Raw(Model.ApiKey)"
+                wardenId: "@Model.WardenId",
+                apiKey: "@Html.Raw(Model.ApiKey)",
+                refreshStatsIntervalSeconds: 10
             });
         });
     </script>
