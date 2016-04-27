@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -41,15 +42,20 @@ namespace Warden.Watchers.Disk
                     isValid = await _configuration.EnsureThatAsync?.Invoke(diskCheck);
 
                 isValid = isValid && (_configuration.EnsureThat?.Invoke(diskCheck) ?? true);
+                var description = $"Disk check has returned {(isValid ? "valid" : "invalid")} result for " +
+                                  $"{_configuration.PartitionsToCheck.Count()} partition(s), " +
+                                  $"{_configuration.DirectoriesToCheck.Count()} directory/ies " +
+                                  $"and {_configuration.FilesToCheck.Count()} file(s).";
 
-                return DiskWatcherCheckResult.Create(this, isValid, diskCheck,
-                    $"Disk check has completed for {_configuration.PartitionsToCheck.Count()} partition(s), " +
-                    $"{_configuration.DirectoriesToCheck.Count()} directory/ies " +
-                    $"and {_configuration.FilesToCheck.Count()} file(s).");
+                return DiskWatcherCheckResult.Create(this, isValid, diskCheck, description);
+            }
+            catch (IOException exception)
+            {
+                return DiskWatcherCheckResult.Create(this, false, null, exception.Message);
             }
             catch (Exception exception)
             {
-                throw new WatcherException($"There was an error while trying to check disk.",
+                throw new WatcherException("There was an error while trying to check disk.",
                     exception);
             }
         }

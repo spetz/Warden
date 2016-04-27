@@ -39,7 +39,10 @@ namespace Warden.Watchers.MsSql
                 {
                     connection.Open();
                     if (string.IsNullOrWhiteSpace(_configuration.Query))
-                        return MsSqlWatcherCheckResult.Create(this, true, _configuration.ConnectionString);
+                    {
+                        return MsSqlWatcherCheckResult.Create(this, true, _configuration.ConnectionString,
+                            $"Database: {_configuration.Database} has been sucessfully checked.");
+                    }
 
                     var queryResult = await _msSql.QueryAsync(connection, _configuration.Query,
                         _configuration.QueryParameters, _configuration.QueryTimeout);
@@ -49,19 +52,21 @@ namespace Warden.Watchers.MsSql
                         isValid = await _configuration.EnsureThatAsync?.Invoke(queryResult);
 
                     isValid = isValid && (_configuration.EnsureThat?.Invoke(queryResult) ?? true);
+                    var description = $"MSSQL check has returned {(isValid ? "valid" : "invalid")} result for " +
+                                      $"database: '{_configuration.Database}' and given query.";
 
                     return MsSqlWatcherCheckResult.Create(this, isValid, _configuration.ConnectionString,
-                        _configuration.Query, queryResult);
+                        _configuration.Query, queryResult, description);
                 }
             }
-            catch (SqlException ex)
+            catch (SqlException exception)
             {
                 return MsSqlWatcherCheckResult.Create(this, false, _configuration.ConnectionString, 
-                    _configuration.Query, Enumerable.Empty<dynamic>(), ex.Message);
+                    _configuration.Query, Enumerable.Empty<dynamic>(), exception.Message);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                throw new WatcherException("There was an error while trying to access MSSQL database.", ex);
+                throw new WatcherException("There was an error while trying to access MSSQL database.", exception);
             }
         }
 

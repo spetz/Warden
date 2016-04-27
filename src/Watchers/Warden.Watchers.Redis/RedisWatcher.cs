@@ -43,7 +43,8 @@ namespace Warden.Watchers.Redis
                 if (string.IsNullOrWhiteSpace(_configuration.Query))
                 {
                     return RedisWatcherCheckResult.Create(this, true, _configuration.Database,
-                        _configuration.ConnectionString);
+                        _configuration.ConnectionString, 
+                        $"Database: {_configuration.Database} has been sucessfully checked.");
                 }
 
                 var queryResult = await database.QueryAsync(_configuration.Query);
@@ -52,18 +53,20 @@ namespace Warden.Watchers.Redis
                     isValid = await _configuration.EnsureThatAsync?.Invoke(queryResult);
 
                 isValid = isValid && (_configuration.EnsureThat?.Invoke(queryResult) ?? true);
+                var description = $"Redis check has returned {(isValid ? "valid" : "invalid")} result for " +
+                                  $"database: '{_configuration.Database}' and given query.";
 
                 return RedisWatcherCheckResult.Create(this, isValid, _configuration.Database,
-                    _configuration.ConnectionString, _configuration.Query, queryResult);
+                    _configuration.ConnectionString, _configuration.Query, queryResult, description);
             }
-            catch (RedisException ex)
+            catch (RedisException exception)
             {
                 return RedisWatcherCheckResult.Create(this, false, _configuration.Database,
-                    _configuration.ConnectionString, ex.Message);
+                    _configuration.ConnectionString, exception.Message);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                throw new WatcherException("There was an error while trying to access the Redis.", ex);
+                throw new WatcherException("There was an error while trying to access the Redis.", exception);
             }
         }
 

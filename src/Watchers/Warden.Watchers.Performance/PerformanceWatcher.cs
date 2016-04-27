@@ -37,9 +37,11 @@ namespace Warden.Watchers.Performance
                     isValid = await _configuration.EnsureThatAsync?.Invoke(resourceUsage);
 
                 isValid = isValid && (_configuration.EnsureThat?.Invoke(resourceUsage) ?? true);
+                var description = $"Performance check has returned {(isValid ? "valid" : "invalid")} result for " +
+                                  $"CPU usage: {resourceUsage.Cpu.ToString("F")}%, RAM usage: {resourceUsage.Ram} MB.";
 
-                return PerformanceWatcherCheckResult.Create(this, isValid, _configuration.Delay, resourceUsage,
-                    $"CPU usage: {resourceUsage.Cpu.ToString("F")}%, RAM usage: {resourceUsage.Ram} MB.");
+                return PerformanceWatcherCheckResult.Create(this, isValid, _configuration.Delay,
+                    resourceUsage, description);
             }
             catch (Exception exception)
             {

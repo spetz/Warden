@@ -18,6 +18,11 @@ namespace Warden.Watchers.MsSql
         public string ConnectionString { get; protected set; }
 
         /// <summary>
+        /// Read-only name of the database.
+        /// </summary>
+        public string Database { get; protected set; }
+
+        /// <summary>
         /// SQL Query.
         /// </summary>
         public string Query { get; protected set; }
@@ -59,7 +64,8 @@ namespace Warden.Watchers.MsSql
 
             try
             {
-                new SqlConnectionStringBuilder(connectionString);
+                var sqlConnectionStringBuilder = new SqlConnectionStringBuilder(connectionString);
+                Database = sqlConnectionStringBuilder.InitialCatalog;
             }
             catch (Exception ex)
             {
