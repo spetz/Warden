@@ -30,6 +30,7 @@ namespace Warden.Web
             services.AddSession();
             //services.AddSignalR();
             services.AddScoped<IWardenService, WardenService>();
+            services.AddScoped<IWatcherService, WatcherService>();
             services.AddScoped<IApiKeyService, ApiKeyService>();
             services.AddScoped<IOrganizationService, OrganizationService>();
             services.AddScoped<IUserService, UserService>();

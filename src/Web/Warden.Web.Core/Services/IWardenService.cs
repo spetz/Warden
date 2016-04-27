@@ -46,21 +46,32 @@ namespace Warden.Web.Core.Services
             var warden = organization.GetWardenByName(iteration.WardenName);
             if (warden == null && !organization.AutoRegisterNewWarden)
                 throw new ServiceException($"Warden with name: '{iteration.WardenName}' has not been registered.");
+
+            var updateOrganization = false;
             if (warden == null)
             {
+                updateOrganization = true;
                 organization.AddWarden(iteration.WardenName);
-                await _database.Organizations().ReplaceOneAsync(x => x.Id == organizationId, organization);
-            }else if(!warden.Enabled)
+                warden = organization.GetWardenByName(iteration.WardenName);
+            }
+            else if(!warden.Enabled)
                 throw new ServiceException($"Warden with name: '{iteration.WardenName}' is disabled.");
 
-            var wardenIteration = new WardenIteration(iteration.WardenName, organization,
+            var wardenIteration = new WardenIteration(warden.Name, organization,
                 iteration.Ordinal, iteration.StartedAt, iteration.CompletedAt, iteration.IsValid);
 
             foreach (var result in wardenCheckResults)
             {
-                var watcherType =
-                    (WatcherType) Enum.Parse(typeof(WatcherType), result.WatcherCheckResult.WatcherType, true);
-                var watcher = Watcher.Create(result.WatcherCheckResult.WatcherName, watcherType);
+                var watcherName = result.WatcherCheckResult.WatcherName;
+                var watcherType = (WatcherType)Enum.Parse(typeof(WatcherType), result.WatcherCheckResult.WatcherType, true);
+                var watcher = warden.GetWatcherByName(watcherName);
+                if (watcher == null)
+                {
+                    updateOrganization = true;
+                    warden.AddWatcher(watcherName, watcherType);
+                    watcher = warden.GetWatcherByName(watcherName);
+                }
+
                 var watcherCheckResult = result.WatcherCheckResult.IsValid
                     ? WatcherCheckResult.Valid(watcher, result.WatcherCheckResult.Description)
                     : WatcherCheckResult.Invalid(watcher, result.WatcherCheckResult.Description);
@@ -72,6 +83,9 @@ namespace Warden.Web.Core.Services
 
                 wardenIteration.AddResult(checkResult);
             }
+
+            if (updateOrganization)
+                await _database.Organizations().ReplaceOneAsync(x => x.Id == organizationId, organization);
 
             await _database.WardenIterations().InsertOneAsync(wardenIteration);
 

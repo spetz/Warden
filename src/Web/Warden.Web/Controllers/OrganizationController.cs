@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 using Warden.Web.Core.Dto;
 using Warden.Web.Core.Queries;
@@ -10,7 +9,6 @@ using Warden.Web.ViewModels;
 
 namespace Warden.Web.Controllers
 {
-    [Authorize]
     [Route("organizations")]
     public class OrganizationController : ControllerBase
     {

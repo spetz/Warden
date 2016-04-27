@@ -27,6 +27,7 @@ namespace Warden.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("login")]
         [ImportModelStateFromTempData]
         public IActionResult Login()
@@ -37,6 +38,7 @@ namespace Warden.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ExportModelStateToTempData]
+        [AllowAnonymous]
         [Route("login")]
         public async Task<IActionResult> Login(LoginViewModel viewModel)
         {
@@ -66,6 +68,7 @@ namespace Warden.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("register")]
         [ImportModelStateFromTempData]
         public IActionResult Register()
@@ -74,6 +77,7 @@ namespace Warden.Web.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         [ExportModelStateToTempData]
         [Route("register")]
@@ -111,7 +115,6 @@ namespace Warden.Web.Controllers
         }
 
         [HttpDelete]
-        [Authorize]
         [Route("logout")]
         public async Task Logout()
         {

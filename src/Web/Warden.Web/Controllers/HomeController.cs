@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 using Warden.Web.Core.Services;
 
@@ -19,6 +20,7 @@ namespace Warden.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("")]
         public async Task<IActionResult> Index()
         {
@@ -41,6 +43,7 @@ namespace Warden.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("about")]
         public IActionResult About()
         {

@@ -1,0 +1,19 @@
+﻿@using System.Threading.Tasks
+@using Warden.Web.Extensions
+@using Warden.Web.ViewModels
+@model Warden.Web.ViewModels.WatchersViewModel
+@addTagHelper "*, Microsoft.AspNet.Mvc.TagHelpers"
+
+<div class="row card-panel">
+    <div class="col s12">
+        <h5 class="custom-text">Watchers (@Model.Watchers.Count())</h5>
+        <div class="collection">
+            @foreach (var watcher in Model.Watchers)
+            {
+                <a href="@Url.Action("Details", "Watcher", new {organizationId = Model.OrganizationId, wardenId = Model.WardenId, watcherName = watcher.Name})" class="collection-item">
+                    <span class="custom-text">@watcher.Name</span>
+                </a>
+            }
+        </div>
+    </div>
+</div>

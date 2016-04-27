@@ -1,12 +1,10 @@
 ﻿using System.Threading.Tasks;
-using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 using Warden.Web.Core.Services;
 using Warden.Web.Framework.Filters;
 
 namespace Warden.Web.Controllers
 {
-    [Authorize]
     [Route("settings")]
     public class SettingsController : ControllerBase
     {

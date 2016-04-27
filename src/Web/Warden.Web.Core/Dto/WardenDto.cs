@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Warden.Web.Core.Dto
 {
@@ -8,6 +10,7 @@ namespace Warden.Web.Core.Dto
         public string Name { get; set; }
         public bool Enabled { get; set; }
         public DateTime CreatedAt { get; set; }
+        public IEnumerable<WatcherDto> Watchers { get; set; }
 
         public WardenDto()
         {
@@ -19,6 +22,7 @@ namespace Warden.Web.Core.Dto
             Name = warden.Name;
             Enabled = warden.Enabled;
             CreatedAt = warden.CreatedAt;
+            Watchers = warden.Watchers.Select(x => new WatcherDto(x));
         }
     }
 }

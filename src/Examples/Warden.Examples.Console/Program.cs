@@ -57,7 +57,7 @@ namespace Warden.Examples.Console
                         .OnCompletedAsync(check => WebsiteHookOnCompletedAsync(check))
                         .OnFailureAsync(check => WebsiteHookOnFailureAsync(check));
                 })
-                .AddWebWatcher("http://httpstat.us/200", HttpRequest.Post("users", new {name = "test"},
+                .AddWebWatcher("API watcher", "http://httpstat.us/200", HttpRequest.Post("users", new {name = "test"},
                     headers: new Dictionary<string, string>
                     {
                         ["User-Agent"] = "Warden",
@@ -79,8 +79,8 @@ namespace Warden.Examples.Console
                 //})
                 //Set proper URL of the Warden Web API
                 .IntegrateWithHttpApi("http://localhost:11223/api",
-                "yroWbGkozycDLMI7+Jkyw0FzJv/O6xHzhR8+DcKTNEQECZHFBFmBbYCKJ2wiHYI=",
-                "20afbd7c-f803-4a2d-be64-640776930930")
+                "4vusyWv7rF1TYvMIpE8l8xsxUDizhcSr/cQiYnYhXSbY0fjJgsnjRGBWKo80qHP2NHMo8klko3wKLA==",
+                "597ad777-99ab-455f-a16e-3b8dd0cc32ad")
                 .SetGlobalWatcherHooks(hooks =>
                 {
                     hooks.OnStart(check => GlobalHookOnStart(check))

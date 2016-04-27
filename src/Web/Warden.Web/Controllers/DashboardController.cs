@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 using Warden.Web.Core.Services;
 using Warden.Web.ViewModels;
 
 namespace Warden.Web.Controllers
 {
-    [Authorize]
     [Route("dashboards")]
     public class DashboardController : ControllerBase
     {

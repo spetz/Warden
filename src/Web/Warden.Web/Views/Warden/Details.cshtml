@@ -11,7 +11,10 @@
     <div class="col s12 m2">
         <a href="@Url.Action("Details", "Dashboard", new {organizationId = Model.OrganizationId, wardenId = Model.Id})" class="btn waves-effect waves-light custom">Dashboard</a>
     </div>
-    <div class="col s12 m1 offset-m9">
+    <div class="col s12 m2">
+        <a href="@Url.Action("Index", "Watcher", new {organizationId = Model.OrganizationId, wardenId = Model.Id})" class="btn waves-effect waves-light custom">Watchers</a>
+    </div>
+    <div class="col s12 m1 offset-m7">
         @if (Model.Enabled)
         {
             <form asp-controller="Warden" asp-action="Disable" asp-anti-forgery="true" method="POST">

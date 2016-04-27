@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 using Warden.Web.Core.Extensions;
 using Warden.Web.Framework;
 
 namespace Warden.Web.Controllers
 {
+    [Authorize]
     public abstract class ControllerBase : Controller
     {
         private const string NotificationKey = "Notifications";
