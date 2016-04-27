@@ -29,7 +29,10 @@ namespace Warden.Web.Core.Dto
             CompletedAt = iteration.CompletedAt;
             ExecutionTime = iteration.ExecutionTime;
             IsValid = iteration.IsValid;
-            Results = iteration.Results.Select(x => new WardenCheckResultDto(x));
+            Results = iteration.Results.Select(x => new WardenCheckResultDto(x)
+            {
+                IterationId = iteration.Id
+            });
         }
     }
 }

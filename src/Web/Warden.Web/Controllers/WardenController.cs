@@ -14,22 +14,31 @@ namespace Warden.Web.Controllers
     {
         private readonly IOrganizationService _organizationService;
         private readonly IWardenService _wardenService;
+        private readonly IWatcherService _watcherService;
 
         public WardenController(IOrganizationService organizationService,
-            IWardenService wardenService)
+            IWardenService wardenService, IWatcherService watcherService)
         {
             _organizationService = organizationService;
             _wardenService = wardenService;
+            _watcherService = watcherService;
         }
 
         [HttpGet]
         [Route("{wardenId}")]
-        public async Task<IActionResult> Details(Guid organizationId, Guid wardenId, int page = 1, int results = 10)
+        public async Task<IActionResult> Details(Guid organizationId, Guid wardenId, 
+            int page = 1, int results = 10)
         {
             var warden = await GetWardenForUserAsync(organizationId, wardenId);
             if (warden == null)
                 return HttpNotFound();
 
+            var stats = await _wardenService.GetStatsAsync(new GetWardenStats
+            {
+                OrganizationId = organizationId,
+                WardenName = warden.Name
+            });
+            var watchers = await _watcherService.GetAllAsync(organizationId, wardenId);
             var iterations = await _wardenService.BrowseIterationsAsync(new BrowseWardenIterations
             {
                 OrganizationId = organizationId,
@@ -41,10 +50,10 @@ namespace Warden.Web.Controllers
             {
                 Id = wardenId,
                 OrganizationId = organizationId,
-                Name = warden.Name,
-                Enabled = warden.Enabled,
+                Stats = stats,
                 CreatedAt = warden.CreatedAt,
-                Iterations = iterations
+                Iterations = iterations,
+                Watchers = watchers
             };
 
             return View(viewModel);
@@ -95,7 +104,14 @@ namespace Warden.Web.Controllers
             if (iteration == null)
                 return HttpNotFound();
 
-            return View(iteration);
+            var viewModel = new WardenIterationViewModel
+            {
+                OrganizationId = organizationId,
+                WardenId = wardenId,
+                Iteration = iteration
+            };
+
+            return View(viewModel);
         }
 
         private async Task<WardenDto> GetWardenForUserAsync(Guid organizationId, Guid wardenId)

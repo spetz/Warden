@@ -38,6 +38,21 @@ namespace Warden.Web.Core.Mongo.Queries
                 .ToListAsync();
         }
 
+        public static async Task<IEnumerable<WardenIteration>> GetForWatcherAsync(
+            this IMongoCollection<WardenIteration> iterations,
+            Guid organizationId, Guid wardenId, string watcherName)
+        {
+            if (organizationId == Guid.Empty || wardenId == Guid.Empty || watcherName.Empty())
+                return Enumerable.Empty<WardenIteration>();
+
+            watcherName = watcherName.Trim();
+
+            return await iterations.AsQueryable()
+                .Where(x => x.Warden.OrganizationId == organizationId && x.Warden.Id == wardenId &&
+                            x.Results.Any(r => r.WatcherCheckResult.Watcher.Name == watcherName))
+                .ToListAsync();
+        }
+
         public static IMongoQueryable<WardenIteration> Query(this IMongoCollection<WardenIteration> iterations,
             BrowseWardenIterations query)
         {
@@ -49,7 +64,10 @@ namespace Warden.Web.Core.Mongo.Queries
                 var fixedWardenName = query.WardenName.TrimToLower();
                 values = values.Where(x => x.Warden.Name.ToLower() == fixedWardenName);
             }
-
+            if (query.WardenId != Guid.Empty)
+            {
+                values = values.Where(x => x.Warden.Id == query.WardenId);
+            }
             switch (query.ResultType)
             {
                 case ResultType.Valid:

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Warden.Web.Core.Domain
 {
-    public class WardenIteration : Entity, ITimestampable
+    public class WardenIteration : Entity, ITimestampable, ICompletable, IValidatable
     {
         private HashSet<WardenCheckResult> _results = new HashSet<WardenCheckResult>();
 

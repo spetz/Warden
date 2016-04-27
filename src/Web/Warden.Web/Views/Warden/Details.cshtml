@@ -6,20 +6,16 @@
 
 <div class="row card-panel">
     <div class="col s12 m12 l12">
-        <h5 class="custom-text">Warden: @Model.Name</h5>
+        <h5 class="custom-text">Warden: @Model.Stats.WardenName</h5>
     </div>
     <div class="col s12 m2">
         <a href="@Url.Action("Details", "Dashboard", new {organizationId = Model.OrganizationId, wardenId = Model.Id})" class="btn waves-effect waves-light custom">Dashboard</a>
     </div>
-    <div class="col s12 m2">
-        <a href="@Url.Action("Index", "Watcher", new {organizationId = Model.OrganizationId, wardenId = Model.Id})" class="btn waves-effect waves-light custom">Watchers</a>
-    </div>
-    <div class="col s12 m1 offset-m7">
-        @if (Model.Enabled)
+    <div class="col s12 m1 offset-m9">
+        @if (Model.Stats.Enabled)
         {
             <form asp-controller="Warden" asp-action="Disable" asp-anti-forgery="true" method="POST">
-                <button class="btn waves-effect waves-light orange lighten-2" type="submit" name="action" title="Disable"
-                        ><i class="material-icons">stop</i></button>
+                <button class="btn waves-effect waves-light orange lighten-2" type="submit" name="action" title="Disable"><i class="material-icons">stop</i></button>
             </form>
         }
         else
@@ -30,6 +26,43 @@
                 </button>
             </form>
         }
+    </div>
+    <div class="col s12">
+        <label>Total uptime</label>
+        <ul class="collection">
+            <li class="collection-item">@Model.Stats.TotalUptime.ToString("F")%</li>
+        </ul>
+    </div>
+    <div class="col s12">
+        <label>Total downtime</label>
+        <ul class="collection">
+            <li class="collection-item">@Model.Stats.TotalDowntime.ToString("F")%</li>
+        </ul>
+    </div>
+    <div class="col s12">
+        <label>Valid iterations</label>
+        <ul class="collection">
+            <li class="collection-item">@Model.Stats.TotalValidIterations</li>
+        </ul>
+    </div>
+    <div class="col s12">
+        <label>Invalid iterations</label>
+        <ul class="collection">
+            <li class="collection-item">@Model.Stats.TotalInvalidIterations</li>
+        </ul>
+    </div>
+</div>
+<div class="row card-panel">
+    <div class="col s12">
+        <h5 class="custom-text">Watchers (@Model.Watchers.Count())</h5>
+        <div class="collection">
+            @foreach (var watcher in Model.Watchers)
+            {
+                <a href="@Url.Action("Details", "Watcher", new {organizationId = Model.OrganizationId, wardenId = Model.Id, watcherName = watcher.Name})" class="collection-item">
+                    <span class="custom-text">@watcher.Name</span>
+                </a>
+            }
+        </div>
     </div>
 </div>
 <div class="row card-panel">

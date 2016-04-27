@@ -5,6 +5,7 @@ namespace Warden.Web.Core.Dto
 {
     public class WardenCheckResultDto
     {
+        public Guid IterationId { get; set; }
         public bool IsValid { get; set; }
         public WatcherCheckResultDto WatcherCheckResult { get; set; }
         public DateTime StartedAt { get; set; }

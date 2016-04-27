@@ -35,6 +35,18 @@ namespace Warden.Web.Core.Mongo.Queries
                 .FirstOrDefaultAsync(x => x.Id == wardenId);
         }
 
+        public static async Task<Domain.Warden> GetWardenByNameAsync(this IMongoCollection<Organization> organizations,
+            Guid organizationId, string wardenName)
+        {
+            if (organizationId == Guid.Empty || wardenName.Empty())
+                return null;
+
+            return await organizations.AsQueryable()
+                .Where(x => x.Id == organizationId)
+                .SelectMany(x => x.Wardens)
+                .FirstOrDefaultAsync(x => x.Name == wardenName);
+        }
+
         public static async Task<Organization> GetByNameForOwnerAsync(this IMongoCollection<Organization> organizations,
             string name, Guid ownerId)
         {

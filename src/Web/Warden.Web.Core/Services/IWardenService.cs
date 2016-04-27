@@ -24,10 +24,12 @@ namespace Warden.Web.Core.Services
     {
         private const string WatcherNameSuffix = "watcher";
         private readonly IMongoDatabase _database;
+        private readonly IStatsCalculator _statsCalculator;
 
-        public WardenService(IMongoDatabase database)
+        public WardenService(IMongoDatabase database, IStatsCalculator statsCalculator)
         {
             _database = database;
+            _statsCalculator = statsCalculator;
         }
 
         public async Task<WardenIterationDto> SaveIterationAsync(WardenIterationDto iteration, Guid organizationId)
@@ -135,55 +137,54 @@ namespace Warden.Web.Core.Services
 
         public async Task<WardenStatsDto> GetStatsAsync(GetWardenStats query)
         {
+            var warden = await _database.Organizations()
+                .GetWardenByNameAsync(query.OrganizationId, query.WardenName);
+            if (warden == null)
+                return null;
+
             var iterations = await _database.WardenIterations()
                 .GetForWardenAsync(query.OrganizationId, query.WardenName);
-            var results = iterations.SelectMany(x => x.Results).ToList();
-            var stats = GetWardenStats(results);
+            var stats = GetWardenStats(iterations.ToList());
             stats.OrganizationId = query.OrganizationId;
-            stats.WardenName = query.WardenName;
+            stats.WardenName = warden.Name;
+            stats.Enabled = warden.Enabled;
 
             return stats;
         }
 
-        private WardenStatsDto GetWardenStats(IList<WardenCheckResult> results)
+        private WardenStatsDto GetWardenStats(IList<WardenIteration> iterations)
         {
-            var wardenUptimeAndDowntime = GetTotalUptimeAndDowntime(results);
+            var wardenStats = _statsCalculator.Calculate(iterations);
             var stats = new WardenStatsDto
             {
-
-                TotalUptime = wardenUptimeAndDowntime.Item1,
-                TotalDowntime = wardenUptimeAndDowntime.Item2
+                TotalUptime = wardenStats.TotalUptime,
+                TotalDowntime = wardenStats.TotalDowntime,
+                TotalIterations = wardenStats.TotalResults,
+                TotalValidIterations = wardenStats.TotalValidResults,
+                TotalInvalidIterations = wardenStats.TotalInvalidResults
             };
-            var watcherCheckResults = results.Select(x => x.WatcherCheckResult)
+
+            var watcherCheckResults = iterations.SelectMany(x => x.Results)
+                .Select(x => x.WatcherCheckResult)
                 .GroupBy(x => x.Watcher.Name, x => x)
                 .ToList();
+
             stats.Watchers = (from watcherGroup in watcherCheckResults
                 let watcher = watcherGroup.First().Watcher
-                let watcherUptimeAndDowntime = GetTotalUptimeAndDowntime(watcherGroup.ToList())
+                let watcherStats = _statsCalculator.Calculate(watcherGroup)
                 select new WatcherStatsDto
                 {
                     Name = watcher.Name,
                     Type = watcher.Type.ToString().ToLowerInvariant(),
-                    TotalUptime = watcherUptimeAndDowntime.Item1,
-                    TotalDowntime = watcherUptimeAndDowntime.Item2
+                    TotalUptime = watcherStats.TotalUptime,
+                    TotalDowntime = watcherStats.TotalDowntime,
+                    TotalChecks = watcherStats.TotalResults,
+                    TotalValidChecks = watcherStats.TotalValidResults,
+                    TotalInvalidChecks = watcherStats.TotalInvalidResults,
                 })
                 .OrderBy(x => x.Type);
 
             return stats;
-        }
-
-        private Tuple<double, double> GetTotalUptimeAndDowntime<T>(IList<T> validatables) where T : IValidatable
-        {
-            if (!validatables.Any())
-                return new Tuple<double, double>(0, 0);
-
-            var totalResults = (double)validatables.Count;
-            var totalValidResults = (double)validatables.Count(r => r.IsValid);
-            var totalInvalidResults = totalResults - totalValidResults;
-            var totalUptime = totalValidResults * 100 / totalResults;
-            var totalDowntime = totalInvalidResults * 100 / totalResults;
-
-            return new Tuple<double, double>(totalUptime, totalDowntime);
         }
     }
 }

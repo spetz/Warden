@@ -34,6 +34,7 @@ namespace Warden.Web
             services.AddScoped<IApiKeyService, ApiKeyService>();
             services.AddScoped<IOrganizationService, OrganizationService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddSingleton<IStatsCalculator, StatsCalculator>();
             services.AddSingleton<IEncrypter>(provider => new Encrypter("abcd"));
             services.AddSingleton(provider => new MongoClient("mongodb://localhost:27017"));
             services.AddScoped(provider => provider.GetService<MongoClient>().GetDatabase("Warden"));

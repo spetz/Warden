@@ -1,29 +1,57 @@
-﻿@model Warden.Web.Core.Dto.WardenIterationDto
+﻿@using System.Threading.Tasks
+@using Warden.Web.ViewModels
+@model Warden.Web.ViewModels.WardenIterationViewModel
 
 <div class="row card-panel">
     <div class="col s12">
-        <h5 class="custom-text">Warden: @Model.WardenName</h5>
-        <h5 class="custom-text">Iteration for @Model.Results.Count() watchers (@Model.Results.Count(x => x.IsValid) valid, @Model.Results.Count(x => !x.IsValid) invalid), completed at: @Model.CompletedAt
-            @if (Model.IsValid)
-            {
-                <i class="material-icons green-text lighten-2 right">thumb_up</i>
-            }
-            else
-            {
-                <i class="material-icons red-text lighten-2 right">thumb_down</i>
-            }
-        </h5>
+        <h5 class="custom-text">Iteration for @Model.Iteration.Results.Count() watchers by @Model.Iteration.WardenName</h5>
+    </div>
+    <div class="col s12">
+        <label>Completed at</label>
+        <ul class="collection">
+            <li class="collection-item">@Model.Iteration.CompletedAt</li>
+        </ul>
+    </div>
+    <div class="col s12">
+        <label>Is valid</label>
+        <ul class="collection">
+            <li class="collection-item">
+                @Model.Iteration.IsValid
+                @if (Model.Iteration.IsValid)
+                {
+                    <i class="material-icons green-text lighten-2 right">thumb_up</i>
+                }
+                else
+                {
+                    <i class="material-icons red-text lighten-2 right">thumb_down</i>
+                }
+            </li>
+        </ul>
+    </div>
+    <div class="col s12">
+        <label>Valid iterations</label>
+        <ul class="collection">
+            <li class="collection-item">@Model.Iteration.Results.Count(x => x.IsValid)</li>
+        </ul>
+    </div>
+    <div class="col s12">
+        <label>Invalid iterations</label>
+        <ul class="collection">
+            <li class="collection-item">@Model.Iteration.Results.Count(x => !x.IsValid)</li>
+        </ul>
     </div>
 </div>
-@foreach (var result in Model.Results.OrderBy(x => x.WatcherCheckResult.WatcherType))
+@foreach (var result in Model.Iteration.Results.OrderBy(x => x.WatcherCheckResult.WatcherName))
 {
+    var watcherName = result.WatcherCheckResult.WatcherName;
     <div class="row card-panel">
-
         <div class="col s12">
             <label>Watcher name</label>
-            <ul class="collection">
-                <li class="collection-item">@result.WatcherCheckResult.WatcherName</li>
-            </ul>
+            <div class="collection">
+                <a href="@Url.Action("Details", "Watcher", new {organizationId = Model.OrganizationId, wardenId = Model.WardenId, watcherName})" class="collection-item" name="watcher-@watcherName">
+                    <span class="custom-text">@watcherName</span>
+                </a>
+            </div>
             <label>Watcher type</label>
             <ul class="collection">
                 <li class="collection-item">@result.WatcherCheckResult.WatcherType</li>
