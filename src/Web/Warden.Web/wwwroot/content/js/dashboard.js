@@ -345,12 +345,9 @@
             if (!self.exception())
                 return "---";
 
-            return formatExceptionMessage(self.exception());
+            return getExceptionDetails(self.exception());
         });
 
-        function formatExceptionMessage(exception) {
-            return getExceptionDetails(exception) + "<br><br><hr><strong>Stack trace:</strong><br>" + exception.stackTraceString;
-        };
 
         function getExceptionDetails(exception) {
             if (!exception)
@@ -365,6 +362,8 @@
                 exception.source +
                 "<br><br><strong>Message:</strong><br>" +
                 exception.message +
+                "<br><br><strong>Stack trace:</strong><br>" +
+                exception.stackTraceString +
                 innerExceptionMessage;
         };
     };

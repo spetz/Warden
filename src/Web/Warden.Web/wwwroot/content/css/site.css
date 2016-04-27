@@ -14,3 +14,7 @@ nav {
 
 .custom-text {
   color: #7272D8; }
+
+.collection .collection-item.active {
+  background-color: #ffffff;
+  color: #000000; }

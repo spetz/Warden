@@ -50,6 +50,24 @@
             <ul class="collection">
                 <li class="collection-item">@result.CompletedAt</li>
             </ul>
+            <label>Exception</label>
+            @if (result.Exception == null)
+            {
+                <ul class="collection">
+                    <li class="collection-item">---</li>
+                </ul>
+            }
+            else
+            {
+                <ul class="collection collapsible" data-collapsible="expandable">
+                    <li class="collection-item">
+                        <div class="collapsible-header">
+                            <i class="material-icons">info_outline</i>Expand
+                        </div>
+                        <div class="collapsible-body text-black"> @Html.Partial("_Exception", result.Exception)</div>
+                    </li>
+                </ul>
+            }
         </div>
     </div>
 }

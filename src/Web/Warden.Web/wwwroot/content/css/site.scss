@@ -22,3 +22,8 @@ nav {
 .custom-text {
     color: $primary-color;
 }
+
+.collection .collection-item.active {
+    background-color: #ffffff;
+    color: #000000;
+}

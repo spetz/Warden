@@ -1,0 +1,21 @@
+﻿@model Warden.Web.Core.Dto.ExceptionDto
+
+<label>Source</label>
+<ul class="collection">
+    <li class="collection-item">@Model.Source</li>
+</ul>
+<label>Message</label>
+<ul class="collection">
+    <li class="collection-item">@Model.Message</li>
+</ul>
+<label>Stack trace</label>
+<ul class="collection">
+    <li class="collection-item">@Model.StackTrace</li>
+</ul>
+@if (Model.InnerException != null)
+{
+    <label>Inner exception</label>
+    <ul class="collection">
+        <li class="collection-item">@Html.Partial("_Exception", Model.InnerException)</li>
+    </ul>
+}
