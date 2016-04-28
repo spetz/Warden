@@ -15,6 +15,6 @@ namespace Warden.Web.Core.Dto
         public double TotalIterations { get; set; }
         public double TotalValidIterations { get; set; }
         public double TotalInvalidIterations { get; set; }
-        public IEnumerable<WatcherStatsDto> Watchers { get; set; }
+        public IEnumerable<WatcherStatsDto> Watchers { get; set; } = new List<WatcherStatsDto>();
     }
 }

@@ -140,7 +140,7 @@ namespace Warden.Web.Core.Services
             var warden = await _database.Organizations()
                 .GetWardenByNameAsync(query.OrganizationId, query.WardenName);
             if (warden == null)
-                return null;
+                return new WardenStatsDto();
 
             var iterations = await _database.WardenIterations()
                 .GetForWardenAsync(query.OrganizationId, query.WardenName);

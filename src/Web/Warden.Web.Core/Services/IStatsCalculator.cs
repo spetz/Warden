@@ -17,7 +17,7 @@ namespace Warden.Web.Core.Services
         {
             var results = values?.ToList() ?? new List<T>();
             if (!results.Any())
-                return null;
+                return new StatsDto();
 
             var totalResults = (double)results.Count;
             var totalValidResults = (double)results.Count(r => r.IsValid);
