@@ -16,6 +16,7 @@ namespace Warden.Web.Core.Services
         Task RegisterAsync(string email, string password, Role role = Role.User);
         Task LoginAsync(string email, string password);
         Task SetRecentlyViewedWardenInOrganizationAsync(Guid userId, Guid organizationId, Guid wardenId);
+        Task SetNewPasswordAsync(Guid userId, string actualPassword, string newPassword);
     }
 
     public class UserService : IUserService
@@ -91,6 +92,19 @@ namespace Warden.Web.Core.Services
             var user = await _database.Users().GetByIdAsync(userId);
             var organization = await _database.Organizations().GetByIdAsync(organizationId);
             user.SetRecentlyViewedWardenInOrganization(organization, wardenId);
+            await _database.Users().ReplaceOneAsync(x => x.Id == userId, user);
+        }
+
+        public async Task SetNewPasswordAsync(Guid userId, string actualPassword, string newPassword)
+        {
+            var user = await _database.Users().GetByIdAsync(userId);
+            if (user == null)
+                throw new ServiceException($"User has not been found for id: '{userId}'.");
+
+            if (!user.ValidatePassword(actualPassword, _encrypter))
+                throw new ServiceException("Invalid actual password.");
+
+            user.SetPassword(newPassword, _encrypter);
             await _database.Users().ReplaceOneAsync(x => x.Id == userId, user);
         }
     }

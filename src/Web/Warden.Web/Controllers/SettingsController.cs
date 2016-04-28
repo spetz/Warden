@@ -1,7 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
+using Warden.Web.Core.Domain;
 using Warden.Web.Core.Services;
+using Warden.Web.Framework;
 using Warden.Web.Framework.Filters;
+using Warden.Web.ViewModels;
 
 namespace Warden.Web.Controllers
 {
@@ -35,6 +38,39 @@ namespace Warden.Web.Controllers
             await _apiKeyService.CreateAsync(UserId);
 
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        [ImportModelStateFromTempData]
+        [Route("password")]
+        public IActionResult Password()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ExportModelStateToTempData]
+        [Route("password")]
+        public async Task<IActionResult> Password(ChangePasswordViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+                return RedirectToAction("Password");
+
+            try
+            {
+                await _userService.SetNewPasswordAsync(UserId, viewModel.ActualPassword, viewModel.NewPassword);
+                Notify(FlashNotificationType.Success, "Password has been changed.");
+
+                return RedirectToAction("Index");
+
+            }
+            catch (ServiceException exception)
+            {
+                Notify(FlashNotificationType.Error, exception.Message);
+
+                return RedirectToAction("Password");
+            }
         }
     }
 }

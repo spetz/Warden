@@ -3,7 +3,9 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Authentication.Cookies;
 using Microsoft.AspNet.Authorization;
+using Microsoft.AspNet.Http.Authentication;
 using Microsoft.AspNet.Mvc;
+using Warden.Web.Core.Domain;
 using Warden.Web.Core.Services;
 using Warden.Web.Framework;
 using Warden.Web.Framework.Filters;
@@ -56,11 +58,14 @@ namespace Warden.Web.Controllers
                 var claims = new[] { new Claim(ClaimTypes.Name, user.Id.ToString("N")), new Claim(ClaimTypes.NameIdentifier, ""),  };
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 await HttpContext.Authentication.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(identity));
+                    new ClaimsPrincipal(identity), new AuthenticationProperties
+                    {
+                        IsPersistent = viewModel.RememberMe
+                    });
             }
-            catch (Exception ex)
+            catch (ServiceException exception)
             {
-                Notify(FlashNotificationType.Error, "Invalid credentials.");
+                Notify(FlashNotificationType.Error, exception.Message);
                 return RedirectToAction("Login");
             }
 
@@ -94,9 +99,9 @@ namespace Warden.Web.Controllers
             {
                 await _userService.RegisterAsync(viewModel.Email, viewModel.Password);
             }
-            catch (Exception ex)
+            catch (ServiceException exception)
             {
-                Notify(FlashNotificationType.Error, "Invalid password and/or email already in use.");
+                Notify(FlashNotificationType.Error, exception.Message);
 
                 return RedirectToAction("Register");
             }
