@@ -21,8 +21,11 @@ namespace Warden.Web.Core.Services
 
         public void SendIterationCreated(Guid organizationId, WardenIterationDto iteration)
         {
-            var groupName = $"{organizationId}::{iteration.WardenName}".TrimToLower();
+            var groupName = GetWardenGroupName(organizationId, iteration.WardenName);
             _hub.Clients.Group(groupName).iterationCreated(iteration);
         }
+
+        private static string GetWardenGroupName(Guid organizationId, string wardenName)
+            => $"{organizationId}::{wardenName}".TrimToLower();
     }
 }

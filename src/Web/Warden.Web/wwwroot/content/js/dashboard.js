@@ -469,9 +469,32 @@
             }
         };
 
-        $.connection.hub.start()
-            .done(function() {
-            });
+        connect();
+
+        $.connection.hub.disconnected(function() {
+            var reason = "";
+            if ($.connection.hub.lastError) {
+                reason = " Reason: " + $.connection.hub.lastError.message;
+            }
+
+            Materialize.toast("Connection has been lost, reconnecting in 3 seconds." + reason, 3000, "red lighten-1");
+            setTimeout(connect, 3000);
+        });
+
+        $.connection.hub.reconnected(function () {
+            Materialize.toast("Reconnection has succeeded.", 3000, "green lighten-1");
+        });
+
+        function connect() {
+            Materialize.toast("Connecting to the Warden Hub.", 3000, "blue lighten-1");
+            $.connection.hub.start()
+                .done(function() {
+                    Materialize.toast("Connection has been established.", 3000, "green lighten-1");
+                })
+                .fail(function() {
+                    Materialize.toast("Connection could not have been established.", 3000, "red lighten-1");
+                });
+        };
     };
 
     ////SignalR camelCase JSON resolver does not seem to be working - temporary workaround.

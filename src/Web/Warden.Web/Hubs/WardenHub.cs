@@ -20,13 +20,34 @@ namespace Warden.Web.Hubs
 
         public override async Task OnConnected()
         {
+            var groupName = await ParseRequestAndGetWardenGroupNameOrFailAsync();
+            await Groups.Add(Context.ConnectionId, groupName);
+            await base.OnConnected();
+        }
+
+        public override async Task OnReconnected()
+        {
+            var groupName = await ParseRequestAndGetWardenGroupNameOrFailAsync();
+            await Groups.Add(Context.ConnectionId, groupName);
+            await base.OnReconnected();
+        }
+
+        public override async Task OnDisconnected(bool stopCalled)
+        {
+            var groupName = await ParseRequestAndGetWardenGroupNameOrFailAsync();
+            await Groups.Remove(Context.ConnectionId, groupName);
+            await base.OnDisconnected(stopCalled);
+        }
+
+        private async Task<string> ParseRequestAndGetWardenGroupNameOrFailAsync()
+        {
             var organizationIdValue = Context.QueryString["organizationId"];
             var wardenName = Context.QueryString["wardenName"];
             if (organizationIdValue.Empty() || wardenName.Empty())
                 throw new InvalidOperationException("Empty organization id and/or warden name.");
 
             Guid organizationId;
-            if(!Guid.TryParse(organizationIdValue, out organizationId))
+            if (!Guid.TryParse(organizationIdValue, out organizationId))
                 throw new InvalidOperationException("Invalid organization id.");
 
             var hasAccess = await _organizationService.IsUserInOrganizationAsync(organizationId,
@@ -34,9 +55,10 @@ namespace Warden.Web.Hubs
             if (!hasAccess)
                 throw new InvalidOperationException("No access to the selected organization and warden.");
 
-            var groupName = $"{organizationId}::{wardenName}".TrimToLower();
-            await Groups.Add(Context.ConnectionId, groupName);
-            await base.OnConnected();
+            return GetWardenGroupName(organizationId, wardenName);
         }
+
+        private static string GetWardenGroupName(Guid organizationId, string wardenName)
+            => $"{organizationId}::{wardenName}".TrimToLower();
     }
 }
