@@ -5,6 +5,7 @@
     var wardenId = "";
     var apiKey = "";
     var refreshStatsIntervalSeconds = 0;
+    var totalWatchers = 0;
     var viewModel = null;
 
     var init = function(options) {
@@ -12,6 +13,7 @@
         wardenName = options.wardenName || "";
         wardenId = options.wardenId || "";
         apiKey = options.apiKey || "";
+        totalWatchers = options.totalWatchers || 0;
         refreshStatsIntervalSeconds = options.refreshStatsIntervalSeconds || 60;
 
         viewModel = new ViewModel();
@@ -55,10 +57,11 @@
         });
 
         self.failingResources = ko.observableArray([]);
-        self.mostFailingResources = ko.computed(function () {
-            var failingResources = self.failingResources().filter(function (resource) {
-                return resource.totalDowntime() > 0;
-            });
+        self.mostFailingResources = ko.computed(function() {
+            var failingResources = self.failingResources()
+                .filter(function(resource) {
+                    return resource.totalDowntime() > 0;
+                });
             return failingResources.slice(0, 3);
         });
         self.iterations = ko.observableArray([]);
@@ -83,10 +86,10 @@
                 " invalid).";
         });
 
-        self.setIterationDetails = function (iteration) {
+        self.setIterationDetails = function(iteration) {
             self.latestCheckAt(iteration.completedAt);
             updateResourcesInfo(iteration);
-            updateMainChart(iteration);
+            updateCharts(iteration);
         };
 
         function setStats(stats) {
@@ -100,7 +103,7 @@
                 self.failingResources.push(watcherStats);
             });
 
-            self.failingResources.sort(function (left, right) { return left.totalDowntime() < right.totalDowntime() });
+            self.failingResources.sort(function(left, right) { return left.totalDowntime() < right.totalDowntime() });
         };
 
         self.changeWarden = function() {
@@ -110,7 +113,7 @@
         };
 
         function updateResourcesInfo(iteration) {
-            var validResults = iteration.results.filter(function (result) {
+            var validResults = iteration.results.filter(function(result) {
                 return result.isValid;
             });
 
@@ -167,35 +170,30 @@
 
                 var latestIteration = iterations[0];
                 self.iterations(iterations);
-                displayMainChart();
+                renderMainChart();
                 renderWatchersChart(latestIteration);
                 self.setIterationDetails(latestIteration);
             });
 
-        function updateMainChart(iteration) {
-              var validResults = iteration.results.filter(function(result) {
-                return result.isValid;
-              });
-              var point = validResults.length;
-              var label = iteration.completedAt;
-              mainChart.removeData();
-              mainChart.addData([point], label);
+        function updateCharts(iteration) {
+            var removeFirstIteration = self.iterations().length >= 10;
+            addNewIterationToMainChart(iteration, removeFirstIteration);
             renderWatchersChart(iteration);
         };
 
         function renderEmptyMainChart() {
             var data = {
-                labels: ["Missing data"],
+                labels: [],
                 datasets: [
                     {
                         label: "Warden",
-                        fillColor: "rgba(75, 74, 73, 0.1)",
+                        fillColor: "rgba(91, 187, 22, 0.2)",
                         strokeColor: "rgba(220,220,220,1)",
                         pointColor: "rgba(220,220,220,1)",
                         pointStrokeColor: "#fff",
                         pointHighlightFill: "#fff",
                         pointHighlightStroke: "rgba(220,220,220,1)",
-                        data: [0, 1]
+                        data: [0]
                     }
                 ]
             };
@@ -206,10 +204,21 @@
             mainChart = new Chart(mainChartContext).Line(data, options);
         };
 
-        function displayMainChart() {
+        function addNewIterationToMainChart(iteration, removeFirstIteration) {
+            var validResults = iteration.results.filter(function(result) {
+                return result.isValid;
+            });
+            var point = validResults.length;
+            var label = iteration.completedAt;
+            if (removeFirstIteration) {
+                mainChart.removeData();
+            }
+            mainChart.addData([point], label);
+        };
+
+        function renderMainChart() {
             var labels = [];
             var points = [];
-            var totalWatchers = 7;
             self.iterations()
                 .forEach(function(iteration) {
                     labels.push(iteration.completedAt);
@@ -249,10 +258,16 @@
                 .click(function(evt) {
                     var point = mainChart.getPointsAtEvent(evt)[0];
                     var completedAt = point.label;
-                    var iteration = self.iterations().filter(function (iteration) {
-                        return iteration.completedAt === completedAt;
-                    })[0];
-                    var url = "/organizations/" + organizationId + "/wardens/" + wardenId + "/iterations/" + iteration.id;
+                    var iteration = self.iterations()
+                        .filter(function(iteration) {
+                            return iteration.completedAt === completedAt;
+                        })[0];
+                    var url = "/organizations/" +
+                        organizationId +
+                        "/wardens/" +
+                        wardenId +
+                        "/iterations/" +
+                        iteration.id;
                     window.open(url, '_blank');
                 });
         };
@@ -365,7 +380,7 @@
         self.type = ko.observable(watcher.type);
         self.totalDowntime = ko.observable(watcher.totalDowntime);
         self.totalUptime = ko.observable(watcher.totalUptime);
-        self.url = ko.computed(function () {
+        self.url = ko.computed(function() {
             return "/organizations/" + organizationId + "/wardens/" + wardenId + "/watchers/" + self.name();
         });
         self.infoFormatted = ko.computed(function() {
@@ -381,10 +396,10 @@
         self.description = ko.observable(result.watcherCheckResult.description);
         self.completedAt = ko.observable(result.completedAt);
         self.exception = ko.observable(result.exception);
-        self.url = ko.computed(function () {
+        self.url = ko.computed(function() {
             return "/organizations/" + organizationId + "/wardens/" + wardenId + "/watchers/" + self.watcherName();
         });
-        self.exceptionFormatted = ko.computed(function () {
+        self.exceptionFormatted = ko.computed(function() {
             if (!self.exception())
                 return "---";
 
@@ -488,8 +503,7 @@
             }
         }
         return build;
-    }
-
+    };
 
     return {
         init

@@ -73,6 +73,7 @@ namespace Warden.Web.Controllers
                 OrganizationName = organization.Name,
                 WardenId = warden.Id,
                 WardenName = warden.Name,
+                TotalWatchers = warden.Watchers.Count(),
                 ApiKey = user.ApiKeys.First()
             };
 

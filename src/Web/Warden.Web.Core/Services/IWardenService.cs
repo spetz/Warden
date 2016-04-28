@@ -121,7 +121,6 @@ namespace Warden.Web.Core.Services
 
             var iterations = await _database.WardenIterations()
                 .Query(query)
-                .OrderByDescending(x => x.CompletedAt)
                 .PaginateAsync(query);
 
             return PagedResult<WardenIterationDto>.From(iterations,

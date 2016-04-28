@@ -96,7 +96,7 @@ namespace Warden.Web.Core.Mongo.Queries
             if (query.To.HasValue)
                 values = values.Where(x => x.CompletedAt <= query.To);
 
-            return values;
+            return values.OrderByDescending(x => x.CompletedAt);
         }
     }
 }
