@@ -1,5 +1,6 @@
 ﻿$primary-color: #7272D8;
 $background-color: #FAFAFF;
+$error-color: #BF3131;
 
 body {
     background-color: $background-color;
@@ -26,4 +27,8 @@ nav {
 .collection .collection-item.active {
     background-color: #ffffff;
     color: #000000;
+}
+
+.field-validation-error{
+    color: $error-color;
 }

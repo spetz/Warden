@@ -18,3 +18,6 @@ nav {
 .collection .collection-item.active {
   background-color: #ffffff;
   color: #000000; }
+
+.field-validation-error {
+  color: #BF3131; }
