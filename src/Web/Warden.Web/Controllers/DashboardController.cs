@@ -21,8 +21,8 @@ namespace Warden.Web.Controllers
         }
 
         [HttpGet]
-        [Route("")]
-        public async Task<IActionResult> Index()
+        [Route("unavailable")]
+        public IActionResult Unavailable()
         {
             return View();
         }
@@ -33,9 +33,11 @@ namespace Warden.Web.Controllers
         {
             var user = await _userService.GetAsync(UserId);
             if (user.RecentlyViewedOrganizationId == Guid.Empty && user.RecentlyViewedWardenId == Guid.Empty)
-                return RedirectToAction("Index");
+                return RedirectToAction("Unavailable");
 
             var organization = await _organizationService.GetAsync(user.RecentlyViewedOrganizationId);
+            if (organization == null)
+                return RedirectToAction("Unavailable");
 
             return organization.Wardens.Any(x => x.Id == user.RecentlyViewedWardenId)
                 ? RedirectToAction("Details", new
@@ -43,7 +45,7 @@ namespace Warden.Web.Controllers
                     organizationId = user.RecentlyViewedOrganizationId,
                     wardenId = user.RecentlyViewedWardenId
                 })
-                : RedirectToAction("Index");
+                : RedirectToAction("Unavailable");
         }
 
         [HttpGet]

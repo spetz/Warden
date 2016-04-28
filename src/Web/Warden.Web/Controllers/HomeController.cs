@@ -32,6 +32,8 @@ namespace Warden.Web.Controllers
                 return RedirectToAction("Index", "Organization");
 
             var organization = await _organizationService.GetAsync(user.RecentlyViewedOrganizationId);
+            if (organization == null)
+                return RedirectToAction("Index", "Organization");
 
             return organization.Wardens.Any(x => x.Id == user.RecentlyViewedWardenId)
                 ? RedirectToAction("Details", "Dashboard", new

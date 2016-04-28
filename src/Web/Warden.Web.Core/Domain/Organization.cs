@@ -73,14 +73,13 @@ namespace Warden.Web.Core.Domain
             UpdatedAt = DateTime.UtcNow;
         }
 
-        public void RemoveUser(User user)
+        public void RemoveUser(Guid id)
         {
-            if (user == null)
-                throw new DomainException("Can not remove empty user from the organization.");
-
-            var userInOrganization = Users.FirstOrDefault(x => x.Id == user.Id);
+            var userInOrganization = Users.FirstOrDefault(x => x.Id == id);
             if (userInOrganization == null)
-                throw new DomainException($"User '{user.Email}' was not found in the organization.");
+                throw new DomainException($"User with id '{id}' was not found in the organization.");
+            if (OwnerId == id)
+                throw new DomainException("Owner can not be removed from organization.");
 
             _users.Remove(userInOrganization);
             UpdatedAt = DateTime.UtcNow;

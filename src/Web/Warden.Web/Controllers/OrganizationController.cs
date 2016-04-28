@@ -148,10 +148,10 @@ namespace Warden.Web.Controllers
         [Route("{id}/delete")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var organization = await GetOrganizationForUserAsync(id);
-            if (organization == null)
-                return HttpBadRequest($"Invalid organization id: '{id}'.");
+            if (!await IsOrganizationOwnerAsync(id))
+                return new HttpUnauthorizedResult();
 
+            await _organizationService.DeleteAsync(id);
             Notify(FlashNotificationType.Info, "Organization has been removed.");
 
             return RedirectToAction("Index");
@@ -162,10 +162,10 @@ namespace Warden.Web.Controllers
         [Route("{id}/users/delete")]
         public async Task<IActionResult> DeleteUser(Guid id, Guid userId)
         {
-            var organization = await GetOrganizationForUserAsync(id);
-            if (organization == null)
-                return HttpBadRequest($"Invalid organization id: '{id}'.");
+            if (!await IsOrganizationOwnerAsync(id))
+                return new HttpUnauthorizedResult();
 
+            await _organizationService.DeleteUserAsync(id, userId);
             Notify(FlashNotificationType.Info, "User has been removed from organization.");
 
             return RedirectToAction("Details", new { id });
@@ -176,10 +176,10 @@ namespace Warden.Web.Controllers
         [Route("{id}/wardens/delete")]
         public async Task<IActionResult> DeleteWarden(Guid id, Guid wardenId)
         {
-            var organization = await GetOrganizationForUserAsync(id);
-            if (organization == null)
-                return HttpBadRequest($"Invalid organization id: '{id}'.");
+            if (!await IsOrganizationOwnerAsync(id))
+                return new HttpUnauthorizedResult();
 
+            await _organizationService.DeleteWardenAsync(id, wardenId);
             Notify(FlashNotificationType.Info, "Warden has been removed from organization.");
 
             return RedirectToAction("Details", new { id });
@@ -195,6 +195,15 @@ namespace Warden.Web.Controllers
             var organization = await _organizationService.GetAsync(id);
 
             return organization;
+        }
+
+        private async Task<bool> IsOrganizationOwnerAsync(Guid id)
+        {
+            var organization = await GetOrganizationForUserAsync(id);
+            if (organization == null)
+                return false;
+
+            return organization.OwnerId == UserId;
         }
     }
 }

@@ -25,6 +25,9 @@ namespace Warden.Web.Core.Services
         Task DisableWardenAsync(Guid organizationId, string name);
         Task<bool> IsUserInOrganizationAsync(Guid organizationId, Guid userId);
         Task<PagedResult<OrganizationDto>> BrowseAsync(BrowseOrganizations query);
+        Task DeleteAsync(Guid organizationId, bool removeAllIterations = true);
+        Task DeleteUserAsync(Guid organizationId, Guid userId);
+        Task DeleteWardenAsync(Guid organizationId, Guid wardenId);
     }
 
     public class OrganizationService : IOrganizationService
@@ -99,20 +102,14 @@ namespace Warden.Web.Core.Services
 
         public async Task AddWardenAsync(Guid organizationId, string name, bool enabled = true)
         {
-            var organization = await _database.Organizations().GetByIdAsync(organizationId);
-            if (organization == null)
-                throw new ServiceException($"Organization has not been found for given id: '{organizationId}'.");
-
+            var organization = await GetByIdOrFailAsync(organizationId);
             organization.AddWarden(name, enabled);
             await _database.Organizations().ReplaceOneAsync(x => x.Id == organization.Id, organization);
         }
 
         public async Task AddUserAsync(Guid organizationId, string email, OrganizationRole role = OrganizationRole.User)
         {
-            var organization = await _database.Organizations().GetByIdAsync(organizationId);
-            if (organization == null)
-                throw new ServiceException($"Organization has not been found for given id: '{organizationId}'.");
-
+            var organization = await GetByIdOrFailAsync(organizationId);
             var user = await _database.Users().GetByEmailAsync(email);
             if (user == null)
                 throw new ServiceException($"User has not been found for email: '{email}'.");
@@ -123,10 +120,7 @@ namespace Warden.Web.Core.Services
 
         public async Task EnableWardenAsync(Guid organizationId, string name)
         {
-            var organization = await _database.Organizations().GetByIdAsync(organizationId);
-            if (organization == null)
-                throw new ServiceException($"Organization has not been found for given id: '{organizationId}'.");
-
+            var organization = await GetByIdOrFailAsync(organizationId);
             var warden = organization.GetWardenByNameOrFail(name);
             warden.Enable();
             await _database.Organizations().ReplaceOneAsync(x => x.Id == organization.Id, organization);
@@ -134,10 +128,7 @@ namespace Warden.Web.Core.Services
 
         public async Task DisableWardenAsync(Guid organizationId, string name)
         {
-            var organization = await _database.Organizations().GetByIdAsync(organizationId);
-            if (organization == null)
-                throw new ServiceException($"Organization has not been found for given id: '{organizationId}'.");
-
+            var organization = await GetByIdOrFailAsync(organizationId);
             var warden = organization.GetWardenByNameOrFail(name);
             warden.Disable();
             await _database.Organizations().ReplaceOneAsync(x => x.Id == organization.Id, organization);
@@ -145,9 +136,46 @@ namespace Warden.Web.Core.Services
 
         public async Task<bool> IsUserInOrganizationAsync(Guid organizationId, Guid userId)
         {
-            var organization = await _database.Organizations().GetByIdAsync(organizationId);
+            var organization = await GetByIdOrFailAsync(organizationId);
 
-            return organization != null && organization.Users.Any(x => x.Id == userId);
+            return organization.Users.Any(x => x.Id == userId);
+        }
+
+        public async Task DeleteAsync(Guid organizationId, bool removeAllIterations = true)
+        {
+            var organization = await GetByIdOrFailAsync(organizationId);
+            await _database.Organizations().DeleteOneAsync(x => x.Id == organizationId);
+            if(!removeAllIterations)
+                return;
+
+            await _database.WardenIterations().DeleteManyAsync(x => x.Warden.OrganizationId == organizationId);
+        }
+
+        public async Task DeleteUserAsync(Guid organizationId, Guid userId)
+        {
+            var organization = await GetByIdOrFailAsync(organizationId);
+            organization.RemoveUser(userId);
+            await _database.Organizations().ReplaceOneAsync(x => x.Id == organizationId, organization);
+        }
+
+        public async Task DeleteWardenAsync(Guid organizationId, Guid wardenId)
+        {
+            var organization = await GetByIdOrFailAsync(organizationId);
+            var warden = organization.Wardens.FirstOrDefault(x => x.Id == wardenId);
+            if (warden == null)
+                throw new ServiceException($"Warden has not been found for id: '{wardenId}'.");
+
+            organization.RemoveWarden(warden.Name);
+            await _database.Organizations().ReplaceOneAsync(x => x.Id == organizationId, organization);
+        }
+
+        private async Task<Organization> GetByIdOrFailAsync(Guid id)
+        {
+            var organization = await _database.Organizations().GetByIdAsync(id);
+            if (organization == null)
+                throw new ServiceException($"Organization has not been found for given id: '{id}'.");
+
+            return organization;
         }
     }
 }
