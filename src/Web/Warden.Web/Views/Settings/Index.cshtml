@@ -44,7 +44,10 @@
                             @apiKey
                         </div>
                         <div class="col s12 m1 l1">
-                            <i class="material-icons dp48 right">delete</i>
+                            <form asp-controller="Settings" asp-action="DeleteApiKey" asp-anti-forgery="true" method="POST">
+                                <input type="hidden" name="key" value="@apiKey"/>
+                                <button class="btn-floating waves-effect waves-light custom" title="Remove API key" type="submit" name="action"><i class="material-icons dp48 right">delete</i></button>
+                            </form>
                         </div>
                     </div>
                 </li>

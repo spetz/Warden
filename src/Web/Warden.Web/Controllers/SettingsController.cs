@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using Warden.Web.Core.Domain;
 using Warden.Web.Core.Services;
@@ -71,6 +72,19 @@ namespace Warden.Web.Controllers
 
                 return RedirectToAction("Password");
             }
+        }
+
+        [HttpPost]
+        [Route("api-keys/delete")]
+        public async Task<IActionResult> DeleteApiKey(string key)
+        {
+            var apiKey = await _apiKeyService.GetAsync(key);
+            if (apiKey?.UserId != UserId)
+                return HttpBadRequest("Invalid API key.");
+
+            await _apiKeyService.DeleteAsync(key);
+
+            return RedirectToAction("Index");
         }
     }
 }

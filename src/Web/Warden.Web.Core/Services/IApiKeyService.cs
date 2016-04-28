@@ -11,9 +11,10 @@ namespace Warden.Web.Core.Services
     public interface IApiKeyService
     {
         Task<ApiKey> GetAsync(string key);
-        Task CreateAsync(Guid id);
+        Task CreateAsync(Guid userId);
         Task CreateAsync(string email);
         Task<IEnumerable<string>> GetAllForOrganizationAsync(Guid organizationId);
+        Task DeleteAsync(string key);
     }
 
     public class ApiKeyService : IApiKeyService
@@ -35,11 +36,11 @@ namespace Warden.Web.Core.Services
             return apiKey;
         }
 
-        public async Task CreateAsync(Guid id)
+        public async Task CreateAsync(Guid userId)
         {
-            var user = await _database.Users().GetByIdAsync(id);
+            var user = await _database.Users().GetByIdAsync(userId);
             if (user == null)
-                throw new ServiceException($"User has not been found for id: '{id}'.");
+                throw new ServiceException($"User has not been found for id: '{userId}'.");
 
             await CreateAsync(user);
         }
@@ -79,6 +80,15 @@ namespace Warden.Web.Core.Services
             var apiKey = await _database.ApiKeys().GetAllForUserAsync(organizationId);
 
             return apiKey.Select(x => x.Key);
+        }
+
+        public async Task DeleteAsync(string key)
+        {
+            var apiKey = await _database.ApiKeys().GetByKeyAsync(key);
+            if (apiKey == null)
+                throw new ServiceException($"API key has not been found for key: '{key}'.");
+
+            await _database.ApiKeys().DeleteOneAsync(x => x.Id == apiKey.Id);
         }
     }
 }
