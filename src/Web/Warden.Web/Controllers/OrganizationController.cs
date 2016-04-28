@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
+using Warden.Web.Core.Domain;
 using Warden.Web.Core.Dto;
 using Warden.Web.Core.Queries;
 using Warden.Web.Core.Services;
+using Warden.Web.Framework;
 using Warden.Web.Framework.Filters;
 using Warden.Web.ViewModels;
 
@@ -65,6 +67,7 @@ namespace Warden.Web.Controllers
 
             await _organizationService.CreateAsync(viewModel.Name, UserId);
             var organization = await _organizationService.GetAsync(viewModel.Name, UserId);
+            Notify(FlashNotificationType.Success, "Organization has been created.");
 
             return RedirectToAction("Details", new {id = organization.Id});
         }
@@ -94,9 +97,19 @@ namespace Warden.Web.Controllers
             if (organization == null)
                 return HttpBadRequest($"Invalid organization id: '{id}'.");
 
-            await _organizationService.AddUserAsync(id, viewModel.Email);
+            try
+            {
+                await _organizationService.AddUserAsync(id, viewModel.Email);
+                Notify(FlashNotificationType.Success, "User has been added to the organization.");
 
-            return RedirectToAction("Details", new { id });
+                return RedirectToAction("Details", new { id });
+            }
+            catch (ServiceException exception)
+            {
+                Notify(FlashNotificationType.Error, exception.Message);
+
+                return RedirectToAction("AddUser");
+            }
         }
 
         [HttpGet]
@@ -125,6 +138,7 @@ namespace Warden.Web.Controllers
                 return HttpBadRequest($"Invalid organization id: '{id}'.");
 
             await _organizationService.AddWardenAsync(id, viewModel.Name);
+            Notify(FlashNotificationType.Success, "Warden has been added to the organization.");
 
             return RedirectToAction("Details", new { id });
         }

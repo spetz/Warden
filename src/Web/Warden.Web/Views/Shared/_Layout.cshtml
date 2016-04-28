@@ -18,10 +18,10 @@
     @RenderBody()
 </div>
 @Html.Partial("_Notifications")
-<script type="text/javascript" src="@Url.Content("~/content/js/nav.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/content/js/app.js")"></script>
 <script type="text/javascript">
     $(function() {
-        nav.init({
+        app.init({
             loginPath: "/login",
             logoutPath: "/logout"
         });

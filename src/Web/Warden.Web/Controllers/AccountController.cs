@@ -98,6 +98,7 @@ namespace Warden.Web.Controllers
             try
             {
                 await _userService.RegisterAsync(viewModel.Email, viewModel.Password);
+                Notify(FlashNotificationType.Success, "Your account has been created.");
             }
             catch (ServiceException exception)
             {

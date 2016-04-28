@@ -37,6 +37,7 @@ namespace Warden.Web.Controllers
         public async Task<IActionResult> CreateApiKey()
         {
             await _apiKeyService.CreateAsync(UserId);
+            Notify(FlashNotificationType.Success, "API key has been created.");
 
             return RedirectToAction("Index");
         }
@@ -84,6 +85,7 @@ namespace Warden.Web.Controllers
 
             await _apiKeyService.DeleteAsync(key);
 
+            Notify(FlashNotificationType.Info, "API key has been removed.");
             return RedirectToAction("Index");
         }
     }
