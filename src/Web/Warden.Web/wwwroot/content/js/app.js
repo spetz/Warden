@@ -1,14 +1,25 @@
 ﻿var app = (function() {
     var loginPath = "";
     var logoutPath = "";
+    var url = "";
 
     var init = function(options) {
         loginPath = options.loginPath || "/login";
         logoutPath = options.logoutPath || "/logout";
+        url = options.url || "/";
+        var path = "/" + url.split("/")[1];
+        setMenu(path);
         initNav();
         initBlockableElements();
         initCheckboxes();
         initModalsAndRemoveClickHandlers();
+    };
+
+    function setMenu(path) {
+        $("nav,#nav-mobile").find("li").removeClass("active");
+        var $link = $("nav,#nav-mobile").find('a[href^="' + path + '"]');
+        $link.parent().addClass("active");
+        $link.parent().parent().parent().addClass("active");
     };
 
     function initNav() {

@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var url = Context.Request.Path;
+}
+<!DOCTYPE html>
 <html>
 <head>
     <title>Warden Web Panel</title>
@@ -20,10 +23,11 @@
 @Html.Partial("_Notifications")
 <script type="text/javascript" src="@Url.Content("~/content/js/app.js")"></script>
 <script type="text/javascript">
-    $(function() {
+    $(function () {
         app.init({
             loginPath: "/login",
-            logoutPath: "/logout"
+            logoutPath: "/logout",
+            url: "@url"
         });
     });
 </script>
