@@ -1,10 +1,22 @@
 ﻿@using Warden.Web.Core.Domain
 @model global::Warden.Web.Core.Dto.OrganizationDto
 @addTagHelper "*, Microsoft.AspNet.Mvc.TagHelpers"
+@{
+    var isOwner = Model.OwnerId == Guid.Parse(User.Identity.Name);
+}
 
 <div class="row card-panel">
-    <div class="col s12">
+    <div class="col s12  m11 l11">
         <h4 class="custom-text">Organization</h4>
+    </div>
+    <div class="col s12 m1 l1">
+        @if (isOwner)
+        {
+            <a class="btn-floating waves-effect waves-light red lighten-1 modal-trigger"
+               href="#modal-delete-organization" data-remove-api-key title="Remove organization">
+                <i class="material-icons dp48 right">delete</i>
+            </a>
+        }
     </div>
     <div class="col s12">
         <div>
@@ -23,33 +35,60 @@
 </div>
 <div class="row card-panel">
     <div class="col s12">
-        <h5 class="custom-text">Wardens (@Model.Wardens.Count())</h5>
-        <a href="@Url.Action("AddWarden", new {id = Model.Id})" class="btn waves-effect waves-light custom">New Warden</a>
-        <div class="collection">
-            @foreach (var warden in Model.Wardens)
-            {
-                <a href="@Url.Action("Details", "Warden", new {organizationId = Model.Id, wardenId = warden.Id})" class="collection-item">
-                    <span class="custom-text">@warden.Name</span>
-                </a>
-            }
-        </div>
-    </div>
-</div>
-<div class="row card-panel">
-    <div class="col s12">
         <h5 class="custom-text">Users (@Model.Users.Count())</h5>
         <a href="@Url.Action("AddUser", new {id = Model.Id})" class="btn waves-effect waves-light custom">New User</a>
         <ul class="collection">
             @foreach (var user in Model.Users)
             {
                 <li class="collection-item custom-text">
-                    @user.Email [@user.Role]
-                    @if (user.Role != OrganizationRole.Owner)
-                    {
-                        <i class="material-icons dp48 right">delete</i>
-                    }
+                    <div class="row">
+                        <div class="col s12 m11 l11">
+                            @user.Email [@user.Role]
+                        </div>
+                        <div class="col s12 m1 l1">
+                            @if (isOwner && user.Role != OrganizationRole.Owner)
+                            {
+                                <a class="btn-floating waves-effect waves-light red lighten-1 modal-trigger" data-user-id="@user.Id"
+                                   href="#modal-delete-user" data-remove-user-from-organization title="Remove user from organization">
+                                    <i class="material-icons dp48">delete</i>
+                                </a>
+                            }
+                        </div>
+                    </div>
                 </li>
             }
         </ul>
     </div>
 </div>
+<div class="row card-panel">
+    <div class="col s12">
+        <h5 class="custom-text">Wardens (@Model.Wardens.Count())</h5>
+        <a href="@Url.Action("AddWarden", new {id = Model.Id})" class="btn waves-effect waves-light custom">New Warden</a>
+        <ul class="collection">
+            @foreach (var warden in Model.Wardens)
+            {
+                <li class="collection-item custom-text">
+                    <div class="row">
+                        <div class="col s12 m11 l11">
+                            <a href="@Url.Action("Details", "Warden", new {organizationId = Model.Id, wardenId = warden.Id})" class="collection-item">
+                                <span class="custom-text">@warden.Name</span>
+                            </a>
+                        </div>
+                        <div class="col s12 m1 l1">
+                            @if (isOwner)
+                            {
+                                <a class="btn-floating waves-effect waves-light red lighten-1 modal-trigger" data-warden-id="@warden.Id"
+                                   href="#modal-delete-warden" data-remove-warden-from-organization title="Remove Warden from organization">
+                                    <i class="material-icons dp48">delete</i>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+@Html.Partial("_DeleteOrganizationModal", Model.Id)
+@Html.Partial("_DeleteUserModal", Model.Id)
+@Html.Partial("_DeleteWardenModal", Model.Id)

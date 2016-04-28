@@ -52,7 +52,7 @@ namespace Warden.Web.Controllers
         [HttpGet]
         [Route("create")]
         [ImportModelStateFromTempData]
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
             return View();
         }
@@ -139,6 +139,48 @@ namespace Warden.Web.Controllers
 
             await _organizationService.AddWardenAsync(id, viewModel.Name);
             Notify(FlashNotificationType.Success, "Warden has been added to the organization.");
+
+            return RedirectToAction("Details", new { id });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("{id}/delete")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var organization = await GetOrganizationForUserAsync(id);
+            if (organization == null)
+                return HttpBadRequest($"Invalid organization id: '{id}'.");
+
+            Notify(FlashNotificationType.Info, "Organization has been removed.");
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("{id}/users/delete")]
+        public async Task<IActionResult> DeleteUser(Guid id, Guid userId)
+        {
+            var organization = await GetOrganizationForUserAsync(id);
+            if (organization == null)
+                return HttpBadRequest($"Invalid organization id: '{id}'.");
+
+            Notify(FlashNotificationType.Info, "User has been removed from organization.");
+
+            return RedirectToAction("Details", new { id });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("{id}/wardens/delete")]
+        public async Task<IActionResult> DeleteWarden(Guid id, Guid wardenId)
+        {
+            var organization = await GetOrganizationForUserAsync(id);
+            if (organization == null)
+                return HttpBadRequest($"Invalid organization id: '{id}'.");
+
+            Notify(FlashNotificationType.Info, "Warden has been removed from organization.");
 
             return RedirectToAction("Details", new { id });
         }

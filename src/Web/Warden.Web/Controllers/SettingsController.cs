@@ -76,6 +76,7 @@ namespace Warden.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [Route("api-keys/delete")]
         public async Task<IActionResult> DeleteApiKey(string key)
         {

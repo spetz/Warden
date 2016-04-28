@@ -1,11 +1,11 @@
-﻿@addTagHelper "*, Microsoft.AspNet.Mvc.TagHelpers"
+﻿@model Guid
+@addTagHelper "*, Microsoft.AspNet.Mvc.TagHelpers"
 
-<div id="modal-delete" class="modal">
-    <form asp-controller="Settings" asp-action="DeleteApiKey" asp-anti-forgery="true" method="POST">
-        <input type="hidden" name="key" id="api-key-to-delete" value=""/>
+<div id="modal-delete-organization" class="modal">
+    <form asp-controller="Organization" asp-action="Delete" asp-routeid="@Model" asp-anti-forgery="true" method="POST">
         <div class="modal-content">
             <strong>Delete confirmation</strong>
-            <p>Are you sure that you want to remove the selected resource?</p>
+            <p>Are you sure that you want to remove the selected organization?</p>
         </div>
         <div class="modal-footer">
             <a href="#!" class="modal-action modal-close btn waves-effect waves-green custom left">No</a>
