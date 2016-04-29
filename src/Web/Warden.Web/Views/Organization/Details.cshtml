@@ -6,10 +6,10 @@
 }
 
 <div class="row card-panel">
-    <div class="col s12  m11 l11">
+    <div class="col s12  m11">
         <h4 class="custom-text">Organization</h4>
     </div>
-    <div class="col s12 m1 l1">
+    <div class="col s12 m1">
         @if (isOwner)
         {
             <a class="btn-floating waves-effect waves-light red lighten-1 modal-trigger"
@@ -29,6 +29,35 @@
             <label>Id</label>
             <ul class="collection">
                 <li class="collection-item">@Model.Id</li>
+            </ul>
+        </div>
+        <div>
+            <label>Automatic registration of new Wardens</label>
+            <ul class="collection">
+                <li class="collection-item">
+                    <div class="row">
+                        <div class="col s12 m11">
+                            @Model.AutoRegisterNewWarden
+                        </div>
+                        @if (isOwner)
+                        {
+                            <div class="col s12 m1">
+                                @if (Model.AutoRegisterNewWarden)
+                                {
+                                    <form asp-controller="Organization" asp-action="DisableAutoRegisterNewWarden" asp-anti-forgery="true" method="POST" data-block>
+                                        <button class="btn-floating waves-effect waves-light custom"><i class="material-icons dp48 right" title="Disable">stop</i></button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <form asp-controller="Organization" asp-action="EnableAutoRegisterNewWarden" asp-anti-forgery="true" method="POST" data-block>
+                                        <button class="btn-floating waves-effect waves-light custom"><i class="material-icons dp48 right" title="Enable">play_arrow</i></button>
+                                    </form>
+                                }
+                            </div>
+                        }
+                    </div>
+                </li>
             </ul>
         </div>
     </div>

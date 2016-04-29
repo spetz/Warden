@@ -185,6 +185,34 @@ namespace Warden.Web.Controllers
             return RedirectToAction("Details", new { id });
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("{id}/auto-register-new-warden/enable")]
+        public async Task<IActionResult> EnableAutoRegisterNewWarden(Guid id)
+        {
+            if (!await IsOrganizationOwnerAsync(id))
+                return new HttpUnauthorizedResult();
+
+            await _organizationService.EnableAutoRegisterNewWardenAsync(id);
+            Notify(FlashNotificationType.Info, "Automatic registration of new Wardens has been enabled.");
+
+            return RedirectToAction("Details", new { id });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("{id}/auto-register-new-warden/disable")]
+        public async Task<IActionResult> DisableAutoRegisterNewWarden(Guid id)
+        {
+            if (!await IsOrganizationOwnerAsync(id))
+                return new HttpUnauthorizedResult();
+
+            await _organizationService.DisableAutoRegisterNewWardenAsync(id);
+            Notify(FlashNotificationType.Info, "Automatic registration of new Wardens has been disabled.");
+
+            return RedirectToAction("Details", new { id });
+        }
+
         private async Task<OrganizationDto> GetOrganizationForUserAsync(Guid id)
         {
             if (id == Guid.Empty)

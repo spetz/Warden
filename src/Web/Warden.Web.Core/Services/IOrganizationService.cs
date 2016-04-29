@@ -29,6 +29,8 @@ namespace Warden.Web.Core.Services
         Task DeleteAsync(Guid organizationId, bool removeAllIterations = true);
         Task DeleteUserAsync(Guid organizationId, Guid userId);
         Task DeleteWardenAsync(Guid organizationId, Guid wardenId);
+        Task EnableAutoRegisterNewWardenAsync(Guid organizationId);
+        Task DisableAutoRegisterNewWardenAsync(Guid organizationId);
     }
 
     public class OrganizationService : IOrganizationService
@@ -188,6 +190,20 @@ namespace Warden.Web.Core.Services
                 throw new ServiceException($"Warden has not been found for id: '{wardenId}'.");
 
             organization.RemoveWarden(warden.Name);
+            await _database.Organizations().ReplaceOneAsync(x => x.Id == organizationId, organization);
+        }
+
+        public async Task EnableAutoRegisterNewWardenAsync(Guid organizationId)
+        {
+            var organization = await GetByIdOrFailAsync(organizationId);
+            organization.EnableAutoRegisterNewWarden();
+            await _database.Organizations().ReplaceOneAsync(x => x.Id == organizationId, organization);
+        }
+
+        public async Task DisableAutoRegisterNewWardenAsync(Guid organizationId)
+        {
+            var organization = await GetByIdOrFailAsync(organizationId);
+            organization.DisableAutoRegisterNewWarden();
             await _database.Organizations().ReplaceOneAsync(x => x.Id == organizationId, organization);
         }
 
