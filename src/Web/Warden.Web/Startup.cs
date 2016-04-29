@@ -13,6 +13,7 @@ using Microsoft.Extensions.OptionsModel;
 using Microsoft.Owin.Builder;
 using Newtonsoft.Json;
 using Owin;
+using Warden.Web.Core.Settings;
 using Warden.Web.Framework;
 using Warden.Web.Hubs;
 
@@ -35,6 +36,7 @@ namespace Warden.Web
         {
             var settings = Configuration.GetSection("general").Get<GeneralSettings>();
             services.AddOptions();
+            services.Configure<FeatureSettings>(Configuration.GetSection("feature"));
             services.Configure<GeneralSettings>(Configuration.GetSection("general"));
             services.AddMvc();
             services.AddMvcCore().AddJsonFormatters(formatter =>
@@ -51,6 +53,8 @@ namespace Warden.Web
             services.AddScoped<IOrganizationService, OrganizationService>();
             services.AddScoped<IUserService, UserService>();
             services.AddSingleton<IStatsCalculator, StatsCalculator>();
+            services.AddSingleton(provider => Configuration.GetSection("feature").Get<FeatureSettings>());
+            services.AddSingleton(provider => Configuration.GetSection("general").Get<GeneralSettings>());
             services.AddSingleton<IEncrypter>(provider => new Encrypter(settings.EncrypterKey));
             services.AddSingleton(provider => new MongoClient(settings.ConnectionString));
             services.AddScoped(provider => provider.GetService<MongoClient>().GetDatabase(settings.Database));
@@ -59,9 +63,8 @@ namespace Warden.Web
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, 
-            IServiceProvider serviceProvider, IOptions<GeneralSettings> generalOptions)
+            IServiceProvider serviceProvider, GeneralSettings settings)
         {
-            var settings = generalOptions.Value;
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

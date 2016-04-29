@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MongoDB.Driver;
 using Warden.Web.Core.Domain;
 using Warden.Web.Core.Mongo.Queries;
+using Warden.Web.Core.Settings;
 
 namespace Warden.Web.Core.Services
 {
@@ -13,7 +14,6 @@ namespace Warden.Web.Core.Services
         Task<ApiKey> GetAsync(string key);
         Task CreateAsync(Guid userId);
         Task CreateAsync(string email);
-        Task<IEnumerable<string>> GetAllForOrganizationAsync(Guid organizationId);
         Task DeleteAsync(string key);
     }
 
@@ -21,12 +21,14 @@ namespace Warden.Web.Core.Services
     {
         private readonly IMongoDatabase _database;
         private readonly IEncrypter _encrypter;
+        private readonly FeatureSettings _featureSettings;
         private readonly int RetryTimes = 5;
 
-        public ApiKeyService(IMongoDatabase database, IEncrypter encrypter)
+        public ApiKeyService(IMongoDatabase database, IEncrypter encrypter, FeatureSettings featureSettings)
         {
             _database = database;
             _encrypter = encrypter;
+            _featureSettings = featureSettings;
         }
 
         public async Task<ApiKey> GetAsync(string key)
@@ -53,8 +55,16 @@ namespace Warden.Web.Core.Services
 
             await CreateAsync(user);
         }
+
         private async Task CreateAsync(User user)
         {
+            var apiKeysCount = await _database.ApiKeys().CountAsync(x => x.UserId == user.Id);
+            if (apiKeysCount >= _featureSettings.MaxApiKeys)
+            {
+                throw new ServiceException($"Limit of {_featureSettings.MaxApiKeys} " +
+                                           "API keys has been reached.");
+            }
+
             var isValid = false;
             var currentTry = 0;
             var key = string.Empty;
@@ -73,13 +83,6 @@ namespace Warden.Web.Core.Services
 
             var apiKey = new ApiKey(key, user);
             await _database.ApiKeys().InsertOneAsync(apiKey);
-        }
-
-        public async Task<IEnumerable<string>> GetAllForOrganizationAsync(Guid organizationId)
-        {
-            var apiKey = await _database.ApiKeys().GetAllForUserAsync(organizationId);
-
-            return apiKey.Select(x => x.Key);
         }
 
         public async Task DeleteAsync(string key)

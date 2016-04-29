@@ -7,5 +7,13 @@
     "authCookieName": ".Warden",
     "loginPath": "/login",
     "logoutPath": "/logout"
+  },
+  "feature": {
+    "maxApiKeys": 5,
+    "maxOrganizations": 3,
+    "maxUsersInOrganization": 5,
+    "maxWardensInOrganization": 5,
+    "maxWatchersInWarden": 10,
+    "retainWardenIterationDataDays": 1
   }
 }

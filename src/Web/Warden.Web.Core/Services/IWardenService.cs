@@ -9,6 +9,7 @@ using System.Linq;
 using Warden.Web.Core.Domain;
 using Warden.Web.Core.Mongo;
 using Warden.Web.Core.Mongo.Queries;
+using Warden.Web.Core.Settings;
 
 namespace Warden.Web.Core.Services
 {
@@ -25,11 +26,13 @@ namespace Warden.Web.Core.Services
         private const string WatcherNameSuffix = "watcher";
         private readonly IMongoDatabase _database;
         private readonly IStatsCalculator _statsCalculator;
+        private readonly FeatureSettings _featureSettings;
 
-        public WardenService(IMongoDatabase database, IStatsCalculator statsCalculator)
+        public WardenService(IMongoDatabase database, IStatsCalculator statsCalculator, FeatureSettings featureSettings)
         {
             _database = database;
             _statsCalculator = statsCalculator;
+            _featureSettings = featureSettings;
         }
 
         public async Task<WardenIterationDto> SaveIterationAsync(WardenIterationDto iteration, Guid organizationId)
@@ -52,6 +55,12 @@ namespace Warden.Web.Core.Services
             var updateOrganization = false;
             if (warden == null)
             {
+                if (organization.Wardens.Count() >= _featureSettings.MaxWardensInOrganization)
+                {
+                    throw new ServiceException($"Limit of {_featureSettings.MaxWardensInOrganization} " +
+                                               "wardens in organization has been reached.");
+                }
+
                 updateOrganization = true;
                 organization.AddWarden(iteration.WardenName);
                 warden = organization.GetWardenByName(iteration.WardenName);
@@ -69,6 +78,12 @@ namespace Warden.Web.Core.Services
                 var watcher = warden.GetWatcherByName(watcherName);
                 if (watcher == null)
                 {
+                    if (warden.Watchers.Count() >= _featureSettings.MaxWatchersInWarden)
+                    {
+                        throw new ServiceException($"Limit of {_featureSettings.MaxWatchersInWarden} " +
+                                                   "watchers in Warden has been reached.");
+                    }
+
                     updateOrganization = true;
                     warden.AddWatcher(watcherName, watcherType);
                     watcher = warden.GetWatcherByName(watcherName);

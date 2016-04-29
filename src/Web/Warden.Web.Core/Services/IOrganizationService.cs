@@ -9,6 +9,7 @@ using Warden.Web.Core.Extensions;
 using Warden.Web.Core.Mongo;
 using Warden.Web.Core.Mongo.Queries;
 using Warden.Web.Core.Queries;
+using Warden.Web.Core.Settings;
 
 namespace Warden.Web.Core.Services
 {
@@ -33,11 +34,13 @@ namespace Warden.Web.Core.Services
     public class OrganizationService : IOrganizationService
     {
         private readonly IMongoDatabase _database;
+        private readonly FeatureSettings _featureSettings;
         private const string DefaultName = "My organization";
 
-        public OrganizationService(IMongoDatabase database)
+        public OrganizationService(IMongoDatabase database, FeatureSettings featureSettings)
         {
             _database = database;
+            _featureSettings = featureSettings;
         }
 
         public async Task<OrganizationDto> GetAsync(Guid organizationId)
@@ -96,6 +99,13 @@ namespace Warden.Web.Core.Services
                 throw new ServiceException($"There's already an organization with name: '{name}' " +
                                            $"for owner with id: '{ownerId}'.");
 
+            var existingOrganizationsCount = await _database.Organizations().CountAsync(x => x.OwnerId == ownerId);
+            if (existingOrganizationsCount >= _featureSettings.MaxOrganizations)
+            {
+                throw new ServiceException($"Limit of {_featureSettings.MaxOrganizations} " +
+                                           "organizations has been reached.");
+            }
+
             organization = new Organization(name, owner, autoRegisterNewWarden);
             await _database.Organizations().InsertOneAsync(organization);
         }
@@ -103,6 +113,12 @@ namespace Warden.Web.Core.Services
         public async Task AddWardenAsync(Guid organizationId, string name, bool enabled = true)
         {
             var organization = await GetByIdOrFailAsync(organizationId);
+            if (organization.Wardens.Count() >= _featureSettings.MaxWardensInOrganization)
+            {
+                throw new ServiceException($"Limit of {_featureSettings.MaxWardensInOrganization} " +
+                                           "wardens in organization has been reached.");
+            }
+
             organization.AddWarden(name, enabled);
             await _database.Organizations().ReplaceOneAsync(x => x.Id == organization.Id, organization);
         }
@@ -113,6 +129,12 @@ namespace Warden.Web.Core.Services
             var user = await _database.Users().GetByEmailAsync(email);
             if (user == null)
                 throw new ServiceException($"User has not been found for email: '{email}'.");
+
+            if (organization.Users.Count() >= _featureSettings.MaxUsersInOrganization)
+            {
+                throw new ServiceException($"Limit of {_featureSettings.MaxUsersInOrganization} " +
+                                           "users in organization has been reached.");
+            }
 
             organization.AddUser(user, role);
             await _database.Organizations().ReplaceOneAsync(x => x.Id == organization.Id, organization);
