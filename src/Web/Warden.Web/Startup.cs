@@ -7,53 +7,74 @@ using Warden.Web.Core.Mongo;
 using Warden.Web.Core.Services;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.SignalR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.OptionsModel;
 using Microsoft.Owin.Builder;
 using Newtonsoft.Json;
 using Owin;
+using Warden.Web.Framework;
 using Warden.Web.Hubs;
 
 namespace Warden.Web
 {
     public class Startup
     {
+        private IConfiguration Configuration { get; }
+
+        public Startup(IHostingEnvironment env)
+        {
+            Configuration = new ConfigurationBuilder()
+                .AddJsonFile("config.json")
+                .AddJsonFile($"config.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables()
+                .Build();
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
+            var settings = Configuration.GetSection("general").Get<GeneralSettings>();
+            services.AddOptions();
+            services.Configure<GeneralSettings>(Configuration.GetSection("general"));
             services.AddMvc();
             services.AddMvcCore().AddJsonFormatters(formatter =>
             {
-                formatter.DateFormatString = "yyyy-MM-dd H:mm:ss";
+                formatter.DateFormatString = settings.JsonFormatDate;
                 formatter.Formatting = Formatting.Indented;
                 formatter.ContractResolver = new CamelCasePropertyNamesContractResolver();
             });
             services.AddCaching();
             services.AddSession();
-            //services.AddSignalR();
             services.AddScoped<IWardenService, WardenService>();
             services.AddScoped<IWatcherService, WatcherService>();
             services.AddScoped<IApiKeyService, ApiKeyService>();
             services.AddScoped<IOrganizationService, OrganizationService>();
             services.AddScoped<IUserService, UserService>();
             services.AddSingleton<IStatsCalculator, StatsCalculator>();
-            services.AddSingleton<IEncrypter>(provider => new Encrypter("abcd"));
-            services.AddSingleton(provider => new MongoClient("mongodb://localhost:27017"));
-            services.AddScoped(provider => provider.GetService<MongoClient>().GetDatabase("Warden"));
+            services.AddSingleton<IEncrypter>(provider => new Encrypter(settings.EncrypterKey));
+            services.AddSingleton(provider => new MongoClient(settings.ConnectionString));
+            services.AddScoped(provider => provider.GetService<MongoClient>().GetDatabase(settings.Database));
             services.AddScoped<ISignalRService, SignalRService>(provider =>
                 new SignalRService(GlobalHost.ConnectionManager.GetHubContext<WardenHub>()));
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, 
+            IServiceProvider serviceProvider, IOptions<GeneralSettings> generalOptions)
         {
-            app.UseDeveloperExceptionPage();
+            var settings = generalOptions.Value;
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
             app.UseIISPlatformHandler();
             app.UseStaticFiles();
             app.UseCookieAuthentication(options =>
             {
                 options.AutomaticAuthenticate = true;
                 options.AutomaticChallenge = true;
-                options.CookieName = ".Warden";
-                options.LoginPath = "/login";
-                options.LogoutPath = "/logout";
+                options.CookieName = settings.AuthCookieName;
+                options.LoginPath = settings.LoginPath;
+                options.LogoutPath = settings.LogoutPath;
             });
             app.UseSession();
             app.UseMvcWithDefaultRoute();

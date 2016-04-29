@@ -1,0 +1,11 @@
+{
+  "general": {
+    "connectionString": "mongodb://localhost:27017",
+    "database": "Warden",
+    "encrypterKey": "XYZ123",
+    "jsonFormatDate": "yyyy-MM-dd H:mm:ss",
+    "authCookieName": ".Warden",
+    "loginPath": "/login",
+    "logoutPath": "/logout"
+  }
+}
