@@ -20,7 +20,9 @@
     "Microsoft.CSharp": "4.0.0",
     "Microsoft.AspNet.Mvc.WebApiCompatShim": "6.0.0-rc1-final",
     "Warden.Web.Core": "1.0.0-*",
-    "Newtonsoft.Json": "8.0.3"
+    "Newtonsoft.Json": "8.0.3",
+    "NLog.Extensions.Logging": "1.0.0-rc1-final-2016-03-11",
+    "Microsoft.AspNet.SignalR.Core": "2.2.0"
   },
 
   "commands": {

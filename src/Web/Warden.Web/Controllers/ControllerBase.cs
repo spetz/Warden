@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
+using NLog;
 using Warden.Web.Core.Extensions;
 using Warden.Web.Framework;
 
@@ -11,6 +12,7 @@ namespace Warden.Web.Controllers
     public abstract class ControllerBase : Controller
     {
         private const string NotificationKey = "Notifications";
+        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         protected Guid UserId
             => HttpContext.User.Identity.IsAuthenticated ? Guid.Parse(HttpContext.User.Identity.Name) : Guid.Empty;

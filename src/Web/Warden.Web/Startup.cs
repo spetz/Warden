@@ -9,11 +9,13 @@ using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.OptionsModel;
+using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.Owin.Builder;
 using Newtonsoft.Json;
+using NLog;
 using Owin;
 using Warden.Web.Core.Settings;
+using Warden.Web.Extensions;
 using Warden.Web.Framework;
 using Warden.Web.Hubs;
 
@@ -21,13 +23,15 @@ namespace Warden.Web
 {
     public class Startup
     {
-        private IConfiguration Configuration { get; }
+        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private IConfigurationRoot Configuration { get; }
 
         public Startup(IHostingEnvironment env)
         {
             Configuration = new ConfigurationBuilder()
                 .AddJsonFile("config.json")
                 .AddJsonFile($"config.{env.EnvironmentName}.json", optional: true)
+                .AddNLogConfig("nlog.config")
                 .AddEnvironmentVariables()
                 .Build();
         }
@@ -62,13 +66,14 @@ namespace Warden.Web
                 new SignalRService(GlobalHost.ConnectionManager.GetHubContext<WardenHub>()));
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, 
-            IServiceProvider serviceProvider, GeneralSettings settings)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationEnvironment appEnv,
+            ILoggerFactory loggerFactory, IServiceProvider serviceProvider, GeneralSettings settings)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+            loggerFactory.AddNLog(Configuration);
             app.UseIISPlatformHandler();
             app.UseStaticFiles();
             app.UseCookieAuthentication(options =>
@@ -83,6 +88,7 @@ namespace Warden.Web
             app.UseMvcWithDefaultRoute();
             MapSignalR(app, serviceProvider);
             MongoConfigurator.Initialize();
+            Logger.Info("Application has started.");
         }
 
         //Issues with Signalr 3 groups - using the version 2 for now.

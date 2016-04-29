@@ -6,6 +6,7 @@ using Warden.Web.Core.Queries;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using System.Linq;
+using NLog;
 using Warden.Web.Core.Domain;
 using Warden.Web.Core.Mongo;
 using Warden.Web.Core.Mongo.Queries;
@@ -23,6 +24,7 @@ namespace Warden.Web.Core.Services
 
     public class WardenService : IWardenService
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private const string WatcherNameSuffix = "watcher";
         private readonly IMongoDatabase _database;
         private readonly IStatsCalculator _statsCalculator;

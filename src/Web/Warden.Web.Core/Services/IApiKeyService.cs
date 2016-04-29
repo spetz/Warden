@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Driver;
+using NLog;
 using Warden.Web.Core.Domain;
 using Warden.Web.Core.Mongo.Queries;
 using Warden.Web.Core.Settings;
@@ -19,6 +18,7 @@ namespace Warden.Web.Core.Services
 
     public class ApiKeyService : IApiKeyService
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IMongoDatabase _database;
         private readonly IEncrypter _encrypter;
         private readonly FeatureSettings _featureSettings;

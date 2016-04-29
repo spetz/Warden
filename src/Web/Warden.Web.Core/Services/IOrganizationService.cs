@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using NLog;
 using Warden.Web.Core.Domain;
 using Warden.Web.Core.Dto;
 using Warden.Web.Core.Extensions;
@@ -35,6 +36,7 @@ namespace Warden.Web.Core.Services
 
     public class OrganizationService : IOrganizationService
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IMongoDatabase _database;
         private readonly FeatureSettings _featureSettings;
         private const string DefaultName = "My organization";

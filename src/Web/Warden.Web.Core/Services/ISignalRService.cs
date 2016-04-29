@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNet.SignalR;
+using NLog;
 using Warden.Web.Core.Dto;
 using Warden.Web.Core.Extensions;
 
@@ -12,6 +13,7 @@ namespace Warden.Web.Core.Services
 
     public class SignalRService : ISignalRService
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IHubContext _hub;
 
         public SignalRService(IHubContext hub)
