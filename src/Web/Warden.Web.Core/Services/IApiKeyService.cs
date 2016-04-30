@@ -83,6 +83,7 @@ namespace Warden.Web.Core.Services
 
             var apiKey = new ApiKey(key, user);
             await _database.ApiKeys().InsertOneAsync(apiKey);
+            Logger.Info($"New API key with id: '{apiKey.Id}' was created by user: '{user.Id}'.");
         }
 
         public async Task DeleteAsync(string key)
@@ -92,6 +93,7 @@ namespace Warden.Web.Core.Services
                 throw new ServiceException($"API key has not been found for key: '{key}'.");
 
             await _database.ApiKeys().DeleteOneAsync(x => x.Id == apiKey.Id);
+            Logger.Info($"API key with id: '{apiKey.Id}' was deleted'.");
         }
     }
 }

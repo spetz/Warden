@@ -51,7 +51,7 @@ namespace Warden.Web.Core.Services
         {
             var organization = await _database.Organizations().GetByIdAsync(organizationId);
 
-            return  GetOrganizationDto(organization);
+            return GetOrganizationDto(organization);
         }
 
         public async Task<OrganizationDto> GetDefaultAsync(Guid ownerId)
@@ -62,7 +62,7 @@ namespace Warden.Web.Core.Services
         {
             var organization = await _database.Organizations().GetByNameForOwnerAsync(name, ownerId);
 
-            return  GetOrganizationDto(organization);
+            return GetOrganizationDto(organization);
         }
 
         private OrganizationDto GetOrganizationDto(Organization organization)
@@ -112,6 +112,8 @@ namespace Warden.Web.Core.Services
 
             organization = new Organization(name, owner, autoRegisterNewWarden);
             await _database.Organizations().InsertOneAsync(organization);
+            Logger.Info($"New organization: '{name}' with id: '{organization}' " +
+                        $"was created by user: '{ownerId}'.");
         }
 
         public async Task AddWardenAsync(Guid organizationId, string name, bool enabled = true)
@@ -125,6 +127,8 @@ namespace Warden.Web.Core.Services
 
             organization.AddWarden(name, enabled);
             await _database.Organizations().ReplaceOneAsync(x => x.Id == organization.Id, organization);
+            Logger.Info($"Warden '{name}' was added to organization: " +
+                        $"'{organization.Name}' with id: '{organization.Id}'.");
         }
 
         public async Task AddUserAsync(Guid organizationId, string email, OrganizationRole role = OrganizationRole.User)
@@ -142,6 +146,8 @@ namespace Warden.Web.Core.Services
 
             organization.AddUser(user, role);
             await _database.Organizations().ReplaceOneAsync(x => x.Id == organization.Id, organization);
+            Logger.Info($"User '{user.Id}' was added to organization: " +
+                        $"'{organization.Name}' with id: '{organization.Id}'.");
         }
 
         public async Task EnableWardenAsync(Guid organizationId, string name)
@@ -150,6 +156,8 @@ namespace Warden.Web.Core.Services
             var warden = organization.GetWardenByNameOrFail(name);
             warden.Enable();
             await _database.Organizations().ReplaceOneAsync(x => x.Id == organization.Id, organization);
+            Logger.Info($"Warden '{name}' was enabled in organization: " +
+                        $"'{organization.Name}' with id: '{organization.Id}'.");
         }
 
         public async Task DisableWardenAsync(Guid organizationId, string name)
@@ -158,6 +166,8 @@ namespace Warden.Web.Core.Services
             var warden = organization.GetWardenByNameOrFail(name);
             warden.Disable();
             await _database.Organizations().ReplaceOneAsync(x => x.Id == organization.Id, organization);
+            Logger.Info($"Warden '{name}' was disabled in organization: " +
+                        $"'{organization.Name}' with id: '{organization.Id}'.");
         }
 
         public async Task<bool> IsUserInOrganizationAsync(Guid organizationId, Guid userId)
@@ -171,7 +181,7 @@ namespace Warden.Web.Core.Services
         {
             var organization = await GetByIdOrFailAsync(organizationId);
             await _database.Organizations().DeleteOneAsync(x => x.Id == organizationId);
-            if(!removeAllIterations)
+            if (!removeAllIterations)
                 return;
 
             await _database.WardenIterations().DeleteManyAsync(x => x.Warden.OrganizationId == organizationId);
@@ -182,6 +192,7 @@ namespace Warden.Web.Core.Services
             var organization = await GetByIdOrFailAsync(organizationId);
             organization.RemoveUser(userId);
             await _database.Organizations().ReplaceOneAsync(x => x.Id == organizationId, organization);
+            Logger.Info($"Organization: '{organization.Name}' with id: '{organization.Id}' was deleted.");
         }
 
         public async Task DeleteWardenAsync(Guid organizationId, Guid wardenId)
@@ -193,6 +204,8 @@ namespace Warden.Web.Core.Services
 
             organization.RemoveWarden(warden.Name);
             await _database.Organizations().ReplaceOneAsync(x => x.Id == organizationId, organization);
+            Logger.Info($"Warden '{warden.Name}' was deleted from organization: " +
+                        $"'{organization.Name}' with id: '{organization.Id}'.");
         }
 
         public async Task EnableAutoRegisterNewWardenAsync(Guid organizationId)
@@ -200,6 +213,8 @@ namespace Warden.Web.Core.Services
             var organization = await GetByIdOrFailAsync(organizationId);
             organization.EnableAutoRegisterNewWarden();
             await _database.Organizations().ReplaceOneAsync(x => x.Id == organizationId, organization);
+            Logger.Info("Automatic registration of new Wardens was enabled in organization: " +
+                        $"'{organization.Name}' with id: '{organization.Id}'");
         }
 
         public async Task DisableAutoRegisterNewWardenAsync(Guid organizationId)
@@ -207,6 +222,8 @@ namespace Warden.Web.Core.Services
             var organization = await GetByIdOrFailAsync(organizationId);
             organization.DisableAutoRegisterNewWarden();
             await _database.Organizations().ReplaceOneAsync(x => x.Id == organizationId, organization);
+            Logger.Info("Automatic registration of new Wardens was disabled in organization: " +
+                        $"'{organization.Name}' with id: '{organization.Id}'");
         }
 
         private async Task<Organization> GetByIdOrFailAsync(Guid id)

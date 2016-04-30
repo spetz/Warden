@@ -72,6 +72,7 @@ namespace Warden.Web.Core.Services
 
             var user = new User(email, password, _encrypter, role);
             await _database.Users().InsertOneAsync(user);
+            Logger.Info($"New user account: '{email}' was created with id: '{user.Id}'");
         }
 
         public async Task LoginAsync(string email, string password)
@@ -87,6 +88,8 @@ namespace Warden.Web.Core.Services
 
             if(!user.ValidatePassword(password, _encrypter))
                 throw new ServiceException("Invalid password.");
+
+            Logger.Info($"User: '{email}' with: '{user.Id}' has authenticated.");
         }
 
         public async Task SetRecentlyViewedWardenInOrganizationAsync(Guid userId, Guid organizationId, Guid wardenId)
@@ -108,6 +111,7 @@ namespace Warden.Web.Core.Services
 
             user.SetPassword(newPassword, _encrypter);
             await _database.Users().ReplaceOneAsync(x => x.Id == userId, user);
+            Logger.Info($"User: '{user.Email}' with: '{user.Id}' has changed password.");
         }
     }
 }

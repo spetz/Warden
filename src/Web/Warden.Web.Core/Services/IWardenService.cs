@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Warden.Web.Core.Dto;
 using Warden.Web.Core.Queries;
 using MongoDB.Driver;
-using MongoDB.Driver.Linq;
 using System.Linq;
 using NLog;
 using Warden.Web.Core.Domain;
@@ -107,6 +106,8 @@ namespace Warden.Web.Core.Services
                 await _database.Organizations().ReplaceOneAsync(x => x.Id == organizationId, organization);
 
             await _database.WardenIterations().InsertOneAsync(wardenIteration);
+            Logger.Info($"Warden iteration: '{wardenIteration.Id}' was created " +
+                        $"for organization: '{organization.Name}' with id: '{organization.Id}'.");
 
             return new WardenIterationDto(wardenIteration);
         }
@@ -164,6 +165,9 @@ namespace Warden.Web.Core.Services
             stats.OrganizationId = query.OrganizationId;
             stats.WardenName = warden.Name;
             stats.Enabled = warden.Enabled;
+
+            Logger.Trace($"Statistics for for Warden: '{warden.Name}' with id: '{warden.Id}' " +
+                         $"in organization: '{query.OrganizationId}' were created.");
 
             return stats;
         }

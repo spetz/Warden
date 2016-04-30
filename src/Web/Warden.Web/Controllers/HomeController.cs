@@ -25,7 +25,7 @@ namespace Warden.Web.Controllers
         public async Task<IActionResult> Index()
         {
             if (!User.Identity.IsAuthenticated)
-                return View();
+                return RedirectToAction("Login", "Account");
 
             var user = await _userService.GetAsync(UserId);
             if (user.RecentlyViewedOrganizationId == Guid.Empty && user.RecentlyViewedWardenId == Guid.Empty)

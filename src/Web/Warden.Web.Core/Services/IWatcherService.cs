@@ -66,6 +66,8 @@ namespace Warden.Web.Core.Services
                 .Where(x => x.Watcher.Name.EqualsCaseInvariant(query.WatcherName))
                 .ToList();
             var stats = _statsCalculator.Calculate(results);
+            Logger.Trace($"Statistics for watcher {watcher.Name} for Warden: '{query.WardenId}' " +
+                         $"in organization: '{query.OrganizationId}' were created.");
 
             return new WatcherStatsDto
             {
