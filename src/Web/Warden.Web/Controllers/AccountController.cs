@@ -5,7 +5,6 @@ using Microsoft.AspNet.Authentication.Cookies;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Http.Authentication;
 using Microsoft.AspNet.Mvc;
-using Warden.Web.Core.Domain;
 using Warden.Web.Core.Services;
 using Warden.Web.Extensions;
 using Warden.Web.Framework;
@@ -52,7 +51,11 @@ namespace Warden.Web.Controllers
                 return RedirectToAction("Login");
             }
 
-            return await _userService.LoginAsync(viewModel.Email, viewModel.Password)
+            var ipAddress = Request.HttpContext?.Connection?.RemoteIpAddress?.ToString();
+            var userAgent = Request.Headers["User-Agent"];
+
+            return await _userService.LoginAsync(viewModel.Email,
+                viewModel.Password, ipAddress, userAgent)
                 .ExecuteAsync(
                     onSuccess: async () =>
                     {
@@ -65,8 +68,6 @@ namespace Warden.Web.Controllers
                             {
                                 IsPersistent = viewModel.RememberMe
                             });
-
-                        Notify(FlashNotificationType.Success, "Password has been changed.");
 
                         return RedirectToAction("Index", "Home");
                     },
@@ -126,11 +127,16 @@ namespace Warden.Web.Controllers
                     });
         }
 
-        [HttpDelete]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         [Route("logout")]
-        public async Task Logout()
+        public async Task<IActionResult> Logout()
         {
+            Logger.Info($"User '{UserId}' has logged out.");
             await HttpContext.Authentication.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            Notify(FlashNotificationType.Info, "You have been logged out.");
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

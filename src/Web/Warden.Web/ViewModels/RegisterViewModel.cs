@@ -4,21 +4,20 @@ namespace Warden.Web.ViewModels
 {
     public class RegisterViewModel
     {
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "Email address is required.")]
+        [EmailAddress(ErrorMessage = "Invalid email address.")]
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Email")]
-        [StringLength(100)]
         public string Email { get; set; }
 
-        [Required]
-        [StringLength(100, MinimumLength = 4)]
+        [Required(ErrorMessage = "Password is required.")]
+        [StringLength(100, MinimumLength = 4, ErrorMessage = "Password must contain between 4-100 characters.")]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Compare("Password")]
+        [Compare("Password", ErrorMessage = "Password and its confirmation do not match.")]
         [Display(Name = "ConfirmPassword")]
         public string ConfirmPassword { get; set; }
     }

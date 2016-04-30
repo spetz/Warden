@@ -15,7 +15,9 @@ namespace Warden.Web.Core.Services
         Task<UserDto> GetAsync(string email);
         Task<UserDto> GetAsync(Guid id);
         Task RegisterAsync(string email, string password, Role role = Role.User);
-        Task LoginAsync(string email, string password);
+
+        Task LoginAsync(string email, string password, string ipAddress,
+            string userAgent = null, string referrer = null);
         Task SetRecentlyViewedWardenInOrganizationAsync(Guid userId, Guid organizationId, Guid wardenId);
         Task SetNewPasswordAsync(Guid userId, string actualPassword, string newPassword);
     }
@@ -75,7 +77,8 @@ namespace Warden.Web.Core.Services
             Logger.Info($"New user account: '{email}' was created with id: '{user.Id}'");
         }
 
-        public async Task LoginAsync(string email, string password)
+        public async Task LoginAsync(string email, string password, string ipAddress,
+            string userAgent = null, string referrer = null)
         {
             if (!email.IsEmail())
                 throw new ServiceException($"Invalid email: '{email}.");
@@ -89,7 +92,10 @@ namespace Warden.Web.Core.Services
             if(!user.ValidatePassword(password, _encrypter))
                 throw new ServiceException("Invalid password.");
 
-            Logger.Info($"User: '{email}' with: '{user.Id}' has authenticated.");
+            var session = new UserSession(user, userAgent, ipAddress, referrer);
+            await _database.UserSessions().InsertOneAsync(session);
+            Logger.Info($"New user session: '{session.Id}' was created " +
+                        $"for user: '{user.Email}' with id: '{user.Id}'.");
         }
 
         public async Task SetRecentlyViewedWardenInOrganizationAsync(Guid userId, Guid organizationId, Guid wardenId)

@@ -4,21 +4,21 @@ namespace Warden.Web.ViewModels
 {
     public class ChangePasswordViewModel
     {
-        [Required]
-        [StringLength(100, MinimumLength = 4)]
+        [Required(ErrorMessage = "Actual password is required.")]
+        [StringLength(100, MinimumLength = 4, ErrorMessage = "Actual password must contain between 4-100 characters.")]
         [DataType(DataType.Password)]
-        [Display(Name = "ActualPassword")]
+        [Display(Name = "Actual password")]
         public string ActualPassword { get; set; }
 
-        [Required]
-        [StringLength(100, MinimumLength = 4)]
+        [Required(ErrorMessage = "New password is required.")]
+        [StringLength(100, MinimumLength = 4, ErrorMessage = "New password must contain between 4-100 characters.")]
         [DataType(DataType.Password)]
-        [Display(Name = "NewPassword")]
+        [Display(Name = "New password")]
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
-        [Compare("NewPassword")]
-        [Display(Name = "ConfirmNewPassword")]
+        [Compare("NewPassword", ErrorMessage = "New password and its confirmation do not match.")]
+        [Display(Name = "Confirm new password")]
         public string ConfirmNewPassword { get; set; }
     }
 }

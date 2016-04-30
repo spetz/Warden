@@ -24,9 +24,9 @@
                 <li class="collection-item">@Model.Role</li>
             </ul>
         </div>
-        <div>
-            <a href="@Url.Action("Password")" class="btn waves-effect custom">Change password</a>
-        </div>
+    </div>
+    <div class="section">
+        <a href="@Url.Action("Password")" class="btn waves-effect custom">Change password</a>
     </div>
 </div>
 <div class="row card-panel">
@@ -53,6 +53,11 @@
                 </li>
             }
         </ul>
+    </div>
+    <div class="section">
+        <form asp-controller="Account" asp-action="Logout" asp-anti-forgery="true" method="POST" data-block>
+            <button class="btn waves-effect waves-light custom" type="submit">Sign out</button>
+        </form>
     </div>
 </div>
 @Html.Partial("_DeletApiKeyModal")

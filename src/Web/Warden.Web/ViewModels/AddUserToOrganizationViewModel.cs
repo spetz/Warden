@@ -4,11 +4,10 @@ namespace Warden.Web.ViewModels
 {
     public class AddUserToOrganizationViewModel
     {
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "Email address is required.")]
+        [EmailAddress(ErrorMessage = "Invalid email address.")]
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Email")]
-        [StringLength(100)]
         public string Email { get; set; }
     }
 }

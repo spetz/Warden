@@ -9,7 +9,6 @@
         url = options.url || "/";
         var path = "/" + url.split("/")[1];
         setMenu(path);
-        initNav();
         initBlockableElements();
         initCheckboxes();
         initModalsAndRemoveClickHandlers();
@@ -20,19 +19,6 @@
         var $link = $("nav,#nav-mobile").find('a[href^="' + path + '"]');
         $link.parent().addClass("active");
         $link.parent().parent().parent().addClass("active");
-    };
-
-    function initNav() {
-        $("[data-logout]")
-            .click(function() {
-                $.ajax({
-                    url: logoutPath,
-                    type: 'DELETE',
-                    success: function(result) {
-                        window.location = loginPath;
-                    }
-                });
-            });
     };
 
     function initBlockableElements() {
