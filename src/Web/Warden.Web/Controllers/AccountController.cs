@@ -7,6 +7,7 @@ using Microsoft.AspNet.Http.Authentication;
 using Microsoft.AspNet.Mvc;
 using Warden.Web.Core.Domain;
 using Warden.Web.Core.Services;
+using Warden.Web.Extensions;
 using Warden.Web.Framework;
 using Warden.Web.Framework.Filters;
 using Warden.Web.ViewModels;
@@ -51,25 +52,30 @@ namespace Warden.Web.Controllers
                 return RedirectToAction("Login");
             }
 
-            try
-            {
-                await _userService.LoginAsync(viewModel.Email, viewModel.Password);
-                var user = await _userService.GetAsync(viewModel.Email);
-                var claims = new[] { new Claim(ClaimTypes.Name, user.Id.ToString("N")), new Claim(ClaimTypes.NameIdentifier, ""),  };
-                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                await HttpContext.Authentication.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(identity), new AuthenticationProperties
+            return await _userService.LoginAsync(viewModel.Email, viewModel.Password)
+                .ExecuteAsync(
+                    onSuccess: async () =>
                     {
-                        IsPersistent = viewModel.RememberMe
-                    });
-            }
-            catch (ServiceException exception)
-            {
-                Notify(FlashNotificationType.Error, exception.Message);
-                return RedirectToAction("Login");
-            }
+                        var user = await _userService.GetAsync(viewModel.Email);
+                        var claims = new[]
+                        {new Claim(ClaimTypes.Name, user.Id.ToString("N")), new Claim(ClaimTypes.NameIdentifier, ""),};
+                        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                        await HttpContext.Authentication.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                            new ClaimsPrincipal(identity), new AuthenticationProperties
+                            {
+                                IsPersistent = viewModel.RememberMe
+                            });
 
-            return RedirectToAction("Index", "Home");
+                        Notify(FlashNotificationType.Success, "Password has been changed.");
+
+                        return RedirectToAction("Index", "Home");
+                    },
+                    onFailure: ex =>
+                    {
+                        Notify(FlashNotificationType.Error, ex.Message);
+
+                        return RedirectToAction("Login");
+                    });
         }
 
         [HttpGet]
@@ -95,29 +101,29 @@ namespace Warden.Web.Controllers
                 return RedirectToAction("Register");
             }
 
-            try
-            {
-                await _userService.RegisterAsync(viewModel.Email, viewModel.Password);
-                Notify(FlashNotificationType.Success, "Your account has been created.");
-            }
-            catch (ServiceException exception)
-            {
-                Notify(FlashNotificationType.Error, exception.Message);
+            return await _userService.RegisterAsync(viewModel.Email, viewModel.Password)
+                .ExecuteAsync(
+                    onSuccess: async () =>
+                    {
+                        Notify(FlashNotificationType.Success, "Your account has been created.");
+                        try
+                        {
+                            var user = await _userService.GetAsync(viewModel.Email);
+                            await _apiKeyService.CreateAsync(viewModel.Email);
+                            await _organizationService.CreateDefaultAsync(user.Id);
+                        }
+                        catch (Exception ex)
+                        {
+                            //Not important
+                        }
 
-                return RedirectToAction("Register");
-            }
-            try
-            {
-                var user = await _userService.GetAsync(viewModel.Email);
-                await _apiKeyService.CreateAsync(viewModel.Email);
-                await _organizationService.CreateDefaultAsync(user.Id);
-            }
-            catch (Exception ex)
-            {
-                //Not important
-            }
-
-            return RedirectToAction("Login");
+                        return RedirectToAction("Login");
+                    },
+                    onFailure: ex =>
+                    {
+                        Notify(FlashNotificationType.Error, ex.Message);
+                        return RedirectToAction("Register");
+                    });
         }
 
         [HttpDelete]

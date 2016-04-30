@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using Warden.Web.Core.Domain;
 using Warden.Web.Core.Services;
+using Warden.Web.Extensions;
 using Warden.Web.Framework;
 using Warden.Web.Framework.Filters;
 using Warden.Web.ViewModels;
@@ -36,8 +37,9 @@ namespace Warden.Web.Controllers
         [Route("api-keys")]
         public async Task<IActionResult> CreateApiKey()
         {
-            await _apiKeyService.CreateAsync(UserId);
-            Notify(FlashNotificationType.Success, "API key has been created.");
+            await _apiKeyService.CreateAsync(UserId).Execute(
+                onSuccess: () => Notify(FlashNotificationType.Success, "API key has been created."),
+                onFailure: ex => Notify(FlashNotificationType.Error, ex.Message));
 
             return RedirectToAction("Index");
         }
@@ -59,20 +61,18 @@ namespace Warden.Web.Controllers
             if (!ModelState.IsValid)
                 return RedirectToAction("Password");
 
-            try
-            {
-                await _userService.SetNewPasswordAsync(UserId, viewModel.ActualPassword, viewModel.NewPassword);
-                Notify(FlashNotificationType.Success, "Password has been changed.");
-
-                return RedirectToAction("Index");
-
-            }
-            catch (ServiceException exception)
-            {
-                Notify(FlashNotificationType.Error, exception.Message);
-
-                return RedirectToAction("Password");
-            }
+            return await _userService.SetNewPasswordAsync(UserId, viewModel.ActualPassword, viewModel.NewPassword)
+                .Execute(
+                    onSuccess: () =>
+                    {
+                        Notify(FlashNotificationType.Success, "Password has been changed.");
+                        return RedirectToAction("Index");
+                    },
+                    onFailure: ex =>
+                    {
+                        Notify(FlashNotificationType.Error, ex.Message);
+                        return RedirectToAction("Password");
+                    });
         }
 
         [HttpPost]

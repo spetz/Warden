@@ -5,6 +5,8 @@ using System.Linq;
 using Warden.Web.Core.Dto;
 using Warden.Web.Core.Queries;
 using Warden.Web.Core.Services;
+using Warden.Web.Extensions;
+using Warden.Web.Framework;
 using Warden.Web.ViewModels;
 
 namespace Warden.Web.Controllers
@@ -65,15 +67,24 @@ namespace Warden.Web.Controllers
         public async Task<IActionResult> Disable(Guid organizationId, Guid wardenId)
         {
             if (!ModelState.IsValid)
-                return RedirectToAction("Details", new { organizationId, wardenId });
+                return RedirectToAction("Details", new {organizationId, wardenId});
 
             var warden = await GetWardenForUserAsync(organizationId, wardenId);
             if (warden == null)
                 return HttpNotFound();
 
-            await _organizationService.DisableWardenAsync(organizationId, warden.Name);
-
-            return RedirectToAction("Details", new { organizationId, wardenId });
+            return await _organizationService.DisableWardenAsync(organizationId, warden.Name)
+                .Execute(
+                    onSuccess: () =>
+                    {
+                        Notify(FlashNotificationType.Info, "Warden has been disabled.");
+                        return RedirectToAction("Details", new {organizationId, wardenId});
+                    },
+                    onFailure: ex =>
+                    {
+                        Notify(FlashNotificationType.Error, ex.Message);
+                        return RedirectToAction("Details", new {organizationId, wardenId});
+                    });
         }
 
         [HttpPost]
@@ -81,16 +92,25 @@ namespace Warden.Web.Controllers
         [Route("{wardenId}/enable")]
         public async Task<IActionResult> Enable(Guid organizationId, Guid wardenId)
         {
-            if(!ModelState.IsValid)
-                return RedirectToAction("Details", new { organizationId, wardenId });
+            if (!ModelState.IsValid)
+                return RedirectToAction("Details", new {organizationId, wardenId});
 
             var warden = await GetWardenForUserAsync(organizationId, wardenId);
             if (warden == null)
                 return HttpNotFound();
 
-            await _organizationService.EnableWardenAsync(organizationId, warden.Name);
-
-            return RedirectToAction("Details", new {organizationId, wardenId});
+            return await _organizationService.EnableWardenAsync(organizationId, warden.Name)
+                .Execute(
+                    onSuccess: () =>
+                    {
+                        Notify(FlashNotificationType.Success, "Warden has been enabled.");
+                        return RedirectToAction("Details", new {organizationId, wardenId});
+                    },
+                    onFailure: ex =>
+                    {
+                        Notify(FlashNotificationType.Error, ex.Message);
+                        return RedirectToAction("Details", new {organizationId, wardenId});
+                    });
         }
 
         [HttpGet]

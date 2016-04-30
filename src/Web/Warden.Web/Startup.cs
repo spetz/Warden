@@ -17,6 +17,7 @@ using Owin;
 using Warden.Web.Core.Settings;
 using Warden.Web.Extensions;
 using Warden.Web.Framework;
+using Warden.Web.Framework.Filters;
 using Warden.Web.Hubs;
 
 namespace Warden.Web
@@ -42,7 +43,10 @@ namespace Warden.Web
             services.AddOptions();
             services.Configure<FeatureSettings>(Configuration.GetSection("feature"));
             services.Configure<GeneralSettings>(Configuration.GetSection("general"));
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(new ExceptionFilter());
+            });
             services.AddMvcCore().AddJsonFormatters(formatter =>
             {
                 formatter.DateFormatString = settings.JsonFormatDate;

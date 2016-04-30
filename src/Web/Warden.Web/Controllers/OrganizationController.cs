@@ -5,6 +5,7 @@ using Warden.Web.Core.Domain;
 using Warden.Web.Core.Dto;
 using Warden.Web.Core.Queries;
 using Warden.Web.Core.Services;
+using Warden.Web.Extensions;
 using Warden.Web.Framework;
 using Warden.Web.Framework.Filters;
 using Warden.Web.ViewModels;
@@ -65,11 +66,19 @@ namespace Warden.Web.Controllers
             if (!ModelState.IsValid)
                 return RedirectToAction("Create");
 
-            await _organizationService.CreateAsync(viewModel.Name, UserId);
-            var organization = await _organizationService.GetAsync(viewModel.Name, UserId);
-            Notify(FlashNotificationType.Success, "Organization has been created.");
-
-            return RedirectToAction("Details", new {id = organization.Id});
+            return await _organizationService.CreateAsync(viewModel.Name, UserId)
+                .ExecuteAsync(
+                    onSuccess: async () =>
+                    {
+                        var organization = await _organizationService.GetAsync(viewModel.Name, UserId);
+                        Notify(FlashNotificationType.Success, "Organization has been created.");
+                        return RedirectToAction("Details", new {id = organization.Id});
+                    },
+                    onFailure: ex =>
+                    {
+                        Notify(FlashNotificationType.Error, ex.Message);
+                        return RedirectToAction("Create");
+                    });
         }
 
         [HttpGet]
@@ -97,19 +106,18 @@ namespace Warden.Web.Controllers
             if (organization == null)
                 return HttpBadRequest($"Invalid organization id: '{id}'.");
 
-            try
-            {
-                await _organizationService.AddUserAsync(id, viewModel.Email);
-                Notify(FlashNotificationType.Success, "User has been added to the organization.");
-
-                return RedirectToAction("Details", new { id });
-            }
-            catch (ServiceException exception)
-            {
-                Notify(FlashNotificationType.Error, exception.Message);
-
-                return RedirectToAction("AddUser");
-            }
+            return await _organizationService.AddUserAsync(id, viewModel.Email)
+                .Execute(
+                    onSuccess: () =>
+                    {
+                        Notify(FlashNotificationType.Success, "User has been added to the organization.");
+                        return RedirectToAction("Details", new {id = organization.Id});
+                    },
+                    onFailure: ex =>
+                    {
+                        Notify(FlashNotificationType.Error, ex.Message);
+                        return RedirectToAction("AddUser");
+                    });
         }
 
         [HttpGet]
@@ -137,10 +145,18 @@ namespace Warden.Web.Controllers
             if (organization == null)
                 return HttpBadRequest($"Invalid organization id: '{id}'.");
 
-            await _organizationService.AddWardenAsync(id, viewModel.Name);
-            Notify(FlashNotificationType.Success, "Warden has been added to the organization.");
-
-            return RedirectToAction("Details", new { id });
+            return await _organizationService.AddWardenAsync(id, viewModel.Name)
+                .Execute(
+                    onSuccess: () =>
+                    {
+                        Notify(FlashNotificationType.Success, "Warden has been added to the organization.");
+                        return RedirectToAction("Details", new {id = organization.Id});
+                    },
+                    onFailure: ex =>
+                    {
+                        Notify(FlashNotificationType.Error, ex.Message);
+                        return RedirectToAction("AddWarden");
+                    });
         }
 
         [HttpPost]
@@ -151,10 +167,18 @@ namespace Warden.Web.Controllers
             if (!await IsOrganizationOwnerAsync(id))
                 return new HttpUnauthorizedResult();
 
-            await _organizationService.DeleteAsync(id);
-            Notify(FlashNotificationType.Info, "Organization has been removed.");
-
-            return RedirectToAction("Index");
+            return await _organizationService.DeleteAsync(id)
+                .Execute(
+                    onSuccess: () =>
+                    {
+                        Notify(FlashNotificationType.Info, "Organization has been removed.");
+                        return RedirectToAction("Index");
+                    },
+                    onFailure: ex =>
+                    {
+                        Notify(FlashNotificationType.Error, ex.Message);
+                        return RedirectToAction("Index");
+                    });
         }
 
         [HttpPost]
@@ -165,10 +189,18 @@ namespace Warden.Web.Controllers
             if (!await IsOrganizationOwnerAsync(id))
                 return new HttpUnauthorizedResult();
 
-            await _organizationService.DeleteUserAsync(id, userId);
-            Notify(FlashNotificationType.Info, "User has been removed from organization.");
-
-            return RedirectToAction("Details", new { id });
+            return await _organizationService.DeleteUserAsync(id, userId)
+                .Execute(
+                    onSuccess: () =>
+                    {
+                        Notify(FlashNotificationType.Info, "User has been removed from the organization.");
+                        return RedirectToAction("Details", new {id});
+                    },
+                    onFailure: ex =>
+                    {
+                        Notify(FlashNotificationType.Error, ex.Message);
+                        return RedirectToAction("Details", new {id});
+                    });
         }
 
         [HttpPost]
@@ -179,10 +211,18 @@ namespace Warden.Web.Controllers
             if (!await IsOrganizationOwnerAsync(id))
                 return new HttpUnauthorizedResult();
 
-            await _organizationService.DeleteWardenAsync(id, wardenId);
-            Notify(FlashNotificationType.Info, "Warden has been removed from organization.");
-
-            return RedirectToAction("Details", new { id });
+            return await _organizationService.DeleteWardenAsync(id, wardenId)
+                .Execute(
+                    onSuccess: () =>
+                    {
+                        Notify(FlashNotificationType.Info, "Warden has been removed from the organization.");
+                        return RedirectToAction("Details", new {id});
+                    },
+                    onFailure: ex =>
+                    {
+                        Notify(FlashNotificationType.Error, ex.Message);
+                        return RedirectToAction("Details", new {id});
+                    });
         }
 
         [HttpPost]
@@ -193,10 +233,18 @@ namespace Warden.Web.Controllers
             if (!await IsOrganizationOwnerAsync(id))
                 return new HttpUnauthorizedResult();
 
-            await _organizationService.EnableAutoRegisterNewWardenAsync(id);
-            Notify(FlashNotificationType.Info, "Automatic registration of new Wardens has been enabled.");
-
-            return RedirectToAction("Details", new { id });
+            return await _organizationService.EnableAutoRegisterNewWardenAsync(id)
+                .Execute(
+                    onSuccess: () =>
+                    {
+                        Notify(FlashNotificationType.Info, "Automatic registration of new Wardens has been enabled.");
+                        return RedirectToAction("Details", new {id});
+                    },
+                    onFailure: ex =>
+                    {
+                        Notify(FlashNotificationType.Error, ex.Message);
+                        return RedirectToAction("Details", new {id});
+                    });
         }
 
         [HttpPost]
@@ -207,10 +255,18 @@ namespace Warden.Web.Controllers
             if (!await IsOrganizationOwnerAsync(id))
                 return new HttpUnauthorizedResult();
 
-            await _organizationService.DisableAutoRegisterNewWardenAsync(id);
-            Notify(FlashNotificationType.Info, "Automatic registration of new Wardens has been disabled.");
-
-            return RedirectToAction("Details", new { id });
+            return await _organizationService.DisableAutoRegisterNewWardenAsync(id)
+                .Execute(
+                    onSuccess: () =>
+                    {
+                        Notify(FlashNotificationType.Info, "Automatic registration of new Wardens has been disabled.");
+                        return RedirectToAction("Details", new {id});
+                    },
+                    onFailure: ex =>
+                    {
+                        Notify(FlashNotificationType.Error, ex.Message);
+                        return RedirectToAction("Details", new {id});
+                    });
         }
 
         private async Task<OrganizationDto> GetOrganizationForUserAsync(Guid id)
