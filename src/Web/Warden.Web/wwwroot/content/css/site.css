@@ -30,3 +30,6 @@ nav {
 
 .progress .indeterminate {
   background-color: #7272D8; }
+
+.btn:hover {
+  background-color: #9999E9; }

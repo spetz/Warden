@@ -1,4 +1,5 @@
 ﻿$primary-color: #7272D8;
+$medium-color: #9999E9;
 $light-color: #C8C8F7;
 $background-color: #FAFAFF;
 $error-color: #BF3131;
@@ -44,4 +45,10 @@ nav {
 
 .progress .indeterminate {
   background-color: $primary-color;
+}
+
+.btn {
+  &:hover {
+    background-color: $medium-color;
+  }
 }
