@@ -170,6 +170,7 @@
 
                 var latestIteration = iterations[0];
                 self.iterations(iterations);
+                displayDashboard();
                 renderMainChart();
                 renderWatchersChart(latestIteration);
                 self.setIterationDetails(latestIteration);
@@ -179,6 +180,11 @@
             var removeFirstIteration = self.iterations().length >= 10;
             addNewIterationToMainChart(iteration, removeFirstIteration);
             renderWatchersChart(iteration);
+        };
+
+        function displayDashboard() {
+            $("#loader").addClass("hide");
+            $("#dashboard").removeClass("hide");
         };
 
         function renderEmptyMainChart() {

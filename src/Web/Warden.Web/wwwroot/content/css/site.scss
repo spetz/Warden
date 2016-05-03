@@ -1,4 +1,5 @@
 ﻿$primary-color: #7272D8;
+$light-color: #C8C8F7;
 $background-color: #FAFAFF;
 $error-color: #BF3131;
 
@@ -31,4 +32,16 @@ nav {
 
 .field-validation-error{
     color: $error-color;
+}
+
+.progress {
+  background-color: $light-color;
+}
+
+.progress .determinate {
+  background-color: $primary-color;
+}
+
+.progress .indeterminate {
+  background-color: $primary-color;
 }
