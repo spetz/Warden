@@ -73,7 +73,7 @@ namespace Warden.Web.Controllers
                     },
                     onFailure: ex =>
                     {
-                        Notify(FlashNotificationType.Error, ex.Message);
+                        Notify(FlashNotificationType.Error, "Invalid credentials.");
 
                         return RedirectToAction("Login");
                     });
@@ -97,7 +97,7 @@ namespace Warden.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                Notify(FlashNotificationType.Error, "Invalid password and/or email.");
+                Notify(FlashNotificationType.Error, "Invalid credentials.");
 
                 return RedirectToAction("Register");
             }
@@ -113,9 +113,10 @@ namespace Warden.Web.Controllers
                             await _apiKeyService.CreateAsync(viewModel.Email);
                             await _organizationService.CreateDefaultAsync(user.Id);
                         }
-                        catch (Exception ex)
+                        catch (Exception exception)
                         {
                             //Not important
+                            Logger.Error(exception);
                         }
 
                         return RedirectToAction("Login");

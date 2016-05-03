@@ -15,13 +15,13 @@
         @if (Model.Stats.Enabled)
         {
             <form asp-controller="Warden" asp-action="Disable" asp-anti-forgery="true" method="POST">
-                <button class="btn waves-effect waves-light orange lighten-2" type="submit" name="action" title="Disable"><i class="material-icons">stop</i></button>
+                <button class="btn waves-effect waves-light orange lighten-2 tooltipped" type="submit" name="action" data-tooltip="Disable Dashboard"><i class="material-icons">stop</i></button>
             </form>
         }
         else
         {
             <form asp-controller="Warden" asp-action="Enable" asp-anti-forgery="true" method="POST">
-                <button class="btn waves-effect waves-light green lighten-2" type="submit" name="action" title="Enable">
+                <button class="btn waves-effect waves-light green lighten-2 tooltipped" type="submit" name="action" data-tooltip="Enable Dashboard">
                     <i class="material-icons">play_arrow</i>
                 </button>
             </form>

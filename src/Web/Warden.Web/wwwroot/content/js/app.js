@@ -12,6 +12,7 @@
         initBlockableElements();
         initCheckboxes();
         initModalsAndRemoveClickHandlers();
+        $('.tooltipped').tooltip({ delay: 50 });
     };
 
     function setMenu(path) {

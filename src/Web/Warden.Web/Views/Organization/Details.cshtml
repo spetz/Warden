@@ -9,15 +9,6 @@
     <div class="col s12  m11">
         <h4 class="custom-text">Organization</h4>
     </div>
-    <div class="col s12 m1">
-        @if (isOwner)
-        {
-            <a class="btn-floating waves-effect waves-light red lighten-1 modal-trigger"
-               href="#modal-delete-organization" data-remove-api-key title="Remove organization">
-                <i class="material-icons dp48 right">delete</i>
-            </a>
-        }
-    </div>
     <div class="col s12">
         <div>
             <label>Name</label>
@@ -35,32 +26,34 @@
             <label>Automatic registration of new Wardens</label>
             <ul class="collection">
                 <li class="collection-item">
-                    <div class="row">
-                        <div class="col s12 m11">
-                            @Model.AutoRegisterNewWarden
-                        </div>
-                        @if (isOwner)
-                        {
-                            <div class="col s12 m1">
-                                @if (Model.AutoRegisterNewWarden)
-                                {
-                                    <form asp-controller="Organization" asp-action="DisableAutoRegisterNewWarden" asp-anti-forgery="true" method="POST" data-block>
-                                        <button class="btn-floating waves-effect waves-light custom"><i class="material-icons dp48 right" title="Disable">stop</i></button>
-                                    </form>
-                                }
-                                else
-                                {
-                                    <form asp-controller="Organization" asp-action="EnableAutoRegisterNewWarden" asp-anti-forgery="true" method="POST" data-block>
-                                        <button class="btn-floating waves-effect waves-light custom"><i class="material-icons dp48 right" title="Enable">play_arrow</i></button>
-                                    </form>
-                                }
-                            </div>
-                        }
-                    </div>
+                    @Model.AutoRegisterNewWarden
                 </li>
             </ul>
         </div>
     </div>
+    @if (isOwner)
+    {
+        <div class="col s12 m1 right">
+            <a class="btn-floating waves-effect waves-light red lighten-1 modal-trigger tooltipped"
+               href="#modal-delete-organization" data-remove-api-key data-tooltip="Remove organization">
+                <i class="material-icons dp48 right">delete</i>
+            </a>
+        </div>
+        <div class="col s12 m1 right">
+            @if (Model.AutoRegisterNewWarden)
+            {
+                <form asp-controller="Organization" asp-action="DisableAutoRegisterNewWarden" asp-anti-forgery="true" method="POST" data-block>
+                    <button class="btn-floating waves-effect waves-light orange lighten-2 tooltipped" data-tooltip="Disable automatic registration of new Wardens"><i class="material-icons dp48 right">stop</i></button>
+                </form>
+            }
+            else
+            {
+                <form asp-controller="Organization" asp-action="EnableAutoRegisterNewWarden" asp-anti-forgery="true" method="POST" data-block>
+                    <button class="btn-floating waves-effect waves-light green lighten-2 tooltipped" data-tooltip="Enable automatic registration of new Wardens"><i class="material-icons dp48 right">play_arrow</i></button>
+                </form>
+            }
+        </div>
+    }
 </div>
 <div class="row card-panel">
     <div class="col s12">
@@ -77,8 +70,8 @@
                         <div class="col s12 m1 l1">
                             @if (isOwner && user.Role != OrganizationRole.Owner)
                             {
-                                <a class="btn-floating waves-effect waves-light red lighten-1 modal-trigger" data-user-id="@user.Id"
-                                   href="#modal-delete-user" data-remove-user-from-organization title="Remove user from organization">
+                                <a class="btn-floating waves-effect waves-light red lighten-1 modal-trigger tooltipped" data-user-id="@user.Id"
+                                   href="#modal-delete-user" data-remove-user-from-organization data-tooltip="Remove user from organization">
                                     <i class="material-icons dp48">delete</i>
                                 </a>
                             }
@@ -106,8 +99,8 @@
                         <div class="col s12 m1 l1">
                             @if (isOwner)
                             {
-                                <a class="btn-floating waves-effect waves-light red lighten-1 modal-trigger" data-warden-id="@warden.Id"
-                                   href="#modal-delete-warden" data-remove-warden-from-organization title="Remove Warden from organization">
+                                <a class="btn-floating waves-effect waves-light red lighten-1 modal-trigger tooltipped" data-warden-id="@warden.Id"
+                                   href="#modal-delete-warden" data-remove-warden-from-organization data-tooltip="Remove Warden from organization">
                                     <i class="material-icons dp48">delete</i>
                                 </a>
                             }
@@ -121,3 +114,4 @@
 @Html.Partial("_DeleteOrganizationModal", Model.Id)
 @Html.Partial("_DeleteUserModal", Model.Id)
 @Html.Partial("_DeleteWardenModal", Model.Id)
+
