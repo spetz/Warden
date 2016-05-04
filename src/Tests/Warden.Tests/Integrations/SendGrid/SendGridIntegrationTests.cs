@@ -5,7 +5,7 @@ using NUnit.Framework;
 using SendGrid;
 using Warden.Integrations.SendGrid;
 
-namespace Warden.Tests.Integrations
+namespace Warden.Tests.Integrations.SendGrid
 {
     public class SendGridIntegration_specs
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Warden.Configurations;
 
-namespace Warden.Integrations.Api
+namespace Warden.Integrations.HttpApi
 {
     /// <summary>
     /// Custom extension methods for the HTTP API integration.

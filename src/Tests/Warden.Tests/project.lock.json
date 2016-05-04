@@ -204,6 +204,15 @@
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       },
+      "Warden.Integrations.HttpApi/1.0.0-alpha4": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Newtonsoft.Json": "7.0.1",
+          "System.Net.Http": "4.0.0",
+          "Warden": "1.0.0"
+        }
+      },
       "Warden.Integrations.SendGrid/1.0.0-alpha4": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
@@ -461,6 +470,15 @@
       "Warden/1.0.0-alpha4": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
+      },
+      "Warden.Integrations.HttpApi/1.0.0-alpha4": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Newtonsoft.Json": "7.0.1",
+          "System.Net.Http": "4.0.0",
+          "Warden": "1.0.0"
+        }
       },
       "Warden.Integrations.SendGrid/1.0.0-alpha4": {
         "type": "project",
@@ -720,6 +738,15 @@
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       },
+      "Warden.Integrations.HttpApi/1.0.0-alpha4": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Newtonsoft.Json": "7.0.1",
+          "System.Net.Http": "4.0.0",
+          "Warden": "1.0.0"
+        }
+      },
       "Warden.Integrations.SendGrid/1.0.0-alpha4": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
@@ -781,6 +808,10 @@
     "Warden/1.0.0-alpha4": {
       "type": "project",
       "path": "../../Warden/project.json"
+    },
+    "Warden.Integrations.HttpApi/1.0.0-alpha4": {
+      "type": "project",
+      "path": "../../Integrations/Warden.Integrations.HttpApi/project.json"
     },
     "Warden.Integrations.SendGrid/1.0.0-alpha4": {
       "type": "project",
@@ -1274,7 +1305,8 @@
       "System.Linq >= 4.0.1-beta-23516",
       "System.Linq.Queryable >= 4.0.1-beta-23516",
       "Warden.Integrations.SendGrid >= 1.0.0-*",
-      "Microsoft.CSharp >= 4.0.0"
+      "Microsoft.CSharp >= 4.0.0",
+      "Warden.Integrations.HttpApi >= 1.0.0-alpha4"
     ],
     "DNX,Version=v4.5.1": []
   }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Warden.Configurations;
-using Warden.Integrations.Api;
+using Warden.Integrations.HttpApi;
 using Warden.Watchers;
 using Warden.Watchers.Disk;
 using Warden.Watchers.MongoDb;
@@ -106,7 +106,7 @@ namespace Warden.Examples.WindowsService
                 .SetHooks((hooks, integrations) =>
                 {
                     hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration))
-                        .OnIterationCompletedAsync(iteration => integrations.HttpApi().PostIterationToWardenApiAsync(iteration))
+                        .OnIterationCompletedAsync(iteration => integrations.HttpApi().PostIterationToWardenPanelAsync(iteration))
                         .OnError(exception => System.Console.WriteLine(exception));
                 })
                 .Build();

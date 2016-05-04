@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Warden.Integrations.Api
+namespace Warden.Integrations.HttpApi
 {
     /// <summary>
     /// Custom HTTP client for executing the POST request.

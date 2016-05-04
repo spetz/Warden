@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Warden.Integrations.Api
+namespace Warden.Integrations.HttpApi
 {
     /// <summary>
     /// Integration with the HTTP API for sending information about performed checks.
@@ -49,12 +49,17 @@ namespace Warden.Integrations.Api
         }
 
         /// <summary>
-        /// Sends a POST request to the Warden API endpoint.
+        /// Sends a POST request to the Warden Panel API endpoint.
         /// </summary>
         /// <param name="iteration">Iteration object that will be serialized to the JSON.</param>
         /// <returns></returns>
-        public async Task PostIterationToWardenApiAsync(IWardenIteration iteration)
+        public async Task PostIterationToWardenPanelAsync(IWardenIteration iteration)
         {
+            if (iteration == null)
+                throw new ArgumentNullException(nameof(iteration), "Warden iteration can not be null.");
+            if (string.IsNullOrWhiteSpace(iteration.WardenName))
+                throw new ArgumentException("Warden name can not be empty.", nameof(iteration.WardenName));
+
             var baseUrl = _configuration.Uri.ToString();
             var fixedWardenName = iteration.WardenName.Replace(" ", "%20");
             var endpoint = GetWardenApiIterationEndpoint(_configuration.OrganizationId, fixedWardenName);

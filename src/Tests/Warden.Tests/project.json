@@ -19,7 +19,8 @@
     "System.Linq": "4.0.1-beta-23516",
     "System.Linq.Queryable": "4.0.1-beta-23516",
     "Warden.Integrations.SendGrid": "1.0.0-*",
-    "Microsoft.CSharp": "4.0.0"
+    "Microsoft.CSharp": "4.0.0",
+    "Warden.Integrations.HttpApi": "1.0.0-alpha4"
   },
 
   "commands": {

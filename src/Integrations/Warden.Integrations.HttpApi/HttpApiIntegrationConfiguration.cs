@@ -5,7 +5,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Warden.Integrations.Api
+namespace Warden.Integrations.HttpApi
 {
     /// <summary>
     /// Configuration of the HttpApiIntegration.
