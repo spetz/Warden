@@ -13,6 +13,7 @@
         initCheckboxes();
         initModalsAndRemoveClickHandlers();
         $('.tooltipped').tooltip({ delay: 50 });
+        $(".button-collapse").sideNav();
     };
 
     function setMenu(path) {
