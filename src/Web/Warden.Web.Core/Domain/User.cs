@@ -9,6 +9,7 @@ namespace Warden.Web.Core.Domain
     {
         public string Email { get; protected set; }
         public Role Role { get; protected set; }
+        public State State { get; protected set; }
         public string Password { get; protected set; }
         public string Salt { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
@@ -25,6 +26,7 @@ namespace Warden.Web.Core.Domain
             SetEmail(email);
             SetPassword(password, encrypter);
             Role = role;
+            State = State.Active;
             CreatedAt = DateTime.UtcNow;
             UpdatedAt = DateTime.UtcNow;
         }
@@ -60,6 +62,34 @@ namespace Warden.Web.Core.Domain
 
             Password = hash;
             Salt = salt;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void Lock()
+        {
+            if(State == State.Locked)
+                return;
+
+            State = State.Locked;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void Activate()
+        {
+            if (State == State.Active)
+                return;
+
+            State = State.Active;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void Delete()
+        {
+            if (State == State.Deleted)
+                return;
+
+            State = State.Deleted;
+            UpdatedAt = DateTime.UtcNow;
         }
 
         public bool ValidatePassword(string password, IEncrypter encrypter)

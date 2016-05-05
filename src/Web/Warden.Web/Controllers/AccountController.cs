@@ -73,7 +73,7 @@ namespace Warden.Web.Controllers
                     },
                     onFailure: ex =>
                     {
-                        Notify(FlashNotificationType.Error, "Invalid credentials.");
+                        Notify(FlashNotificationType.Error, ex.Message);
 
                         return RedirectToAction("Login");
                     });

@@ -18,6 +18,7 @@ namespace Warden.Web.Core.Services
 
         Task LoginAsync(string email, string password, string ipAddress,
             string userAgent = null, string referrer = null);
+
         Task SetRecentlyViewedWardenInOrganizationAsync(Guid userId, Guid organizationId, Guid wardenId);
         Task SetNewPasswordAsync(Guid userId, string actualPassword, string newPassword);
     }
@@ -88,9 +89,13 @@ namespace Warden.Web.Core.Services
             var user = await _database.Users().GetByEmailAsync(email);
             if (user == null)
                 throw new ServiceException($"User has not been found for email: '{email}'.");
+            if (user.State == State.Locked)
+                throw new ServiceException("User account has been locked.");
+            if (user.State == State.Deleted)
+                throw new ServiceException("User account has been deleted.");
 
-            if(!user.ValidatePassword(password, _encrypter))
-                throw new ServiceException("Invalid password.");
+            if (!user.ValidatePassword(password, _encrypter))
+                throw new ServiceException("Invalid credentials.");
 
             var session = new UserSession(user, userAgent, ipAddress, referrer);
             await _database.UserSessions().InsertOneAsync(session);
