@@ -82,6 +82,49 @@ namespace Warden.Web.Controllers
         }
 
         [HttpGet]
+        [Route("{id}/edit")]
+        [ImportModelStateFromTempData]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            if (!await IsOrganizationOwnerAsync(id))
+                return new HttpUnauthorizedResult();
+
+            var organization = await _organizationService.GetAsync(id);
+            var viewModel = new EditOrganizationViewModel
+            {
+                Name = organization.Name
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [Route("{id}/edit")]
+        [ExportModelStateToTempData]
+        public async Task<IActionResult> Edit(Guid id, EditOrganizationViewModel viewModel)
+        {
+            if (!await IsOrganizationOwnerAsync(id))
+                return new HttpUnauthorizedResult();
+
+            if (!ModelState.IsValid)
+                return RedirectToAction("Edit", new {id});
+
+            return await _organizationService.EditAsync(id, viewModel.Name)
+                .ExecuteAsync(
+                    onSuccess: async () =>
+                    {
+                        var organization = await _organizationService.GetAsync(viewModel.Name, UserId);
+                        Notify(FlashNotificationType.Success, "Organization has been updated.");
+                        return RedirectToAction("Details", new {id});
+                    },
+                    onFailure: ex =>
+                    {
+                        Notify(FlashNotificationType.Error, ex.Message);
+                        return RedirectToAction("Edit", new {id});
+                    });
+        }
+
+        [HttpGet]
         [Route("{id}/users")]
         [ImportModelStateFromTempData]
         public async Task<IActionResult> AddUser(Guid id)

@@ -21,6 +21,7 @@ namespace Warden.Web.Core.Services
         Task<OrganizationDto> GetDefaultAsync(Guid ownerId);
         Task CreateDefaultAsync(Guid ownerId);
         Task CreateAsync(string name, Guid ownerId, bool autoRegisterNewWarden = true);
+        Task EditAsync(Guid id, string name);
         Task AddWardenAsync(Guid organizationId, string name, bool enabled = true);
         Task AddUserAsync(Guid organizationId, string email, OrganizationRole role = OrganizationRole.User);
         Task EnableWardenAsync(Guid organizationId, string name);
@@ -100,8 +101,10 @@ namespace Warden.Web.Core.Services
 
             var organization = await _database.Organizations().GetByNameForOwnerAsync(name, ownerId);
             if (organization != null)
+            {
                 throw new ServiceException($"There's already an organization with name: '{name}' " +
                                            $"for owner with id: '{ownerId}'.");
+            }
 
             var existingOrganizationsCount = await _database.Organizations().CountAsync(x => x.OwnerId == ownerId);
             if (existingOrganizationsCount >= _featureSettings.MaxOrganizations)
@@ -114,6 +117,21 @@ namespace Warden.Web.Core.Services
             await _database.Organizations().InsertOneAsync(organization);
             Logger.Info($"New organization: '{name}' with id: '{organization}' " +
                         $"was created by user: '{ownerId}'.");
+        }
+
+        public async Task EditAsync(Guid id, string name)
+        {
+            var organization = await GetByIdOrFailAsync(id);
+            var ownerId = organization.OwnerId;
+            var existingOrganization = await _database.Organizations().GetByNameForOwnerAsync(name, ownerId);
+            if(existingOrganization != null && existingOrganization.Id != organization.Id)
+            {
+                throw new ServiceException($"There's already an organization with name: '{name}' " +
+                                           $"for owner with id: '{ownerId}'.");
+            }
+
+            organization.SetName(name);
+            await _database.Organizations().ReplaceOneAsync(x => x.Id == id, organization);
         }
 
         public async Task AddWardenAsync(Guid organizationId, string name, bool enabled = true)

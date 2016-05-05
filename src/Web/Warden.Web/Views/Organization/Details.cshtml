@@ -35,7 +35,7 @@
     {
         <div class="col s12 m1 right">
             <a class="btn-floating waves-effect waves-light red lighten-1 modal-trigger tooltipped"
-               href="#modal-delete-organization" data-remove-api-key data-tooltip="Remove organization">
+               href="#modal-delete-organization" data-tooltip="Remove organization">
                 <i class="material-icons dp48 right">delete</i>
             </a>
         </div>
@@ -52,6 +52,12 @@
                     <button class="btn-floating waves-effect waves-light green lighten-2 tooltipped" data-tooltip="Enable automatic registration of new Wardens"><i class="material-icons dp48 right">play_arrow</i></button>
                 </form>
             }
+        </div>
+        <div class="col s12 m1 right">
+            <a class="btn-floating waves-effect waves-light custom tooltipped"
+               href="@Url.Action("Edit", new {id = Model.Id})" data-tooltip="Edit organization">
+                <i class="material-icons dp48 right">mode_edit</i>
+            </a>
         </div>
     }
 </div>
