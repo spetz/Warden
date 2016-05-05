@@ -110,10 +110,9 @@ namespace Warden.Web.Controllers
                 return RedirectToAction("Edit", new {id});
 
             return await _organizationService.EditAsync(id, viewModel.Name)
-                .ExecuteAsync(
-                    onSuccess: async () =>
+                .Execute(
+                    onSuccess: () =>
                     {
-                        var organization = await _organizationService.GetAsync(viewModel.Name, UserId);
                         Notify(FlashNotificationType.Success, "Organization has been updated.");
                         return RedirectToAction("Details", new {id});
                     },
@@ -237,28 +236,6 @@ namespace Warden.Web.Controllers
                     onSuccess: () =>
                     {
                         Notify(FlashNotificationType.Info, "User has been removed from the organization.");
-                        return RedirectToAction("Details", new {id});
-                    },
-                    onFailure: ex =>
-                    {
-                        Notify(FlashNotificationType.Error, ex.Message);
-                        return RedirectToAction("Details", new {id});
-                    });
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Route("{id}/wardens/delete")]
-        public async Task<IActionResult> DeleteWarden(Guid id, Guid wardenId)
-        {
-            if (!await IsOrganizationOwnerAsync(id))
-                return new HttpUnauthorizedResult();
-
-            return await _organizationService.DeleteWardenAsync(id, wardenId)
-                .Execute(
-                    onSuccess: () =>
-                    {
-                        Notify(FlashNotificationType.Info, "Warden has been removed from the organization.");
                         return RedirectToAction("Details", new {id});
                     },
                     onFailure: ex =>

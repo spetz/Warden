@@ -2,7 +2,7 @@
 @addTagHelper "*, Microsoft.AspNet.Mvc.TagHelpers"
 
 <div id="modal-delete-warden" class="modal">
-    <form asp-controller="Organization" asp-action="DeleteWarden" asp-routeid="@Model" asp-anti-forgery="true" method="POST">
+    <form asp-controller="Warden" asp-action="Delete" asp-routeid="@Model" asp-anti-forgery="true" method="POST">
         <input type="hidden" name="wardenId" id="warden-id-to-delete" value="" />
         <div class="modal-content">
             <strong>Delete confirmation</strong>

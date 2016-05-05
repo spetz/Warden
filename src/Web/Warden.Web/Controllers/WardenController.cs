@@ -7,6 +7,7 @@ using Warden.Web.Core.Queries;
 using Warden.Web.Core.Services;
 using Warden.Web.Extensions;
 using Warden.Web.Framework;
+using Warden.Web.Framework.Filters;
 using Warden.Web.ViewModels;
 
 namespace Warden.Web.Controllers
@@ -132,6 +133,65 @@ namespace Warden.Web.Controllers
             };
 
             return View(viewModel);
+        }
+
+        [HttpGet]
+        [Route("{wardenId}/edit")]
+        [ImportModelStateFromTempData]
+        public async Task<IActionResult> Edit(Guid organizationId, Guid wardenId)
+        {
+            var warden = await GetWardenForUserAsync(organizationId, wardenId);
+            if (warden == null)
+                return HttpNotFound();
+
+            var viewModel = new EditWardenViewModel
+            {
+                Name = warden.Name
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [Route("{wardenId}/edit")]
+        [ExportModelStateToTempData]
+        public async Task<IActionResult> Edit(Guid organizationId, Guid wardenId, EditWardenViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+                return RedirectToAction("Edit", new {organizationId, wardenId});
+
+            return await _wardenService.EditAsync(organizationId, wardenId, viewModel.Name)
+                .Execute(
+                    onSuccess: () =>
+                    {
+                        Notify(FlashNotificationType.Success, "Warden has been updated.");
+                        return RedirectToAction("Details", new {organizationId, wardenId});
+                    },
+                    onFailure: ex =>
+                    {
+                        Notify(FlashNotificationType.Error, ex.Message);
+                        return RedirectToAction("Edit", new {organizationId, wardenId});
+                    });
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("{wardenId}/delete")]
+        public async Task<IActionResult> Delete(Guid organizationId, Guid wardenId)
+        {
+            return await _organizationService.DeleteWardenAsync(organizationId, wardenId)
+                .Execute(
+                    onSuccess: () =>
+                    {
+                        Notify(FlashNotificationType.Info, "Warden has been removed.");
+                        return RedirectToAction("Details", "Organization", new {id = organizationId});
+                    },
+                    onFailure: ex =>
+                    {
+                        Notify(FlashNotificationType.Error, ex.Message);
+                        return RedirectToAction("Details", new {organizationId, wardenId});
+                    });
         }
 
         private async Task<WardenDto> GetWardenForUserAsync(Guid organizationId, Guid wardenId)

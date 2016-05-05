@@ -19,6 +19,7 @@ namespace Warden.Web.Core.Services
         Task<PagedResult<WardenIterationDto>> BrowseIterationsAsync(BrowseWardenIterations query);
         Task<WardenIterationDto> GetIterationAsync(Guid id);
         Task<WardenStatsDto> GetStatsAsync(GetWardenStats query);
+        Task EditAsync(Guid organizationId, Guid wardenId, string name);
     }
 
     public class WardenService : IWardenService
@@ -150,6 +151,20 @@ namespace Warden.Web.Core.Services
             var iteration = await _database.WardenIterations().GetByIdAsync(id);
 
             return iteration == null ? null : new WardenIterationDto(iteration);
+        }
+
+        public async Task EditAsync(Guid organizationId, Guid wardenId, string name)
+        {
+            var organization = await _database.Organizations().GetByIdAsync(organizationId);
+            if (organization == null)
+                throw new ServiceException($"Organization has not been found for given id: '{organizationId}'.");
+
+            var warden = organization.Wardens.FirstOrDefault(x => x.Id == wardenId);
+            if (warden == null)
+                throw new ServiceException($"Warden has not been found for given id: '{wardenId}'.");
+
+            organization.EditWarden(warden.Name, name);
+            await _database.Organizations().ReplaceOneAsync(x => x.Id == organizationId, organization);
         }
 
         public async Task<WardenStatsDto> GetStatsAsync(GetWardenStats query)

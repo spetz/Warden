@@ -98,6 +98,17 @@ namespace Warden.Web.Core.Domain
             UpdatedAt = DateTime.UtcNow;
         }
 
+        public void EditWarden(string name, string newName)
+        {
+            var warden = GetWardenByNameOrFail(name);
+            var existingWarden = GetWardenByName(newName);
+            if(existingWarden != null && existingWarden.Id != warden.Id)
+                throw new DomainException($"Warden with name: '{newName}' already exists.");
+
+            warden.SetName(newName);
+            UpdatedAt = DateTime.UtcNow;
+        }
+
         public void RemoveWarden(string name)
         {
             if (name.Empty())

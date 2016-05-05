@@ -33,13 +33,13 @@
     </div>
     @if (isOwner)
     {
-        <div class="col s12 m1 right">
+        <div class="col s2 m1 right">
             <a class="btn-floating waves-effect waves-light red lighten-1 modal-trigger tooltipped"
                href="#modal-delete-organization" data-tooltip="Remove organization">
                 <i class="material-icons dp48 right">delete</i>
             </a>
         </div>
-        <div class="col s12 m1 right">
+        <div class="col s2 m1 right">
             @if (Model.AutoRegisterNewWarden)
             {
                 <form asp-controller="Organization" asp-action="DisableAutoRegisterNewWarden" asp-anti-forgery="true" method="POST" data-block>
@@ -53,7 +53,7 @@
                 </form>
             }
         </div>
-        <div class="col s12 m1 right">
+        <div class="col s2 m1 right">
             <a class="btn-floating waves-effect waves-light custom tooltipped"
                href="@Url.Action("Edit", new {id = Model.Id})" data-tooltip="Edit organization">
                 <i class="material-icons dp48 right">mode_edit</i>
@@ -92,32 +92,16 @@
     <div class="col s12">
         <h5 class="custom-text">Wardens (@Model.Wardens.Count())</h5>
         <a href="@Url.Action("AddWarden", new {id = Model.Id})" class="btn waves-effect waves-light custom">New Warden</a>
-        <ul class="collection">
+        <div class="collection">
             @foreach (var warden in Model.Wardens)
             {
-                <li class="collection-item custom-text">
-                    <div class="row">
-                        <div class="col s12 m11 l11">
-                            <a href="@Url.Action("Details", "Warden", new {organizationId = Model.Id, wardenId = warden.Id})" class="collection-item">
-                                <span class="custom-text">@warden.Name</span>
-                            </a>
-                        </div>
-                        <div class="col s12 m1 l1">
-                            @if (isOwner)
-                            {
-                                <a class="btn-floating waves-effect waves-light red lighten-1 modal-trigger tooltipped" data-warden-id="@warden.Id"
-                                   href="#modal-delete-warden" data-remove-warden-from-organization data-tooltip="Remove Warden from organization">
-                                    <i class="material-icons dp48">delete</i>
-                                </a>
-                            }
-                        </div>
-                    </div>
-                </li>
+                <a href="@Url.Action("Details", "Warden", new {organizationId = Model.Id, wardenId = warden.Id})" class="collection-item ">
+                    <span class="custom-text">@warden.Name</span>
+                </a>
             }
-        </ul>
+        </div>
     </div>
 </div>
 @Html.Partial("_DeleteOrganizationModal", Model.Id)
 @Html.Partial("_DeleteUserModal", Model.Id)
-@Html.Partial("_DeleteWardenModal", Model.Id)
 
