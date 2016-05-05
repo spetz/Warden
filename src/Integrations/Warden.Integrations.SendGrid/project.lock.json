@@ -52,7 +52,7 @@
           "lib/net40/SendGrid.SmtpApi.dll": {}
         }
       },
-      "Warden/1.0.0-alpha4": {
+      "Warden/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       }
@@ -107,7 +107,7 @@
           "lib/net40/SendGrid.SmtpApi.dll": {}
         }
       },
-      "Warden/1.0.0-alpha4": {
+      "Warden/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       }
@@ -162,14 +162,14 @@
           "lib/net40/SendGrid.SmtpApi.dll": {}
         }
       },
-      "Warden/1.0.0-alpha4": {
+      "Warden/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       }
     }
   },
   "libraries": {
-    "Warden/1.0.0-alpha4": {
+    "Warden/1.0.0": {
       "type": "project",
       "path": "../../Warden/project.json"
     },
@@ -234,7 +234,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "Warden >= 1.0.0-*",
+      "Warden >= 1.0.0",
       "Sendgrid >= 6.3.4"
     ],
     ".NETFramework,Version=v4.5.1": []

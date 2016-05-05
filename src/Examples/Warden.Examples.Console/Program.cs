@@ -79,8 +79,8 @@ namespace Warden.Examples.Console
                 //})
                 //Set proper URL of the Warden Web API
                 .IntegrateWithHttpApi("http://localhost:11223/api",
-                "4vusyWv7rF1TYvMIpE8l8xsxUDizhcSr/cQiYnYhXSbY0fjJgsnjRGBWKo80qHP2NHMo8klko3wKLA==",
-                "597ad777-99ab-455f-a16e-3b8dd0cc32ad")
+                "1pi0Tp9/n2wdLSRsUBAKXwHGPXoFU/58wV8Dc+vIL+k2/fWF14VXPiuK",
+                "0b8351f1-dc93-4137-90b9-e3a7d7e12054")
                 .SetGlobalWatcherHooks(hooks =>
                 {
                     hooks.OnStart(check => GlobalHookOnStart(check))

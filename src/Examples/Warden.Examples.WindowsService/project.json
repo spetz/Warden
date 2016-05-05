@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-*",
+  "version": "1.0.0",
   "description": "Example of Warden Windows Service.",
   "authors": [ "Piotr Gankiewicz" ],
   "tags": [ "Warden" ],
@@ -8,15 +8,15 @@
   "dependencies": {
     "System.Linq": "4.0.1-beta-23516",
     "TopShelf": "3.3.1",
-    "Warden": "1.0.0-*",
-    "Warden.Integrations.HttpApi": "1.0.0-alpha4",
-    "Warden.Integrations.SendGrid": "1.0.0-*",
-    "Warden.Watchers.Disk": "1.0.0-*",
-    "Warden.Watchers.MongoDb": "1.0.0-*",
-    "Warden.Watchers.MsSql": "1.0.0-*",
-    "Warden.Watchers.Performance": "1.0.0-*",
-    "Warden.Watchers.Redis": "1.0.0-*",
-    "Warden.Watchers.Web": "1.0.0-*"
+    "Warden": "1.0.0",
+    "Warden.Integrations.HttpApi": "1.0.0",
+    "Warden.Integrations.SendGrid": "1.0.0",
+    "Warden.Watchers.Disk": "1.0.0",
+    "Warden.Watchers.MongoDb": "1.0.0",
+    "Warden.Watchers.MsSql": "1.0.0",
+    "Warden.Watchers.Performance": "1.0.0",
+    "Warden.Watchers.Redis": "1.0.0",
+    "Warden.Watchers.Web": "1.0.0"
   },
 
   "commands": {

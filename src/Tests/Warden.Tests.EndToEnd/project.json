@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-*",
+  "version": "1.0.0",
   "description": "Warden End-to-End tests.",
   "authors": [ "Piotr Gankiewicz" ],
   "tags": [ "Warden" ],
@@ -9,16 +9,16 @@
     "FluentAssertions": "4.3.2",
     "NUnitLite": "3.2.0",
     "Moq": "4.2.1510.2205",
-    "Warden": "1.0.0-*",
-    "Warden.Watchers.Disk": "1.0.0-*",
-    "Warden.Watchers.MongoDb": "1.0.0-*",
-    "Warden.Watchers.MsSql": "1.0.0-*",
-    "Warden.Watchers.Performance": "1.0.0-*",
-    "Warden.Watchers.Redis": "1.0.0-*",
-    "Warden.Watchers.Web": "1.0.0-*",
+    "Warden": "1.0.0",
+    "Warden.Watchers.Disk": "1.0.0",
+    "Warden.Watchers.MongoDb": "1.0.0",
+    "Warden.Watchers.MsSql": "1.0.0",
+    "Warden.Watchers.Performance": "1.0.0",
+    "Warden.Watchers.Redis": "1.0.0",
+    "Warden.Watchers.Web": "1.0.0",
     "System.Linq": "4.0.1-beta-23516",
     "System.Linq.Queryable": "4.0.1-beta-23516",
-    "Warden.Integrations.SendGrid": "1.0.0-*"
+    "Warden.Integrations.SendGrid": "1.0.0"
   },
 
   "commands": {

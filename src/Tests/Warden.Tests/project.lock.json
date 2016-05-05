@@ -200,11 +200,11 @@
           "lib/net45/_._": {}
         }
       },
-      "Warden/1.0.0-alpha4": {
+      "Warden/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       },
-      "Warden.Integrations.HttpApi/1.0.0-alpha4": {
+      "Warden.Integrations.HttpApi/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
@@ -213,7 +213,7 @@
           "Warden": "1.0.0"
         }
       },
-      "Warden.Integrations.SendGrid/1.0.0-alpha4": {
+      "Warden.Integrations.SendGrid/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
@@ -221,14 +221,14 @@
           "Warden": "1.0.0"
         }
       },
-      "Warden.Watchers.Disk/1.0.0-alpha4": {
+      "Warden.Watchers.Disk/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "Warden": "1.0.0"
         }
       },
-      "Warden.Watchers.MongoDb/1.0.0-alpha4": {
+      "Warden.Watchers.MongoDb/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
@@ -236,7 +236,7 @@
           "Warden": "1.0.0"
         }
       },
-      "Warden.Watchers.MsSql/1.0.0-alpha4": {
+      "Warden.Watchers.MsSql/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
@@ -244,14 +244,14 @@
           "Warden": "1.0.0"
         }
       },
-      "Warden.Watchers.Performance/1.0.0-alpha4": {
+      "Warden.Watchers.Performance/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "Warden": "1.0.0"
         }
       },
-      "Warden.Watchers.Redis/1.0.0-alpha4": {
+      "Warden.Watchers.Redis/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
@@ -259,7 +259,7 @@
           "Warden": "1.0.0"
         }
       },
-      "Warden.Watchers.Web/1.0.0-alpha4": {
+      "Warden.Watchers.Web/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
@@ -467,11 +467,11 @@
           "lib/net45/_._": {}
         }
       },
-      "Warden/1.0.0-alpha4": {
+      "Warden/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       },
-      "Warden.Integrations.HttpApi/1.0.0-alpha4": {
+      "Warden.Integrations.HttpApi/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
@@ -480,7 +480,7 @@
           "Warden": "1.0.0"
         }
       },
-      "Warden.Integrations.SendGrid/1.0.0-alpha4": {
+      "Warden.Integrations.SendGrid/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
@@ -488,14 +488,14 @@
           "Warden": "1.0.0"
         }
       },
-      "Warden.Watchers.Disk/1.0.0-alpha4": {
+      "Warden.Watchers.Disk/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "Warden": "1.0.0"
         }
       },
-      "Warden.Watchers.MongoDb/1.0.0-alpha4": {
+      "Warden.Watchers.MongoDb/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
@@ -503,7 +503,7 @@
           "Warden": "1.0.0"
         }
       },
-      "Warden.Watchers.MsSql/1.0.0-alpha4": {
+      "Warden.Watchers.MsSql/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
@@ -511,14 +511,14 @@
           "Warden": "1.0.0"
         }
       },
-      "Warden.Watchers.Performance/1.0.0-alpha4": {
+      "Warden.Watchers.Performance/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "Warden": "1.0.0"
         }
       },
-      "Warden.Watchers.Redis/1.0.0-alpha4": {
+      "Warden.Watchers.Redis/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
@@ -526,7 +526,7 @@
           "Warden": "1.0.0"
         }
       },
-      "Warden.Watchers.Web/1.0.0-alpha4": {
+      "Warden.Watchers.Web/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
@@ -734,11 +734,11 @@
           "lib/net45/_._": {}
         }
       },
-      "Warden/1.0.0-alpha4": {
+      "Warden/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       },
-      "Warden.Integrations.HttpApi/1.0.0-alpha4": {
+      "Warden.Integrations.HttpApi/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
@@ -747,7 +747,7 @@
           "Warden": "1.0.0"
         }
       },
-      "Warden.Integrations.SendGrid/1.0.0-alpha4": {
+      "Warden.Integrations.SendGrid/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
@@ -755,14 +755,14 @@
           "Warden": "1.0.0"
         }
       },
-      "Warden.Watchers.Disk/1.0.0-alpha4": {
+      "Warden.Watchers.Disk/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "Warden": "1.0.0"
         }
       },
-      "Warden.Watchers.MongoDb/1.0.0-alpha4": {
+      "Warden.Watchers.MongoDb/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
@@ -770,7 +770,7 @@
           "Warden": "1.0.0"
         }
       },
-      "Warden.Watchers.MsSql/1.0.0-alpha4": {
+      "Warden.Watchers.MsSql/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
@@ -778,14 +778,14 @@
           "Warden": "1.0.0"
         }
       },
-      "Warden.Watchers.Performance/1.0.0-alpha4": {
+      "Warden.Watchers.Performance/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "Warden": "1.0.0"
         }
       },
-      "Warden.Watchers.Redis/1.0.0-alpha4": {
+      "Warden.Watchers.Redis/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
@@ -793,7 +793,7 @@
           "Warden": "1.0.0"
         }
       },
-      "Warden.Watchers.Web/1.0.0-alpha4": {
+      "Warden.Watchers.Web/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
@@ -805,39 +805,39 @@
     }
   },
   "libraries": {
-    "Warden/1.0.0-alpha4": {
+    "Warden/1.0.0": {
       "type": "project",
       "path": "../../Warden/project.json"
     },
-    "Warden.Integrations.HttpApi/1.0.0-alpha4": {
+    "Warden.Integrations.HttpApi/1.0.0": {
       "type": "project",
       "path": "../../Integrations/Warden.Integrations.HttpApi/project.json"
     },
-    "Warden.Integrations.SendGrid/1.0.0-alpha4": {
+    "Warden.Integrations.SendGrid/1.0.0": {
       "type": "project",
       "path": "../../Integrations/Warden.Integrations.SendGrid/project.json"
     },
-    "Warden.Watchers.Disk/1.0.0-alpha4": {
+    "Warden.Watchers.Disk/1.0.0": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Disk/project.json"
     },
-    "Warden.Watchers.MongoDb/1.0.0-alpha4": {
+    "Warden.Watchers.MongoDb/1.0.0": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.MongoDb/project.json"
     },
-    "Warden.Watchers.MsSql/1.0.0-alpha4": {
+    "Warden.Watchers.MsSql/1.0.0": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.MsSql/project.json"
     },
-    "Warden.Watchers.Performance/1.0.0-alpha4": {
+    "Warden.Watchers.Performance/1.0.0": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Performance/project.json"
     },
-    "Warden.Watchers.Redis/1.0.0-alpha4": {
+    "Warden.Watchers.Redis/1.0.0": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Redis/project.json"
     },
-    "Warden.Watchers.Web/1.0.0-alpha4": {
+    "Warden.Watchers.Web/1.0.0": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Web/project.json"
     },
@@ -1295,18 +1295,18 @@
       "FluentAssertions >= 4.3.2",
       "NUnitLite >= 3.2.0",
       "Moq >= 4.2.1510.2205",
-      "Warden >= 1.0.0-*",
-      "Warden.Watchers.Disk >= 1.0.0-*",
-      "Warden.Watchers.MongoDb >= 1.0.0-*",
-      "Warden.Watchers.MsSql >= 1.0.0-*",
-      "Warden.Watchers.Performance >= 1.0.0-*",
-      "Warden.Watchers.Redis >= 1.0.0-*",
-      "Warden.Watchers.Web >= 1.0.0-*",
+      "Warden >= 1.0.0",
+      "Warden.Watchers.Disk >= 1.0.0",
+      "Warden.Watchers.MongoDb >= 1.0.0",
+      "Warden.Watchers.MsSql >= 1.0.0",
+      "Warden.Watchers.Performance >= 1.0.0",
+      "Warden.Watchers.Redis >= 1.0.0",
+      "Warden.Watchers.Web >= 1.0.0",
       "System.Linq >= 4.0.1-beta-23516",
       "System.Linq.Queryable >= 4.0.1-beta-23516",
-      "Warden.Integrations.SendGrid >= 1.0.0-*",
+      "Warden.Integrations.SendGrid >= 1.0.0",
       "Microsoft.CSharp >= 4.0.0",
-      "Warden.Integrations.HttpApi >= 1.0.0-alpha4"
+      "Warden.Integrations.HttpApi >= 1.0.0"
     ],
     "DNX,Version=v4.5.1": []
   }
