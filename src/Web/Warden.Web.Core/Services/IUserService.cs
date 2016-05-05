@@ -14,6 +14,7 @@ namespace Warden.Web.Core.Services
     {
         Task<UserDto> GetAsync(string email);
         Task<UserDto> GetAsync(Guid id);
+        Task<bool> IsActiveAsync(Guid id);
         Task RegisterAsync(string email, string password, Role role = Role.User);
 
         Task LoginAsync(string email, string password, string ipAddress,
@@ -48,6 +49,8 @@ namespace Warden.Web.Core.Services
 
             return await GetUserWithApiKeysAsync(user);
         }
+
+        public async Task<bool> IsActiveAsync(Guid id) => await _database.Users().IsActiveAsync(id);
 
         private async Task<UserDto> GetUserWithApiKeysAsync(User user)
         {

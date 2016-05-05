@@ -10,12 +10,14 @@ namespace Warden.Web.Api
 {
     public abstract class ApiController : Controller
     {
-        private readonly IApiKeyService _apiKeyService;
+        protected readonly IApiKeyService ApiKeyService;
+        protected readonly IUserService UserService;
         protected Guid UserId { get; private set;  }
 
-        protected ApiController(IApiKeyService apiKeyService)
+        protected ApiController(IApiKeyService apiKeyService, IUserService userService)
         {
-            _apiKeyService = apiKeyService;
+            ApiKeyService = apiKeyService;
+            UserService = userService;
         }
 
         //Improve performance e.g. by storing API keys in cache
@@ -27,12 +29,19 @@ namespace Warden.Web.Api
                 context.HttpContext.Response.StatusCode = 401;
                 return;
             }
-            var apiKey = await _apiKeyService.GetAsync(apiKeyHeader.Value);
+            var apiKey = await ApiKeyService.GetAsync(apiKeyHeader.Value);
             if (apiKey == null)
             {
                 context.HttpContext.Response.StatusCode = 401;
                 return;
             }
+            var isActive = await UserService.IsActiveAsync(apiKey.UserId);
+            if (!isActive)
+            {
+                context.HttpContext.Response.StatusCode = 401;
+                return;
+            }
+
             UserId = apiKey.UserId;
             await next();
         }

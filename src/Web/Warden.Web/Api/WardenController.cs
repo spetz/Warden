@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.AspNet.Mvc;
@@ -14,19 +13,16 @@ namespace Warden.Web.Api
     {
         private readonly IWardenService _wardenService;
         private readonly IOrganizationService _organizationService;
-        private readonly ISignalRService _signalRService;
 
         public WardenController(IWardenService wardenService, 
             IOrganizationService organizationService,
             IApiKeyService apiKeyService,
-            ISignalRService signalRService)
-            : base(apiKeyService)
+            IUserService userService)
+            : base(apiKeyService, userService)
         {
             _wardenService = wardenService;
             _organizationService = organizationService;
-            _signalRService = signalRService;
         }
-
 
         [HttpGet]
         [Route("{wardenName}/stats")]

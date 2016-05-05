@@ -19,8 +19,9 @@ namespace Warden.Web.Api
         public WardenIterationController(IWardenService wardenService, 
             IOrganizationService organizationService,
             IApiKeyService apiKeyService,
+            IUserService userService,
             ISignalRService signalRService)
-            : base(apiKeyService)
+            : base(apiKeyService, userService)
         {
             _wardenService = wardenService;
             _organizationService = organizationService;

@@ -12,8 +12,10 @@ namespace Warden.Web.Api
     {
         private readonly IOrganizationService _organizationService;
 
-        public OrganizationController(IOrganizationService organizationService, IApiKeyService apiKeyService)
-            : base(apiKeyService)
+        public OrganizationController(IOrganizationService organizationService,
+            IApiKeyService apiKeyService,
+            IUserService userService)
+            : base(apiKeyService, userService)
         {
             _organizationService = organizationService;
         }
