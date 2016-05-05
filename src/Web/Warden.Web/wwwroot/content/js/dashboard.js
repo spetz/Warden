@@ -162,6 +162,7 @@
         getIterations()
             .then(function(iterations) {
                 if (iterations.length === 0) {
+                    displayDashboard();
                     renderEmptyMainChart();
                     renderEmptyWatchersChart();
 

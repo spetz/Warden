@@ -67,10 +67,10 @@
         </div>
         <div class="col s12 m9">
             <canvas class="card-panel" id="main-chart"></canvas>
-            <a href="@Url.Action("Details", "Organization", new {id = Model.OrganizationId})" target="_blank" class="collection-item">
+            <a href="@Url.Action("Details", "Organization", new {id = Model.OrganizationId})" target="_blank" class="collection-item tooltipped" data-tooltip="Open organization details">
                 <strong><span class="custom-text">@Model.OrganizationName</span></strong>
             </a>
-            <a href="@Url.Action("Details", "Warden", new {organizationId = Model.OrganizationId, wardenId = Model.WardenId})" target="_blank" class="collection-item right">
+            <a href="@Url.Action("Details", "Warden", new {organizationId = Model.OrganizationId, wardenId = Model.WardenId})" target="_blank" class="collection-item tooltipped right" data-tooltip="Open Warden details">
                 <strong><span class="custom-text">@Model.WardenName</span></strong>
             </a>
         </div>

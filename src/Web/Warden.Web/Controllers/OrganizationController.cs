@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using Warden.Web.Core.Domain;
@@ -47,7 +48,12 @@ namespace Warden.Web.Controllers
             if (organization == null)
                 return HttpNotFound();
 
-            return View(organization);
+            var viewModel = new OrganizationViewModel
+            {
+                Organization = organization
+            };
+
+            return View(viewModel);
         }
 
         [HttpGet]
@@ -128,6 +134,9 @@ namespace Warden.Web.Controllers
         [ImportModelStateFromTempData]
         public async Task<IActionResult> AddUser(Guid id)
         {
+            if (!await IsOrganizationOwnerAsync(id))
+                return new HttpUnauthorizedResult();
+
             var organization = await GetOrganizationForUserAsync(id);
             if (organization == null)
                 return HttpBadRequest($"Invalid organization id: '{id}'.");
@@ -141,6 +150,9 @@ namespace Warden.Web.Controllers
         [Route("{id}/users")]
         public async Task<IActionResult> AddUser(Guid id, AddUserToOrganizationViewModel viewModel)
         {
+            if (!await IsOrganizationOwnerAsync(id))
+                return new HttpUnauthorizedResult();
+
             if (!ModelState.IsValid)
                 return RedirectToAction("AddUser");
 
@@ -243,6 +255,28 @@ namespace Warden.Web.Controllers
                         Notify(FlashNotificationType.Error, ex.Message);
                         return RedirectToAction("Details", new {id});
                     });
+        }
+
+        [HttpGet]
+        [Route("{id}/users/{userId}")]
+        public async Task<IActionResult> UserDetails(Guid id, Guid userId)
+        {
+            var organization = await GetOrganizationForUserAsync(id);
+            if (organization == null)
+                return HttpBadRequest($"Invalid organization id: '{id}'.");
+
+            var user = organization.Users.FirstOrDefault(x => x.Id == userId);
+            if (user == null)
+                return HttpNotFound();
+
+            var viewModel = new UserInOrganizationViewModel
+            {
+                OrganizationId = organization.Id,
+                OwnerId = organization.OwnerId,
+                User = user
+            };
+
+            return View(viewModel);
         }
 
         [HttpPost]

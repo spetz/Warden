@@ -12,6 +12,7 @@
         initBlockableElements();
         initCheckboxes();
         initModalsAndRemoveClickHandlers();
+        initCopyToClipboard();
         $('.tooltipped').tooltip({ delay: 50 });
         $(".button-collapse").sideNav();
     };
@@ -53,6 +54,17 @@
             .click(function() {
                 $(this).val($(this).is(":checked"));
             });
+    };
+
+    function initCopyToClipboard() {
+        $("[data-clipboard]")
+            .click(function() {
+                copyToClipboard($(this).data("clipboard"));
+            });
+
+        function copyToClipboard(text) {
+            window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
+        };
     };
 
     function initModalsAndRemoveClickHandlers() {

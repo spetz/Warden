@@ -6,44 +6,54 @@
         <h4 class="custom-text">Settings</h4>
     </div>
     <div class="col s12">
-        <div>
-            <label>Email</label>
-            <ul class="collection">
-                <li class="collection-item">@Model.Email</li>
-            </ul>
-        </div>
-        <div>
-            <label>User id</label>
-            <ul class="collection">
-                <li class="collection-item">@Model.Id</li>
-            </ul>
-        </div>
-        <div>
-            <label>Role</label>
-            <ul class="collection">
-                <li class="collection-item">@Model.Role</li>
-            </ul>
-        </div>
+        <label>Email</label>
+        <ul class="collection">
+            <li class="collection-item">@Model.Email</li>
+        </ul>
     </div>
-    <div class="section">
+    <div class="col s12">
+        <label>User id</label>
+        <ul class="collection">
+            <li class="collection-item">@Model.Id</li>
+        </ul>
+    </div>
+    <div class="col s12">
+        <label>Role</label>
+        <ul class="collection">
+            <li class="collection-item">@Model.Role</li>
+        </ul>
+    </div>
+    <div class="col s12 m5 l3">
         <a href="@Url.Action("Password")" class="btn waves-effect custom">Change password</a>
+    </div>
+    <div class="col s12 m4 l2">
+        <form asp-controller="Settings" asp-action="CreateApiKey" asp-anti-forgery="true" method="POST">
+            <button class="btn waves-effect waves-light custom" type="submit" name="action">New API key</button>
+        </form>
+    </div>
+    <div class="col s12 m3 l2 right">
+        <form asp-controller="Account" asp-action="Logout" asp-anti-forgery="true" method="POST" data-block>
+            <button class="btn waves-effect waves-light custom" type="submit">Sign out</button>
+        </form>
     </div>
 </div>
 <div class="row card-panel">
     <div class="col s12">
         <h5 class="custom-text">API keys (@Model.ApiKeys.Count())</h5>
-        <form asp-controller="Settings" asp-action="CreateApiKey" asp-anti-forgery="true" method="POST">
-            <button class="btn waves-effect waves-light custom" type="submit" name="action">New API key</button>
-        </form>
         <ul class="collection">
             @foreach (var apiKey in Model.ApiKeys)
             {
                 <li class="collection-item custom-text">
                     <div class="row">
-                        <div class="col s12 m11 l11">
-                            @apiKey
+                        <div class="col s12 m10">
+                            <span>@apiKey</span>
                         </div>
-                        <div class="col s12 m1 l1">
+                        <div class="col s12 m1">
+                            <button class="btn-floating waves-effect waves-light custom tooltipped" data-clipboard="@apiKey" data-tooltip="Copy to clipboard">
+                                <i class="material-icons dp48">note_add</i>
+                            </button>
+                        </div>
+                        <div class="col s12 m1">
                             <a class="btn-floating waves-effect waves-light red lighten-1 modal-trigger tooltipped" data-api-key="@apiKey"
                                href="#modal-delete" data-remove-api-key data-tooltip="Remove API key">
                                 <i class="material-icons dp48">delete</i>
@@ -53,11 +63,6 @@
                 </li>
             }
         </ul>
-    </div>
-    <div class="section">
-        <form asp-controller="Account" asp-action="Logout" asp-anti-forgery="true" method="POST" data-block>
-            <button class="btn waves-effect waves-light custom" type="submit">Sign out</button>
-        </form>
     </div>
 </div>
 @Html.Partial("_DeletApiKeyModal")

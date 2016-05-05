@@ -39,13 +39,16 @@ namespace Warden.Web.Controllers
             if (organization == null)
                 return RedirectToAction("Unavailable");
 
-            return organization.Wardens.Any(x => x.Id == user.RecentlyViewedWardenId)
-                ? RedirectToAction("Details", new
-                {
-                    organizationId = user.RecentlyViewedOrganizationId,
-                    wardenId = user.RecentlyViewedWardenId
-                })
-                : RedirectToAction("Unavailable");
+            if(!organization.Wardens.Any())
+                return RedirectToAction("Unavailable");
+
+            var wardenId = organization.Wardens.FirstOrDefault(x => x.Id == user.RecentlyViewedWardenId)?.Id ??
+                           organization.Wardens.First().Id;
+
+            return RedirectToAction("Details", new
+            {
+                organizationId = user.RecentlyViewedOrganizationId, wardenId
+            });
         }
 
         [HttpGet]
