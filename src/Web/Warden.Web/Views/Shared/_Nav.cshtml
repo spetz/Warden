@@ -3,9 +3,11 @@
 <nav>
     <div class="nav-wrapper">
         <div class="col s12">
-            <a href="@Url.Action("Index", "Home")" class="brand-logo">Warden</a>
+            <a id="logo-nav" href="@Url.Action("Index", "Home")">
+                <img id="logo-image-white" src="@Url.Content("~/content/img/logo.png")">
+            </a>
             <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
-            <ul class="right hide-on-med-and-down">
+            <ul class="right hide-on-small-and-down">
                 @if (User.Identity.IsAuthenticated)
                 {
                     <li><a href="@Url.Action("Default", "Dashboard")">Dashboard</a></li>
