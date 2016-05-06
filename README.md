@@ -1,17 +1,18 @@
+![Warden](http://spetz.github.io/img/warden_logo.png)
 
-# **[Warden](http://spetz.github.io/warden/)**
+####**OPEN SOURCE & CROSS-PLATFORM TOOL FOR SIMPLIFIED MONITORING**
+####**[getwarden.net](http://getwarden.net)**
 
 [![Build status](https://ci.appveyor.com/api/projects/status/47l3ldatuj526tf5/branch/master?svg=true)](https://ci.appveyor.com/project/spetz/Warden/branch/master)
 
 > Define "health checks" for your applications, resources and
 > infrastructure. Keep your **Warden** on the watch.
 
-**Please note that it's just a preview version of the library (work in progress).**
 
 **What is Warden?**
 ----------------
 
-**Warden** is a simple, **cross-platform** (yet to be) library, built to **solve the problem of monitoring the resources** such as the websites, API, databases, CPU etc. 
+**Warden** is a simple, **cross-platform** library, built to **solve the problem of monitoring the resources** such as the websites, API, databases, CPU etc. 
 
 It allows to quickly define the **[watchers](https://github.com/spetz/Warden/wiki/watcher)** responsible for performing checks on specific resources and **[integrations](https://github.com/spetz/Warden/wiki/integration)** to easily notify about any issues related to the possible downtime of your system. 
 
@@ -27,13 +28,17 @@ On top of that, you may use all of this information to collect the custom metric
  - **[Redis](https://github.com/spetz/Warden/wiki/Watcher-type-Redis)**
  - **[Web](https://github.com/spetz/Warden/wiki/Watcher-type-Web)**
 
-More watchers are coming soon.
 
 **What are the integrations with external services?**
 ----------------
  - **[SendGrid](https://github.com/spetz/Warden/wiki/Integration-with-SendGrid)**
+ - **[HTTP API](https://github.com/spetz/Warden/wiki/Integration-with-HTTP-API)**
 
-More integrations are coming soon.
+
+**How can I see what's happening with my system?**
+----------------
+
+You can make use of the **[Web Panel](https://github.com/spetz/Warden/wiki/Web-Panel)** which provides the UI for organizing your monitoring workspace, dashboard with real-time statistics and the storage of the historical data. If you don't want to host it on your own, there's an online version available, running in the Azure cloud at **[panel.getwarden.net](http://panel.getwarden.net)** 
 
 **Is there any documentation?**
 ----------------
@@ -45,7 +50,7 @@ Yes, please navigate to the **[wiki](https://github.com/spetz/Warden/wiki)** pag
 
 Available as a **[NuGet package](https://www.nuget.org/packages/Warden/)**. 
 ```
-Install-Package Warden -Pre
+Install-Package Warden
 ```
 
 **Watchers** and **integrations** are available as a separate _NuGet packages_ listed **[here](https://www.nuget.org/profiles/Spetz)**.
@@ -62,8 +67,9 @@ Install-Package Warden -Pre
 | **[Performance Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Performance)**  |        +      |        -     | _PerformanceCounter not compatible_
 | **[Redis Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Redis)**        |        +      |        -     | _StackExchange.Redis not compatible_
 | **[Web Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Web)**          |        +      |        +     |
+| **[HTTP API Integration](https://github.com/spetz/Warden/wiki/Integration-with-HTTP-API)** |        +      |        +     | 
 | **[SendGrid Integration](https://github.com/spetz/Warden/wiki/Integration-with-SendGrid)** |        +      |        -     | _SendGrid not compatible_
-
+| **[Web Panel](https://github.com/spetz/Warden/wiki/Web-Panel)** |        +      |        -     | _Some external libs are not compatible (e.g. MongoDB Driver)_
 
 **Quick start**:
 ----------------
