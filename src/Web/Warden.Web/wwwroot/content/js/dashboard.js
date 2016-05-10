@@ -24,10 +24,26 @@
     function ViewModel() {
         var self = this;
         var currentWardenCheckResults = [];
-        var mainChartContext = $("#main-chart")[0].getContext("2d");
+        var iterationsChartContext = $("#iterations-chart")[0].getContext("2d");
         var watchersChartContext = $("#watchers-chart")[0].getContext("2d");
-        var mainChart = null;
+        var iterationsChart = null;
         var watchersChart = null;
+        self.shouldUpdateIterationsChart = ko.observable(true);
+        self.shouldUpdateWatchersChart = ko.observable(true);
+        self.toggleUpdateIterationsChart = function() {
+            var actualValue = self.shouldUpdateIterationsChart();
+            var message = "Iterations chart updates have been ";
+            message += actualValue ? "paused." : "resumed.";
+            Materialize.toast(message, 3000, "blue lighten-1");
+            self.shouldUpdateIterationsChart(!actualValue);
+        };
+        self.toggleUpdateWatchersChart = function () {
+            var actualValue = self.shouldUpdateWatchersChart();
+            var message = "Watchers chart updates have been ";
+            message += actualValue ? "paused." : "resumed.";
+            Materialize.toast(message, 3000, "blue lighten-1");
+            self.shouldUpdateWatchersChart(!actualValue);
+        };
 
         self.organizations = ko.observableArray([createEmptyOrganization()]);
         self.selectedOrganization = ko.observable();
@@ -163,7 +179,7 @@
             .then(function(iterations) {
                 if (iterations.length === 0) {
                     displayDashboard();
-                    renderEmptyMainChart();
+                    renderEmptyIterationsChart();
                     renderEmptyWatchersChart();
 
                     return;
@@ -172,14 +188,16 @@
                 var latestIteration = iterations[0];
                 self.iterations(iterations);
                 displayDashboard();
-                renderMainChart();
+                renderIterationsChart();
                 renderWatchersChart(latestIteration);
                 self.setIterationDetails(latestIteration);
             });
 
         function updateCharts(iteration) {
-            var removeFirstIteration = self.iterations().length >= 10;
-            addNewIterationToMainChart(iteration, removeFirstIteration);
+            if (self.shouldUpdateIterationsChart()) {
+                var removeFirstIteration = self.iterations().length >= 10;
+                addNewIterationToiterationsChart(iteration, removeFirstIteration);
+            };
             renderWatchersChart(iteration);
         };
 
@@ -188,7 +206,7 @@
             $("#dashboard").removeClass("hide");
         };
 
-        function renderEmptyMainChart() {
+        function renderEmptyIterationsChart() {
             var data = {
                 labels: [],
                 datasets: [
@@ -208,22 +226,22 @@
             var options = {
                 responsive: true
             };
-            mainChart = new Chart(mainChartContext).Line(data, options);
+            iterationsChart = new Chart(iterationsChartContext).Line(data, options);
         };
 
-        function addNewIterationToMainChart(iteration, removeFirstIteration) {
+        function addNewIterationToiterationsChart(iteration, removeFirstIteration) {
             var validResults = iteration.results.filter(function(result) {
                 return result.isValid;
             });
             var point = validResults.length;
             var label = iteration.completedAt;
             if (removeFirstIteration) {
-                mainChart.removeData();
+                iterationsChart.removeData();
             }
-            mainChart.addData([point], label);
+            iterationsChart.addData([point], label);
         };
 
-        function renderMainChart() {
+        function renderIterationsChart() {
             var labels = [];
             var points = [];
             self.iterations()
@@ -259,11 +277,11 @@
                 ]
             };
 
-            mainChart = new Chart(mainChartContext).Line(data, options);
+            iterationsChart = new Chart(iterationsChartContext).Line(data, options);
 
-            $("#main-chart")
+            $("#iterations-chart")
                 .click(function(evt) {
-                    var point = mainChart.getPointsAtEvent(evt)[0];
+                    var point = iterationsChart.getPointsAtEvent(evt)[0];
                     var completedAt = point.label;
                     var iteration = self.iterations()
                         .filter(function(iteration) {
@@ -295,6 +313,10 @@
         };
 
         function renderWatchersChart(iteration) {
+            if (!self.shouldUpdateWatchersChart()) {
+                return;
+            }
+
             var invalidResults = iteration.results.filter(function(result) {
                 return !result.isValid;
             });

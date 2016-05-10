@@ -66,13 +66,17 @@
             </div>
         </div>
         <div class="col s12 m9">
-            <canvas class="card-panel" id="main-chart"></canvas>
+            <canvas class="card-panel" id="iterations-chart"></canvas>
             <a href="@Url.Action("Details", "Organization", new {id = Model.OrganizationId})" target="_blank" class="collection-item tooltipped" data-tooltip="Open organization details">
                 <strong><span class="custom-text">@Model.OrganizationName</span></strong>
             </a>
             <a href="@Url.Action("Details", "Warden", new {organizationId = Model.OrganizationId, wardenId = Model.WardenId})" target="_blank" class="collection-item tooltipped right" data-tooltip="Open Warden details">
                 <strong><span class="custom-text">@Model.WardenName</span></strong>
             </a>
+            <div class="section">
+                <button class="btn waves-effect waves-light custom tooltipped" data-bind="visible: shouldUpdateIterationsChart, click: toggleUpdateIterationsChart" data-tooltip="Pause iterations chart updates"><i class="material-icons">pause</i></button>
+                <button class="btn waves-effect waves-light custom tooltipped" data-bind="visible: !shouldUpdateIterationsChart(), click: toggleUpdateIterationsChart" data-tooltip="Resume iterations chart updates"><i class="material-icons">play_arrow</i></button>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -81,7 +85,7 @@
                 <div>
                     <label>Watcher name</label>
                     <div class="collection">
-                        <a data-bind="attr: { href: selectedWardenCheckResult().url }" target="_blank" class="collection-item"><span data-bind="text: selectedWardenCheckResult().watcherName" class="custom-text"></span></a>
+                        <a data-bind="attr: { href: selectedWardenCheckResult().url }" target="_blank" class="collection-item tooltipped" data-tooltip="Open watcher details"><span data-bind="text: selectedWardenCheckResult().watcherName" class="custom-text"></span></a>
                     </div>
                 </div>
                 <div>
@@ -120,6 +124,10 @@
             <canvas class="card-panel" id="watchers-chart" width="300" height="400"></canvas>
             <strong class="custom-text" data-bind="text: totalResourcesFormatted">
             </strong>
+            <div class="section">
+                <button class="btn waves-effect waves-light custom tooltipped" data-bind="visible: shouldUpdateWatchersChart, click: toggleUpdateWatchersChart" data-tooltip="Pause watchers chart updates"><i class="material-icons">pause</i></button>
+                <button class="btn waves-effect waves-light custom tooltipped" data-bind="visible: !shouldUpdateWatchersChart(), click: toggleUpdateWatchersChart" data-tooltip="Resume watchers chart updates"><i class="material-icons">play_arrow</i></button>
+            </div>
         </div>
     </div>
 </div>
