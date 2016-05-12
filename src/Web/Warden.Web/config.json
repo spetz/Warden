@@ -8,6 +8,22 @@
         "id": "",
         "name": "account-created",
         "subject": "Account created"
+      },
+      {
+        "id": "",
+        "name": "password-changed",
+        "subject": "Password changed"
+      },
+      {
+        "id": "",
+        "name": "reset-password",
+        "subject": "Reset password",
+        "parameters": [
+          {
+            "name": "url",
+            "values": [ "http://localhost:11223/reset-password/complete" ]
+          }
+        ] 
       }
     ]
   },
