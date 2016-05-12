@@ -60,7 +60,11 @@ namespace Warden.Web.Core.Services
             if (urlParameter == null)
                 return;
 
-            var resetPasswordUrl = $"{urlParameter}?token={token}&email={receiver}";
+            var baseUrl = urlParameter.Values.FirstOrDefault();
+            if(baseUrl.Empty())
+                return;
+
+            var resetPasswordUrl = $"{baseUrl}?token={token}&email={receiver}";
             await SendTemplatedEmailAsync(ResetPasswordTemplateName, _emailSettings.NoReplyAccount, receiver,
                 new Dictionary<string, IEnumerable<string>>
                 {

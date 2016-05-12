@@ -1,0 +1,32 @@
+﻿@model Warden.Web.ViewModels.SetNewPasswordViewModel
+@addTagHelper "*, Microsoft.AspNet.Mvc.TagHelpers"
+
+<div class="row">
+    <div class="col s12 m8 l6 offset-m2 offset-l3">
+        <div class="row card-panel">
+            <h5 class="center-align custom-text">New password</h5>
+            <form asp-controller="ResetPassword" asp-action="SetNew" asp-anti-forgery="true" method="POST" data-block>
+                <div class="row">
+                    <input type="hidden" asp-for="Email" value="@Model.Email" />
+                    <input type="hidden"  asp-for="Token" value="@Model.Token"/>
+                    <div class="input-field col s12">
+                        <input type="password" class="validate" asp-for="Password" />
+                        <label asp-for="Password">Password</label>
+                        <span asp-validation-for="Password"></span>
+                    </div>
+                    <div class="input-field col s12">
+                        <input type="password" class="validate" asp-for="ConfirmPassword" />
+                        <label asp-for="ConfirmPassword">Confirm password</label>
+                        <span asp-validation-for="ConfirmPassword"></span>
+                    </div>
+                    <div class="divider"></div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <button class="btn waves-effect waves-light custom right" type="submit">Set password</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
