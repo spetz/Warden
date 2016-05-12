@@ -36,6 +36,9 @@ namespace Warden.Web.Core.Domain
             if (email.Empty())
                 throw new DomainException("Email can not be empty.");
 
+            if (email.IsEmail())
+                throw new DomainException($"Invalid email: '{email}.");
+
             if (Email.EqualsCaseInvariant(email))
                 return;
 

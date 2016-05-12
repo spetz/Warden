@@ -22,6 +22,11 @@ namespace Warden.Web.Core.Services
 
         Task SetRecentlyViewedWardenInOrganizationAsync(Guid userId, Guid organizationId, Guid wardenId);
         Task SetNewPasswordAsync(Guid userId, string actualPassword, string newPassword);
+        Task InitiatePasswordResetAsync(string email, string ipAddress = null, string userAgent = null);
+        Task ValidatePasswordResetTokenAsync(string email, string token);
+
+        Task CompletePasswordResetAsync(string email, string token, string password,
+            string ipAddress = null, string userAgent = null);
     }
 
     public class UserService : IUserService
@@ -129,6 +134,22 @@ namespace Warden.Web.Core.Services
             user.SetPassword(newPassword, _encrypter);
             await _database.Users().ReplaceOneAsync(x => x.Id == userId, user);
             Logger.Info($"User: '{user.Email}' with: '{user.Id}' has changed password.");
+        }
+
+        public async Task InitiatePasswordResetAsync(string email, string ipAddress = null, string userAgent = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task ValidatePasswordResetTokenAsync(string email, string token)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task CompletePasswordResetAsync(string email, string token, string password, string ipAddress = null,
+            string userAgent = null)
+        {
+            throw new NotImplementedException();
         }
     }
 }
