@@ -43,6 +43,7 @@ namespace Warden.Web
             services.AddOptions();
             services.Configure<FeatureSettings>(Configuration.GetSection("feature"));
             services.Configure<GeneralSettings>(Configuration.GetSection("general"));
+            services.Configure<EmailSettings>(Configuration.GetSection("email"));
             services.AddMvc(options =>
             {
                 options.Filters.Add(new ExceptionFilter());
@@ -61,8 +62,10 @@ namespace Warden.Web
             services.AddScoped<IOrganizationService, OrganizationService>();
             services.AddScoped<IUserService, UserService>();
             services.AddSingleton<IStatsCalculator, StatsCalculator>();
+            services.AddSingleton<IEmailSender, SendGridEmailSender>();
             services.AddSingleton(provider => Configuration.GetSection("feature").Get<FeatureSettings>());
             services.AddSingleton(provider => Configuration.GetSection("general").Get<GeneralSettings>());
+            services.AddSingleton(provider => Configuration.GetSection("email").Get<EmailSettings>());
             services.AddSingleton<IEncrypter>(provider => new Encrypter(settings.EncrypterKey));
             services.AddSingleton(provider => new MongoClient(settings.ConnectionString));
             services.AddScoped(provider => provider.GetService<MongoClient>().GetDatabase(settings.Database));

@@ -29,11 +29,13 @@ namespace Warden.Web.Core.Services
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IMongoDatabase _database;
         private readonly IEncrypter _encrypter;
+        private readonly IEmailSender _emailSender;
 
-        public UserService(IMongoDatabase database, IEncrypter encrypter)
+        public UserService(IMongoDatabase database, IEncrypter encrypter, IEmailSender emailSender)
         {
             _database = database;
             _encrypter = encrypter;
+            _emailSender = emailSender;
         }
 
         public async Task<UserDto> GetAsync(string email)
@@ -79,6 +81,7 @@ namespace Warden.Web.Core.Services
             var user = new User(email, password, _encrypter, role);
             await _database.Users().InsertOneAsync(user);
             Logger.Info($"New user account: '{email}' was created with id: '{user.Id}'");
+            await _emailSender.SendAccountCreatedEmailAsync(email);
         }
 
         public async Task LoginAsync(string email, string password, string ipAddress,

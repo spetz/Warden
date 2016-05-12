@@ -9,7 +9,8 @@
     "MongoDB.Driver": "2.2.3",
     "Newtonsoft.Json": "8.0.3",
     "NLog.Extensions.Logging": "1.0.0-rc1-final-2016-03-11",
-    "Microsoft.AspNet.SignalR.Core": "2.2.0"
+    "Microsoft.AspNet.SignalR.Core": "2.2.0",
+    "Sendgrid": "6.3.4"
   },
   "frameworks": {
     "net451": { }

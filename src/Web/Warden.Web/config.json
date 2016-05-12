@@ -1,12 +1,15 @@
 {
-  "general": {
-    "connectionString": "mongodb://localhost:27017",
-    "database": "Warden",
-    "encrypterKey": "XYZ123",
-    "jsonFormatDate": "yyyy-MM-dd H:mm:ss",
-    "authCookieName": ".Warden",
-    "loginPath": "/login",
-    "logoutPath": "/logout"
+  "email": {
+    "enabled": false,
+    "apiKey": "",
+    "noReplyAccount": "",
+    "templates": [
+      {
+        "id": "",
+        "name": "account-created",
+        "subject": "Account created"
+      }
+    ]
   },
   "feature": {
     "maxApiKeys": 5,
@@ -15,5 +18,14 @@
     "maxWardensInOrganization": 5,
     "maxWatchersInWarden": 10,
     "retainWardenIterationDataDays": 1
+  },
+  "general": {
+    "connectionString": "mongodb://localhost:27017",
+    "database": "Warden",
+    "encrypterKey": "XYZ123",
+    "jsonFormatDate": "yyyy-MM-dd H:mm:ss",
+    "authCookieName": ".Warden",
+    "loginPath": "/login",
+    "logoutPath": "/logout"
   }
 }
