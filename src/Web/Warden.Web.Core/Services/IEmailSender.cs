@@ -18,6 +18,8 @@ namespace Warden.Web.Core.Services
             string receiver, IDictionary<string, IEnumerable<string>> parameters = null);
 
         Task SendAccountCreatedEmailAsync(string receiver);
+        Task SendResetPasswordEmailAsync(string receiver, string token);
+        Task SendPasswordChangedEmailAsync(string receiver);
     }
 
     public class SendGridEmailSender : IEmailSender
@@ -73,6 +75,16 @@ namespace Warden.Web.Core.Services
         public async Task SendAccountCreatedEmailAsync(string receiver)
         {
             await SendTemplatedEmailAsync(AccountCreatedTemplateName, _emailSettings.NoReplyAccount, receiver);
+        }
+
+        public async Task SendResetPasswordEmailAsync(string receiver, string token)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task SendPasswordChangedEmailAsync(string receiver)
+        {
+            throw new System.NotImplementedException();
         }
 
         private bool IsSenderDisabled()

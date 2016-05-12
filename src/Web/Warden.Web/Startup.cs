@@ -14,6 +14,7 @@ using Microsoft.Owin.Builder;
 using Newtonsoft.Json;
 using NLog;
 using Owin;
+using Warden.Web.Core.Factories;
 using Warden.Web.Core.Settings;
 using Warden.Web.Extensions;
 using Warden.Web.Framework;
@@ -63,6 +64,7 @@ namespace Warden.Web
             services.AddScoped<IUserService, UserService>();
             services.AddSingleton<IStatsCalculator, StatsCalculator>();
             services.AddSingleton<IEmailSender, SendGridEmailSender>();
+            services.AddSingleton<ISecuredOperationFactory, SecuredOperationFactory>();
             services.AddSingleton(provider => Configuration.GetSection("feature").Get<FeatureSettings>());
             services.AddSingleton(provider => Configuration.GetSection("general").Get<GeneralSettings>());
             services.AddSingleton(provider => Configuration.GetSection("email").Get<EmailSettings>());

@@ -6,6 +6,7 @@ using NLog;
 using Warden.Web.Core.Domain;
 using Warden.Web.Core.Dto;
 using Warden.Web.Core.Extensions;
+using Warden.Web.Core.Factories;
 using Warden.Web.Core.Mongo.Queries;
 
 namespace Warden.Web.Core.Services
@@ -35,12 +36,15 @@ namespace Warden.Web.Core.Services
         private readonly IMongoDatabase _database;
         private readonly IEncrypter _encrypter;
         private readonly IEmailSender _emailSender;
+        private readonly ISecuredOperationFactory _securedOperationFactory;
 
-        public UserService(IMongoDatabase database, IEncrypter encrypter, IEmailSender emailSender)
+        public UserService(IMongoDatabase database, IEncrypter encrypter, 
+            IEmailSender emailSender, ISecuredOperationFactory securedOperationFactory)
         {
             _database = database;
             _encrypter = encrypter;
             _emailSender = emailSender;
+            _securedOperationFactory = securedOperationFactory;
         }
 
         public async Task<UserDto> GetAsync(string email)
@@ -138,18 +142,53 @@ namespace Warden.Web.Core.Services
 
         public async Task InitiatePasswordResetAsync(string email, string ipAddress = null, string userAgent = null)
         {
-            throw new NotImplementedException();
+            var user = await _database.Users().GetByEmailAsync(email);
+            if (user == null)
+                throw new ServiceException($"User has not been found for email: '{email}'.");
+
+            var securedOperation = _securedOperationFactory.Create(SecuredOperationType.ResetPassword,
+                DateTime.UtcNow.AddDays(1), user.Id, email, ipAddress, userAgent);
+
+            await _database.SecuredOperations().InsertOneAsync(securedOperation);
+            await _emailSender.SendResetPasswordEmailAsync(email, securedOperation.Token);
+            Logger.Info($"User '{user.Email}' [id: '{user.Id}'] has initiated password reset.");
         }
 
         public async Task ValidatePasswordResetTokenAsync(string email, string token)
         {
-            throw new NotImplementedException();
+            var user = await _database.Users().GetByEmailAsync(email);
+            if (user == null)
+                throw new ServiceException($"User has not been found for email: '{email}'.");
+
+            var securedOperation = await _database.SecuredOperations()
+                .GetByUserIdAndTokenAsync(user.Id, token);
+            if (securedOperation == null)
+                throw new ServiceException("Invalid token.");
+
+            securedOperation.CheckIfCanBeConsumedOrFail();
         }
 
         public async Task CompletePasswordResetAsync(string email, string token, string password, string ipAddress = null,
             string userAgent = null)
         {
-            throw new NotImplementedException();
+            var user = await _database.Users().GetByEmailAsync(email);
+            if (user == null)
+                throw new ServiceException($"User has not been found for email: '{email}'.");
+
+            var securedOperation = await _database.SecuredOperations()
+                .GetByUserIdAndTokenAsync(user.Id, token);
+
+            if (securedOperation == null)
+                throw new ServiceException("Invalid token.");
+
+            user.SetPassword(password, _encrypter);
+            securedOperation.Consume(ipAddress, userAgent);
+
+            await _database.Users().ReplaceOneAsync(x => x.Id == user.Id, user);
+            await _database.SecuredOperations().ReplaceOneAsync(x => x.Id == securedOperation.Id, securedOperation);
+            await _emailSender.SendPasswordChangedEmailAsync(email);
+
+            Logger.Info($"User '{user.Email}' [id: '{user.Id}'] has completed password reset.");
         }
     }
 }
