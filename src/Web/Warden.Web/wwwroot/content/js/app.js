@@ -1,4 +1,6 @@
-﻿var app = (function() {
+﻿'use strict';
+
+var app = (function () {
     var loginPath = "";
     var logoutPath = "";
     var url = "";
@@ -26,8 +28,7 @@
 
     function initBlockableElements() {
         $("[data-block]")
-            .on("submit",
-                function(e) {
+            .on("submit", function(e) {
                     $(this).validate();
                     var valid = $(this).valid();
                     if (!valid)
@@ -87,6 +88,6 @@
     };
 
     return {
-        init
+        init: init
     };
 })();

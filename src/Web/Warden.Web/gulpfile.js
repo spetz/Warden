@@ -6,7 +6,9 @@ var gulp = require("gulp"),
     rimraf = require("rimraf"),
     concat = require("gulp-concat"),
     cssmin = require("gulp-cssmin"),
-    uglify = require("gulp-uglify");
+    uglify = require("gulp-uglify"),
+    ignore = require("gulp-ignore"),
+    util = require('gulp-util');
 
 var paths = {
   webroot: "./wwwroot/"
@@ -40,7 +42,8 @@ gulp.task("clean", ["clean:js", "clean:css"]);
 gulp.task("min:js", function () {
   return gulp.src([paths.js, "!" + paths.minJs], { base: "." })
       .pipe(concat(paths.concatJsDest))
-      .pipe(uglify())
+       .pipe(ignore.exclude(["**/*.map"]))
+      .pipe(uglify().on('error', util.log))
       .pipe(gulp.dest("."));
 });
 
@@ -52,3 +55,6 @@ gulp.task("min:css", function () {
 });
 
 gulp.task("min", ["min:js", "min:css"]);
+
+gulp.task('default', ['sass-compile', 'clean', 'min'], function () {
+});

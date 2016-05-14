@@ -1,4 +1,6 @@
-﻿var dashboard = (function() {
+﻿'use strict';
+
+var dashboard = (function () {
     var organizationId = "";
     var wardenName = "";
     var wardenId = "";
@@ -282,9 +284,8 @@
             };
 
             var data = {
-                labels,
-                datasets: [
-                    {
+                labels: labels,
+                datasets: [{
                         label: "Warden",
                         fillColor: resources.colors.green,
                         strokeColor: resources.colors.grey,
@@ -295,7 +296,7 @@
                         data: points
                     }
                 ]
-            };
+            }
 
             iterationsChart = new Chart(iterationsChartContext).Line(data, options);
 
@@ -503,7 +504,7 @@
     };
 
     function initWardenHub() {
-        $.connection.hub.qs = { organizationId, wardenName };
+        $.connection.hub.qs = { organizationId: organizationId, wardenName: wardenName };
         var chat = $.connection.wardenHub;
         chat.client.iterationCreated = function(iteration) {
             iteration = toCamelCase(iteration);
@@ -576,6 +577,6 @@
     };
 
     return {
-        init
+        init: init
     };
 })();
