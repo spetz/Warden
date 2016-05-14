@@ -33,6 +33,7 @@ namespace Warden.Web.Core.Domain
             Ordinal = ordinal;
             StartedAt = startedAt;
             CompletedAt = completedAt;
+            ExecutionTime = CompletedAt - StartedAt;
             IsValid = isValid;
             CreatedAt = DateTime.Now;
         }
