@@ -1,5 +1,4 @@
 ﻿var dashboard = (function() {
-
     var organizationId = "";
     var wardenName = "";
     var wardenId = "";
@@ -7,6 +6,25 @@
     var refreshStatsIntervalSeconds = 0;
     var totalWatchers = 0;
     var viewModel = null;
+    var $iterationsChart = null;
+    var $watchersChart = null;
+    var resources = {
+        colors: {
+            green: "rgba(91, 187, 22, 0.2)",
+            greenHighlight: "rgba(91, 187, 22, 0.5)",
+            red: "rgba(247, 70, 74, 0.5)",
+            redHighlight: "rgba(247, 70, 74, 0.8)",
+            grey: "rgba(220,220,220,1)",
+            lightGrey: "rgba(75, 74, 73, 0.1)",
+            lightGreyHighlight: "rgba(75, 74, 73, 0.2)",
+            white: "#fff"
+        },
+        css: {
+            lightBlue: "blue lighten-1",
+            lightGreen: "green lighten-1",
+            lightRed: "red lighten-1"
+        }
+    };
 
     var init = function(options) {
         organizationId = options.organizationId || "";
@@ -24,8 +42,10 @@
     function ViewModel() {
         var self = this;
         var currentWardenCheckResults = [];
-        var iterationsChartContext = $("#iterations-chart")[0].getContext("2d");
-        var watchersChartContext = $("#watchers-chart")[0].getContext("2d");
+        $iterationsChart = $("#iterations-chart");
+        $watchersChart = $("#watchers-chart");
+        var iterationsChartContext = $iterationsChart[0].getContext("2d");
+        var watchersChartContext = $watchersChart[0].getContext("2d");
         var iterationsChart = null;
         var watchersChart = null;
         self.shouldUpdateIterationsChart = ko.observable(true);
@@ -34,14 +54,14 @@
             var actualValue = self.shouldUpdateIterationsChart();
             var message = "Iterations chart updates have been ";
             message += actualValue ? "paused." : "resumed.";
-            Materialize.toast(message, 3000, "blue lighten-1");
+            Materialize.toast(message, 3000, resources.css.lightBlue);
             self.shouldUpdateIterationsChart(!actualValue);
         };
         self.toggleUpdateWatchersChart = function () {
             var actualValue = self.shouldUpdateWatchersChart();
             var message = "Watchers chart updates have been ";
             message += actualValue ? "paused." : "resumed.";
-            Materialize.toast(message, 3000, "blue lighten-1");
+            Materialize.toast(message, 3000, resources.css.lightBlue);
             self.shouldUpdateWatchersChart(!actualValue);
         };
 
@@ -155,16 +175,16 @@
             self.selectedWarden(selectedWarden);
         };
 
+
         //TODO: Push from server side.
         function refreshStats() {
             getStats()
                 .then(function(stats) {
                     setStats(stats);
-                    setTimeout(refreshStats, refreshStatsIntervalSeconds * 1000);
                 });
         };
 
-        refreshStats();
+        setInterval(refreshStats, refreshStatsIntervalSeconds * 1000);
 
         getOrganizations()
             .then(function(organizations) {
@@ -212,12 +232,12 @@
                 datasets: [
                     {
                         label: "Warden",
-                        fillColor: "rgba(91, 187, 22, 0.2)",
-                        strokeColor: "rgba(220,220,220,1)",
-                        pointColor: "rgba(220,220,220,1)",
-                        pointStrokeColor: "#fff",
-                        pointHighlightFill: "#fff",
-                        pointHighlightStroke: "rgba(220,220,220,1)",
+                        fillColor: resources.colors.green,
+                        strokeColor: resources.colors.grey,
+                        pointColor: resources.colors.grey,
+                        pointStrokeColor: resources.colors.white,
+                        pointHighlightFill: resources.colors.white,
+                        pointHighlightStroke: resources.colors.grey,
                         data: [0]
                     }
                 ]
@@ -266,12 +286,12 @@
                 datasets: [
                     {
                         label: "Warden",
-                        fillColor: "rgba(91, 187, 22, 0.2)",
-                        strokeColor: "rgba(220,220,220,1)",
-                        pointColor: "rgba(220,220,220,1)",
-                        pointStrokeColor: "#fff",
-                        pointHighlightFill: "#fff",
-                        pointHighlightStroke: "rgba(220,220,220,1)",
+                        fillColor: resources.colors.green,
+                        strokeColor: resources.colors.grey,
+                        pointColor: resources.colors.grey,
+                        pointStrokeColor: resources.colors.white,
+                        pointHighlightFill: resources.colors.white,
+                        pointHighlightStroke: resources.colors.grey,
                         data: points
                     }
                 ]
@@ -279,30 +299,29 @@
 
             iterationsChart = new Chart(iterationsChartContext).Line(data, options);
 
-            $("#iterations-chart")
-                .click(function(evt) {
-                    var point = iterationsChart.getPointsAtEvent(evt)[0];
-                    var completedAt = point.label;
-                    var iteration = self.iterations()
-                        .filter(function(iteration) {
-                            return iteration.completedAt === completedAt;
-                        })[0];
-                    var url = "/organizations/" +
-                        organizationId +
-                        "/wardens/" +
-                        wardenId +
-                        "/iterations/" +
-                        iteration.id;
-                    window.open(url, '_blank');
-                });
+            $iterationsChart.click(function(evt) {
+                var point = iterationsChart.getPointsAtEvent(evt)[0];
+                var completedAt = point.label;
+                var iteration = self.iterations()
+                    .filter(function(iteration) {
+                        return iteration.completedAt === completedAt;
+                    })[0];
+                var url = "/organizations/" +
+                    organizationId +
+                    "/wardens/" +
+                    wardenId +
+                    "/iterations/" +
+                    iteration.id;
+                window.open(url, '_blank');
+            });
         };
 
         function renderEmptyWatchersChart() {
             var data = [];
             data.push({
                 value: 1,
-                color: "rgba(75, 74, 73, 0.1)",
-                highlight: "rgba(75, 74, 73, 0.2)",
+                color: resources.colors.lightGrey,
+                highlight: resources.colors.lightGreyHighlight,
                 label: "Missing data"
             });
 
@@ -333,8 +352,8 @@
             invalidResults.forEach(function(result) {
                 data.push({
                     value: 1,
-                    color: "rgba(247, 70, 74, 0.5)",
-                    highlight: "rgba(247, 70, 74, 0.8)",
+                    color: resources.colors.red,
+                    highlight: resources.colors.redHighlight,
                     label: result.watcherCheckResult.watcherName
                 });
             });
@@ -342,8 +361,8 @@
             validResults.forEach(function(result) {
                 data.push({
                     value: 1,
-                    color: "rgba(91, 187, 22, 0.5)",
-                    highlight: "rgba(91, 187, 22, 0.8)",
+                    color: resources.colors.green,
+                    highlight: resources.colors.greenHighlight,
                     label: result.watcherCheckResult.watcherName
                 });
             });
@@ -354,15 +373,14 @@
 
             watchersChart = new Chart(watchersChartContext).Pie(data, options);
 
-            $("#watchers-chart")
-                .click(function(evt) {
-                    var segment = watchersChart.getSegmentsAtEvent(evt)[0];
-                    var watcherName = segment.label;
-                    var wardenCheckResult = currentWardenCheckResults.filter(function(result) {
-                        return result.watcherCheckResult.watcherName === watcherName;
-                    })[0];
-                    self.selectedWardenCheckResult(new WardenCheckResult(wardenCheckResult));
-                });
+            $watchersChart.click(function(evt) {
+                var segment = watchersChart.getSegmentsAtEvent(evt)[0];
+                var watcherName = segment.label;
+                var wardenCheckResult = currentWardenCheckResults.filter(function(result) {
+                    return result.watcherCheckResult.watcherName === watcherName;
+                })[0];
+                self.selectedWardenCheckResult(new WardenCheckResult(wardenCheckResult));
+            });
         };
     };
 
@@ -506,22 +524,22 @@
                 reason = " Reason: " + $.connection.hub.lastError.message;
             }
 
-            Materialize.toast("Connection has been lost, reconnecting in 3 seconds." + reason, 3000, "red lighten-1");
+            Materialize.toast("Connection has been lost, reconnecting in 3 seconds." + reason, 3000, resources.css.lightRed);
             setTimeout(connect, 3000);
         });
 
         $.connection.hub.reconnected(function () {
-            Materialize.toast("Reconnection has succeeded.", 3000, "green lighten-1");
+            Materialize.toast("Reconnection has succeeded.", 3000, resources.css.lightGreen);
         });
 
         function connect() {
-            Materialize.toast("Connecting to the Warden Hub.", 3000, "blue lighten-1");
+            Materialize.toast("Connecting to the Warden Hub.", 3000, resources.css.lightBlue);
             $.connection.hub.start()
                 .done(function() {
-                    Materialize.toast("Connection has been established.", 3000, "green lighten-1");
+                    Materialize.toast("Connection has been established.", 3000, resources.css.lightGreen);
                 })
                 .fail(function() {
-                    Materialize.toast("Connection could not have been established.", 3000, "red lighten-1");
+                    Materialize.toast("Connection could not have been established.", 3000, resources.css.lightRed);
                 });
         };
     };
