@@ -37,47 +37,6 @@
             </li>
         </ul>
     </div>
-    <div class="col s12 m1">
-        <button class="btn-floating waves-effect waves-light custom tooltipped" data-clipboard="@Model.Organization.Id" data-tooltip="Copy id to clipboard">
-            <i class="material-icons dp48">note_add</i>
-        </button>
-    </div>
-
-    <div class="col s12 m5 offset-m1 l3">
-        <a href="@Url.Action("AddWarden", new {id = Model.Organization.Id})" class="btn waves-effect waves-light custom">Add Warden</a>
-    </div>
-    @if (isOwner)
-    {
-        <div class="col s12 m5 l3">
-            <a href="@Url.Action("AddUser", new {id = Model.Organization.Id})" class="btn waves-effect waves-light custom">Add User</a>
-        </div>
-        <div class="col s2 m1 right">
-            <a class="btn-floating waves-effect waves-light red lighten-1 modal-trigger tooltipped"
-               href="#modal-delete-organization" data-tooltip="Remove organization">
-                <i class="material-icons dp48 right">delete</i>
-            </a>
-        </div>
-        <div class="col s2 m1 right">
-            @if (Model.Organization.AutoRegisterNewWarden)
-            {
-                <form asp-controller="Organization" asp-action="DisableAutoRegisterNewWarden" asp-anti-forgery="true" method="POST" data-block>
-                    <button class="btn-floating waves-effect waves-light orange lighten-2 tooltipped" data-tooltip="Disable automatic registration of new Wardens"><i class="material-icons dp48 right">stop</i></button>
-                </form>
-            }
-            else
-            {
-                <form asp-controller="Organization" asp-action="EnableAutoRegisterNewWarden" asp-anti-forgery="true" method="POST" data-block>
-                    <button class="btn-floating waves-effect waves-light green lighten-2 tooltipped" data-tooltip="Enable automatic registration of new Wardens"><i class="material-icons dp48 right">play_arrow</i></button>
-                </form>
-            }
-        </div>
-        <div class="col s2 m1 right">
-            <a class="btn-floating waves-effect waves-light custom tooltipped"
-               href="@Url.Action("Edit", new {id = Model.Organization.Id})" data-tooltip="Edit organization">
-                <i class="material-icons dp48 right">mode_edit</i>
-            </a>
-        </div>
-    }
 </div>
 <div class="row card-panel">
     <div class="col s12">
@@ -104,6 +63,54 @@
             }
         </div>
     </div>
+</div>
+<div class="fixed-action-btn horizontal" style="bottom: 45px; right: 24px;">
+    <a class="btn-floating btn-large custom">
+        <i class="large material-icons">mode_edit</i>
+    </a>
+    <ul>
+        <li>
+            <button class="btn-floating waves-effect waves-light custom tooltipped" data-clipboard="@Model.Organization.Id" data-tooltip="Copy id to clipboard" data-position="top">
+                <i class="material-icons dp48">note_add</i>
+            </button>
+        </li>
+        <li>
+            <a href="@Url.Action("AddWarden", new {id = Model.Organization.Id})" class="btn-floating custom tooltipped" data-tooltip="Add Warden" data-position="top"><i class="material-icons">visibility</i></a>
+        </li>
+        @if (isOwner)
+        {
+            <li>
+                @if (Model.Organization.AutoRegisterNewWarden)
+                {
+                    <form asp-controller="Organization" asp-action="DisableAutoRegisterNewWarden" asp-anti-forgery="true" method="POST" data-block>
+                        <button class="btn-floating waves-effect waves-light custom tooltipped" data-position="top" data-tooltip="Disable automatic registration of new Wardens"><i class="material-icons dp48 right">stop</i></button>
+                    </form>
+                }
+                else
+                {
+                    <form asp-controller="Organization" asp-action="EnableAutoRegisterNewWarden" asp-anti-forgery="true" method="POST" data-block>
+                        <button class="btn-floating waves-effect waves-light custom tooltipped" data-position="top" data-tooltip="Enable automatic registration of new Wardens"><i class="material-icons dp48 right">play_arrow</i></button>
+                    </form>
+                }
+            </li>
+            <li>
+                <a href="@Url.Action("AddUser", new {id = Model.Organization.Id})" class="btn-floating custom tooltipped" data-tooltip="Add user" data-position="top"><i class="material-icons">perm_identity</i></a>
+            </li>
+
+            <li>
+                <a class="btn-floating waves-effect waves-light custom tooltipped"
+                   href="@Url.Action("Edit", new {id = Model.Organization.Id})" data-position="top" data-tooltip="Edit organization">
+                    <i class="material-icons dp48 right">assignment</i>
+                </a>
+            </li>
+            <li>
+                <a class="btn-floating waves-effect waves-light red lighten-1 modal-trigger tooltipped"
+                   href="#modal-delete-organization" data-position="top" data-tooltip="Remove organization">
+                    <i class="material-icons dp48 right">delete</i>
+                </a>
+            </li>
+        }
+    </ul>
 </div>
 @Html.Partial("_DeleteOrganizationModal", Model.Organization.Id)
 

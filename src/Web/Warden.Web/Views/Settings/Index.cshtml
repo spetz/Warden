@@ -23,18 +23,23 @@
             <li class="collection-item">@Model.Role</li>
         </ul>
     </div>
-    <div class="col s12 m5 l3">
-        <a href="@Url.Action("Password")" class="btn waves-effect custom">Change password</a>
-    </div>
-    <div class="col s12 m4 l2">
-        <form asp-controller="Settings" asp-action="CreateApiKey" asp-anti-forgery="true" method="POST">
-            <button class="btn waves-effect waves-light custom" type="submit" name="action">New API key</button>
-        </form>
-    </div>
-    <div class="col s12 m3 l2 right">
-        <form asp-controller="Account" asp-action="Logout" asp-anti-forgery="true" method="POST" data-block>
-            <button class="btn waves-effect waves-light custom" type="submit">Sign out</button>
-        </form>
+    <div class="fixed-action-btn horizontal" style="bottom: 45px; right: 24px;">
+        <a class="btn-floating btn-large custom">
+            <i class="large material-icons">mode_edit</i>
+        </a>
+        <ul>
+            <li><a href="@Url.Action("Password")" class="btn-floating custom tooltipped" data-tooltip="Change password" data-position="top"><i class="material-icons">https</i></a></li>
+            <li>
+                <form asp-controller="Settings" asp-action="CreateApiKey" asp-anti-forgery="true" method="POST">
+                    <button class="btn-floating custom tooltipped" data-tooltip="Create API key" type="submit" data-position="top"><i class="material-icons">vpn_key</i></button>
+                </form>
+            </li>
+            <li>
+                <form asp-controller="Account" asp-action="Logout" asp-anti-forgery="true" method="POST" data-block>
+                    <button class="btn-floating custom tooltipped" data-tooltip="Sign out" type="submit" data-position="top"><i class="material-icons">settings_power</i></button>
+                </form>
+            </li>
+        </ul>
     </div>
 </div>
 <div class="row card-panel">

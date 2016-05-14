@@ -38,36 +38,8 @@
             <li class="collection-item">@Model.Stats.TotalInvalidIterations</li>
         </ul>
     </div>
-    <div class="col s12 m2">
+    <div class="col s12">
         <a href="@Url.Action("Details", "Dashboard", new {organizationId = Model.OrganizationId, wardenId = Model.Id})" class="btn waves-effect waves-light custom">Dashboard</a>
-    </div>
-    <div class="col s2 m1 right">
-        <a class="btn-floating waves-effect waves-light red lighten-1 modal-trigger tooltipped" data-warden-id="@Model.Id"
-           href="#modal-delete-warden" data-remove-warden-from-organization data-tooltip="Remove Warden">
-            <i class="material-icons dp48">delete</i>
-        </a>
-    </div>
-    <div class="col s2 m1 right">
-        @if (Model.Stats.Enabled)
-        {
-            <form asp-controller="Warden" asp-action="Disable" asp-anti-forgery="true" method="POST">
-                <button class="btn-floating waves-effect waves-light orange lighten-2 tooltipped" type="submit" name="action" data-tooltip="Disable Warden"><i class="material-icons">stop</i></button>
-            </form>
-        }
-        else
-        {
-            <form asp-controller="Warden" asp-action="Enable" asp-anti-forgery="true" method="POST">
-                <button class="btn-floating waves-effect waves-light green lighten-2 tooltipped" type="submit" name="action" data-tooltip="Enable Warden">
-                    <i class="material-icons">play_arrow</i>
-                </button>
-            </form>
-        }
-    </div>
-    <div class="col s2 m1 right">
-        <a class="btn-floating waves-effect waves-light custom tooltipped"
-           href="@Url.Action("Edit", new {organizationId = Model.OrganizationId, wardenId = Model.Id})" data-tooltip="Edit Warden">
-            <i class="material-icons dp48 right">mode_edit</i>
-        </a>
     </div>
 </div>
 <div class="row card-panel">
@@ -105,6 +77,42 @@
             }
         </div>
     </div>
+</div>
+<div class="fixed-action-btn horizontal" style="bottom: 45px; right: 24px;">
+    <a class="btn-floating btn-large custom">
+        <i class="large material-icons">mode_edit</i>
+    </a>
+    <ul>
+        <li>
+            <a class="btn-floating waves-effect waves-light custom tooltipped"
+               href="@Url.Action("Edit", new {organizationId = Model.OrganizationId, wardenId = Model.Id})" data-tooltip="Edit Warden" data-position="top">
+                <i class="material-icons dp48 right">assignment</i>
+            </a>
+        </li>
+        <li>
+            @if (Model.Stats.Enabled)
+            {
+                <form asp-controller="Warden" asp-action="Disable" asp-anti-forgery="true" method="POST">
+                    <button class="btn-floating waves-effect waves-light custom tooltipped" type="submit" name="action" data-tooltip="Disable Warden" data-position="top"><i class="material-icons">stop</i></button>
+                </form>
+            }
+            else
+            {
+                <form asp-controller="Warden" asp-action="Enable" asp-anti-forgery="true" method="POST">
+                    <button class="btn-floating waves-effect waves-light custom tooltipped" type="submit" name="action" data-tooltip="Enable Warden" data-position="top">
+                        <i class="material-icons">play_arrow</i>
+                    </button>
+                </form>
+            }
+        </li>
+
+        <li>
+            <a class="btn-floating waves-effect waves-light red lighten-1 modal-trigger tooltipped" data-warden-id="@Model.Id"
+               href="#modal-delete-warden" data-remove-warden-from-organization data-tooltip="Remove Warden" data-position="top">
+                <i class="material-icons dp48">delete</i>
+            </a>
+        </li>
+    </ul>
 </div>
 @Url.Paginate(Model.Iterations, "Details")
 @Html.Partial("_DeleteWardenModal", Model.OrganizationId)
