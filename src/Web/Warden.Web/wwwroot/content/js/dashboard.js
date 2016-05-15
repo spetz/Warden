@@ -186,6 +186,7 @@ var dashboard = (function () {
                 });
         };
 
+        refreshStats();
         setInterval(refreshStats, refreshStatsIntervalSeconds * 1000);
 
         getOrganizations()
