@@ -7,7 +7,8 @@
   "licenseUrl": "https://github.com/spetz/Warden/blob/master/LICENSE",
   "dependencies": {
     "Warden": "1.0.0",
-    "Twilio": "4.7.1"
+    "Twilio": "4.7.1",
+    "Microsoft.AspNet.SignalR.Core": "2.2.0"
   },
   "frameworks": {
     "net451": { }
