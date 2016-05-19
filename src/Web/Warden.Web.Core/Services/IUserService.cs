@@ -8,6 +8,7 @@ using Warden.Web.Core.Dto;
 using Warden.Web.Core.Extensions;
 using Warden.Web.Core.Factories;
 using Warden.Web.Core.Mongo.Queries;
+using Warden.Web.Core.Settings;
 
 namespace Warden.Web.Core.Services
 {
@@ -37,14 +38,17 @@ namespace Warden.Web.Core.Services
         private readonly IEncrypter _encrypter;
         private readonly IEmailSender _emailSender;
         private readonly ISecuredOperationFactory _securedOperationFactory;
+        private readonly AccountSettings _accountSettings;
 
         public UserService(IMongoDatabase database, IEncrypter encrypter, 
-            IEmailSender emailSender, ISecuredOperationFactory securedOperationFactory)
+            IEmailSender emailSender, ISecuredOperationFactory securedOperationFactory,
+            AccountSettings accountSettings)
         {
             _database = database;
             _encrypter = encrypter;
             _emailSender = emailSender;
             _securedOperationFactory = securedOperationFactory;
+            _accountSettings = accountSettings;
         }
 
         public async Task<UserDto> GetAsync(string email)
@@ -79,7 +83,7 @@ namespace Warden.Web.Core.Services
         public async Task RegisterAsync(string email, string password, Role role = Role.User)
         {
             if(!email.IsEmail())
-                throw new ServiceException($"Invalid email: '{email}.");
+                throw new ServiceException($"Invalid email: '{email}'.");
             if (password.Empty())
                 throw new ServiceException("Password can not be empty.");
 
@@ -88,6 +92,9 @@ namespace Warden.Web.Core.Services
                 throw new ServiceException($"User with email: '{email}' is already registered.");
 
             var user = new User(email, password, _encrypter, role);
+            if(_accountSettings.AutoActivation)
+                user.Activate();
+
             await _database.Users().InsertOneAsync(user);
             Logger.Info($"New user account: '{email}' was created with id: '{user.Id}'");
             await _emailSender.SendAccountCreatedEmailAsync(email);
@@ -104,6 +111,8 @@ namespace Warden.Web.Core.Services
             var user = await _database.Users().GetByEmailAsync(email);
             if (user == null)
                 throw new ServiceException($"User has not been found for email: '{email}'.");
+            if (user.State == State.Inactive)
+                throw new ServiceException("User account has not been activated.");
             if (user.State == State.Locked)
                 throw new ServiceException("User account has been locked.");
             if (user.State == State.Deleted)

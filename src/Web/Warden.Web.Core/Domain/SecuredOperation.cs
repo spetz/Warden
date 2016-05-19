@@ -27,7 +27,7 @@ namespace Warden.Web.Core.Domain
                 if (email.Empty())
                     throw new DomainException("Both user id and email can not be empty.");
 
-                if (email.IsEmail())
+                if (!email.IsEmail())
                     throw new DomainException($"Invalid email: '{email}.");
             }
 

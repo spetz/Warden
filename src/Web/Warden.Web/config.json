@@ -1,4 +1,7 @@
 {
+  "account": {
+    "autoActivation":  true 
+  },
   "email": {
     "enabled": false,
     "apiKey": "",

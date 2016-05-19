@@ -26,7 +26,7 @@ namespace Warden.Web.Core.Domain
             SetEmail(email);
             SetPassword(password, encrypter);
             Role = role;
-            State = State.Active;
+            State = State.Inactive;
             CreatedAt = DateTime.UtcNow;
             UpdatedAt = DateTime.UtcNow;
         }
@@ -36,7 +36,7 @@ namespace Warden.Web.Core.Domain
             if (email.Empty())
                 throw new DomainException("Email can not be empty.");
 
-            if (email.IsEmail())
+            if (!email.IsEmail())
                 throw new DomainException($"Invalid email: '{email}.");
 
             if (Email.EqualsCaseInvariant(email))
