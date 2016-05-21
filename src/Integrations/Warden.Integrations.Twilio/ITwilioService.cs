@@ -19,7 +19,7 @@ namespace Warden.Integrations.Twilio
 
         public async Task SendSmsAsync(string sender, string receiver, string message)
         {
-            await Task.Factory.StartNew(() => _twilioRestClient.SendMessage(sender, receiver, message));
+            await Task.FromResult(_twilioRestClient.SendMessage(sender, receiver, message));
         }
     }
 }
