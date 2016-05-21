@@ -124,6 +124,15 @@
           "lib/net45/nunitlite.dll": {}
         }
       },
+      "RestSharp/105.2.2": {
+        "type": "package",
+        "compile": {
+          "lib/net451/RestSharp.dll": {}
+        },
+        "runtime": {
+          "lib/net451/RestSharp.dll": {}
+        }
+      },
       "Sendgrid/6.3.4": {
         "type": "package",
         "dependencies": {
@@ -188,15 +197,44 @@
           "lib/net45/_._": {}
         }
       },
+      "Twilio/4.7.1": {
+        "type": "package",
+        "dependencies": {
+          "RestSharp": "105.2.2"
+        },
+        "compile": {
+          "lib/3.5/Twilio.Api.dll": {}
+        },
+        "runtime": {
+          "lib/3.5/Twilio.Api.dll": {}
+        }
+      },
       "Warden/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
+      },
+      "Warden.Integrations.HttpApi/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Newtonsoft.Json": "7.0.1",
+          "System.Net.Http": "4.0.0",
+          "Warden": "1.0.0"
+        }
       },
       "Warden.Integrations.SendGrid/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "Sendgrid": "6.3.4",
+          "Warden": "1.0.0"
+        }
+      },
+      "Warden.Integrations.Twilio/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Twilio": "4.7.1",
           "Warden": "1.0.0"
         }
       },
@@ -370,6 +408,15 @@
           "lib/net45/nunitlite.dll": {}
         }
       },
+      "RestSharp/105.2.2": {
+        "type": "package",
+        "compile": {
+          "lib/net451/RestSharp.dll": {}
+        },
+        "runtime": {
+          "lib/net451/RestSharp.dll": {}
+        }
+      },
       "Sendgrid/6.3.4": {
         "type": "package",
         "dependencies": {
@@ -434,15 +481,44 @@
           "lib/net45/_._": {}
         }
       },
+      "Twilio/4.7.1": {
+        "type": "package",
+        "dependencies": {
+          "RestSharp": "105.2.2"
+        },
+        "compile": {
+          "lib/3.5/Twilio.Api.dll": {}
+        },
+        "runtime": {
+          "lib/3.5/Twilio.Api.dll": {}
+        }
+      },
       "Warden/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
+      },
+      "Warden.Integrations.HttpApi/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Newtonsoft.Json": "7.0.1",
+          "System.Net.Http": "4.0.0",
+          "Warden": "1.0.0"
+        }
       },
       "Warden.Integrations.SendGrid/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "Sendgrid": "6.3.4",
+          "Warden": "1.0.0"
+        }
+      },
+      "Warden.Integrations.Twilio/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Twilio": "4.7.1",
           "Warden": "1.0.0"
         }
       },
@@ -616,6 +692,15 @@
           "lib/net45/nunitlite.dll": {}
         }
       },
+      "RestSharp/105.2.2": {
+        "type": "package",
+        "compile": {
+          "lib/net451/RestSharp.dll": {}
+        },
+        "runtime": {
+          "lib/net451/RestSharp.dll": {}
+        }
+      },
       "Sendgrid/6.3.4": {
         "type": "package",
         "dependencies": {
@@ -680,15 +765,44 @@
           "lib/net45/_._": {}
         }
       },
+      "Twilio/4.7.1": {
+        "type": "package",
+        "dependencies": {
+          "RestSharp": "105.2.2"
+        },
+        "compile": {
+          "lib/3.5/Twilio.Api.dll": {}
+        },
+        "runtime": {
+          "lib/3.5/Twilio.Api.dll": {}
+        }
+      },
       "Warden/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
+      },
+      "Warden.Integrations.HttpApi/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Newtonsoft.Json": "7.0.1",
+          "System.Net.Http": "4.0.0",
+          "Warden": "1.0.0"
+        }
       },
       "Warden.Integrations.SendGrid/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "Sendgrid": "6.3.4",
+          "Warden": "1.0.0"
+        }
+      },
+      "Warden.Integrations.Twilio/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Twilio": "4.7.1",
           "Warden": "1.0.0"
         }
       },
@@ -746,9 +860,17 @@
       "type": "project",
       "path": "../../Warden/project.json"
     },
+    "Warden.Integrations.HttpApi/1.0.0": {
+      "type": "project",
+      "path": "../../Integrations/Warden.Integrations.HttpApi/project.json"
+    },
     "Warden.Integrations.SendGrid/1.0.0": {
       "type": "project",
       "path": "../../Integrations/Warden.Integrations.SendGrid/project.json"
+    },
+    "Warden.Integrations.Twilio/1.0.0": {
+      "type": "project",
+      "path": "../../Integrations/Warden.Integrations.Twilio/project.json"
     },
     "Warden.Watchers.Disk/1.0.0": {
       "type": "project",
@@ -1024,6 +1146,40 @@
         "tools/portable/nunitlite-runner.exe"
       ]
     },
+    "RestSharp/105.2.2": {
+      "type": "package",
+      "sha512": "DXROmf/5jnJM5Baqzdqc3dMZZQHKPWhYPB9A2/ZYXLOZp9a4rrdvHBza0+tGazPtE+NezyUDYd3qqz5oaU2GZA==",
+      "files": [
+        "lib/MonoAndroid10/RestSharp.dll",
+        "lib/MonoAndroid10/RestSharp.xml",
+        "lib/MonoTouch10/_._",
+        "lib/net35/RestSharp.dll",
+        "lib/net35/RestSharp.xml",
+        "lib/net4/RestSharp.dll",
+        "lib/net4/RestSharp.xml",
+        "lib/net45/RestSharp.dll",
+        "lib/net45/RestSharp.xml",
+        "lib/net451/RestSharp.dll",
+        "lib/net451/RestSharp.xml",
+        "lib/net452/RestSharp.dll",
+        "lib/net452/RestSharp.xml",
+        "lib/net46/RestSharp.dll",
+        "lib/net4-client/RestSharp.dll",
+        "lib/net4-client/RestSharp.xml",
+        "lib/sl5/RestSharp.dll",
+        "lib/sl5/RestSharp.xml",
+        "lib/windowsphone8/RestSharp.dll",
+        "lib/windowsphone8/RestSharp.xml",
+        "lib/windowsphone81/RestSharp.dll",
+        "lib/windowsphone81/RestSharp.xml",
+        "lib/Xamarin.iOS10/RestSharp.dll",
+        "lib/Xamarin.iOS10/RestSharp.xml",
+        "readme.txt",
+        "RestSharp.105.2.2.nupkg",
+        "RestSharp.105.2.2.nupkg.sha512",
+        "RestSharp.nuspec"
+      ]
+    },
     "Sendgrid/6.3.4": {
       "type": "package",
       "sha512": "wL1GufLMA4cCNYgmXluwdmEPMmUuW2AGiWPW4fqQTCupdP3xkqBQJw/G4B2rAUrXpcQzCPmI/JN5Dl92fli5Fg==",
@@ -1180,6 +1336,24 @@
         "System.Net.Http.4.0.0.nupkg.sha512",
         "System.Net.Http.nuspec"
       ]
+    },
+    "Twilio/4.7.1": {
+      "type": "package",
+      "sha512": "wBHTe0DGfwHP3rQflSi58gU901iAPylZy5iMy5eyOg437QTf9mz52gUWpg3PHfXTAdDpcibwBDfEFYjaIyJArg==",
+      "files": [
+        "lib/3.5/Twilio.Api.dll",
+        "lib/3.5/Twilio.Api.pdb",
+        "lib/3.5/Twilio.Api.xml",
+        "lib/SL5/Twilio.Api.Silverlight.dll",
+        "lib/SL5/Twilio.Api.Silverlight.pdb",
+        "lib/SL5/Twilio.Api.Silverlight.xml",
+        "lib/WINDOWSPHONE8/Twilio.Api.WindowsPhone.dll",
+        "lib/WINDOWSPHONE8/Twilio.Api.WindowsPhone.pdb",
+        "lib/WINDOWSPHONE8/Twilio.Api.WindowsPhone.xml",
+        "Twilio.4.7.1.nupkg",
+        "Twilio.4.7.1.nupkg.sha512",
+        "Twilio.nuspec"
+      ]
     }
   },
   "projectFileDependencyGroups": {
@@ -1196,7 +1370,9 @@
       "Warden.Watchers.Web >= 1.0.0",
       "System.Linq >= 4.0.1-beta-23516",
       "System.Linq.Queryable >= 4.0.1-beta-23516",
-      "Warden.Integrations.SendGrid >= 1.0.0"
+      "Warden.Integrations.SendGrid >= 1.0.0",
+      "Warden.Integrations.Twilio >= 1.0.0",
+      "Warden.Integrations.HttpApi >= 1.0.0"
     ],
     "DNX,Version=v4.5.1": []
   }

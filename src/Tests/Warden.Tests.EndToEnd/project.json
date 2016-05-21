@@ -18,7 +18,9 @@
     "Warden.Watchers.Web": "1.0.0",
     "System.Linq": "4.0.1-beta-23516",
     "System.Linq.Queryable": "4.0.1-beta-23516",
-    "Warden.Integrations.SendGrid": "1.0.0"
+    "Warden.Integrations.SendGrid": "1.0.0",
+    "Warden.Integrations.Twilio": "1.0.0",
+    "Warden.Integrations.HttpApi": "1.0.0"
   },
 
   "commands": {

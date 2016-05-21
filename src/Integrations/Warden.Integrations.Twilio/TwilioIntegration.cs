@@ -38,7 +38,7 @@ namespace Warden.Integrations.Twilio
         /// <returns></returns>
         public async Task SendSmsAsync(string message)
         {
-            await SendSmsAsync(message, string.Empty);
+            await SendSmsAsync(message, null);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace Warden.Integrations.Twilio
             if (string.IsNullOrWhiteSpace(smsBody))
                 throw new ArgumentException("SMS body has not been defined.", nameof(smsBody));
 
-            var customReceivers = receivers ?? Enumerable.Empty<string>();
+            var customReceivers = receivers?.Where(x => !string.IsNullOrWhiteSpace(x)) ?? Enumerable.Empty<string>();
             var smsReceivers = (_configuration.DefaultReceivers.Any()
                 ? _configuration.DefaultReceivers.Union(customReceivers)
                 : customReceivers).ToList();

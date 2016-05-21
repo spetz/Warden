@@ -59,6 +59,7 @@ namespace Warden.Integrations.Twilio
             AccountSid = accountSid;
             AuthToken = authToken;
             Sender = sender;
+            DefaultReceivers = Enumerable.Empty<string>().ToArray();
         }
 
         /// <summary>
@@ -102,8 +103,10 @@ namespace Warden.Integrations.Twilio
             /// <returns>Instance of fluent builder for the TwilioIntegrationConfiguration.</returns>
             public Builder WithDefaultReceivers(params string[] receivers)
             {
-                if (receivers?.Any() == false)
+                if (receivers == null || !receivers.Any())
                     throw new ArgumentException("Default receivers can not be empty.", nameof(receivers));
+                if (receivers.Any(string.IsNullOrWhiteSpace))
+                    throw new ArgumentException("Receiver(s) can not have empty number(s).", nameof(receivers));
 
                 Configuration.DefaultReceivers = receivers;
 
