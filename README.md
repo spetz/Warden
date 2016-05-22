@@ -69,6 +69,7 @@ Install-Package Warden
 | **[Web Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Web)**          |        +      |        +     |
 | **[HTTP API Integration](https://github.com/spetz/Warden/wiki/Integration-with-HTTP-API)** |        +      |        +     | 
 | **[SendGrid Integration](https://github.com/spetz/Warden/wiki/Integration-with-SendGrid)** |        +      |        -     | _SendGrid not compatible_
+| **[Twilio Integration](https://github.com/spetz/Warden/wiki/Integration-with-Twilio )** |        +      |        -     | _Twilio  not compatible_
 | **[Web Panel](https://github.com/spetz/Warden/wiki/Web-Panel)** |        +      |        -     | _Some external libs are not compatible (e.g. MongoDB Driver)_
 
 **Quick start**:
