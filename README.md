@@ -31,9 +31,9 @@ On top of that, you may use all of this information to collect the custom metric
 
 **What are the integrations with external services?**
 ----------------
- - **[SendGrid](https://github.com/spetz/Warden/wiki/Integration-with-SendGrid)**
  - **[HTTP API](https://github.com/spetz/Warden/wiki/Integration-with-HTTP-API)**
-
+ - **[SendGrid](https://github.com/spetz/Warden/wiki/Integration-with-SendGrid)**
+ - **[Twilio](https://github.com/spetz/Warden/wiki/Integration-with-Twilio)**
 
 **How can I see what's happening with my system?**
 ----------------
