@@ -1,5 +1,8 @@
 ﻿namespace Warden.Watchers.Process
 {
+    /// <summary>
+    /// Details of the process;
+    /// </summary>
     public class ProcessInfo
     {
         /// <summary>
@@ -34,9 +37,20 @@
             State = state;
         }
 
+        /// <summary>
+        /// Factory method for creating process details
+        /// </summary>
+        /// <param name="id">Unique identifier of the process.</param>
+        /// <param name="name">Name of the process.</param>
+        /// <param name="exists">Flag determining whether the process exists.</param>
+        /// <param name="state">State of the process.</param>
+        /// <returns>Instance of DirectoryInfo.</returns>
         public static ProcessInfo Create(int id, string name, bool exists, ProcessState state)
             => new ProcessInfo(id, name, exists, state);
 
+        /// <summary>
+        /// Factory method for creating empty process details.
+        /// </summary>
         public static ProcessInfo Empty => new ProcessInfo();
     }
 }

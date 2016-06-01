@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Warden.Watchers.Process
 {
     /// <summary>
-    /// PerformanceWatcher designed for application process monitoring.
+    /// ProcessWatcher designed for process monitoring.
     /// </summary>
     public class ProcessWatcher : IWatcher
     {
@@ -30,17 +29,13 @@ namespace Warden.Watchers.Process
 
         public async Task<IWatcherCheckResult> ExecuteAsync()
         {
-            var processes = System.Diagnostics.Process.GetProcessesByName(_configuration.Name);
-            var process = processes.FirstOrDefault();
-            var exists = process != null;
-            var isValid = process?.Responding ?? false;
-            var state = ProcessState.Unknown;
-            if (exists)
-                state = isValid ? ProcessState.Running : ProcessState.Stopped;
-
-            var processId = process?.Id ?? 0;
-            var description = $"Process '{_configuration.Name}' is {(exists ? string.Empty : "not ")}running.";
-            var processInfo = ProcessInfo.Create(processId, _configuration.Name, exists, state);
+            var processService = _configuration.ProcessServiceProvider();
+            var processInfo  = await processService.GetProcessInfoAsync(_configuration.Name);
+            var isRunning = processInfo.State == ProcessState.Running;
+            var isValid = _configuration.SkipStateValidation
+                ? processInfo.Exists
+                : processInfo.State == ProcessState.Running;
+            var description = $"Process '{_configuration.Name}' is {(isRunning ? string.Empty : "not ")}running.";
             var result = ProcessWatcherCheckResult.Create(this, isValid, processInfo, description);
 
             return await Task.FromResult(result);
