@@ -6,27 +6,15 @@
     public class ProcessWatcherCheckResult : WatcherCheckResult
     {
         /// <summary>
-        /// Name of the process.
+        /// Details of the process.
         /// </summary>
-        public string Name { get; }
+        public ProcessInfo ProcessInfo { get; }
 
-        /// <summary>
-        /// Flag determining whether the process exists.
-        /// </summary>
-        public bool Exists { get; }
-
-        /// <summary>
-        /// State of the process.
-        /// </summary>
-        public ProcessState State { get; }
-
-        protected ProcessWatcherCheckResult(ProcessWatcher watcher, bool isValid, string description, 
-            string name, bool exists, ProcessState state)
+        protected ProcessWatcherCheckResult(ProcessWatcher watcher, bool isValid, string description,
+            ProcessInfo processInfo)
             : base(watcher, isValid, description)
         {
-            Name = name;
-            Exists = exists;
-            State = state;
+            ProcessInfo = processInfo;
         }
 
         /// <summary>
@@ -34,12 +22,11 @@
         /// </summary>
         /// <param name="watcher">Instance of ProcessWatcher.</param>
         /// <param name="isValid">Flag determining whether the performed check was valid.</param>
-        /// <param name="name">Name of the process.</param>
-        /// <param name="exists">Flag determining whether the process exists.</param>
-        /// <param name="state"> State of the process.</param>
+        /// <param name="processInfo">Details of the process.</param>
+        /// <param name="description">Custom description of the performed check.</param>
         /// <returns>Instance of ProcessWatcherCheckResult.</returns>
         public static ProcessWatcherCheckResult Create(ProcessWatcher watcher, bool isValid,
-            string name, bool exists, ProcessState state, string description = "")
-            => new ProcessWatcherCheckResult(watcher, isValid, description, name, exists, state);
+             ProcessInfo processInfo, string description = "")
+            => new ProcessWatcherCheckResult(watcher, isValid, description, processInfo);
     }
 }

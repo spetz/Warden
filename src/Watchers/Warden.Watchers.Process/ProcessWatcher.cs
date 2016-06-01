@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Warden.Watchers.Process
@@ -29,7 +30,20 @@ namespace Warden.Watchers.Process
 
         public async Task<IWatcherCheckResult> ExecuteAsync()
         {
-            throw new System.NotImplementedException();
+            var processes = System.Diagnostics.Process.GetProcessesByName(_configuration.Name);
+            var process = processes.FirstOrDefault();
+            var exists = process != null;
+            var isValid = process?.Responding ?? false;
+            var state = ProcessState.Unknown;
+            if (exists)
+                state = isValid ? ProcessState.Running : ProcessState.Stopped;
+
+            var processId = process?.Id ?? 0;
+            var description = $"Process '{_configuration.Name}' is {(exists ? string.Empty : "not ")}running.";
+            var processInfo = ProcessInfo.Create(processId, _configuration.Name, exists, state);
+            var result = ProcessWatcherCheckResult.Create(this, isValid, processInfo, description);
+
+            return await Task.FromResult(result);
         }
     }
 }
