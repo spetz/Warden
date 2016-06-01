@@ -40,5 +40,48 @@ namespace Warden.Watchers.Process
 
             return await Task.FromResult(result);
         }
+
+        /// <summary>
+        /// Factory method for creating a new instance of ProcessWatcher with default name of Process Watcher.
+        /// </summary>
+        /// <param name="processName">Name of the process.</param>
+        /// <param name="configurator">Optional lambda expression for configuring the ProcessWatcher.</param>
+        /// <returns>Instance of ProcessWatcher.</returns>
+        public static ProcessWatcher Create(string processName,
+            Action<ProcessWatcherConfiguration.Default> configurator = null)
+            => Create(DefaultName, processName, configurator);
+
+        /// <summary>
+        /// Factory method for creating a new instance of ProcessWatcher with default name of Process Watcher.
+        /// </summary>
+        /// <param name="name">Name of the ProcessWatcher.</param>
+        /// <param name="processName">Name of the process.</param>
+        /// <param name="configurator">Optional lambda expression for configuring the ProcessWatcher.</param>
+        /// <returns>Instance of ProcessWatcher.</returns>
+        public static ProcessWatcher Create(string name, string processName,
+            Action<ProcessWatcherConfiguration.Default> configurator = null)
+        {
+            var config = new ProcessWatcherConfiguration.Builder(processName);
+            configurator?.Invoke((ProcessWatcherConfiguration.Default)config);
+
+            return Create(name, config.Build());
+        }
+
+        /// <summary>
+        /// Factory method for creating a new instance of ProcessWatcher with default name of Process Watcher.
+        /// </summary>
+        /// <param name="configuration">Configuration of ProcessWatcher.</param>
+        /// <returns>Instance of ProcessWatcher.</returns>
+        public static ProcessWatcher Create(ProcessWatcherConfiguration configuration)
+            => Create(DefaultName, configuration);
+
+        /// <summary>
+        /// Factory method for creating a new instance of ProcessWatcher.
+        /// </summary>
+        /// <param name="name">Name of the ProcessWatcher.</param>
+        /// <param name="configuration">Configuration of ProcessWatcher.</param>
+        /// <returns>Instance of ProcessWatcher.</returns>
+        public static ProcessWatcher Create(string name, ProcessWatcherConfiguration configuration)
+            => new ProcessWatcher(name, configuration);
     }
 }
