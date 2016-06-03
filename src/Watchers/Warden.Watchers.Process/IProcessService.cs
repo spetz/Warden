@@ -27,10 +27,10 @@ namespace Warden.Watchers.Process
             var process = processes.FirstOrDefault();
             var processId = process?.Id ?? 0;
             var exists = process != null;
-            var isValid = process?.Responding ?? false;
+            var isResponding = process?.Responding ?? false;
             var state = ProcessState.Unknown;
             if (exists)
-                state = isValid ? ProcessState.Running : ProcessState.Stopped;
+                state = isResponding ? ProcessState.Running : ProcessState.Stopped;
 
             return await Task.FromResult(ProcessInfo.Create(processId, name, exists, state));
         }
