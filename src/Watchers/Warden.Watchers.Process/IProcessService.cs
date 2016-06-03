@@ -27,12 +27,12 @@ namespace Warden.Watchers.Process
             var process = processes.FirstOrDefault();
             var processId = process?.Id ?? 0;
             var exists = process != null;
-            var isResponding = process?.Responding ?? false;
-            var state = ProcessState.Unknown;
-            if (exists)
-                state = isResponding ? ProcessState.Running : ProcessState.Stopped;
+            var isResponding = true;
 
-            return await Task.FromResult(ProcessInfo.Create(processId, name, exists, state));
+            //TODO: Fix this when .NET Core finally gets this property.
+            //var isResponding = process?.Responding ?? false;
+
+            return await Task.FromResult(ProcessInfo.Create(processId, name, exists, isResponding));
         }
     }
 }

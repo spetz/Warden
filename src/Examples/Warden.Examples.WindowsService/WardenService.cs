@@ -9,6 +9,7 @@ using Warden.Watchers.Disk;
 using Warden.Watchers.MongoDb;
 using Warden.Watchers.MsSql;
 using Warden.Watchers.Performance;
+using Warden.Watchers.Process;
 using Warden.Watchers.Redis;
 using Warden.Watchers.Web;
 
@@ -60,6 +61,7 @@ namespace Warden.Examples.WindowsService
                 .AddPerformanceWatcher(cfg => cfg.EnsureThat(usage => usage.Cpu < 50 && usage.Ram < 5000),
                     hooks =>
                         hooks.OnCompleted(result => Console.WriteLine(result.WatcherCheckResult.Description)))
+                .AddProcessWatcher("mongod")
                 .AddRedisWatcher("localhost", 1, cfg =>
                 {
                     cfg.WithQuery("get test")

@@ -17,7 +17,7 @@ namespace Warden.Tests.Watchers.Process
         protected static Exception Exception { get; set; }
         protected static int ProcessId { get; set; } = 1;
         protected static string ProcessName { get; set; } = "Process";
-        protected static ProcessState ProcessState { get; set; } = ProcessState.Running;
+        protected static bool ProcessResponding { get; set; } = true;
         protected static bool ProcessExists { get; set; } = true;
     }
 
@@ -51,7 +51,7 @@ namespace Warden.Tests.Watchers.Process
         Establish context = () =>
         {
             ProcessMock = new Mock<IProcessService>();
-            ProcessInfo = ProcessInfo.Create(ProcessId, ProcessName, ProcessExists, ProcessState);
+            ProcessInfo = ProcessInfo.Create(ProcessId, ProcessName, ProcessExists, ProcessResponding);
             ProcessMock.Setup(x =>
                 x.GetProcessInfoAsync(Moq.It.IsAny<string>()))
                 .ReturnsAsync(ProcessInfo);
@@ -83,7 +83,7 @@ namespace Warden.Tests.Watchers.Process
             ProcessCheckResult.ProcessInfo.Id.ShouldBeEquivalentTo(ProcessId);
             ProcessCheckResult.ProcessInfo.Name.ShouldBeEquivalentTo(ProcessName);
             ProcessCheckResult.ProcessInfo.Exists.ShouldBeEquivalentTo(ProcessExists);
-            ProcessCheckResult.ProcessInfo.State.ShouldBeEquivalentTo(ProcessState);
+            ProcessCheckResult.ProcessInfo.Responding.ShouldBeEquivalentTo(ProcessResponding);
         };
 
         //TODO: Remove when MSpec works with DNX 
@@ -100,7 +100,7 @@ namespace Warden.Tests.Watchers.Process
     }
 
     [Subject("Process watcher execution")]
-    public class when_invoking_execute_async_method_with_skip_state_validation_enabled : ProcessWatcher_specs
+    public class when_invoking_execute_async_method_with_skip_Responding_validation_enabled : ProcessWatcher_specs
     {
         static Mock<IProcessService> ProcessMock;
         static ProcessInfo ProcessInfo;
@@ -108,14 +108,14 @@ namespace Warden.Tests.Watchers.Process
         Establish context = () =>
         {
             ProcessMock = new Mock<IProcessService>();
-            ProcessInfo = ProcessInfo.Create(ProcessId, ProcessName, ProcessExists, ProcessState.Stopped);
+            ProcessInfo = ProcessInfo.Create(ProcessId, ProcessName, ProcessExists, ProcessResponding);
             ProcessMock.Setup(x =>
                 x.GetProcessInfoAsync(Moq.It.IsAny<string>()))
                 .ReturnsAsync(ProcessInfo);
 
             Configuration = ProcessWatcherConfiguration
                 .Create(ProcessName)
-                .SkipStateValidation()
+                .DoesNotHaveToBeResponding()
                 .WithProcessServiceProvider(() => ProcessMock.Object)
                 .Build();
             Watcher = ProcessWatcher.Create("Process watcher", Configuration);
@@ -141,7 +141,7 @@ namespace Warden.Tests.Watchers.Process
             ProcessCheckResult.ProcessInfo.Id.ShouldBeEquivalentTo(ProcessId);
             ProcessCheckResult.ProcessInfo.Name.ShouldBeEquivalentTo(ProcessName);
             ProcessCheckResult.ProcessInfo.Exists.ShouldBeEquivalentTo(ProcessExists);
-            ProcessCheckResult.ProcessInfo.State.ShouldBeEquivalentTo(ProcessState.Stopped);
+            ProcessCheckResult.ProcessInfo.Responding.ShouldBeEquivalentTo(ProcessResponding);
         };
 
         //TODO: Remove when MSpec works with DNX 
@@ -166,7 +166,7 @@ namespace Warden.Tests.Watchers.Process
         Establish context = () =>
         {
             ProcessMock = new Mock<IProcessService>();
-            ProcessInfo = ProcessInfo.Create(ProcessId, ProcessName, ProcessExists, ProcessState);
+            ProcessInfo = ProcessInfo.Create(ProcessId, ProcessName, ProcessExists, ProcessResponding);
             ProcessMock.Setup(x =>
                 x.GetProcessInfoAsync(Moq.It.IsAny<string>()))
                 .ReturnsAsync(ProcessInfo);
@@ -176,7 +176,7 @@ namespace Warden.Tests.Watchers.Process
                 .EnsureThat(info => info.Id == ProcessId
                                     && info.Name == ProcessName &&
                                     info.Exists == ProcessExists &&
-                                    info.State == ProcessState)
+                                    info.Responding == ProcessResponding)
                 .WithProcessServiceProvider(() => ProcessMock.Object)
                 .Build();
             Watcher = ProcessWatcher.Create("Process watcher", Configuration);
@@ -202,7 +202,7 @@ namespace Warden.Tests.Watchers.Process
             ProcessCheckResult.ProcessInfo.Id.ShouldBeEquivalentTo(ProcessId);
             ProcessCheckResult.ProcessInfo.Name.ShouldBeEquivalentTo(ProcessName);
             ProcessCheckResult.ProcessInfo.Exists.ShouldBeEquivalentTo(ProcessExists);
-            ProcessCheckResult.ProcessInfo.State.ShouldBeEquivalentTo(ProcessState);
+            ProcessCheckResult.ProcessInfo.Responding.ShouldBeEquivalentTo(ProcessResponding);
         };
 
         //TODO: Remove when MSpec works with DNX 
@@ -227,7 +227,7 @@ namespace Warden.Tests.Watchers.Process
         Establish context = () =>
         {
             ProcessMock = new Mock<IProcessService>();
-            ProcessInfo = ProcessInfo.Create(ProcessId, ProcessName, ProcessExists, ProcessState);
+            ProcessInfo = ProcessInfo.Create(ProcessId, ProcessName, ProcessExists, ProcessResponding);
             ProcessMock.Setup(x =>
                 x.GetProcessInfoAsync(Moq.It.IsAny<string>()))
                 .ReturnsAsync(ProcessInfo);
@@ -237,7 +237,7 @@ namespace Warden.Tests.Watchers.Process
                 .EnsureThatAsync(info => Task.Factory.StartNew(() => info.Id == ProcessId
                                                                      && info.Name == ProcessName &&
                                                                      info.Exists == ProcessExists &&
-                                                                     info.State == ProcessState))
+                                                                     info.Responding == ProcessResponding))
                 .WithProcessServiceProvider(() => ProcessMock.Object)
                 .Build();
             Watcher = ProcessWatcher.Create("Process watcher", Configuration);
@@ -263,7 +263,7 @@ namespace Warden.Tests.Watchers.Process
             ProcessCheckResult.ProcessInfo.Id.ShouldBeEquivalentTo(ProcessId);
             ProcessCheckResult.ProcessInfo.Name.ShouldBeEquivalentTo(ProcessName);
             ProcessCheckResult.ProcessInfo.Exists.ShouldBeEquivalentTo(ProcessExists);
-            ProcessCheckResult.ProcessInfo.State.ShouldBeEquivalentTo(ProcessState);
+            ProcessCheckResult.ProcessInfo.Responding.ShouldBeEquivalentTo(ProcessResponding);
         };
 
         //TODO: Remove when MSpec works with DNX 
@@ -288,7 +288,7 @@ namespace Warden.Tests.Watchers.Process
         Establish context = () =>
         {
             ProcessMock = new Mock<IProcessService>();
-            ProcessInfo = ProcessInfo.Create(ProcessId, ProcessName, false, ProcessState.Unknown);
+            ProcessInfo = ProcessInfo.Create(ProcessId, ProcessName, false, false);
             ProcessMock.Setup(x =>
                 x.GetProcessInfoAsync(Moq.It.IsAny<string>()))
                 .ReturnsAsync(ProcessInfo);
@@ -297,7 +297,7 @@ namespace Warden.Tests.Watchers.Process
                 .EnsureThat(info => info.Id == ProcessId
                                     && info.Name == ProcessName &&
                                     info.Exists &&
-                                    info.State == ProcessState.Running)
+                                    info.Responding)
                 .WithProcessServiceProvider(() => ProcessMock.Object)
                 .Build();
             Watcher = ProcessWatcher.Create("Process watcher", Configuration);
@@ -323,7 +323,7 @@ namespace Warden.Tests.Watchers.Process
             ProcessCheckResult.ProcessInfo.Id.ShouldBeEquivalentTo(ProcessId);
             ProcessCheckResult.ProcessInfo.Name.ShouldBeEquivalentTo(ProcessName);
             ProcessCheckResult.ProcessInfo.Exists.ShouldBeEquivalentTo(false);
-            ProcessCheckResult.ProcessInfo.State.ShouldBeEquivalentTo(ProcessState.Unknown);
+            ProcessCheckResult.ProcessInfo.Responding.ShouldBeEquivalentTo(false);
         };
 
         //TODO: Remove when MSpec works with DNX 
@@ -348,7 +348,7 @@ namespace Warden.Tests.Watchers.Process
         Establish context = () =>
         {
             ProcessMock = new Mock<IProcessService>();
-            ProcessInfo = ProcessInfo.Create(ProcessId, ProcessName, false, ProcessState.Unknown);
+            ProcessInfo = ProcessInfo.Create(ProcessId, ProcessName, false, false);
             ProcessMock.Setup(x =>
                 x.GetProcessInfoAsync(Moq.It.IsAny<string>()))
                 .ReturnsAsync(ProcessInfo);
@@ -357,7 +357,7 @@ namespace Warden.Tests.Watchers.Process
                 .EnsureThatAsync(info => Task.Factory.StartNew(() => info.Id == ProcessId
                                                                      && info.Name == ProcessName &&
                                                                      info.Exists &&
-                                                                     info.State == ProcessState.Running))
+                                                                     info.Responding))
                 .WithProcessServiceProvider(() => ProcessMock.Object)
                 .Build();
             Watcher = ProcessWatcher.Create("Process watcher", Configuration);
@@ -383,7 +383,7 @@ namespace Warden.Tests.Watchers.Process
             ProcessCheckResult.ProcessInfo.Id.ShouldBeEquivalentTo(ProcessId);
             ProcessCheckResult.ProcessInfo.Name.ShouldBeEquivalentTo(ProcessName);
             ProcessCheckResult.ProcessInfo.Exists.ShouldBeEquivalentTo(false);
-            ProcessCheckResult.ProcessInfo.State.ShouldBeEquivalentTo(ProcessState.Unknown);
+            ProcessCheckResult.ProcessInfo.Responding.ShouldBeEquivalentTo(false);
         };
 
         //TODO: Remove when MSpec works with DNX 

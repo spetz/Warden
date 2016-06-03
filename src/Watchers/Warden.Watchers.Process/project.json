@@ -6,10 +6,19 @@
   "projectUrl": "https://github.com/spetz/warden",
   "licenseUrl": "https://github.com/spetz/Warden/blob/master/LICENSE",
   "dependencies": {
-    "Microsoft.AspNet.SignalR.Core": "2.2.0",
     "Warden": "1.0.0"
   },
   "frameworks": {
-    "net451": { }
+    "dnx451": { },
+    "dotnet5.4": {
+      "dependencies": {
+        "Microsoft.CSharp": "4.0.1-beta-23516",
+        "System.Collections": "4.0.11-beta-23516",
+        "System.Linq": "4.0.1-beta-23516",
+        "System.Runtime": "4.0.21-beta-23516",
+        "System.Threading": "4.0.11-beta-23516",
+        "System.Diagnostics.Process": "4.1.0-beta-23516"
+      }
+    }
   }
 }

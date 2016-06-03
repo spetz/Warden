@@ -223,6 +223,13 @@
           "Warden": "1.0.0"
         }
       },
+      "Warden.Watchers.Process/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
+        "dependencies": {
+          "Warden": "1.0.0"
+        }
+      },
       "Warden.Watchers.Redis/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
@@ -458,6 +465,13 @@
       "Warden.Watchers.Performance/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Warden": "1.0.0"
+        }
+      },
+      "Warden.Watchers.Process/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
         "dependencies": {
           "Warden": "1.0.0"
         }
@@ -701,6 +715,13 @@
           "Warden": "1.0.0"
         }
       },
+      "Warden.Watchers.Process/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
+        "dependencies": {
+          "Warden": "1.0.0"
+        }
+      },
       "Warden.Watchers.Redis/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
@@ -752,6 +773,10 @@
     "Warden.Watchers.Performance/1.0.0": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Performance/project.json"
+    },
+    "Warden.Watchers.Process/1.0.0": {
+      "type": "project",
+      "path": "../../Watchers/Warden.Watchers.Process/project.json"
     },
     "Warden.Watchers.Redis/1.0.0": {
       "type": "project",
@@ -1040,6 +1065,7 @@
       "Warden.Watchers.MongoDb >= 1.0.0",
       "Warden.Watchers.MsSql >= 1.0.0",
       "Warden.Watchers.Performance >= 1.0.0",
+      "Warden.Watchers.Process >= 1.0.0",
       "Warden.Watchers.Redis >= 1.0.0",
       "Warden.Watchers.Web >= 1.0.0"
     ],

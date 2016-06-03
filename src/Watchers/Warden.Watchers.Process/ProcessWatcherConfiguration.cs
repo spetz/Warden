@@ -14,9 +14,9 @@ namespace Warden.Watchers.Process
         public string Name { get; }
 
         /// <summary>
-        /// Flag determining whether the existing but not running process should be treated as valid one.
+        /// Flag determining whether the existing but not responding process should be treated as valid one.
         /// </summary>
-        public bool SkipStateValidation { get; protected set; }
+        public bool DoesNotHaveToBeResponding { get; protected set; }
 
         /// <summary>
         /// Predicate that has to be satisfied in order to return the valid result.
@@ -62,12 +62,12 @@ namespace Warden.Watchers.Process
             }
 
             /// <summary>
-            /// Skips the validation of the state for existing process.
+            /// Skips the validation of the responding state for existing process.
             /// </summary>
             /// <returns>Instance of fluent builder for the ProcessWatcherConfiguration.</returns>
-            public T SkipStateValidation()
+            public T DoesNotHaveToBeResponding()
             {
-                Configuration.SkipStateValidation = true;
+                Configuration.DoesNotHaveToBeResponding = true;
 
                 return Configurator;
             }

@@ -31,11 +31,11 @@ namespace Warden.Watchers.Process
         {
             var processService = _configuration.ProcessServiceProvider();
             var processInfo  = await processService.GetProcessInfoAsync(_configuration.Name);
-            var isRunning = processInfo.State == ProcessState.Running;
-            var isValid = _configuration.SkipStateValidation
+            var isValid = _configuration.DoesNotHaveToBeResponding
                 ? processInfo.Exists
-                : processInfo.State == ProcessState.Running;
-            var description = $"Process '{_configuration.Name}' is {(isRunning ? string.Empty : "not ")}running.";
+                : processInfo.Exists && processInfo.Responding;
+
+            var description = $"Process '{_configuration.Name}' does {(processInfo.Exists ? string.Empty : "not ")}exist.";
             var result = ProcessWatcherCheckResult.Create(this, isValid, processInfo, description);
 
             return await Task.FromResult(result);

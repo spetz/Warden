@@ -21,20 +21,21 @@
         public bool Exists { get; }
 
         /// <summary>
-        /// State of the process.
+        /// Flag determining whether the process is responding. 
+        /// Currently it's always true as it's a still missing property in .NET Core.
         /// </summary>
-        public ProcessState State { get; }
+        public bool Responding { get; }
 
         protected ProcessInfo()
         {
         }
 
-        protected ProcessInfo(int id, string name, bool exists, ProcessState state)
+        protected ProcessInfo(int id, string name, bool exists, bool responding)
         {
             Id = id;
             Name = name;
             Exists = exists;
-            State = state;
+            Responding = responding;
         }
 
         /// <summary>
@@ -43,10 +44,10 @@
         /// <param name="id">Unique identifier of the process.</param>
         /// <param name="name">Name of the process.</param>
         /// <param name="exists">Flag determining whether the process exists.</param>
-        /// <param name="state">State of the process.</param>
+        /// <param name="responding">Flag determining whether the process is responding.</param>
         /// <returns>Instance of DirectoryInfo.</returns>
-        public static ProcessInfo Create(int id, string name, bool exists, ProcessState state)
-            => new ProcessInfo(id, name, exists, state);
+        public static ProcessInfo Create(int id, string name, bool exists, bool responding)
+            => new ProcessInfo(id, name, exists, responding);
 
         /// <summary>
         /// Factory method for creating empty process details.
