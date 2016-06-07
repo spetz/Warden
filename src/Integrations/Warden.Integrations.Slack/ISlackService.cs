@@ -11,7 +11,17 @@ namespace Warden.Integrations.Slack
     /// </summary>
     public interface ISlackService
     {
-        Task PostMessageAsync(string text, string username = null, string channel = null);
+        /// <summary>
+        /// Executes the HTTP POST request.
+        /// </summary>
+        /// <param name="message">Message text.</param>
+        /// <param name="channel">Optional name of channel to which the message will be sent.</param>
+        /// <param name="username">Optional username that will send the message.</param>
+        /// <param name="timeout">Optional timeout for the request.</param>
+        /// <param name="failFast">Optional flag determining whether an exception should be thrown if received reponse is invalid (false by default).</param>
+        /// <returns></returns>
+        Task SendMessageAsync(string message, string channel = null, string username = null, 
+            TimeSpan? timeout = null, bool failFast = false);
     }
 
     /// <summary>
@@ -27,17 +37,44 @@ namespace Warden.Integrations.Slack
             _uri = new Uri(webhookUrl);
         }
 
-        public async Task PostMessageAsync(string text, string username = null, string channel = null)
+        public async Task SendMessageAsync(string message, string channel = null, string username = null,
+            TimeSpan? timeout = null, bool failFast = false)
         {
-            var payload = new
+            SetTimeout(timeout);
+            try
             {
-                channel,
-                username,
-                text
-            };
-            var serializedPayload = JsonConvert.SerializeObject(payload);
-            var response = await _httpClient.PostAsync(_uri, new StringContent(
-                serializedPayload, Encoding.UTF8, "application/json"));
+                var payload = new
+                {
+                    text = message,
+                    channel,
+                    username,
+                };
+                var serializedPayload = JsonConvert.SerializeObject(payload);
+                var response = await _httpClient.PostAsync(_uri, new StringContent(
+                    serializedPayload, Encoding.UTF8, "application/json"));
+
+                if (response.IsSuccessStatusCode)
+                    return;
+                if (!failFast)
+                    return;
+
+                throw new Exception("Received invalid HTTP response from Slack API " +
+                                    $"with status code: {response.StatusCode}. Reason phrase: {response.ReasonPhrase}");
+            }
+            catch (Exception exception)
+            {
+                if (!failFast)
+                    return;
+
+                throw new Exception("There was an error while executing the SendMessageAsync(): " +
+                                    $"{exception}", exception);
+            }
+        }
+
+        private void SetTimeout(TimeSpan? timeout)
+        {
+            if (timeout > TimeSpan.Zero)
+                _httpClient.Timeout = timeout.Value;
         }
     }
 }
