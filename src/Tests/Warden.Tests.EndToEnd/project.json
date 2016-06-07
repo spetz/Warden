@@ -21,7 +21,8 @@
     "Warden.Integrations.SendGrid": "1.0.0",
     "Warden.Integrations.Twilio": "1.0.0",
     "Warden.Integrations.HttpApi": "1.0.0",
-    "Warden.Watchers.Process": "1.0.0"
+    "Warden.Watchers.Process": "1.0.0",
+    "Warden.Integrations.Slack": "1.0.0"
   },
 
   "commands": {

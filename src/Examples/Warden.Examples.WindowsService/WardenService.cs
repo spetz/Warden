@@ -98,6 +98,8 @@ namespace Warden.Examples.WindowsService
                 .IntegrateWithHttpApi("http://localhost:11223/api",
                 "yroWbGkozycDLMI7+Jkyw0FzJv/O6xHzhR8+DcKTNEQECZHFBFmBbYCKJ2wiHYI=",
                 "20afbd7c-f803-4a2d-be64-640776930930")
+                //Set proper Slack webhook URL
+                //.IntegrateWithSlack("https://hooks.slack.com/services/XXX/YYY/ZZZ")
                 .SetGlobalWatcherHooks(hooks =>
                 {
                     hooks.OnStart(check => GlobalHookOnStart(check))
@@ -108,7 +110,10 @@ namespace Warden.Examples.WindowsService
                 .SetHooks((hooks, integrations) =>
                 {
                     hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration))
-                        .OnIterationCompletedAsync(iteration => integrations.HttpApi().PostIterationToWardenPanelAsync(iteration))
+                        //.OnIterationCompletedAsync(iteration =>
+                        //    integrations.Slack().SendMessageAsync($"Iteration {iteration.Ordinal} has completed."))
+                        .OnIterationCompletedAsync(iteration => integrations.HttpApi()
+                            .PostIterationToWardenPanelAsync(iteration))
                         .OnError(exception => System.Console.WriteLine(exception));
                 })
                 .Build();

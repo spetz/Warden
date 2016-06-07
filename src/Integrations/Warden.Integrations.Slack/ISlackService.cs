@@ -29,12 +29,12 @@ namespace Warden.Integrations.Slack
     /// </summary>
     public class SlackService : ISlackService
     {
-        private readonly Uri _uri;
+        private readonly Uri _webhookUrl;
         private readonly HttpClient _httpClient = new HttpClient();
 
-        public SlackService(string webhookUrl)
+        public SlackService(Uri webhookUrl)
         {
-            _uri = new Uri(webhookUrl);
+            _webhookUrl = webhookUrl;
         }
 
         public async Task SendMessageAsync(string message, string channel = null, string username = null,
@@ -50,7 +50,7 @@ namespace Warden.Integrations.Slack
                     username,
                 };
                 var serializedPayload = JsonConvert.SerializeObject(payload);
-                var response = await _httpClient.PostAsync(_uri, new StringContent(
+                var response = await _httpClient.PostAsync(_webhookUrl, new StringContent(
                     serializedPayload, Encoding.UTF8, "application/json"));
 
                 if (response.IsSuccessStatusCode)

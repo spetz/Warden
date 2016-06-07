@@ -242,6 +242,15 @@
           "Warden": "1.0.0"
         }
       },
+      "Warden.Integrations.Slack/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Newtonsoft.Json": "7.0.1",
+          "System.Net.Http": "4.0.0",
+          "Warden": "1.0.0"
+        }
+      },
       "Warden.Integrations.Twilio/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
@@ -542,6 +551,15 @@
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "Sendgrid": "6.3.4",
+          "Warden": "1.0.0"
+        }
+      },
+      "Warden.Integrations.Slack/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Newtonsoft.Json": "7.0.1",
+          "System.Net.Http": "4.0.0",
           "Warden": "1.0.0"
         }
       },
@@ -848,6 +866,15 @@
           "Warden": "1.0.0"
         }
       },
+      "Warden.Integrations.Slack/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "Newtonsoft.Json": "7.0.1",
+          "System.Net.Http": "4.0.0",
+          "Warden": "1.0.0"
+        }
+      },
       "Warden.Integrations.Twilio/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
@@ -924,6 +951,10 @@
     "Warden.Integrations.SendGrid/1.0.0": {
       "type": "project",
       "path": "../../Integrations/Warden.Integrations.SendGrid/project.json"
+    },
+    "Warden.Integrations.Slack/1.0.0": {
+      "type": "project",
+      "path": "../../Integrations/Warden.Integrations.Slack/project.json"
     },
     "Warden.Integrations.Twilio/1.0.0": {
       "type": "project",
@@ -1476,7 +1507,8 @@
       "Microsoft.CSharp >= 4.0.0",
       "Warden.Integrations.HttpApi >= 1.0.0",
       "Warden.Integrations.Twilio >= 1.0.0",
-      "Warden.Watchers.Process >= 1.0.0"
+      "Warden.Watchers.Process >= 1.0.0",
+      "Warden.Integrations.Slack >= 1.0.0"
     ],
     "DNX,Version=v4.5.1": []
   }

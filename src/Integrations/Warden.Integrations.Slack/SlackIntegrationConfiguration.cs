@@ -10,7 +10,7 @@ namespace Warden.Integrations.Slack
         /// <summary>
         /// Full URL of the Slack webhook integration.
         /// </summary>
-        public string WebhookUrl { get; protected set; }
+        public Uri WebhookUrl { get; protected set; }
 
         /// <summary>
         /// Default message text.
@@ -54,8 +54,8 @@ namespace Warden.Integrations.Slack
             if (string.IsNullOrWhiteSpace(webhookUrl))
                 throw new ArgumentException("Webhook URL can not be empty.", nameof(webhookUrl));
 
-            WebhookUrl = webhookUrl;
-            SlackServiceProvider = () => new SlackService(webhookUrl);
+            WebhookUrl = new Uri(webhookUrl);
+            SlackServiceProvider = () => new SlackService(WebhookUrl);
         }
 
         /// <summary>

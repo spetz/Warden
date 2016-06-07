@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Warden.Configurations;
 using Warden.Integrations.HttpApi;
+using Warden.Integrations.Slack;
 using Warden.Watchers;
 using Warden.Watchers.Disk;
 using Warden.Watchers.MongoDb;
@@ -81,8 +82,10 @@ namespace Warden.Examples.Console
                 //})
                 //Set proper URL of the Warden Web API
                 .IntegrateWithHttpApi("http://localhost:11223/api",
-                "1pi0Tp9/n2wdLSRsUBAKXwHGPXoFU/58wV8Dc+vIL+k2/fWF14VXPiuK",
-                "0b8351f1-dc93-4137-90b9-e3a7d7e12054")
+                    "1pi0Tp9/n2wdLSRsUBAKXwHGPXoFU/58wV8Dc+vIL+k2/fWF14VXPiuK",
+                    "0b8351f1-dc93-4137-90b9-e3a7d7e12054")
+                //Set proper Slack webhook URL
+                //.IntegrateWithSlack("https://hooks.slack.com/services/XXX/YYY/ZZZ")
                 .SetGlobalWatcherHooks(hooks =>
                 {
                     hooks.OnStart(check => GlobalHookOnStart(check))
@@ -93,6 +96,8 @@ namespace Warden.Examples.Console
                 .SetHooks((hooks, integrations) =>
                 {
                     hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration))
+                        //.OnIterationCompletedAsync(iteration =>
+                        //    integrations.Slack().SendMessageAsync($"Iteration {iteration.Ordinal} has completed."))
                         .OnIterationCompletedAsync(iteration => integrations.HttpApi()
                             .PostIterationToWardenPanelAsync(iteration))
                         .OnError(exception => System.Console.WriteLine(exception));
@@ -110,7 +115,7 @@ namespace Warden.Examples.Console
 
         private static async Task WebsiteHookOnSuccessAsync(IWardenCheckResult check)
         {
-            var webWatcherCheckResult = (WebWatcherCheckResult) check.WatcherCheckResult;
+            var webWatcherCheckResult = (WebWatcherCheckResult)check.WatcherCheckResult;
             System.Console.WriteLine("Invoking the hook OnSuccessAsync() " +
                                      $"by watcher: '{webWatcherCheckResult.WatcherName}'.");
             await Task.FromResult(true);
