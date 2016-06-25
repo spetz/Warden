@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Warden.Core;
 
 namespace Warden.Integrations.HttpApi
 {

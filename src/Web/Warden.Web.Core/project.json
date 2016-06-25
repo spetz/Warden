@@ -1,6 +1,6 @@
 ﻿{
-  "version": "1.0.0",
-  "description": "Warden.Web.Core Class Library",
+  "version": "1.0.1-rc1",
+  "description": "Warden.Web.Core library",
   "authors": [ "Spetz" ],
   "tags": [ "" ],
   "projectUrl": "",

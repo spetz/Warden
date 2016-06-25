@@ -1,5 +1,5 @@
 ﻿using System;
-using Warden.Configurations;
+using Warden.Core;
 
 namespace Warden.Integrations.Slack
 {

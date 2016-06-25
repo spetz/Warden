@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using Warden.Configurations;
+using Warden.Core;
 
 namespace Warden.Integrations.HttpApi
 {

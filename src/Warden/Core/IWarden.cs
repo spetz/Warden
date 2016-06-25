@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using Warden.Configurations;
-using Warden.Core;
 
-namespace Warden
+namespace Warden.Core
 {
     /// <summary>
     /// Core interface responsible for executing the watchers, hooks and integrations.
@@ -97,17 +94,17 @@ namespace Warden
             _running = true;
             _configuration.Hooks.OnStart.Execute();
             await _configuration.Hooks.OnStartAsync.ExecuteAsync();
-            var iterationProcessor = _configuration.IterationProcessorProvider();
+            await TryExecuteIterationsAsync();
+        }
 
+        private async Task TryExecuteIterationsAsync()
+        {
+            var iterationProcessor = _configuration.IterationProcessorProvider();
             while (CanExecuteIteration(_iterationOrdinal))
             {
                 try
                 {
-                    _configuration.Hooks.OnIterationStart.Execute(_iterationOrdinal);
-                    await _configuration.Hooks.OnIterationStartAsync.ExecuteAsync(_iterationOrdinal);
-                    var iteration = await iterationProcessor.ExecuteAsync(Name, _iterationOrdinal);
-                    _configuration.Hooks.OnIterationCompleted.Execute(iteration);
-                    await _configuration.Hooks.OnIterationCompletedAsync.ExecuteAsync(iteration);
+                    await ExecuteIterationAsync(iterationProcessor);
                     var canExecuteNextIteration = CanExecuteIteration(_iterationOrdinal + 1);
                     if (!canExecuteNextIteration)
                         break;
@@ -131,6 +128,15 @@ namespace Warden
                     await Task.Delay(_configuration.IterationDelay);
                 }
             }
+        }
+
+        private async Task ExecuteIterationAsync(IIterationProcessor iterationProcessor)
+        {
+            _configuration.Hooks.OnIterationStart.Execute(_iterationOrdinal);
+            await _configuration.Hooks.OnIterationStartAsync.ExecuteAsync(_iterationOrdinal);
+            var iteration = await iterationProcessor.ExecuteAsync(Name, _iterationOrdinal);
+            _configuration.Hooks.OnIterationCompleted.Execute(iteration);
+            await _configuration.Hooks.OnIterationCompletedAsync.ExecuteAsync(iteration);
         }
 
         private bool CanExecuteIteration(long ordinal)

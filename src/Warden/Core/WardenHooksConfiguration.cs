@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Warden.Configurations
+namespace Warden.Core
 {
     /// <summary>
     /// Configuration of the hooks for the Warden.

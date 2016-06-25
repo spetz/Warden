@@ -34,8 +34,8 @@ namespace Warden.Watchers.Redis
         {
             try
             {
-                var database = _configuration.RedisProvider?.Invoke() ?? await _connection.GetDatabaseAsync(_configuration.Database);
-                if (database == null)
+                var redis = _configuration.RedisProvider?.Invoke() ?? await _connection.GetDatabaseAsync(_configuration.Database);
+                if (redis == null)
                 {
                     return RedisWatcherCheckResult.Create(this, false, _configuration.Database,
                         _configuration.ConnectionString, $"Database: '{_configuration.Database}' has not been found.");
@@ -47,17 +47,7 @@ namespace Warden.Watchers.Redis
                         $"Database: {_configuration.Database} has been sucessfully checked.");
                 }
 
-                var queryResult = await database.QueryAsync(_configuration.Query);
-                var isValid = true;
-                if (_configuration.EnsureThatAsync != null)
-                    isValid = await _configuration.EnsureThatAsync?.Invoke(queryResult);
-
-                isValid = isValid && (_configuration.EnsureThat?.Invoke(queryResult) ?? true);
-                var description = $"Redis check has returned {(isValid ? "valid" : "invalid")} result for " +
-                                  $"database: '{_configuration.Database}' and given query.";
-
-                return RedisWatcherCheckResult.Create(this, isValid, _configuration.Database,
-                    _configuration.ConnectionString, _configuration.Query, queryResult, description);
+                return await ExecuteForQueryAsync(redis);
             }
             catch (RedisException exception)
             {
@@ -68,6 +58,21 @@ namespace Warden.Watchers.Redis
             {
                 throw new WatcherException("There was an error while trying to access the Redis.", exception);
             }
+        }
+
+        private async Task<IWatcherCheckResult> ExecuteForQueryAsync(IRedis redis)
+        {
+            var queryResult = await redis.QueryAsync(_configuration.Query);
+            var isValid = true;
+            if (_configuration.EnsureThatAsync != null)
+                isValid = await _configuration.EnsureThatAsync?.Invoke(queryResult);
+
+            isValid = isValid && (_configuration.EnsureThat?.Invoke(queryResult) ?? true);
+            var description = $"Redis check has returned {(isValid ? "valid" : "invalid")} result for " +
+                              $"database: '{_configuration.Database}' and given query.";
+
+            return RedisWatcherCheckResult.Create(this, isValid, _configuration.Database,
+                _configuration.ConnectionString, _configuration.Query, queryResult, description);
         }
 
         /// <summary>

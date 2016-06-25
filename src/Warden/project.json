@@ -1,9 +1,9 @@
 ﻿{
-  "version": "1.0.0",
+  "version": "1.0.1-rc1",
   "description": "Warden is an open source library built to solve the problem of monitoring the resources.",
   "authors": [ "Piotr Gankiewicz" ],
   "tags": [ "Warden" ],
-  "projectUrl": "https://github.com/spetz/warden",
+  "projectUrl": "https://getwarden.net",
   "licenseUrl": "https://github.com/spetz/Warden/blob/master/LICENSE",
   "frameworks": {
     "net451": { },

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using Warden.Core;
 using Warden.Integrations.HttpApi;
 
 namespace Warden.Tests.Integrations.HttpApi

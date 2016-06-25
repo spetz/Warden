@@ -19,7 +19,7 @@ namespace Warden.Integrations.HttpApi
         /// <param name="data">Request data in JSON format that will be sent.</param>
         /// <param name="headers">Optional request headers.</param>
         /// <param name="timeout">Optional timeout for the request.</param>
-        /// <param name="failFast">Flag determining whether an exception should be thrown on if received reponse is invalid (false by default).</param>
+        /// <param name="failFast">Flag determining whether an exception should be thrown if received reponse is invalid (false by default).</param>
         /// <returns>Instance of IHttpResponse.</returns>
         Task PostAsync(string url, string data, IDictionary<string, string> headers = null,
             TimeSpan? timeout = null, bool failFast = false);

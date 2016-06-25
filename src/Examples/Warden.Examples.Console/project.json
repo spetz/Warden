@@ -1,34 +1,30 @@
 {
-  "version": "1.0.0",
+  "version": "1.0.1-rc1",
   "description": "Example of Warden Console Application.",
   "authors": [ "Piotr Gankiewicz" ],
   "tags": [ "Warden" ],
-  "projectUrl": "https://github.com/spetz/warden",
+  "projectUrl": "https://getwarden.net",
   "licenseUrl": "https://github.com/spetz/Warden/blob/master/LICENSE",
-
   "compilationOptions": {
     "emitEntryPoint": true
   },
-
   "dependencies": {
-    "Warden": "1.0.0",
-    "Warden.Integrations.HttpApi": "1.0.0",
-    "Warden.Integrations.SendGrid": "1.0.0",
-    "Warden.Integrations.Slack": "1.0.0",
-    "Warden.Integrations.Twilio": "1.0.0",
-    "Warden.Watchers.Disk": "1.0.0",
-    "Warden.Watchers.MongoDb": "1.0.0",
-    "Warden.Watchers.MsSql": "1.0.0",
-    "Warden.Watchers.Performance": "1.0.0",
-    "Warden.Watchers.Process": "1.0.0",
-    "Warden.Watchers.Redis": "1.0.0",
-    "Warden.Watchers.Web": "1.0.0"
+    "Warden": "1.0.1-rc1",
+    "Warden.Integrations.HttpApi": "1.0.1-rc1",
+    "Warden.Integrations.SendGrid": "1.0.1-rc1",
+    "Warden.Integrations.Slack": "1.0.1-rc1",
+    "Warden.Integrations.Twilio": "1.0.1-rc1",
+    "Warden.Watchers.Disk": "1.0.1-rc1",
+    "Warden.Watchers.MongoDb": "1.0.1-rc1",
+    "Warden.Watchers.MsSql": "1.0.1-rc1",
+    "Warden.Watchers.Performance": "1.0.1-rc1",
+    "Warden.Watchers.Process": "1.0.1-rc1",
+    "Warden.Watchers.Redis": "1.0.1-rc1",
+    "Warden.Watchers.Web": "1.0.1-rc1"
   },
-
   "commands": {
     "Warden.Examples.Console": "Warden.Examples.Console"
   },
-
   "frameworks": {
     "dnx451": { }
   }

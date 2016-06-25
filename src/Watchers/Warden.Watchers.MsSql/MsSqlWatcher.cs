@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
@@ -44,19 +45,7 @@ namespace Warden.Watchers.MsSql
                             $"Database: {_configuration.Database} has been sucessfully checked.");
                     }
 
-                    var queryResult = await _msSql.QueryAsync(connection, _configuration.Query,
-                        _configuration.QueryParameters, _configuration.QueryTimeout);
-
-                    var isValid = true;
-                    if (_configuration.EnsureThatAsync != null)
-                        isValid = await _configuration.EnsureThatAsync?.Invoke(queryResult);
-
-                    isValid = isValid && (_configuration.EnsureThat?.Invoke(queryResult) ?? true);
-                    var description = $"MSSQL check has returned {(isValid ? "valid" : "invalid")} result for " +
-                                      $"database: '{_configuration.Database}' and given query.";
-
-                    return MsSqlWatcherCheckResult.Create(this, isValid, _configuration.ConnectionString,
-                        _configuration.Query, queryResult, description);
+                    return await ExecuteForQueryAsync(connection);
                 }
             }
             catch (SqlException exception)
@@ -68,6 +57,23 @@ namespace Warden.Watchers.MsSql
             {
                 throw new WatcherException("There was an error while trying to access MSSQL database.", exception);
             }
+        }
+
+        private async Task<IWatcherCheckResult> ExecuteForQueryAsync(IDbConnection connection)
+        {
+            var queryResult = await _msSql.QueryAsync(connection, _configuration.Query,
+                _configuration.QueryParameters, _configuration.QueryTimeout);
+
+            var isValid = true;
+            if (_configuration.EnsureThatAsync != null)
+                isValid = await _configuration.EnsureThatAsync?.Invoke(queryResult);
+
+            isValid = isValid && (_configuration.EnsureThat?.Invoke(queryResult) ?? true);
+            var description = $"MSSQL check has returned {(isValid ? "valid" : "invalid")} result for " +
+                              $"database: '{_configuration.Database}' and given query.";
+
+            return MsSqlWatcherCheckResult.Create(this, isValid, _configuration.ConnectionString,
+                _configuration.Query, queryResult, description);
         }
 
         /// <summary>

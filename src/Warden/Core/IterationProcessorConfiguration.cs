@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Warden.Watchers;
 
-namespace Warden.Configurations
+namespace Warden.Core
 {
     /// <summary>
     /// Configuration of the IterationProcessor.

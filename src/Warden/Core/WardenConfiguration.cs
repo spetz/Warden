@@ -4,7 +4,7 @@ using System.Linq;
 using Warden.Integrations;
 using Warden.Watchers;
 
-namespace Warden.Configurations
+namespace Warden.Core
 {
     /// <summary>
     /// Configuration of the Warden.

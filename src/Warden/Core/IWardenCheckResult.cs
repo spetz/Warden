@@ -1,8 +1,7 @@
 ﻿using System;
-using Warden.Core;
 using Warden.Watchers;
 
-namespace Warden
+namespace Warden.Core
 {
     /// <summary>
     /// Contains the specific IWatcherCheckResult type and also the dates and times at which the watcher check has been executed. 

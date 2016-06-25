@@ -53,29 +53,28 @@ namespace Warden.Watchers.Web
         private async Task<HttpResponseMessage> GetHttpResponseAsync(string baseUrl, IHttpRequest request)
         {
             var fullUrl = request.GetFullUrl(baseUrl);
+
+            return await ExecuteHttpResponseAsync(fullUrl, request);
+        }
+
+        private async Task<HttpResponseMessage> ExecuteHttpResponseAsync(string fullUrl, IHttpRequest request)
+        {
             var method = request.Method;
-            HttpResponseMessage response;
             switch (method)
             {
                 case HttpMethod.Get:
-                    response = await _client.GetAsync(fullUrl);
-                    break;
+                    return await _client.GetAsync(fullUrl);
                 case HttpMethod.Post:
-                    response = await _client.PostAsync(fullUrl, new StringContent(
-                        JsonConvert.SerializeObject(request.Data ?? new {}), Encoding.UTF8, "application/json"));
-                    break;
-                case HttpMethod.Put:
-                    response = await _client.PutAsync(fullUrl, new StringContent(
+                    return await _client.PostAsync(fullUrl, new StringContent(
                         JsonConvert.SerializeObject(request.Data ?? new { }), Encoding.UTF8, "application/json"));
-                    break;
+                case HttpMethod.Put:
+                    return await _client.PutAsync(fullUrl, new StringContent(
+                        JsonConvert.SerializeObject(request.Data ?? new { }), Encoding.UTF8, "application/json"));
                 case HttpMethod.Delete:
-                    response = await _client.DeleteAsync(fullUrl);
-                    break;
+                    return await _client.DeleteAsync(fullUrl);
                 default:
                     throw new ArgumentException($"Invalid HTTP method: {method}.", nameof(method));
             }
-
-            return response;
         }
 
         private void SetTimeout(TimeSpan? timeout)

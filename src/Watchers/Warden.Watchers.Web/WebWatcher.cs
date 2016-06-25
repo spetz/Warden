@@ -44,14 +44,7 @@ namespace Warden.Watchers.Web
                         $"Web endpoint: '{fullUrl}' has returned an invalid response with status code: {response.StatusCode}.");
                 }
 
-                if (_configuration.EnsureThatAsync != null)
-                    isValid = await _configuration.EnsureThatAsync?.Invoke(response);
-
-                isValid = isValid && (_configuration.EnsureThat?.Invoke(response) ?? true);
-                return WebWatcherCheckResult.Create(this,
-                    isValid, _configuration.Uri,
-                    _configuration.Request, response,
-                    $"Web endpoint: '{fullUrl}' has returned a response with status code: {response.StatusCode}.");
+                return await EnsureAsync(fullUrl, response);
             }
             catch (TaskCanceledException exception)
             {
@@ -65,6 +58,20 @@ namespace Warden.Watchers.Web
                 throw new WatcherException($"There was an error while trying to access the Web endpoint: '{fullUrl}'.",
                     exception);
             }
+        }
+
+        private async Task<IWatcherCheckResult> EnsureAsync(string fullUrl, IHttpResponse response)
+        {
+            var isValid = true;
+            if (_configuration.EnsureThatAsync != null)
+                isValid = await _configuration.EnsureThatAsync?.Invoke(response);
+
+            isValid = isValid && (_configuration.EnsureThat?.Invoke(response) ?? true);
+
+            return WebWatcherCheckResult.Create(this,
+                isValid, _configuration.Uri,
+                _configuration.Request, response,
+                $"Web endpoint: '{fullUrl}' has returned a response with status code: {response.StatusCode}.");
         }
 
         private bool HasValidResponse(IHttpResponse response)

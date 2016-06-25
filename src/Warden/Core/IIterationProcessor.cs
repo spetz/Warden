@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Warden.Configurations;
-using Warden.Core;
 using Warden.Watchers;
 
-namespace Warden
+namespace Warden.Core
 {
     /// <summary>
     /// Processor responsible for executing all of the configured watchers and theirs hooks in a cycle called the iteration.
@@ -60,56 +58,7 @@ namespace Warden
             var iterationStartedAt = _configuration.DateTimeProvider();
             var results = new List<WatcherExecutionResult>();
             var iterationTasks = _configuration.Watchers.Select(async watcherConfiguration =>
-            {
-                var startedAt = _configuration.DateTimeProvider();
-                var watcher = watcherConfiguration.Watcher;
-                IWardenCheckResult wardenCheckResult = null;
-                try
-                {
-                    await InvokeOnStartHooksAsync(watcherConfiguration, WatcherCheck.Create(watcher));
-                    var watcherCheckResult = await watcher.ExecuteAsync();
-                    var completedAt = _configuration.DateTimeProvider();
-                    wardenCheckResult = WardenCheckResult.Create(watcherCheckResult, startedAt, completedAt);
-                    if (watcherCheckResult.IsValid)
-                    {
-                        var result = wardenCheckResult;
-                        results.Add(new WatcherExecutionResult(watcher, WatcherResultState.Success,
-                            GetPreviousWatcherState(watcher), result));
-                        await UpdateWatcherResultStateAndExecuteHooksPossibleAsync(watcher, WatcherResultState.Success,
-                            () => InvokeOnFirstSuccessHooksAsync(watcherConfiguration, result),
-                            executeIfLatestStateIsNotSet: false);
-                        await InvokeOnSuccessHooksAsync(watcherConfiguration, wardenCheckResult);
-                    }
-                    else
-                    {
-                        var result = wardenCheckResult;
-                        results.Add(new WatcherExecutionResult(watcher, WatcherResultState.Failure,
-                            GetPreviousWatcherState(watcher), result));
-                        await UpdateWatcherResultStateAndExecuteHooksPossibleAsync(watcher, WatcherResultState.Failure,
-                            () => InvokeOnFirstFailureHooksAsync(watcherConfiguration, result));
-                        await InvokeOnFailureHooksAsync(watcherConfiguration, wardenCheckResult);
-                    }
-                }
-                catch (Exception exception)
-                {
-                    var completedAt = _configuration.DateTimeProvider();
-                    wardenCheckResult = WardenCheckResult.Create(WatcherCheckResult.Create(watcher, false),
-                        startedAt, completedAt, exception);
-                    results.Add(new WatcherExecutionResult(watcher, WatcherResultState.Error,
-                        GetPreviousWatcherState(watcher), wardenCheckResult, exception));
-                    await UpdateWatcherResultStateAndExecuteHooksPossibleAsync(watcher, WatcherResultState.Error,
-                        () => InvokeOnFirstErrorHooksAsync(watcherConfiguration, exception));
-                    var wardenException = new WardenException("There was an error while executing Warden " +
-                                                              $"caused by watcher: '{watcher.Name}'.", exception);
-
-                    await InvokeOnErrorHooksAsync(watcherConfiguration, wardenException);
-                }
-                finally
-                {
-                    await InvokeOnCompletedHooksAsync(watcherConfiguration, wardenCheckResult);
-                }
-            });
-
+                await TryExecuteWatcherCheckAndHooksAsync(watcherConfiguration, results));
             await Task.WhenAll(iterationTasks);
             await ExecuteAggregatedHooksAsync(results);
             var iterationCompletedAt = _configuration.DateTimeProvider();
@@ -117,6 +66,66 @@ namespace Warden
                 iterationStartedAt, iterationCompletedAt);
 
             return iteration;
+        }
+
+        private async Task TryExecuteWatcherCheckAndHooksAsync(WatcherConfiguration watcherConfiguration,
+            IList<WatcherExecutionResult> results)
+        {
+            var startedAt = _configuration.DateTimeProvider();
+            var watcher = watcherConfiguration.Watcher;
+            IWardenCheckResult wardenCheckResult = null;
+            try
+            {
+                await InvokeOnStartHooksAsync(watcherConfiguration, WatcherCheck.Create(watcher));
+                var watcherCheckResult = await watcher.ExecuteAsync();
+                var completedAt = _configuration.DateTimeProvider();
+                wardenCheckResult = WardenCheckResult.Create(watcherCheckResult, startedAt, completedAt);
+                await ExecuteWatcherCheckAsync(watcher, watcherCheckResult, wardenCheckResult,
+                    watcherConfiguration, results);
+            }
+            catch (Exception exception)
+            {
+                var completedAt = _configuration.DateTimeProvider();
+                wardenCheckResult = WardenCheckResult.Create(WatcherCheckResult.Create(watcher, false),
+                    startedAt, completedAt, exception);
+                results.Add(new WatcherExecutionResult(watcher, WatcherResultState.Error,
+                    GetPreviousWatcherState(watcher), wardenCheckResult, exception));
+                await UpdateWatcherResultStateAndExecuteHooksPossibleAsync(watcher, WatcherResultState.Error,
+                    () => InvokeOnFirstErrorHooksAsync(watcherConfiguration, exception));
+                var wardenException = new WardenException("There was an error while executing Warden " +
+                                                          $"caused by watcher: '{watcher.Name}'.", exception);
+
+                await InvokeOnErrorHooksAsync(watcherConfiguration, wardenException);
+            }
+            finally
+            {
+                await InvokeOnCompletedHooksAsync(watcherConfiguration, wardenCheckResult);
+            }
+        }
+
+        private async Task ExecuteWatcherCheckAsync(IWatcher watcher, IWatcherCheckResult watcherCheckResult, 
+            IWardenCheckResult wardenCheckResult, WatcherConfiguration watcherConfiguration,
+            IList<WatcherExecutionResult> results)
+        {
+            if (watcherCheckResult.IsValid)
+            {
+                var result = wardenCheckResult;
+                results.Add(new WatcherExecutionResult(watcher, WatcherResultState.Success,
+                    GetPreviousWatcherState(watcher), result));
+                await UpdateWatcherResultStateAndExecuteHooksPossibleAsync(watcher, WatcherResultState.Success,
+                    () => InvokeOnFirstSuccessHooksAsync(watcherConfiguration, result),
+                    executeIfLatestStateIsNotSet: false);
+                await InvokeOnSuccessHooksAsync(watcherConfiguration, wardenCheckResult);
+            }
+            else
+            {
+                var result = wardenCheckResult;
+                results.Add(new WatcherExecutionResult(watcher, WatcherResultState.Failure,
+                    GetPreviousWatcherState(watcher), result));
+                await UpdateWatcherResultStateAndExecuteHooksPossibleAsync(watcher, WatcherResultState.Failure,
+                    () => InvokeOnFirstFailureHooksAsync(watcherConfiguration, result));
+                await InvokeOnFailureHooksAsync(watcherConfiguration, wardenCheckResult);
+            }
         }
 
         private async Task ExecuteAggregatedHooksAsync(IEnumerable<WatcherExecutionResult> results)

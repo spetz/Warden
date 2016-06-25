@@ -139,7 +139,7 @@ namespace Warden.Integrations.Slack
             }
 
             /// <summary>
-            /// Flag determining whether an exception should be thrown on if SendMessageAsync() returns invalid reponse (false by default).
+            /// Flag determining whether an exception should be thrown if SendMessageAsync() returns invalid reponse (false by default).
             /// </summary>
             /// <returns>Instance of fluent builder for the SlackIntegrationConfiguration.</returns>
             public Builder FailFast()

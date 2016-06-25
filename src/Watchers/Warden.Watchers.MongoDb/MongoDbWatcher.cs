@@ -34,8 +34,8 @@ namespace Warden.Watchers.MongoDb
         {
             try
             {
-                var database = _configuration.MongoDbProvider?.Invoke() ?? await _connection.GetDatabaseAsync();
-                if (database == null)
+                var mongoDb = _configuration.MongoDbProvider?.Invoke() ?? await _connection.GetDatabaseAsync();
+                if (mongoDb == null)
                 {
                     return MongoDbWatcherCheckResult.Create(this, false, _configuration.Database,
                         _configuration.ConnectionString, $"Database: '{_configuration.Database}' has not been found.");
@@ -47,17 +47,7 @@ namespace Warden.Watchers.MongoDb
                         $"Database: {_configuration.Database} has been sucessfully checked.");
                 }
 
-                var queryResult = await database.QueryAsync(_configuration.CollectionName, _configuration.Query);
-                var isValid = true;
-                if (_configuration.EnsureThatAsync != null)
-                    isValid = await _configuration.EnsureThatAsync?.Invoke(queryResult);
-
-                isValid = isValid && (_configuration.EnsureThat?.Invoke(queryResult) ?? true);
-                var description = $"MongoDB check has returned {(isValid ? "valid" : "invalid")} result for " +
-                                  $"database: '{_configuration.Database}' and given query.";
-
-                return MongoDbWatcherCheckResult.Create(this, isValid, _configuration.Database,
-                    _configuration.ConnectionString, _configuration.Query, queryResult, description);
+                return await ExecuteForQueryAsync(mongoDb);
             }
             catch (MongoException exception)
             {
@@ -68,6 +58,21 @@ namespace Warden.Watchers.MongoDb
             {
                 throw new WatcherException("There was an error while trying to access the MongoDB.", exception);
             }
+        }
+
+        private async Task<IWatcherCheckResult> ExecuteForQueryAsync(IMongoDb mongoDb)
+        {
+            var queryResult = await mongoDb.QueryAsync(_configuration.CollectionName, _configuration.Query);
+            var isValid = true;
+            if (_configuration.EnsureThatAsync != null)
+                isValid = await _configuration.EnsureThatAsync?.Invoke(queryResult);
+
+            isValid = isValid && (_configuration.EnsureThat?.Invoke(queryResult) ?? true);
+            var description = $"MongoDB check has returned {(isValid ? "valid" : "invalid")} result for " +
+                              $"database: '{_configuration.Database}' and given query.";
+
+            return MongoDbWatcherCheckResult.Create(this, isValid, _configuration.Database,
+                _configuration.ConnectionString, _configuration.Query, queryResult, description);
         }
 
         /// <summary>

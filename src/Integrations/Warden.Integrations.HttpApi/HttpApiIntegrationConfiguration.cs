@@ -61,7 +61,7 @@ namespace Warden.Integrations.HttpApi
         public TimeSpan? Timeout { get; protected set; }
 
         /// <summary>
-        /// Flag determining whether an exception should be thrown on if PostAsync() returns invalid reponse (false by default).
+        /// Flag determining whether an exception should be thrown if PostAsync() returns invalid reponse (false by default).
         /// </summary>
         public bool FailFast { get; protected set; }
 
@@ -184,7 +184,7 @@ namespace Warden.Integrations.HttpApi
             }
 
             /// <summary>
-            /// Flag determining whether an exception should be thrown on if PostAsync() returns invalid reponse (false by default).
+            /// Flag determining whether an exception should be thrown if PostAsync() returns invalid reponse (false by default).
             /// </summary>
             /// <returns>Instance of fluent builder for the HttpApiIntegrationConfiguration.</returns>
             public Builder FailFast()

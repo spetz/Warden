@@ -29,7 +29,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "Warden >= 1.0.0"
+      "Warden >= 1.0.1-rc1"
     ],
     ".NETFramework,Version=v4.5.1": []
   }

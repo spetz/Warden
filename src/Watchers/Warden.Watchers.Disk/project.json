@@ -1,12 +1,12 @@
 ﻿{
-  "version": "1.0.0",
+  "version": "1.0.1-rc1",
   "description": "Warden watcher for Disk.",
   "authors": [ "Piotr Gankiewicz" ],
   "tags": [ "Warden" ],
-  "projectUrl": "https://github.com/spetz/warden",
+  "projectUrl": "https://getwarden.net",
   "licenseUrl": "https://github.com/spetz/Warden/blob/master/LICENSE",
   "dependencies": {
-    "Warden": "1.0.0"
+    "Warden": "1.0.1-rc1"
   },
   "frameworks": {
     "net451": { }
