@@ -24,7 +24,7 @@
           "lib/net45/_._": {}
         }
       },
-      "Warden/1.0.0": {
+      "Warden/1.0.2": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       }
@@ -304,7 +304,7 @@
           "ref/dotnet/System.Threading.Tasks.dll": {}
         }
       },
-      "Warden/1.0.0": {
+      "Warden/1.0.2": {
         "type": "project",
         "framework": ".NETPlatform,Version=v5.4",
         "dependencies": {
@@ -338,7 +338,7 @@
           "lib/net45/_._": {}
         }
       },
-      "Warden/1.0.0": {
+      "Warden/1.0.2": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       }
@@ -365,7 +365,7 @@
           "lib/net45/_._": {}
         }
       },
-      "Warden/1.0.0": {
+      "Warden/1.0.2": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       }
@@ -664,7 +664,7 @@
           "ref/dotnet/System.Threading.Tasks.dll": {}
         }
       },
-      "Warden/1.0.0": {
+      "Warden/1.0.2": {
         "type": "project",
         "framework": ".NETPlatform,Version=v5.4",
         "dependencies": {
@@ -970,7 +970,7 @@
           "ref/dotnet/System.Threading.Tasks.dll": {}
         }
       },
-      "Warden/1.0.0": {
+      "Warden/1.0.2": {
         "type": "project",
         "framework": ".NETPlatform,Version=v5.4",
         "dependencies": {
@@ -984,7 +984,7 @@
     }
   },
   "libraries": {
-    "Warden/1.0.0": {
+    "Warden/1.0.2": {
       "type": "project",
       "path": "../../Warden/project.json"
     },
@@ -2035,7 +2035,7 @@
     "": [
       "System.Net.Http >= 4.0.0",
       "Newtonsoft.Json >= 8.0.3",
-      "Warden >= 1.0.1-rc1"
+      "Warden >= 1.0.2"
     ],
     ".NETFramework,Version=v4.5.1": [],
     ".NETPlatform,Version=v5.4": [
