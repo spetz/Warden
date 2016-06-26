@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Warden.Core;
 
-namespace Warden.Core
+namespace Warden
 {
     /// <summary>
     /// IWardenIteration has the number (ordinal) of the executed iteration (e.g. 1,2,3 ... N) and the collection of the IWardenCheckResult. 

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Warden.Core;
 using Warden.Integrations.HttpApi;
 using Warden.Watchers;
@@ -119,7 +118,7 @@ namespace Warden.Examples.WindowsService
                 })
                 .Build();
 
-            return new Core.Warden(wardenConfiguration);
+            return new Warden(wardenConfiguration);
         }
 
         private static async Task WebsiteHookOnStartAsync(IWatcherCheck check)

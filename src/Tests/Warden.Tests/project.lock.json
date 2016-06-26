@@ -3,22 +3,19 @@
   "version": 2,
   "targets": {
     "DNX,Version=v4.5.1": {
-      "Dapper/1.50.0-beta9": {
+      "Dapper/1.42.0": {
         "type": "package",
         "frameworkAssemblies": [
           "Microsoft.CSharp",
-          "mscorlib",
           "System",
           "System.Core",
-          "System.Data",
-          "System.Xml",
-          "System.Xml.Linq"
+          "System.Data"
         ],
         "compile": {
-          "lib/net451/Dapper.dll": {}
+          "lib/net45/Dapper.dll": {}
         },
         "runtime": {
-          "lib/net451/Dapper.dll": {}
+          "lib/net45/Dapper.dll": {}
         }
       },
       "FluentAssertions/4.3.2": {
@@ -221,116 +218,113 @@
           "lib/3.5/Twilio.Api.dll": {}
         }
       },
-      "Warden/1.0.2": {
+      "Warden/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       },
-      "Warden.Integrations.HttpApi/1.0.2": {
+      "Warden.Integrations.HttpApi/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "Newtonsoft.Json": "8.0.3",
           "System.Net.Http": "4.0.0",
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Integrations.SendGrid/1.0.2": {
+      "Warden.Integrations.SendGrid/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "Sendgrid": "6.3.4",
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Integrations.Slack/1.0.2": {
+      "Warden.Integrations.Slack/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "Newtonsoft.Json": "8.0.3",
           "System.Net.Http": "4.0.0",
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Integrations.Twilio/1.0.2": {
+      "Warden.Integrations.Twilio/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "Twilio": "4.7.2",
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Watchers.Disk/1.0.2": {
+      "Warden.Watchers.Disk/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Watchers.MongoDb/1.0.2": {
+      "Warden.Watchers.MongoDb/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "MongoDB.Driver": "2.2.3",
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Watchers.MsSql/1.0.2": {
+      "Warden.Watchers.MsSql/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
-          "Dapper": "1.50.0-beta9",
-          "Warden": "1.0.2"
+          "Dapper": "1.42.0",
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Watchers.Performance/1.0.2": {
+      "Warden.Watchers.Performance/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Watchers.Process/1.0.2": {
+      "Warden.Watchers.Process/1.0.2.1": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
         "dependencies": {
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Watchers.Redis/1.0.2": {
+      "Warden.Watchers.Redis/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "StackExchange.Redis": "1.1.572",
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Watchers.Web/1.0.2": {
+      "Warden.Watchers.Web/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "Newtonsoft.Json": "8.0.3",
           "System.Net.Http": "4.0.0",
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       }
     },
     "DNX,Version=v4.5.1/win7-x86": {
-      "Dapper/1.50.0-beta9": {
+      "Dapper/1.42.0": {
         "type": "package",
         "frameworkAssemblies": [
           "Microsoft.CSharp",
-          "mscorlib",
           "System",
           "System.Core",
-          "System.Data",
-          "System.Xml",
-          "System.Xml.Linq"
+          "System.Data"
         ],
         "compile": {
-          "lib/net451/Dapper.dll": {}
+          "lib/net45/Dapper.dll": {}
         },
         "runtime": {
-          "lib/net451/Dapper.dll": {}
+          "lib/net45/Dapper.dll": {}
         }
       },
       "FluentAssertions/4.3.2": {
@@ -533,116 +527,113 @@
           "lib/3.5/Twilio.Api.dll": {}
         }
       },
-      "Warden/1.0.2": {
+      "Warden/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       },
-      "Warden.Integrations.HttpApi/1.0.2": {
+      "Warden.Integrations.HttpApi/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "Newtonsoft.Json": "8.0.3",
           "System.Net.Http": "4.0.0",
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Integrations.SendGrid/1.0.2": {
+      "Warden.Integrations.SendGrid/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "Sendgrid": "6.3.4",
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Integrations.Slack/1.0.2": {
+      "Warden.Integrations.Slack/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "Newtonsoft.Json": "8.0.3",
           "System.Net.Http": "4.0.0",
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Integrations.Twilio/1.0.2": {
+      "Warden.Integrations.Twilio/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "Twilio": "4.7.2",
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Watchers.Disk/1.0.2": {
+      "Warden.Watchers.Disk/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Watchers.MongoDb/1.0.2": {
+      "Warden.Watchers.MongoDb/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "MongoDB.Driver": "2.2.3",
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Watchers.MsSql/1.0.2": {
+      "Warden.Watchers.MsSql/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
-          "Dapper": "1.50.0-beta9",
-          "Warden": "1.0.2"
+          "Dapper": "1.42.0",
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Watchers.Performance/1.0.2": {
+      "Warden.Watchers.Performance/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Watchers.Process/1.0.2": {
+      "Warden.Watchers.Process/1.0.2.1": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
         "dependencies": {
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Watchers.Redis/1.0.2": {
+      "Warden.Watchers.Redis/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "StackExchange.Redis": "1.1.572",
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Watchers.Web/1.0.2": {
+      "Warden.Watchers.Web/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "Newtonsoft.Json": "8.0.3",
           "System.Net.Http": "4.0.0",
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       }
     },
     "DNX,Version=v4.5.1/win7-x64": {
-      "Dapper/1.50.0-beta9": {
+      "Dapper/1.42.0": {
         "type": "package",
         "frameworkAssemblies": [
           "Microsoft.CSharp",
-          "mscorlib",
           "System",
           "System.Core",
-          "System.Data",
-          "System.Xml",
-          "System.Xml.Linq"
+          "System.Data"
         ],
         "compile": {
-          "lib/net451/Dapper.dll": {}
+          "lib/net45/Dapper.dll": {}
         },
         "runtime": {
-          "lib/net451/Dapper.dll": {}
+          "lib/net45/Dapper.dll": {}
         }
       },
       "FluentAssertions/4.3.2": {
@@ -845,164 +836,165 @@
           "lib/3.5/Twilio.Api.dll": {}
         }
       },
-      "Warden/1.0.2": {
+      "Warden/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       },
-      "Warden.Integrations.HttpApi/1.0.2": {
+      "Warden.Integrations.HttpApi/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "Newtonsoft.Json": "8.0.3",
           "System.Net.Http": "4.0.0",
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Integrations.SendGrid/1.0.2": {
+      "Warden.Integrations.SendGrid/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "Sendgrid": "6.3.4",
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Integrations.Slack/1.0.2": {
+      "Warden.Integrations.Slack/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "Newtonsoft.Json": "8.0.3",
           "System.Net.Http": "4.0.0",
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Integrations.Twilio/1.0.2": {
+      "Warden.Integrations.Twilio/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "Twilio": "4.7.2",
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Watchers.Disk/1.0.2": {
+      "Warden.Watchers.Disk/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Watchers.MongoDb/1.0.2": {
+      "Warden.Watchers.MongoDb/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "MongoDB.Driver": "2.2.3",
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Watchers.MsSql/1.0.2": {
+      "Warden.Watchers.MsSql/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
-          "Dapper": "1.50.0-beta9",
-          "Warden": "1.0.2"
+          "Dapper": "1.42.0",
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Watchers.Performance/1.0.2": {
+      "Warden.Watchers.Performance/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Watchers.Process/1.0.2": {
+      "Warden.Watchers.Process/1.0.2.1": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
         "dependencies": {
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Watchers.Redis/1.0.2": {
+      "Warden.Watchers.Redis/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "StackExchange.Redis": "1.1.572",
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       },
-      "Warden.Watchers.Web/1.0.2": {
+      "Warden.Watchers.Web/1.0.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "Newtonsoft.Json": "8.0.3",
           "System.Net.Http": "4.0.0",
-          "Warden": "1.0.2"
+          "Warden": "1.0.2.1"
         }
       }
     }
   },
   "libraries": {
-    "Warden/1.0.2": {
+    "Warden/1.0.2.1": {
       "type": "project",
       "path": "../../Warden/project.json"
     },
-    "Warden.Integrations.HttpApi/1.0.2": {
+    "Warden.Integrations.HttpApi/1.0.2.1": {
       "type": "project",
       "path": "../../Integrations/Warden.Integrations.HttpApi/project.json"
     },
-    "Warden.Integrations.SendGrid/1.0.2": {
+    "Warden.Integrations.SendGrid/1.0.2.1": {
       "type": "project",
       "path": "../../Integrations/Warden.Integrations.SendGrid/project.json"
     },
-    "Warden.Integrations.Slack/1.0.2": {
+    "Warden.Integrations.Slack/1.0.2.1": {
       "type": "project",
       "path": "../../Integrations/Warden.Integrations.Slack/project.json"
     },
-    "Warden.Integrations.Twilio/1.0.2": {
+    "Warden.Integrations.Twilio/1.0.2.1": {
       "type": "project",
       "path": "../../Integrations/Warden.Integrations.Twilio/project.json"
     },
-    "Warden.Watchers.Disk/1.0.2": {
+    "Warden.Watchers.Disk/1.0.2.1": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Disk/project.json"
     },
-    "Warden.Watchers.MongoDb/1.0.2": {
+    "Warden.Watchers.MongoDb/1.0.2.1": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.MongoDb/project.json"
     },
-    "Warden.Watchers.MsSql/1.0.2": {
+    "Warden.Watchers.MsSql/1.0.2.1": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.MsSql/project.json"
     },
-    "Warden.Watchers.Performance/1.0.2": {
+    "Warden.Watchers.Performance/1.0.2.1": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Performance/project.json"
     },
-    "Warden.Watchers.Process/1.0.2": {
+    "Warden.Watchers.Process/1.0.2.1": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Process/project.json"
     },
-    "Warden.Watchers.Redis/1.0.2": {
+    "Warden.Watchers.Redis/1.0.2.1": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Redis/project.json"
     },
-    "Warden.Watchers.Web/1.0.2": {
+    "Warden.Watchers.Web/1.0.2.1": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Web/project.json"
     },
-    "Dapper/1.50.0-beta9": {
+    "Dapper/1.42.0": {
       "type": "package",
-      "sha512": "Sh+RD5rBdjd5k1CYchuJbU+WBrlGI7QN13pMiPMd/9dKXihZ8JENXmuaD5F7vWERG/fchCMNIVD2CR4rxuMJvA==",
+      "sha512": "HBNIulHq5DWD1K60iVABe4oW4HoWmraR20yy9jLrw9tgTbMY2eolYk2UgXFI43lSUMTdhUjPvlHci0TnsfoiXw==",
       "files": [
-        "Dapper.1.50.0-beta9.nupkg",
-        "Dapper.1.50.0-beta9.nupkg.sha512",
+        "Dapper.1.42.0.nupkg",
+        "Dapper.1.42.0.nupkg.sha512",
         "Dapper.nuspec",
-        "lib/dotnet5.4/Dapper.dll",
-        "lib/dotnet5.4/Dapper.xml",
+        "lib/net35/Dapper.dll",
+        "lib/net35/Dapper.pdb",
+        "lib/net35/Dapper.xml",
         "lib/net40/Dapper.dll",
+        "lib/net40/Dapper.pdb",
         "lib/net40/Dapper.xml",
         "lib/net45/Dapper.dll",
-        "lib/net45/Dapper.xml",
-        "lib/net451/Dapper.dll",
-        "lib/net451/Dapper.xml"
+        "lib/net45/Dapper.pdb",
+        "lib/net45/Dapper.xml"
       ]
     },
     "FluentAssertions/4.3.2": {
@@ -1494,21 +1486,21 @@
       "FluentAssertions >= 4.3.2",
       "NUnitLite >= 3.2.0",
       "Moq >= 4.2.1510.2205",
-      "Warden >= 1.0.2",
-      "Warden.Watchers.Disk >= 1.0.2",
-      "Warden.Watchers.MongoDb >= 1.0.2",
-      "Warden.Watchers.MsSql >= 1.0.2",
-      "Warden.Watchers.Performance >= 1.0.2",
-      "Warden.Watchers.Redis >= 1.0.2",
-      "Warden.Watchers.Web >= 1.0.2",
+      "Warden >= 1.0.2.1",
+      "Warden.Watchers.Disk >= 1.0.2.1",
+      "Warden.Watchers.MongoDb >= 1.0.2.1",
+      "Warden.Watchers.MsSql >= 1.0.2.1",
+      "Warden.Watchers.Performance >= 1.0.2.1",
+      "Warden.Watchers.Redis >= 1.0.2.1",
+      "Warden.Watchers.Web >= 1.0.2.1",
       "System.Linq >= 4.0.1-beta-23516",
       "System.Linq.Queryable >= 4.0.1-beta-23516",
-      "Warden.Integrations.SendGrid >= 1.0.2",
+      "Warden.Integrations.SendGrid >= 1.0.2.1",
       "Microsoft.CSharp >= 4.0.0",
-      "Warden.Integrations.HttpApi >= 1.0.2",
-      "Warden.Integrations.Twilio >= 1.0.2",
-      "Warden.Watchers.Process >= 1.0.2",
-      "Warden.Integrations.Slack >= 1.0.2"
+      "Warden.Integrations.HttpApi >= 1.0.2.1",
+      "Warden.Integrations.Twilio >= 1.0.2.1",
+      "Warden.Watchers.Process >= 1.0.2.1",
+      "Warden.Integrations.Slack >= 1.0.2.1"
     ],
     "DNX,Version=v4.5.1": []
   }

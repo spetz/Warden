@@ -1,13 +1,13 @@
 ﻿{
-  "version": "1.0.2",
+  "version": "1.0.2.1",
   "description": "Warden watcher for MSSQL.",
   "authors": [ "Piotr Gankiewicz" ],
   "tags": [ "Warden" ],
   "projectUrl": "https://getwarden.net",
   "licenseUrl": "https://github.com/spetz/Warden/blob/master/LICENSE",
   "dependencies": {
-    "Warden": "1.0.2",
-    "Dapper": "1.50.0-beta9"
+    "Warden": "1.0.2.1",
+    "Dapper": "1.42.0"
   },
   "frameworks": {
     "net451": { }

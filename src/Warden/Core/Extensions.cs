@@ -13,12 +13,18 @@ namespace Warden.Core
     {
         public static void Execute(this IEnumerable<Expression<Action>> actions)
         {
-            actions.ToList().ForEach(x => x.Compile()());
+            foreach (var action in actions)
+            {
+                action.Compile()();
+            }
         }
 
         public static void Execute<T>(this IEnumerable<Expression<Action<T>>> actions, T value)
         {
-            actions.ToList().ForEach(x => x.Compile()(value));
+            foreach (var action in actions)
+            {
+                action.Compile()(value);
+            }
         }
 
         public static async Task ExecuteAsync(this IEnumerable<Expression<Func<Task>>> tasks)

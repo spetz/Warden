@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Warden.Core;
 
-namespace Warden.Core
+namespace Warden
 {
     /// <summary>
     /// Core interface responsible for executing the watchers, hooks and integrations.
