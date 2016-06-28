@@ -9,7 +9,7 @@
     "FluentAssertions": "4.3.2",
     "NUnitLite": "3.2.0",
     "Moq": "4.2.1510.2205",
-    "Warden": "1.0.2.1",
+    "Warden": "1.0.2.2",
     "Warden.Watchers.Disk": "1.0.2.1",
     "Warden.Watchers.MongoDb": "1.0.2.1",
     "Warden.Watchers.MsSql": "1.0.2.1",

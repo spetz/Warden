@@ -8,7 +8,7 @@
   "dependencies": {
     "System.Linq": "4.0.1-beta-23516",
     "TopShelf": "3.3.1",
-    "Warden": "1.0.2.1",
+    "Warden": "1.0.2.2",
     "Warden.Integrations.HttpApi": "1.0.2.1",
     "Warden.Integrations.SendGrid": "1.0.2.1",
     "Warden.Integrations.Slack": "1.0.2.1",

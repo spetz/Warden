@@ -9,7 +9,7 @@
     "emitEntryPoint": true
   },
   "dependencies": {
-    "Warden": "1.0.2.1",
+    "Warden": "1.0.2.2",
     "Warden.Integrations.HttpApi": "1.0.2.1",
     "Warden.Integrations.SendGrid": "1.0.2.1",
     "Warden.Integrations.Slack": "1.0.2.1",
