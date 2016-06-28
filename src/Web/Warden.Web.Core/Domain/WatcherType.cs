@@ -2,6 +2,7 @@
 {
     public enum WatcherType
     {
+        Custom = 0,
         Disk = 1,
         MongoDb = 2,
         MsSql = 3,

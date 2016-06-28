@@ -75,8 +75,11 @@ namespace Warden.Web.Core.Services
 
             foreach (var result in wardenCheckResults)
             {
+                WatcherType watcherType;
                 var watcherName = result.WatcherCheckResult.WatcherName;
-                var watcherType = (WatcherType)Enum.Parse(typeof(WatcherType), result.WatcherCheckResult.WatcherType, true);
+                if(!Enum.TryParse(result.WatcherCheckResult.WatcherType, true, out watcherType))
+                    watcherType = WatcherType.Custom;
+
                 var watcher = warden.GetWatcherByName(watcherName);
                 if (watcher == null)
                 {
