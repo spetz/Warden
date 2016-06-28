@@ -104,7 +104,7 @@ namespace Warden.Examples.Console
                 })
                 .Build();
 
-            return Warden.Create(wardenConfiguration);
+            return WardenInstance.Create(wardenConfiguration);
         }
 
         private static async Task WebsiteHookOnStartAsync(IWatcherCheck check)

@@ -20,7 +20,7 @@ namespace Warden.Tests.Core
     {
         Establish context = () => WardenConfiguration = null;
 
-        Because of = () => Exception = Catch.Exception(() => Warden = new Warden(WardenConfiguration));
+        Because of = () => Exception = Catch.Exception(() => Warden = WardenInstance.Create(WardenConfiguration));
 
         It should_fail = () => Exception.Should().BeOfType<ArgumentNullException>();
         It should_have_a_specific_reason = () => Exception.Message.Should().Contain("Warden configuration has not been provided.");
@@ -41,7 +41,7 @@ namespace Warden.Tests.Core
     {
         Establish context = () => WardenConfiguration = WardenConfiguration.Create().Build();
 
-        Because of = () => Warden = new Warden(WardenConfiguration);
+        Because of = () => Warden = WardenInstance.Create(WardenConfiguration);
 
         It should_create_new_warden_instance = () => Warden.Should().NotBeNull();
 
@@ -69,7 +69,7 @@ namespace Warden.Tests.Core
                 .AddWatcher(WatcherMock.Object)
                 .RunOnlyOnce()
                 .Build();
-            Warden = new Warden(WardenConfiguration);
+            Warden = WardenInstance.Create(WardenConfiguration);
         };
 
         Because of = async () => await Warden.StartAsync().Await().AsTask;
@@ -102,7 +102,7 @@ namespace Warden.Tests.Core
                 .SetIterationsCount(IterationsCount)
                 .WithoutIterationDelay()
                 .Build();
-            Warden = new Warden(WardenConfiguration);
+            Warden = WardenInstance.Create(WardenConfiguration);
         };
 
         Because of = async () => await Warden.StartAsync().Await().AsTask;
@@ -158,7 +158,7 @@ namespace Warden.Tests.Core
                 .SetIterationsCount(IterationsCount)
                 .WithoutIterationDelay()
                 .Build();
-            Warden = new Warden(WardenConfiguration);
+            Warden = WardenInstance.Create(WardenConfiguration);
         };
 
         Because of = async () => await Warden.StartAsync().Await().AsTask;
@@ -224,7 +224,7 @@ namespace Warden.Tests.Core
                 .WithoutIterationDelay()
                 .RunOnlyOnce()
                 .Build();
-            Warden = new Warden(WardenConfiguration);
+            Warden = WardenInstance.Create(WardenConfiguration);
         };
 
         Because of = async () => await Warden.StartAsync().Await().AsTask;
@@ -289,7 +289,7 @@ namespace Warden.Tests.Core
                 .WithoutIterationDelay()
                 .RunOnlyOnce()
                 .Build();
-            Warden = new Warden(WardenConfiguration);
+            Warden = WardenInstance.Create(WardenConfiguration);
         };
 
         Because of = async () => await Warden.StartAsync().Await().AsTask;
@@ -355,7 +355,7 @@ namespace Warden.Tests.Core
                 .WithoutIterationDelay()
                 .RunOnlyOnce()
                 .Build();
-            Warden = new Warden(WardenConfiguration);
+            Warden = WardenInstance.Create(WardenConfiguration);
         };
 
         Because of = async () => await Warden.StartAsync().Await().AsTask;
@@ -408,7 +408,7 @@ namespace Warden.Tests.Core
                 .WithoutIterationDelay()
                 .RunOnlyOnce()
                 .Build();
-            Warden = new Warden(WardenConfiguration);
+            Warden = WardenInstance.Create(WardenConfiguration);
         };
 
         Because of = async () => await Warden.StartAsync().Await().AsTask;
@@ -453,7 +453,7 @@ namespace Warden.Tests.Core
                 .WithoutIterationDelay()
                 .RunOnlyOnce()
                 .Build();
-            Warden = new Warden(WardenConfiguration);
+            Warden = WardenInstance.Create(WardenConfiguration);
         };
 
         Because of = async () => await Warden.StartAsync().Await().AsTask;
@@ -500,7 +500,7 @@ namespace Warden.Tests.Core
                 .WithoutIterationDelay()
                 .SetIterationsCount(IterationsCount)
                 .Build();
-            Warden = new Warden(WardenConfiguration);
+            Warden = WardenInstance.Create(WardenConfiguration);
         };
 
         Because of = async () => await Warden.StartAsync().Await().AsTask;
@@ -547,7 +547,7 @@ namespace Warden.Tests.Core
                 .WithoutIterationDelay()
                 .SetIterationsCount(IterationsCount)
                 .Build();
-            Warden = new Warden(WardenConfiguration);
+            Warden = WardenInstance.Create(WardenConfiguration);
         };
 
         Because of = async () => await Warden.StartAsync().Await().AsTask;
@@ -595,7 +595,7 @@ namespace Warden.Tests.Core
                 .WithoutIterationDelay()
                 .SetIterationsCount(IterationsCount)
                 .Build();
-            Warden = new Warden(WardenConfiguration);
+            Warden = WardenInstance.Create(WardenConfiguration);
         };
 
         Because of = async () => await Warden.StartAsync().Await().AsTask;

@@ -116,7 +116,7 @@ var configuration = WardenConfiguration
 
 Start the **Warden** and let him do his job - now **you have the full control** over your system monitoring!
 ```csharp
-var warden = Warden.Create(configuration);
+var warden = WardenInstance.Create(configuration);
 await warden.StartAsync();
 ```
 Please check out the **[examples](https://github.com/spetz/Warden/wiki/Examples)** by cloning the repository.

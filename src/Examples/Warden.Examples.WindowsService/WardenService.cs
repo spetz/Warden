@@ -118,7 +118,7 @@ namespace Warden.Examples.WindowsService
                 })
                 .Build();
 
-            return new Warden(wardenConfiguration);
+            return WardenInstance.Create(wardenConfiguration);
         }
 
         private static async Task WebsiteHookOnStartAsync(IWatcherCheck check)

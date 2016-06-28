@@ -15,7 +15,7 @@ namespace Warden
         string Name { get; }
 
         /// <summary>
-        /// Start the Warden. It will be running iterations in a loop (infinite by default but can bo changed) and executing all of the configured hooks.
+        /// Start the Warden. It will be running iterations in a loop (infinite by default but can be changed) and executing all of the configured hooks.
         /// </summary>
         /// <returns></returns>
         Task StartAsync();
@@ -38,43 +38,18 @@ namespace Warden
     /// </summary>
     public class Warden : IWarden
     {
-        private const string UnixComputerNameEnvironmentVariable = "HOSTNAME";
-        private const string WindowsComputerNameEnvironmentVariable = "COMPUTERNAME";
         private readonly WardenConfiguration _configuration;
         private long _iterationOrdinal = 1;
         private bool _running = false;
 
         public string Name { get; }
-        public static string DefaultName = GetDefaultName();
-
-        private static string GetDefaultName()
-        {
-            var environment = string.Empty;
-#if DNXCORE50
-            environment = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
-                ? Environment.GetEnvironmentVariable(WindowsComputerNameEnvironmentVariable)
-                : Environment.GetEnvironmentVariable(UnixComputerNameEnvironmentVariable);
-#else
-            environment = Environment.GetEnvironmentVariable(WindowsComputerNameEnvironmentVariable);
-#endif
-
-            return $"Warden @{environment}";
-        }
-
-        /// <summary>
-        /// Initialize a new instance of the Warden using the provided configuration and default name of "Warden @{COMPUTER NAME}".
-        /// </summary>
-        /// <param name="configuration">Configuration of Warden</param>
-        public Warden(WardenConfiguration configuration) : this(DefaultName, configuration)
-        {
-        }
 
         /// <summary>
         /// Initialize a new instance of the Warden using the provided configuration.
         /// </summary>
         /// <param name="name">Customizable name of the Warden.</param>
         /// <param name="configuration">Configuration of Warden</param>
-        public Warden(string name, WardenConfiguration configuration)
+        internal Warden(string name, WardenConfiguration configuration)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Warden name can not be empty.", nameof(name));
@@ -87,7 +62,7 @@ namespace Warden
 
         /// <summary>
         /// Start the Warden. 
-        /// It will be running iterations in a loop (infinite by default but can bo changed) and executing all of the configured hooks.
+        /// It will be running iterations in a loop (infinite by default but can be changed) and executing all of the configured hooks.
         /// </summary>
         /// <returns></returns>
         public async Task StartAsync()
@@ -175,43 +150,6 @@ namespace Warden
             _iterationOrdinal = 1;
             _configuration.Hooks.OnStop.Execute();
             await _configuration.Hooks.OnStopAsync.ExecuteAsync();
-        }
-
-        /// <summary>
-        /// Factory method for creating a new Warden instance with provided configuration and default name of "Warden @{COMPUTER NAME}".
-        /// </summary>
-        /// <param name="configuration">Configuration of Warden.</param>
-        /// <returns>Instance of IWarden.</returns>
-        public static IWarden Create(WardenConfiguration configuration) => Create(DefaultName, configuration);
-
-        /// <summary>
-        /// Factory method for creating a new Warden instance with provided configuration.
-        /// </summary>
-        /// <param name="name">Name of the Warden.</param>
-        /// <param name="configuration">Configuration of Warden.</param>
-        /// <returns>Instance of IWarden.</returns>
-        public static IWarden Create(string name, WardenConfiguration configuration) => new Warden(name, configuration);
-
-        /// <summary>
-        /// Factory method for creating a new Warden instance with default name of "Warden @{COMPUTER NAME}",
-        /// for which the configuration can be provided via the lambda expression.
-        /// </summary>
-        /// <param name="configurator">Lambda expression to build the configuration of Warden.</param>
-        /// <returns>Instance of IWarden.</returns>
-        public static IWarden Create(Action<WardenConfiguration.Builder> configurator) => Create(DefaultName, configurator);
-
-        /// <summary>
-        /// Factory method for creating a new Warden instance, for which the configuration can be provided via the lambda expression.
-        /// </summary>
-        /// <param name="name">Name of the Warden.</param>
-        /// <param name="configurator">Lambda expression to build the configuration of Warden.</param>
-        /// <returns>Instance of IWarden.</returns>
-        public static IWarden Create(string name, Action<WardenConfiguration.Builder> configurator)
-        {
-            var config = new WardenConfiguration.Builder();
-            configurator?.Invoke(config);
-
-            return Create(name, config.Build());
         }
     }
 }
