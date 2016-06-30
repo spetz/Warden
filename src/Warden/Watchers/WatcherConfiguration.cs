@@ -7,6 +7,8 @@ namespace Warden.Watchers
     /// </summary>
     public class WatcherConfiguration
     {
+        private static readonly TimeSpan MinimalInterval = TimeSpan.FromMilliseconds(1);
+
         /// <summary>
         /// Instance of configured watcher.
         /// </summary>
@@ -16,6 +18,11 @@ namespace Warden.Watchers
         /// Optional hooks specific for the configured watcher.
         /// </summary>
         public WatcherHooksConfiguration Hooks { get; protected set; }
+
+        /// <summary>
+        /// Optional interval (5 seconds by default) after which the next check will be invoked.
+        /// </summary>
+        public TimeSpan Interval { get; protected set; }
 
         protected WatcherConfiguration(IWatcher watcher)
         {
@@ -48,11 +55,26 @@ namespace Warden.Watchers
             /// <summary>
             /// Sets hooks specific for the particular watcher.
             /// </summary>
-            /// <param name="hooks">Lambda expression for configuring the watcher hooks.</param>
+            /// <param name="hooks">Configuration of the watcher hooks.</param>
             /// <returns>Instance of fluent builder for the WatcherConfiguration.</returns>
             public Builder WithHooks(WatcherHooksConfiguration hooks)
             {
                 _configuration.Hooks = hooks;
+
+                return this;
+            }
+
+            /// <summary>
+            /// Sets custom interval after which the next check will be invoked.
+            /// </summary>
+            /// <param name="interval">Interval after which the next check will be invoked.</param>
+            /// <returns>Instance of fluent builder for the WatcherConfiguration.</returns>
+            public Builder WithInterval(TimeSpan interval)
+            {
+                if (interval < MinimalInterval)
+                    throw new ArgumentException("Interval can not be less than 1 ms.", nameof(interval));
+
+                _configuration.Interval = interval;
 
                 return this;
             }
