@@ -27,12 +27,14 @@ namespace Warden.Watchers.Web
         /// <param name="builder">Instance of the Warden configuration builder.</param>
         /// <param name="url">Base URL of the request.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddWebWatcher(
             this WardenConfiguration.Builder builder, string url,
-            Action<WatcherHooksConfiguration.Builder> hooks = null)
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(WebWatcher.Create(url), hooks);
+            builder.AddWatcher(WebWatcher.Create(url), hooks, interval);
 
             return builder;
         }
@@ -44,12 +46,14 @@ namespace Warden.Watchers.Web
         /// <param name="url">Base URL of the request.</param>
         /// <param name="request">Instance of the IHttpRequest.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddWebWatcher(
             this WardenConfiguration.Builder builder, string url, IHttpRequest request,
-            Action<WatcherHooksConfiguration.Builder> hooks = null)
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(WebWatcher.Create(url, request), hooks);
+            builder.AddWatcher(WebWatcher.Create(url, request), hooks, interval);
 
             return builder;
         }
@@ -62,13 +66,15 @@ namespace Warden.Watchers.Web
         /// <param name="url">Base URL of the request.</param>
         /// <param name="request">Instance of the IHttpRequest.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddWebWatcher(
             this WardenConfiguration.Builder builder,
             string name, string url, IHttpRequest request,
-            Action<WatcherHooksConfiguration.Builder> hooks = null)
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(WebWatcher.Create(name, url, request), hooks);
+            builder.AddWatcher(WebWatcher.Create(name, url, request), hooks, interval);
 
             return builder;
         }
@@ -81,12 +87,14 @@ namespace Warden.Watchers.Web
         /// <param name="url">Base URL of the request.</param>
         /// <param name="configurator">Lambda expression for configuring the WebWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         public static WardenConfiguration.Builder AddWebWatcher(
             this WardenConfiguration.Builder builder, string url,
             Action<WebWatcherConfiguration.Default> configurator,
-            Action<WatcherHooksConfiguration.Builder> hooks = null)
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(WebWatcher.Create(url, configurator), hooks);
+            builder.AddWatcher(WebWatcher.Create(url, configurator), hooks, interval);
 
             return builder;
         }
@@ -99,13 +107,15 @@ namespace Warden.Watchers.Web
         /// <param name="request">Instance of the IHttpRequest.</param>
         /// <param name="configurator">Lambda expression for configuring the WebWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddWebWatcher(
             this WardenConfiguration.Builder builder, string url, IHttpRequest request,
             Action<WebWatcherConfiguration.Default> configurator,
-            Action<WatcherHooksConfiguration.Builder> hooks = null)
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(WebWatcher.Create(url, request, configurator), hooks);
+            builder.AddWatcher(WebWatcher.Create(url, request, configurator), hooks, interval);
 
             return builder;
         }
@@ -119,14 +129,16 @@ namespace Warden.Watchers.Web
         /// <param name="request">Instance of the IHttpRequest.</param>
         /// <param name="configurator">Lambda expression for configuring the WebWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddWebWatcher(
             this WardenConfiguration.Builder builder,
             string name, string url, IHttpRequest request,
             Action<WebWatcherConfiguration.Default> configurator,
-            Action<WatcherHooksConfiguration.Builder> hooks = null)
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(WebWatcher.Create(name, url, request, configurator), hooks);
+            builder.AddWatcher(WebWatcher.Create(name, url, request, configurator), hooks, interval);
 
             return builder;
         }
@@ -137,13 +149,15 @@ namespace Warden.Watchers.Web
         /// <param name="builder">Instance of the Warden configuration builder.</param>
         /// <param name="configuration">Configuration of WebWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddWebWatcher(
             this WardenConfiguration.Builder builder,
             WebWatcherConfiguration configuration,
-            Action<WatcherHooksConfiguration.Builder> hooks = null)
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(WebWatcher.Create(configuration), hooks);
+            builder.AddWatcher(WebWatcher.Create(configuration), hooks, interval);
 
             return builder;
         }
@@ -155,13 +169,15 @@ namespace Warden.Watchers.Web
         /// <param name="name">Name of the WebWatcher.</param>
         /// <param name="configuration">Configuration of WebWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddWebWatcher(
             this WardenConfiguration.Builder builder, string name,
             WebWatcherConfiguration configuration,
-            Action<WatcherHooksConfiguration.Builder> hooks = null)
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(WebWatcher.Create(name, configuration), hooks);
+            builder.AddWatcher(WebWatcher.Create(name, configuration), hooks, interval);
 
             return builder;
         }

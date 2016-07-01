@@ -9,6 +9,8 @@ namespace Warden.Core
     /// </summary>
     public class IterationProcessorConfiguration
     {
+        private static readonly TimeSpan MinimalIterationDelay = TimeSpan.FromMilliseconds(1);
+
         /// <summary>
         /// Set of unique watcher configurations.
         /// </summary>
@@ -28,6 +30,11 @@ namespace Warden.Core
         /// Custom provider for the DateTime (UTC by default).
         /// </summary>
         public Func<DateTime> DateTimeProvider { get; protected set; }
+
+        /// <summary>
+        /// Delay between iterations (5 seconds by default).
+        /// </summary>
+        public TimeSpan IterationDelay { get; protected set; }
 
         protected internal IterationProcessorConfiguration()
         {
@@ -94,6 +101,21 @@ namespace Warden.Core
             public Builder SetDateTimeProvider(Func<DateTime> dateTimeProvider)
             {
                 _configuration.DateTimeProvider = dateTimeProvider;
+
+                return this;
+            }
+
+            /// <summary>
+            /// Sets the delay between iterations executed in a loop.
+            /// </summary>
+            /// <param name="delay">Delay between each iteration (5 seconds by default).</param>
+            /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
+            public Builder SetIterationDelay(TimeSpan delay)
+            {
+                if (delay < MinimalIterationDelay)
+                    throw new ArgumentException("Iteration delay can not be less than 1 ms.", nameof(delay));
+
+                _configuration.IterationDelay = delay;
 
                 return this;
             }
