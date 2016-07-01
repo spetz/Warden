@@ -59,7 +59,7 @@ namespace Warden.Examples.Console
                         .OnSuccessAsync(check => WebsiteHookOnSuccessAsync(check))
                         .OnCompletedAsync(check => WebsiteHookOnCompletedAsync(check))
                         .OnFailureAsync(check => WebsiteHookOnFailureAsync(check));
-                })
+                }, interval: TimeSpan.FromMilliseconds(1000))
                 .AddWebWatcher("API watcher", "http://httpstat.us/200", HttpRequest.Post("users", new {name = "test"},
                     headers: new Dictionary<string, string>
                     {
@@ -98,8 +98,8 @@ namespace Warden.Examples.Console
                     hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration))
                         //.OnIterationCompletedAsync(iteration =>
                         //    integrations.Slack().SendMessageAsync($"Iteration {iteration.Ordinal} has completed."))
-                        .OnIterationCompletedAsync(iteration => integrations.HttpApi()
-                            .PostIterationToWardenPanelAsync(iteration))
+                        //.OnIterationCompletedAsync(iteration => integrations.HttpApi()
+                        //    .PostIterationToWardenPanelAsync(iteration))
                         .OnError(exception => System.Console.WriteLine(exception));
                 })
                 .Build();

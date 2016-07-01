@@ -320,6 +320,7 @@ namespace Warden.Core
                     .SetGlobalWatcherHooks(_configuration.GlobalWatcherHooks)
                     .SetAggregatedWatcherHooks(_configuration.AggregatedWatcherHooks)
                     .SetDateTimeProvider(_configuration.DateTimeProvider)
+                    .SetIterationDelay(_configuration.IterationDelay)
                     .Build();
 
                 _configuration.IterationProcessorProvider = () => new IterationProcessor(iterationProcessorConfiguration);

@@ -58,7 +58,10 @@ namespace Warden.Core
             var iterationStartedAt = _configuration.DateTimeProvider();
             var results = new List<WatcherExecutionResult>();
             var iterationTasks = _configuration.Watchers.Select(async watcherConfiguration =>
-                await TryExecuteWatcherCheckAndHooksAsync(watcherConfiguration, results));
+            {
+                var watcherResults = await TryExecuteWatcherChecksAndHooksAsync(watcherConfiguration);
+                results.AddRange(watcherResults);
+            });
             await Task.WhenAll(iterationTasks);
             await ExecuteAggregatedHooksAsync(results);
             var iterationCompletedAt = _configuration.DateTimeProvider();
@@ -68,20 +71,37 @@ namespace Warden.Core
             return iteration;
         }
 
-        private async Task TryExecuteWatcherCheckAndHooksAsync(WatcherConfiguration watcherConfiguration,
-            IList<WatcherExecutionResult> results)
+        private async Task<IList<WatcherExecutionResult>> TryExecuteWatcherChecksAndHooksAsync(WatcherConfiguration watcherConfiguration)
+        {
+            var results = new List<WatcherExecutionResult>();
+            var numberOfExecutions = _configuration.IterationDelay.TotalMilliseconds/
+                                     watcherConfiguration.Interval.TotalMilliseconds;
+
+            for (var i = 0; i < numberOfExecutions; i++)
+            {
+                var watcherResults = await TryExecuteWatcherCheckAndHooksAsync(watcherConfiguration);
+                results.AddRange(watcherResults);
+                await Task.Delay(watcherConfiguration.Interval);
+            }
+
+            return results;
+        }
+
+        private async Task<IList<WatcherExecutionResult>> TryExecuteWatcherCheckAndHooksAsync(WatcherConfiguration watcherConfiguration)
         {
             var startedAt = _configuration.DateTimeProvider();
             var watcher = watcherConfiguration.Watcher;
             IWardenCheckResult wardenCheckResult = null;
+            var results = new List<WatcherExecutionResult>();
             try
             {
                 await InvokeOnStartHooksAsync(watcherConfiguration, WatcherCheck.Create(watcher));
                 var watcherCheckResult = await watcher.ExecuteAsync();
                 var completedAt = _configuration.DateTimeProvider();
                 wardenCheckResult = WardenCheckResult.Create(watcherCheckResult, startedAt, completedAt);
-                await ExecuteWatcherCheckAsync(watcher, watcherCheckResult, wardenCheckResult,
-                    watcherConfiguration, results);
+                var watcherResults = await ExecuteWatcherCheckAsync(watcher, watcherCheckResult, wardenCheckResult,
+                    watcherConfiguration);
+                results.AddRange(watcherResults);
             }
             catch (Exception exception)
             {
@@ -101,12 +121,14 @@ namespace Warden.Core
             {
                 await InvokeOnCompletedHooksAsync(watcherConfiguration, wardenCheckResult);
             }
+
+            return results;
         }
 
-        private async Task ExecuteWatcherCheckAsync(IWatcher watcher, IWatcherCheckResult watcherCheckResult, 
-            IWardenCheckResult wardenCheckResult, WatcherConfiguration watcherConfiguration,
-            IList<WatcherExecutionResult> results)
+        private async Task<IList<WatcherExecutionResult>>  ExecuteWatcherCheckAsync(IWatcher watcher, IWatcherCheckResult watcherCheckResult, 
+            IWardenCheckResult wardenCheckResult, WatcherConfiguration watcherConfiguration)
         {
+            var results = new List<WatcherExecutionResult>();
             if (watcherCheckResult.IsValid)
             {
                 var result = wardenCheckResult;
@@ -126,6 +148,8 @@ namespace Warden.Core
                     () => InvokeOnFirstFailureHooksAsync(watcherConfiguration, result));
                 await InvokeOnFailureHooksAsync(watcherConfiguration, wardenCheckResult);
             }
+
+            return results;
         }
 
         private async Task ExecuteAggregatedHooksAsync(IEnumerable<WatcherExecutionResult> results)
