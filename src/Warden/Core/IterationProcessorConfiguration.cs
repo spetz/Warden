@@ -9,7 +9,7 @@ namespace Warden.Core
     /// </summary>
     public class IterationProcessorConfiguration
     {
-        private static readonly TimeSpan MinimalIterationDelay = TimeSpan.FromMilliseconds(1);
+        private static readonly TimeSpan MinimalInterval = TimeSpan.FromMilliseconds(1);
 
         /// <summary>
         /// Set of unique watcher configurations.
@@ -32,9 +32,9 @@ namespace Warden.Core
         public Func<DateTime> DateTimeProvider { get; protected set; }
 
         /// <summary>
-        /// Delay between iterations (5 seconds by default).
+        /// Default interval between the next check (ExecuteAsync()) common for all of the watchers.
         /// </summary>
-        public TimeSpan IterationDelay { get; protected set; }
+        public TimeSpan DefaultInterval { get; protected set; }
 
         protected internal IterationProcessorConfiguration()
         {
@@ -105,17 +105,19 @@ namespace Warden.Core
                 return this;
             }
 
+            //TODO: Implement overrideCustomIntervals feature.
             /// <summary>
-            /// Sets the delay between iterations executed in a loop.
+            /// Sets the default interval between the next check (ExecuteAsync()) common for all of the watchers.
             /// </summary>
-            /// <param name="delay">Delay between each iteration (5 seconds by default).</param>
+            /// <param name="interval">Interval between the next check (ExecuteAsync()) for the watcher (5 seconds by default).</param>
+            /// <param name="overrideCustomIntervals">Overrides already set custom interval for all of the watchers (false by default).</param>
             /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
-            public Builder SetIterationDelay(TimeSpan delay)
+            public Builder WithDefaultInterval(TimeSpan interval, bool overrideCustomIntervals = false)
             {
-                if (delay < MinimalIterationDelay)
-                    throw new ArgumentException("Iteration delay can not be less than 1 ms.", nameof(delay));
+                if (interval < MinimalInterval)
+                    throw new ArgumentException("Interval can not be less than 1 ms.", nameof(interval));
 
-                _configuration.IterationDelay = delay;
+                _configuration.DefaultInterval = interval;
 
                 return this;
             }

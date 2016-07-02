@@ -99,10 +99,6 @@ namespace Warden
                         //Think what to do about it
                     }
                 }
-                finally
-                {
-                    await Task.Delay(_configuration.IterationDelay);
-                }
             }
         }
 

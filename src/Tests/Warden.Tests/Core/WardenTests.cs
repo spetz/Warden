@@ -100,7 +100,7 @@ namespace Warden.Tests.Core
                 .Create()
                 .AddWatcher(WatcherMock.Object)
                 .SetIterationsCount(IterationsCount)
-                .WithMinimalIterationDelay()
+                .WithMinimalInterval()
                 .Build();
             Warden = WardenInstance.Create(WardenConfiguration);
         };
@@ -156,7 +156,7 @@ namespace Warden.Tests.Core
                     hooks.OnCompletedAsync(check => OnCompletedAsyncMock.Object(check));
                 })
                 .SetIterationsCount(IterationsCount)
-                .WithMinimalIterationDelay()
+                .WithMinimalInterval()
                 .Build();
             Warden = WardenInstance.Create(WardenConfiguration);
         };
@@ -221,7 +221,7 @@ namespace Warden.Tests.Core
                     hooks.OnIterationCompleted(iteration => OnIterationCompletedMock.Object(iteration));
                     hooks.OnIterationCompletedAsync(iteration => OnIterationCompletedAsyncMock.Object(iteration));
                 })
-                .WithMinimalIterationDelay()
+                .WithMinimalInterval()
                 .RunOnlyOnce()
                 .Build();
             Warden = WardenInstance.Create(WardenConfiguration);
@@ -286,7 +286,7 @@ namespace Warden.Tests.Core
                     hooks.OnCompleted(result => OnCompletedMock.Object(result));
                     hooks.OnCompletedAsync(check => OnCompletedAsyncMock.Object(check));
                 })
-                .WithMinimalIterationDelay()
+                .WithMinimalInterval()
                 .RunOnlyOnce()
                 .Build();
             Warden = WardenInstance.Create(WardenConfiguration);
@@ -352,7 +352,7 @@ namespace Warden.Tests.Core
                     hooks.OnCompleted(result => OnCompletedMock.Object(result));
                     hooks.OnCompletedAsync(check => OnCompletedAsyncMock.Object(check));
                 })
-                .WithMinimalIterationDelay()
+                .WithMinimalInterval()
                 .RunOnlyOnce()
                 .Build();
             Warden = WardenInstance.Create(WardenConfiguration);
@@ -405,7 +405,7 @@ namespace Warden.Tests.Core
                     hooks.OnFailure(result => OnFailureMock.Object(result));
                     hooks.OnFailureAsync(result => OnFailureAsyncMock.Object(result));
                 })
-                .WithMinimalIterationDelay()
+                .WithMinimalInterval()
                 .RunOnlyOnce()
                 .Build();
             Warden = WardenInstance.Create(WardenConfiguration);
@@ -450,7 +450,7 @@ namespace Warden.Tests.Core
                     hooks.OnError(exception => OnErrorMock.Object(exception));
                     hooks.OnErrorAsync(exception => OnErrorAsyncMock.Object(exception));
                 })
-                .WithMinimalIterationDelay()
+                .WithMinimalInterval()
                 .RunOnlyOnce()
                 .Build();
             Warden = WardenInstance.Create(WardenConfiguration);
@@ -497,7 +497,7 @@ namespace Warden.Tests.Core
                     hooks.OnFirstFailure(result => OnFirstFailureMock.Object(result));
                     hooks.OnFirstFailureAsync(result => OnFirstFailureAsyncMock.Object(result));
                 })
-                .WithMinimalIterationDelay()
+                .WithMinimalInterval()
                 .SetIterationsCount(IterationsCount)
                 .Build();
             Warden = WardenInstance.Create(WardenConfiguration);
@@ -544,7 +544,7 @@ namespace Warden.Tests.Core
                     hooks.OnFirstError(result => OnFirstErrorMock.Object(result));
                     hooks.OnFirstErrorAsync(result => OnFirstErrorAsyncMock.Object(result));
                 })
-                .WithMinimalIterationDelay()
+                .WithMinimalInterval()
                 .SetIterationsCount(IterationsCount)
                 .Build();
             Warden = WardenInstance.Create(WardenConfiguration);
@@ -592,7 +592,7 @@ namespace Warden.Tests.Core
                     hooks.OnFirstSuccess(result => OnFirstSuccessMock.Object(result));
                     hooks.OnFirstSuccessAsync(result => OnFirstSuccessAsyncMock.Object(result));
                 })
-                .WithMinimalIterationDelay()
+                .WithMinimalInterval()
                 .SetIterationsCount(IterationsCount)
                 .Build();
             Warden = WardenInstance.Create(WardenConfiguration);
