@@ -56,13 +56,9 @@ namespace Warden.Core
         public async Task<IWardenIteration> ExecuteAsync(string wardenName, long ordinal)
         {
             var iterationStartedAt = _configuration.DateTimeProvider();
-            var results = new List<WatcherExecutionResult>();
-            var iterationTasks = _configuration.Watchers.Select(async watcherConfiguration =>
-            {
-                var watcherResults = await TryExecuteWatcherChecksAndHooksAsync(watcherConfiguration);
-                results.AddRange(watcherResults);
-            });
-            await Task.WhenAll(iterationTasks);
+            var iterationTasks = _configuration.Watchers.Select(TryExecuteWatcherChecksAndHooksAsync);
+            var aggregatedResults = await Task.WhenAll(iterationTasks);
+            var results = aggregatedResults.SelectMany(x => x).ToList();
             await ExecuteAggregatedHooksAsync(results);
             var iterationCompletedAt = _configuration.DateTimeProvider();
             var iteration = WardenIteration.Create(wardenName, ordinal, results.Select(x => x.WardenCheckResult),
@@ -71,11 +67,15 @@ namespace Warden.Core
             return iteration;
         }
 
-        private async Task<IList<WatcherExecutionResult>> TryExecuteWatcherChecksAndHooksAsync(WatcherConfiguration watcherConfiguration)
+        private async Task<IList<WatcherExecutionResult>> TryExecuteWatcherChecksAndHooksAsync(
+            WatcherConfiguration watcherConfiguration)
         {
             var results = new List<WatcherExecutionResult>();
-            var numberOfExecutions = _configuration.IterationDelay.TotalMilliseconds/
-                                     watcherConfiguration.Interval.TotalMilliseconds;
+            var intervals = _configuration.Watchers
+                .OrderBy(x => x.Interval)
+                .Select(x => x.Interval.TotalMilliseconds);
+            var max = intervals.Max();
+            var numberOfExecutions = max/watcherConfiguration.Interval.TotalMilliseconds;
 
             for (var i = 0; i < numberOfExecutions; i++)
             {

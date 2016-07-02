@@ -65,7 +65,7 @@ namespace Warden.Examples.Console
                     {
                         ["User-Agent"] = "Warden",
                         ["Authorization"] = "Token MyBase64EncodedString"
-                    }), cfg => cfg.EnsureThat(response => response.Headers.Any())
+                    }), cfg => cfg.EnsureThat(response => response.Headers.Any()), interval: TimeSpan.FromSeconds(10) 
                 )
                 //Set proper API key or credentials.
                 //.IntegrateWithSendGrid("api-key", "noreply@system.com", cfg =>
