@@ -23,7 +23,8 @@
     "Warden.Integrations.HttpApi": "1.0.2.2",
     "Warden.Integrations.Twilio": "1.0.2.2",
     "Warden.Watchers.Process": "1.0.2.2",
-    "Warden.Integrations.Slack": "1.0.2.2"
+    "Warden.Integrations.Slack": "1.0.2.2",
+    "Warden.Watchers.ServerStatus": "1.0.2.2"
   },
 
   "commands": {

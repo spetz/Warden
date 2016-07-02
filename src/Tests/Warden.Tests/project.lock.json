@@ -103,6 +103,9 @@
           "lib/net40/Moq.dll": {}
         }
       },
+      "NETStandard.Library/1.6.0": {
+        "type": "package"
+      },
       "Newtonsoft.Json/8.0.3": {
         "type": "package",
         "compile": {
@@ -298,6 +301,14 @@
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "StackExchange.Redis": "1.1.572",
+          "Warden": "1.0.2.2"
+        }
+      },
+      "Warden.Watchers.ServerStatus/1.0.2.2": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0",
           "Warden": "1.0.2.2"
         }
       },
@@ -412,6 +423,9 @@
           "lib/net40/Moq.dll": {}
         }
       },
+      "NETStandard.Library/1.6.0": {
+        "type": "package"
+      },
       "Newtonsoft.Json/8.0.3": {
         "type": "package",
         "compile": {
@@ -607,6 +621,14 @@
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "StackExchange.Redis": "1.1.572",
+          "Warden": "1.0.2.2"
+        }
+      },
+      "Warden.Watchers.ServerStatus/1.0.2.2": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0",
           "Warden": "1.0.2.2"
         }
       },
@@ -721,6 +743,9 @@
           "lib/net40/Moq.dll": {}
         }
       },
+      "NETStandard.Library/1.6.0": {
+        "type": "package"
+      },
       "Newtonsoft.Json/8.0.3": {
         "type": "package",
         "compile": {
@@ -919,6 +944,14 @@
           "Warden": "1.0.2.2"
         }
       },
+      "Warden.Watchers.ServerStatus/1.0.2.2": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0",
+          "Warden": "1.0.2.2"
+        }
+      },
       "Warden.Watchers.Web/1.0.2.2": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
@@ -974,6 +1007,10 @@
     "Warden.Watchers.Redis/1.0.2.2": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Redis/project.json"
+    },
+    "Warden.Watchers.ServerStatus/1.0.2.2": {
+      "type": "project",
+      "path": "../../Watchers/Warden.Watchers.ServerStatus/project.json"
     },
     "Warden.Watchers.Web/1.0.2.2": {
       "type": "project",
@@ -1203,6 +1240,17 @@
         "Moq.nuspec"
       ]
     },
+    "NETStandard.Library/1.6.0": {
+      "type": "package",
+      "sha512": "ypsCvIdCZ4IoYASJHt6tF2fMo7N30NLgV1EbmC+snO490OMl9FvVxmumw14rhReWU3j3g7BYudG6YCrchwHJlA==",
+      "files": [
+        "dotnet_library_license.txt",
+        "NETStandard.Library.1.6.0.nupkg",
+        "NETStandard.Library.1.6.0.nupkg.sha512",
+        "NETStandard.Library.nuspec",
+        "ThirdPartyNotices.txt"
+      ]
+    },
     "Newtonsoft.Json/8.0.3": {
       "type": "package",
       "sha512": "KGsYQdS2zLH+H8x2cZaSI7e+YZ4SFIbyy1YJQYl6GYBWjf5o4H1A68nxyq+WTyVSOJQ4GqS/DiPE+UseUizgMg==",
@@ -1350,7 +1398,7 @@
     "System.Linq/4.0.1-beta-23516": {
       "type": "package",
       "serviceable": true,
-      "sha512": "AJaoyeAHLpurbTWnmvOhK/QC2sswKJrIA5RlPea+UdfXpHOw3srPNEPpseZDMV/EviVqAwUfFNkc5QxpGZtsLA==",
+      "sha512": "uNxm2RB+kMeiKnY26iPvOtJLzTzNaAF4A2qqyzev6j8x8w2Dr+gg7LF7BHCwC55N7OirhHrAWUb3C0n4oi9qYw==",
       "files": [
         "lib/dotnet5.4/System.Linq.dll",
         "lib/net45/_._",
@@ -1392,7 +1440,7 @@
     "System.Linq.Queryable/4.0.1-beta-23516": {
       "type": "package",
       "serviceable": true,
-      "sha512": "xjYDiDG8kxEIZiIWK0FLElmHjIXkW2l3Gi4raTi1+kdYvEBVqCpMUxL3V/1Sr1FCSB1eFtNtPYP/BPtoG56p1g==",
+      "sha512": "Sjz6CoXypD6qYVHXHDjTHD10UREpFutrkWSsdff50cntOHjtTcXa36OOmbNs8Ej5WrFyVS6K5JaWBJcelRqMOg==",
       "files": [
         "lib/dotnet5.4/System.Linq.Queryable.dll",
         "lib/net45/_._",
@@ -1500,7 +1548,8 @@
       "Warden.Integrations.HttpApi >= 1.0.2.2",
       "Warden.Integrations.Twilio >= 1.0.2.2",
       "Warden.Watchers.Process >= 1.0.2.2",
-      "Warden.Integrations.Slack >= 1.0.2.2"
+      "Warden.Integrations.Slack >= 1.0.2.2",
+      "Warden.Watchers.ServerStatus >= 1.0.2.2"
     ],
     "DNX,Version=v4.5.1": []
   }

@@ -13,9 +13,11 @@ using Warden.Watchers.Performance;
 using Warden.Watchers.Process;
 using Warden.Watchers.Redis;
 using Warden.Watchers.Web;
+using Warden.Watchers.ServerStatus;
 
 namespace Warden.Examples.Console
 {
+
     public class Program
     {
         public static void Main(string[] args)
@@ -60,6 +62,7 @@ namespace Warden.Examples.Console
                         .OnCompletedAsync(check => WebsiteHookOnCompletedAsync(check))
                         .OnFailureAsync(check => WebsiteHookOnFailureAsync(check));
                 })
+                .AddPortAvailabilityWatcher("www.google.pl", bld => bld.ForPort(80))
                 .AddWebWatcher("API watcher", "http://httpstat.us/200", HttpRequest.Post("users", new {name = "test"},
                     headers: new Dictionary<string, string>
                     {
