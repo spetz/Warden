@@ -10,6 +10,7 @@ namespace Warden.Core
     public class IterationProcessorConfiguration
     {
         private static readonly TimeSpan MinimalInterval = TimeSpan.FromMilliseconds(1);
+        private static readonly TimeSpan DefaultInterval = TimeSpan.FromSeconds(5);
 
         /// <summary>
         /// Set of unique watcher configurations.
@@ -32,9 +33,14 @@ namespace Warden.Core
         public Func<DateTime> DateTimeProvider { get; protected set; }
 
         /// <summary>
-        /// Default interval between the next check (ExecuteAsync()) common for all of the watchers.
+        /// Interval between the next check (ExecuteAsync()) common for all of the watchers.
         /// </summary>
-        public TimeSpan DefaultInterval { get; protected set; }
+        public TimeSpan Interval { get; protected set; }
+
+        /// <summary>
+        /// Flag determining whether the  custom watchers intervals should be overriden (false by default).
+        /// </summary>
+        public bool OverrideCustomIntervals { get; protected set; }
 
         protected internal IterationProcessorConfiguration()
         {
@@ -105,19 +111,21 @@ namespace Warden.Core
                 return this;
             }
 
-            //TODO: Implement overrideCustomIntervals feature.
             /// <summary>
-            /// Sets the default interval between the next check (ExecuteAsync()) common for all of the watchers.
+            /// Sets the interval between the next check (ExecuteAsync()) common for all of the watchers.
             /// </summary>
             /// <param name="interval">Interval between the next check (ExecuteAsync()) for the watcher (5 seconds by default).</param>
             /// <param name="overrideCustomIntervals">Overrides already set custom interval for all of the watchers (false by default).</param>
             /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
-            public Builder WithDefaultInterval(TimeSpan interval, bool overrideCustomIntervals = false)
+            public Builder WithInterval(TimeSpan interval, bool overrideCustomIntervals = false)
             {
                 if (interval < MinimalInterval)
-                    throw new ArgumentException("Interval can not be less than 1 ms.", nameof(interval));
-
-                _configuration.DefaultInterval = interval;
+                {
+                    throw new ArgumentException("Interval can not be less than " +
+                                                $"{MinimalInterval.TotalMilliseconds} ms.", nameof(interval));
+                }
+                _configuration.Interval = interval;
+                _configuration.OverrideCustomIntervals = overrideCustomIntervals;
 
                 return this;
             }
@@ -126,7 +134,20 @@ namespace Warden.Core
             /// Builds the IterationProcessorConfiguration and return its instance.
             /// </summary>
             /// <returns>Instance of IterationProcessorConfiguration.</returns>
-            public IterationProcessorConfiguration Build() => _configuration;
+            public IterationProcessorConfiguration Build()
+            {
+                foreach (var watcher in _configuration.Watchers)
+                {
+                    var setInterval = _configuration.OverrideCustomIntervals ||
+                                      watcher.Interval == DefaultInterval;
+                    if(!setInterval)
+                        continue;
+
+                    watcher.SetInterval(_configuration.Interval);
+                }
+
+                return _configuration;
+            }
         }
     }
 }

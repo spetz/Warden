@@ -13,7 +13,7 @@ namespace Warden.Core
     {
         private static readonly IIntegrator DefaultIntegrator = new Integrator();
         private static readonly TimeSpan MinimalInterval = TimeSpan.FromMilliseconds(1);
-        private static readonly TimeSpan DefaultWatcherInterval = TimeSpan.FromSeconds(5);
+        private static readonly TimeSpan DefaultInterval = TimeSpan.FromSeconds(5);
 
         /// <summary>
         /// Set of unique watcher configurations.
@@ -36,9 +36,14 @@ namespace Warden.Core
         public AggregatedWatcherHooksConfiguration AggregatedWatcherHooks { get; protected set; }
 
         /// <summary>
-        /// Default interval between the next check (ExecuteAsync()) common for all of the watchers executed in a loop by IIterationProcessor.
+        /// Interval between the next check (ExecuteAsync()) common for all of the watchers.
         /// </summary>
-        public TimeSpan DefaultInterval { get; protected set; }
+        public TimeSpan Interval { get; protected set; }
+
+        /// <summary>
+        /// Flag determining whether the  custom watchers intervals should be overriden (false by default).
+        /// </summary>
+        public bool OverrideCustomIntervals { get; protected set; }
 
         /// <summary>
         /// Total number of iterations (infinite by default).
@@ -67,7 +72,7 @@ namespace Warden.Core
             GlobalWatcherHooks = WatcherHooksConfiguration.Empty;
             AggregatedWatcherHooks = AggregatedWatcherHooksConfiguration.Empty;
             Watchers = new HashSet<WatcherConfiguration>();
-            DefaultInterval = DefaultWatcherInterval;
+            Interval = DefaultInterval;
             DateTimeProvider = () => DateTime.UtcNow;
             IntegratorProvider = () => DefaultIntegrator;
         }
@@ -105,7 +110,7 @@ namespace Warden.Core
 
                 var watcherConfiguration = WatcherConfiguration.Create(watcher)
                     .WithHooks(hooksConfiguration)
-                    .WithInterval(interval ?? DefaultWatcherInterval)
+                    .WithInterval(interval ?? DefaultInterval)
                     .Build();
 
                 _configuration.Watchers.Add(watcherConfiguration);
@@ -209,30 +214,32 @@ namespace Warden.Core
                 return this;
             }
 
-            //TODO: Implement overrideCustomIntervals feature.
             /// <summary>
-            /// Sets the default interval between the next check (ExecuteAsync()) common for all of the watchers executed in a loop by IIterationProcessor.
+            /// Sets the interval between the next check (ExecuteAsync()) common for all of the watchers.
             /// </summary>
             /// <param name="interval">Interval between the next check (ExecuteAsync()) for the watcher (5 seconds by default).</param>
             /// <param name="overrideCustomIntervals">Overrides already set custom interval for all of the watchers (false by default).</param>
             /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
-            public Builder WithDefaultInterval(TimeSpan interval, bool overrideCustomIntervals = false)
+            public Builder WithInterval(TimeSpan interval, bool overrideCustomIntervals = false)
             {
                 if (interval < MinimalInterval)
                     throw new ArgumentException("Interval can not be less than 1 ms.", nameof(interval));
 
-                _configuration.DefaultInterval = interval;
+                _configuration.Interval = interval;
+                _configuration.OverrideCustomIntervals = overrideCustomIntervals;
 
                 return this;
             }
 
             /// <summary>
             /// Sets a minimal interval (1 ms) between the next check (ExecuteAsync()) common for all of the watchers executed in a loop by IIterationProcessor.
+            /// <param name="overrideCustomIntervals">Overrides already set custom interval for all of the watchers (false by default).</param>
             /// </summary>
             /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
-            public Builder WithMinimalInterval()
+            public Builder WithMinimalInterval(bool overrideCustomIntervals = false)
             {
-                _configuration.DefaultInterval = MinimalInterval;
+                _configuration.Interval = MinimalInterval;
+                _configuration.OverrideCustomIntervals = overrideCustomIntervals;
 
                 return this;
             }
@@ -322,7 +329,7 @@ namespace Warden.Core
                     .SetGlobalWatcherHooks(_configuration.GlobalWatcherHooks)
                     .SetAggregatedWatcherHooks(_configuration.AggregatedWatcherHooks)
                     .SetDateTimeProvider(_configuration.DateTimeProvider)
-                    .WithDefaultInterval(_configuration.DefaultInterval)
+                    .WithInterval(_configuration.Interval, _configuration.OverrideCustomIntervals)
                     .Build();
 
                 _configuration.IterationProcessorProvider = () => new IterationProcessor(iterationProcessorConfiguration);

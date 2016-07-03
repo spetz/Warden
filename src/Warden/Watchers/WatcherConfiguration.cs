@@ -33,6 +33,14 @@ namespace Warden.Watchers
             Hooks = WatcherHooksConfiguration.Empty;
         }
 
+        public void SetInterval(TimeSpan interval)
+        {
+            if (interval < MinimalInterval)
+                throw new ArgumentException("Interval can not be less than 1 ms.", nameof(interval));
+
+            Interval = interval;
+        }
+
         /// <summary>
         /// Factory method for creating a new instance of fluent builder for the WatcherConfiguration.
         /// </summary>
