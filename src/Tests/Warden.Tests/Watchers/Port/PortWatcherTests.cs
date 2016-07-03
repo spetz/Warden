@@ -107,7 +107,7 @@
         }
     }
 
-    [Subject("PortAvailabilityWatcher execution")]
+    [Subject("PortWatcher execution")]
     public class when_server_refuse_connection_watcher_result_is_not_valid : PortWatcher_specs
     {
         private static Mock<ITcpClient> TcpClientProvider;
@@ -163,7 +163,7 @@
         }
     }
 
-    [Subject("PortAvailabilityWatcher execution")]
+    [Subject("PortWatcher execution")]
     public class when_host_name_cannot_be_resoveld_check_is_not_valid : PortWatcher_specs
     {
         private static Mock<IDnsResolver> DnsResolverProvider;
@@ -207,7 +207,7 @@
         }
     }
 
-    [Subject("PortAvailabilityWatcher execution")]
+    [Subject("PortWatcher execution")]
     public class when_tcp_client_provder_is_null_check_throws_exception : PortWatcher_specs
     {
         private static readonly string TestHostname = "website.com";
@@ -241,7 +241,7 @@
         }
     }
 
-    [Subject("PortAvailabilityWatcher execution")]
+    [Subject("PortWatcher execution")]
     public class when_dns_resolver_provder_is_null_check_throws_exception : PortWatcher_specs
     {
         private static readonly string TestHostname = "website.com";
