@@ -1,30 +1,33 @@
-﻿namespace Warden.Watchers.Port
-{
-    using System;
-    using System.Linq;
-    using System.Net;
+﻿using System;
+using System.Linq;
+using System.Net;
 
+namespace Warden.Watchers.Port
+{
     /// <summary>
-    /// A service that handle dns requests.
+    /// Custom DNS resolver service.
     /// </summary>
     public interface IDnsResolver : IDisposable
     {
         /// <summary>
         /// Gets the IP address or hostname.
         /// </summary>
-        /// <param name="hostnameOrIp">A host name or IPv4 address.</param>
-        /// <returns>An IP address or null if cannot be resolved.</returns>
-        IPAddress GetIp(string hostnameOrIp);
+        /// <param name="hostnameOrIp">A hostname or IPv4 address.</param>
+        /// <returns>IP address of the resolved hostname (if exists).</returns>
+        IPAddress GetIpAddress(string hostnameOrIp);
     }
 
+    /// <summary>
+    /// Default implementation of the IDnsResolver.
+    /// </summary>
     public class DnsResolver : IDnsResolver
     {
         /// <summary>
-        /// Gets the IP address of provider hostname or provider.
+        /// Gets the IP address of provided hostname or provider.
         /// </summary>
-        /// <param name="hostnameOrIp">A host name or IPv4 address.</param>
+        /// <param name="hostnameOrIp">A hostname or IPv4 address.</param>
         /// <returns>An IP address or null if cannot be resolved.</returns>
-        public IPAddress GetIp(string hostnameOrIp) => Dns.GetHostAddresses(hostnameOrIp).FirstOrDefault();
+        public IPAddress GetIpAddress(string hostnameOrIp) => Dns.GetHostAddresses(hostnameOrIp).FirstOrDefault();
 
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()

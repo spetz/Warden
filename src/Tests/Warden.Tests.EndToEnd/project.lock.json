@@ -91,6 +91,9 @@
           "lib/net40/Moq.dll": {}
         }
       },
+      "NETStandard.Library/1.6.0": {
+        "type": "package"
+      },
       "Newtonsoft.Json/8.0.3": {
         "type": "package",
         "compile": {
@@ -271,6 +274,14 @@
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
+          "Warden": "1.0.2.2"
+        }
+      },
+      "Warden.Watchers.Port/1.0.2.2": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0",
           "Warden": "1.0.2.2"
         }
       },
@@ -388,6 +399,9 @@
           "lib/net40/Moq.dll": {}
         }
       },
+      "NETStandard.Library/1.6.0": {
+        "type": "package"
+      },
       "Newtonsoft.Json/8.0.3": {
         "type": "package",
         "compile": {
@@ -568,6 +582,14 @@
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
+          "Warden": "1.0.2.2"
+        }
+      },
+      "Warden.Watchers.Port/1.0.2.2": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0",
           "Warden": "1.0.2.2"
         }
       },
@@ -685,6 +707,9 @@
           "lib/net40/Moq.dll": {}
         }
       },
+      "NETStandard.Library/1.6.0": {
+        "type": "package"
+      },
       "Newtonsoft.Json/8.0.3": {
         "type": "package",
         "compile": {
@@ -868,6 +893,14 @@
           "Warden": "1.0.2.2"
         }
       },
+      "Warden.Watchers.Port/1.0.2.2": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0",
+          "Warden": "1.0.2.2"
+        }
+      },
       "Warden.Watchers.Process/1.0.2.2": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
@@ -930,6 +963,10 @@
     "Warden.Watchers.Performance/1.0.2.2": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Performance/project.json"
+    },
+    "Warden.Watchers.Port/1.0.2.2": {
+      "type": "project",
+      "path": "../../Watchers/Warden.Watchers.Port/project.json"
     },
     "Warden.Watchers.Process/1.0.2.2": {
       "type": "project",
@@ -1124,6 +1161,17 @@
         "Moq.4.2.1510.2205.nupkg",
         "Moq.4.2.1510.2205.nupkg.sha512",
         "Moq.nuspec"
+      ]
+    },
+    "NETStandard.Library/1.6.0": {
+      "type": "package",
+      "sha512": "ypsCvIdCZ4IoYASJHt6tF2fMo7N30NLgV1EbmC+snO490OMl9FvVxmumw14rhReWU3j3g7BYudG6YCrchwHJlA==",
+      "files": [
+        "dotnet_library_license.txt",
+        "NETStandard.Library.1.6.0.nupkg",
+        "NETStandard.Library.1.6.0.nupkg.sha512",
+        "NETStandard.Library.nuspec",
+        "ThirdPartyNotices.txt"
       ]
     },
     "Newtonsoft.Json/8.0.3": {
@@ -1414,15 +1462,16 @@
       "Warden.Watchers.MongoDb >= 1.0.2.2",
       "Warden.Watchers.MsSql >= 1.0.2.2",
       "Warden.Watchers.Performance >= 1.0.2.2",
+      "Warden.Watchers.Port >= 1.0.2.2",
+      "Warden.Watchers.Process >= 1.0.2.2",
       "Warden.Watchers.Redis >= 1.0.2.2",
       "Warden.Watchers.Web >= 1.0.2.2",
       "System.Linq >= 4.0.1-beta-23516",
       "System.Linq.Queryable >= 4.0.1-beta-23516",
-      "Warden.Integrations.SendGrid >= 1.0.2.2",
-      "Warden.Integrations.Twilio >= 1.0.2.2",
       "Warden.Integrations.HttpApi >= 1.0.2.2",
-      "Warden.Watchers.Process >= 1.0.2.2",
-      "Warden.Integrations.Slack >= 1.0.2.2"
+      "Warden.Integrations.Slack >= 1.0.2.2",
+      "Warden.Integrations.SendGrid >= 1.0.2.2",
+      "Warden.Integrations.Twilio >= 1.0.2.2"
     ],
     "DNX,Version=v4.5.1": []
   }

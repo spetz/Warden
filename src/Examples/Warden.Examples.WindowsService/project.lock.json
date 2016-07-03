@@ -67,6 +67,9 @@
           "lib/net45/MongoDB.Driver.Core.dll": {}
         }
       },
+      "NETStandard.Library/1.6.0": {
+        "type": "package"
+      },
       "Newtonsoft.Json/8.0.3": {
         "type": "package",
         "compile": {
@@ -226,6 +229,14 @@
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
+          "Warden": "1.0.2.2"
+        }
+      },
+      "Warden.Watchers.Port/1.0.2.2": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0",
           "Warden": "1.0.2.2"
         }
       },
@@ -319,6 +330,9 @@
           "lib/net45/MongoDB.Driver.Core.dll": {}
         }
       },
+      "NETStandard.Library/1.6.0": {
+        "type": "package"
+      },
       "Newtonsoft.Json/8.0.3": {
         "type": "package",
         "compile": {
@@ -478,6 +492,14 @@
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
+          "Warden": "1.0.2.2"
+        }
+      },
+      "Warden.Watchers.Port/1.0.2.2": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0",
           "Warden": "1.0.2.2"
         }
       },
@@ -571,6 +593,9 @@
           "lib/net45/MongoDB.Driver.Core.dll": {}
         }
       },
+      "NETStandard.Library/1.6.0": {
+        "type": "package"
+      },
       "Newtonsoft.Json/8.0.3": {
         "type": "package",
         "compile": {
@@ -733,6 +758,14 @@
           "Warden": "1.0.2.2"
         }
       },
+      "Warden.Watchers.Port/1.0.2.2": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0",
+          "Warden": "1.0.2.2"
+        }
+      },
       "Warden.Watchers.Process/1.0.2.2": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
@@ -795,6 +828,10 @@
     "Warden.Watchers.Performance/1.0.2.2": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Performance/project.json"
+    },
+    "Warden.Watchers.Port/1.0.2.2": {
+      "type": "project",
+      "path": "../../Watchers/Warden.Watchers.Port/project.json"
     },
     "Warden.Watchers.Process/1.0.2.2": {
       "type": "project",
@@ -873,6 +910,17 @@
         "MongoDB.Driver.Core.2.2.3.nupkg",
         "MongoDB.Driver.Core.2.2.3.nupkg.sha512",
         "MongoDB.Driver.Core.nuspec"
+      ]
+    },
+    "NETStandard.Library/1.6.0": {
+      "type": "package",
+      "sha512": "ypsCvIdCZ4IoYASJHt6tF2fMo7N30NLgV1EbmC+snO490OMl9FvVxmumw14rhReWU3j3g7BYudG6YCrchwHJlA==",
+      "files": [
+        "dotnet_library_license.txt",
+        "NETStandard.Library.1.6.0.nupkg",
+        "NETStandard.Library.1.6.0.nupkg.sha512",
+        "NETStandard.Library.nuspec",
+        "ThirdPartyNotices.txt"
       ]
     },
     "Newtonsoft.Json/8.0.3": {
@@ -976,7 +1024,7 @@
     "System.Linq/4.0.1-beta-23516": {
       "type": "package",
       "serviceable": true,
-      "sha512": "uNxm2RB+kMeiKnY26iPvOtJLzTzNaAF4A2qqyzev6j8x8w2Dr+gg7LF7BHCwC55N7OirhHrAWUb3C0n4oi9qYw==",
+      "sha512": "AJaoyeAHLpurbTWnmvOhK/QC2sswKJrIA5RlPea+UdfXpHOw3srPNEPpseZDMV/EviVqAwUfFNkc5QxpGZtsLA==",
       "files": [
         "lib/dotnet5.4/System.Linq.dll",
         "lib/net45/_._",
@@ -1090,6 +1138,7 @@
       "Warden.Watchers.MsSql >= 1.0.2.2",
       "Warden.Watchers.Performance >= 1.0.2.2",
       "Warden.Watchers.Process >= 1.0.2.2",
+      "Warden.Watchers.Port >= 1.0.2.2",
       "Warden.Watchers.Redis >= 1.0.2.2",
       "Warden.Watchers.Web >= 1.0.2.2"
     ],

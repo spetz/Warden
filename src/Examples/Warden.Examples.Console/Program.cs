@@ -62,7 +62,7 @@ namespace Warden.Examples.Console
                         .OnCompletedAsync(check => WebsiteHookOnCompletedAsync(check))
                         .OnFailureAsync(check => WebsiteHookOnFailureAsync(check));
                 })
-                .AddPortWatcher("www.google.pl", cfg => cfg.ForPort(80))
+                .AddPortWatcher("www.google.pl", 87)
                 .AddWebWatcher("API watcher", "http://httpstat.us/200", HttpRequest.Post("users", new {name = "test"},
                     headers: new Dictionary<string, string>
                     {

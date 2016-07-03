@@ -1,11 +1,14 @@
 ﻿{
   "version": "1.0.2.2",
-
+  "description": "Warden watcher for Port.",
+  "authors": [ "Piotr Gankiewicz", "Patryk Wąsiewicz" ],
+  "tags": [ "Warden" ],
+  "projectUrl": "https://getwarden.net",
+  "licenseUrl": "https://github.com/warden-stack/Warden/blob/master/LICENSE",
   "dependencies": {
     "NETStandard.Library": "1.6.0",
     "Warden": "1.0.2.2"
   },
-
   "frameworks": {
     "net451": { }
   }

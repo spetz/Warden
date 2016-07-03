@@ -1,79 +1,99 @@
-﻿namespace Warden.Watchers.Port
-{
-    using System;
-    using global::Warden.Core;
+﻿using System;
+using Warden.Core;
 
+namespace Warden.Watchers.Port
+{
     public static class Extensions
     {
         /// <summary>
-        /// Gets the host name (if possible) from url-formatted input string.
+        /// Gets the hostname (if possible) from url-formatted input string.
         /// </summary>
-        /// <param name="input">The url formatted string.</param>
-        /// <returns>The url string without protocol part. If input is of bad format, returns original input value.</returns>
-        public static string GetHostname(this string input)
+        /// <param name="hostname">The URL formatted string.</param>
+        /// <returns>The URL string without protocol part. If URL has invalid format, returns original input value.</returns>
+        internal static string GetHostname(this string hostname)
         {
-            if (input == null) throw new ArgumentNullException(nameof(input));
+            if (hostname == null)
+                throw new ArgumentNullException(nameof(hostname));
 
             try
             {
-                var uri = new Uri(input);
+                var uri = new Uri(hostname);
+
                 return uri.Host;
             }
             catch (UriFormatException)
             {
-                return input;
+                return hostname;
             }
         }
+
         /// <summary>
-        /// Extension method for adding the Port watcher to the the WardenConfiguration with the default name of Web Watcher.
-        /// Uses the default HTTP GET request.
+        /// Validates the hostname.
+        /// </summary>
+        /// <param name="hostname">The URL formatted string.</param>
+        /// <returns>The URL string without protocol part. If URL has invalid format an exception is thrown.</returns>
+        internal static void ValidateHostname(this string hostname)
+        {
+            if (string.IsNullOrEmpty(hostname))
+                throw new ArgumentException("Hostname can not be empty.", nameof(hostname));
+
+            if (hostname.Contains("://"))
+            {
+                throw new ArgumentException("The hostname should not contain protocol. " +
+                                            $"Did you mean \" {hostname.GetHostname()}\"?", nameof(hostname));
+            }
+        }
+
+        /// <summary>
+        /// Extension method for adding the Port watcher to the the WardenConfiguration with the default name of Port Watcher.
         /// </summary>
         /// <param name="builder">Instance of the Warden configuration builder.</param>
-        /// <param name="host">The host name for server..</param>
+        /// <param name="hostname">Hostname to be resolved.</param>
+        /// <param name="port">Port number of the hostname.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddPortWatcher(
-            this WardenConfiguration.Builder builder, string host,
+            this WardenConfiguration.Builder builder, string hostname, int port,
             Action<WatcherHooksConfiguration.Builder> hooks = null)
         {
-            builder.AddWatcher(PortWatcher.Create(host), hooks);
+            builder.AddWatcher(PortWatcher.Create(hostname, port), hooks);
 
             return builder;
         }
-
 
         /// <summary>
         /// Extension method for adding the Port watcher to the the WardenConfiguration..
         /// </summary>
         /// <param name="builder">Instance of the Warden configuration builder.</param>
         /// <param name="name">Name of the Port watcher.</param>
-        /// <param name="host">A host name of server to check.</param>
+        /// <param name="hostname">Hostname to be resolved.</param>
+        /// <param name="port">Port number of the hostname.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddPortWatcher(
             this WardenConfiguration.Builder builder,
-            string name, string host,
+            string name, string hostname, int port,
             Action<WatcherHooksConfiguration.Builder> hooks = null)
         {
-            builder.AddWatcher(PortWatcher.Create(name, host), hooks);
+            builder.AddWatcher(PortWatcher.Create(name, hostname, port), hooks);
 
             return builder;
         }
 
         /// <summary>
-        /// Extension method for adding the Port watcher to the the WardenConfiguration with the default name of Web Watcher.
-        /// Uses the default HTTP GET request.
+        /// Extension method for adding the Port watcher to the the WardenConfiguration with the default name of Port Watcher.
         /// </summary>
         /// <param name="builder">Instance of the Warden configuration builder.</param>
-        /// <param name="host">A host name of server to check.</param>
+        /// <param name="hostname">Hostname to be resolved.</param>
+        /// <param name="port">Port number of the hostname.</param>
         /// <param name="configurator">Lambda expression for configuring the PortWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
         public static WardenConfiguration.Builder AddPortWatcher(
-            this WardenConfiguration.Builder builder, string host,
-            Action<PortConfiguration.Default> configurator,
+            this WardenConfiguration.Builder builder, string hostname, int port,
+            Action<PortWatcherConfiguration.Default> configurator,
             Action<WatcherHooksConfiguration.Builder> hooks = null)
         {
-            builder.AddWatcher(PortWatcher.Create(host, configurator), hooks);
+            builder.AddWatcher(PortWatcher.Create(hostname, port, configurator), hooks);
 
             return builder;
         }
@@ -83,17 +103,18 @@
         /// </summary>
         /// <param name="builder">Instance of the Warden configuration builder.</param>
         /// <param name="name">Name of the PortWatcher.</param>
-        /// <param name="host">A host name of server to check.</param>
+        /// <param name="hostname">Hostname to be resolved.</param>
+        /// <param name="port">Port number of the hostname.</param>
         /// <param name="configurator">Lambda expression for configuring the PortWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddPortWatcher(
             this WardenConfiguration.Builder builder,
-            string name, string host,
-            Action<PortConfiguration.Default> configurator,
+            string name, string hostname, int port,
+            Action<PortWatcherConfiguration.Default> configurator,
             Action<WatcherHooksConfiguration.Builder> hooks = null)
         {
-            builder.AddWatcher(PortWatcher.Create(name, host, configurator), hooks);
+            builder.AddWatcher(PortWatcher.Create(name, hostname, port, configurator), hooks);
 
             return builder;
         }
@@ -108,14 +129,12 @@
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddPortWatcher(
             this WardenConfiguration.Builder builder, string name,
-            PortConfiguration configuration,
+            PortWatcherConfiguration configuration,
             Action<WatcherHooksConfiguration.Builder> hooks = null)
         {
             builder.AddWatcher(PortWatcher.Create(name, configuration), hooks);
 
             return builder;
         }
-
-
     }
 }
