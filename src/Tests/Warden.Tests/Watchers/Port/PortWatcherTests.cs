@@ -7,23 +7,52 @@
     using FluentAssertions;
     using global::Warden.Core;
     using global::Warden.Watchers;
-    using global::Warden.Watchers.ServerStatus;
+    using global::Warden.Watchers.Port;
     using global::Warden.Watchers.Web;
     using Moq;
     using NUnit.Framework;
     using It = global::Warden.Tests.It;
 
-    public class PortAvailabilityWatcher_specs
+    public class PortWatcher_specs
     {
-        protected static PortAvailabilityWatcher Watcher { get; set; }
-        protected static PortAvailabilityConfiguration Configuration { get; set; }
+        protected static PortWatcher Watcher { get; set; }
+        protected static PortConfiguration Configuration { get; set; }
         protected static IWatcherCheckResult CheckResult { get; set; }
-        protected static PortAvailabilityCheckResult WebCheckResult { get; set; }
+        protected static PortCheckResult WebCheckResult { get; set; }
         protected static Exception Exception { get; set; }
     }
 
-    [Subject("PortAvailabilityWatcher execution")]
-    public class when_server_opens_connection_watcher_result_is_valid : PortAvailabilityWatcher_specs
+    [Subject("PortWatcher initialization")]
+    public class when_initializing_with_http_hostname_throws_argument_exception : PortWatcher_specs
+    {
+        private const string InvalidHostName = "http://www.google.pl";
+
+        Establish context = () => {       };
+
+        Because of = () =>
+        {
+            Exception = Catch.Exception(() =>
+                Configuration = PortConfiguration
+                    .Create(InvalidHostName)
+                    .Build());
+        };
+
+        It should_exception_be_of_argument_type = () => Exception.Should().BeOfType<ArgumentException>();
+        It should_exception_contain_proposed_hostname = () => Exception.Message.Should().Contain("www.google.pl");
+
+        //TODO: Remove when MSpec works with DNX 
+        [Test]
+        public void RunTest()
+        {
+            context();
+            of();
+            should_exception_be_of_argument_type();
+            should_exception_contain_proposed_hostname();
+        }
+    }
+
+    [Subject("PortWatcher execution")]
+    public class when_server_opens_connection_watcher_result_is_valid : PortWatcher_specs
     {
         private static Mock<ITcpClient> TcpClientProvider;
         private static Mock<IDnsResolver> DnsResolverProvider;
@@ -43,19 +72,19 @@
             DnsResolverProvider.Setup(dn => dn.GetIp(TestHostname))
                 .Returns((string ip) => TestIpAddress);
 
-            Configuration = PortAvailabilityConfiguration
+            Configuration = PortConfiguration
                 .Create(TestHostname)
                 .ForPort(TestPort)
                 .WithTcpClientProvider(() => TcpClientProvider.Object)
                 .WithDnsResolver(() => DnsResolverProvider.Object)
                 .Build();
-            Watcher = PortAvailabilityWatcher.Create("Port availability", Configuration);
+            Watcher = PortWatcher.Create("Port watcher", Configuration);
         };
 
         Because of = async () =>
         {
             CheckResult = await Watcher.ExecuteAsync().Await().AsTask;
-            WebCheckResult = CheckResult as PortAvailabilityCheckResult;
+            WebCheckResult = CheckResult as PortCheckResult;
         };
 
         private It should_have_valid_check_result = () => CheckResult.IsValid.Should().BeTrue();
@@ -79,7 +108,7 @@
     }
 
     [Subject("PortAvailabilityWatcher execution")]
-    public class when_server_refuse_connection_watcher_result_is_not_valid : PortAvailabilityWatcher_specs
+    public class when_server_refuse_connection_watcher_result_is_not_valid : PortWatcher_specs
     {
         private static Mock<ITcpClient> TcpClientProvider;
         private static Mock<IDnsResolver> DnsResolverProvider;
@@ -99,19 +128,19 @@
             DnsResolverProvider.Setup(dn => dn.GetIp(TestHostname))
                 .Returns((string ip) => TestIpAddress);
 
-            Configuration = PortAvailabilityConfiguration
+            Configuration = PortConfiguration
                 .Create(TestHostname)
                 .ForPort(TestPort)
                 .WithTcpClientProvider(() => TcpClientProvider.Object)
                 .WithDnsResolver(() => DnsResolverProvider.Object)
                 .Build();
-            Watcher = PortAvailabilityWatcher.Create("Port availability", Configuration);
+            Watcher = PortWatcher.Create("Port availability", Configuration);
         };
 
         Because of = async () =>
         {
             CheckResult = await Watcher.ExecuteAsync().Await().AsTask;
-            WebCheckResult = CheckResult as PortAvailabilityCheckResult;
+            WebCheckResult = CheckResult as PortCheckResult;
         };
 
         private It should_have_valid_check_result = () => CheckResult.IsValid.Should().BeFalse();
@@ -135,7 +164,7 @@
     }
 
     [Subject("PortAvailabilityWatcher execution")]
-    public class when_host_name_cannot_be_resoveld_check_is_not_valid : PortAvailabilityWatcher_specs
+    public class when_host_name_cannot_be_resoveld_check_is_not_valid : PortWatcher_specs
     {
         private static Mock<IDnsResolver> DnsResolverProvider;
 
@@ -149,18 +178,18 @@
             DnsResolverProvider.Setup(dn => dn.GetIp(TestHostname))
                 .Returns((string ip) => null);
 
-            Configuration = PortAvailabilityConfiguration
+            Configuration = PortConfiguration
                 .Create(TestHostname)
                 .ForPort(TestPort)
                 .WithDnsResolver(() => DnsResolverProvider.Object)
                 .Build();
-            Watcher = PortAvailabilityWatcher.Create("Port availability", Configuration);
+            Watcher = PortWatcher.Create("Port availability", Configuration);
         };
 
         Because of = async () =>
         {
             CheckResult = await Watcher.ExecuteAsync().Await().AsTask;
-            WebCheckResult = CheckResult as PortAvailabilityCheckResult;
+            WebCheckResult = CheckResult as PortCheckResult;
         };
 
         private It should_have_valid_check_result = () => CheckResult.IsValid.Should().BeFalse();
@@ -179,19 +208,19 @@
     }
 
     [Subject("PortAvailabilityWatcher execution")]
-    public class when_tcp_client_provder_is_null_check_throws_exception : PortAvailabilityWatcher_specs
+    public class when_tcp_client_provder_is_null_check_throws_exception : PortWatcher_specs
     {
         private static readonly string TestHostname = "website.com";
         private static readonly int TestPort = 80;
 
         Establish context = () =>
         {
-            Configuration = PortAvailabilityConfiguration
+            Configuration = PortConfiguration
                 .Create(TestHostname)
                 .ForPort(TestPort)
                 .WithTcpClientProvider(() => null)
                 .Build();
-            Watcher = PortAvailabilityWatcher.Create("Port availability", Configuration);
+            Watcher = PortWatcher.Create("Port availability", Configuration);
         };
 
         Because of = () =>
@@ -213,19 +242,19 @@
     }
 
     [Subject("PortAvailabilityWatcher execution")]
-    public class when_dns_resolver_provder_is_null_check_throws_exception : PortAvailabilityWatcher_specs
+    public class when_dns_resolver_provder_is_null_check_throws_exception : PortWatcher_specs
     {
         private static readonly string TestHostname = "website.com";
         private static readonly int TestPort = 80;
 
         Establish context = () =>
         {
-            Configuration = PortAvailabilityConfiguration
+            Configuration = PortConfiguration
                 .Create(TestHostname)
                 .ForPort(TestPort)
                 .WithDnsResolver(() => null)
                 .Build();
-            Watcher = PortAvailabilityWatcher.Create("Port availability", Configuration);
+            Watcher = PortWatcher.Create("Port availability", Configuration);
         };
 
         Because of = () =>

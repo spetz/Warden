@@ -1,15 +1,15 @@
-﻿namespace Warden.Watchers.ServerStatus
+﻿namespace Warden.Watchers.Port
 {
     using System;
 
     /// <summary>
-    /// Configuraiton of port availability watcher.
+    /// Configuration of port watcher.
     /// </summary>
-    public class PortAvailabilityConfiguration
+    public class PortConfiguration
     {
-        private PortAvailabilityConfiguration(string host)
+        private PortConfiguration(string host)
         {
-            this.Host = host;
+            Host = host;
         }
 
         /// <summary>
@@ -28,34 +28,36 @@
         public TimeSpan? Timeout { get;  private set; }
 
         /// <summary>
-        /// Factory of ITcpClient instance.
+        /// Gets a factory of ITcpClient provider.
         /// </summary>
-        public Func<ITcpClient> TcpClientProvider { get; private set; } = () => new DefaultTcpClient();
+        public Func<ITcpClient> TcpClientProvider { get; private set; } = () => new TcpClient();
 
         /// <summary>
         /// Gets the provider of dns resolver.
         /// </summary>
-        public Func<IDnsResolver> DnsResolverProvider { get; private set; } = () => new DefaultDnsResolver();
+        public Func<IDnsResolver> DnsResolverProvider { get; private set; } = () => new DnsResolver();
 
         /// <summary>
-        /// Factory method for creating a new instance of fluent builder for the PortAvailabilityConfiguration.
+        /// Factory method for creating a new instance of fluent builder for the PortConfiguration.
         /// Uses the default 80 port and 30 seconds timeout.
         /// </summary>
         /// <param name="host">A host name.</param>
         public static Builder Create(string host) => new Builder(host);
 
         /// <summary>
-        /// Fluent builder for the PortAvailabilityConfiguration.
+        /// Fluent builder for the PortConfiguration.
         /// </summary>
-        public abstract class Configurator<T> : WatcherConfigurator<T, PortAvailabilityConfiguration>
+        public abstract class Configurator<T> : WatcherConfigurator<T, PortConfiguration>
             where T : Configurator<T>
         {
             protected Configurator(string host)
             {
-                Configuration = new PortAvailabilityConfiguration(host);
+                this.ValidateHostname(host);
+
+                Configuration = new PortConfiguration(host);
             }
 
-            protected Configurator(PortAvailabilityConfiguration configuration) : base(configuration)
+            protected Configurator(PortConfiguration configuration) : base(configuration)
             {
             }
 
@@ -63,59 +65,68 @@
             /// Sets the port number that will be checked
             /// </summary>
             /// <param name="portNumber">A port number</param>
-            /// <returns>Instance of fluent builder for the PortAvailabilityConfiguration.</returns>
+            /// <returns>Instance of fluent builder for the PortConfiguration.</returns>
             public T ForPort(int portNumber)
             {
                 if (portNumber < 1) throw new ArgumentOutOfRangeException(nameof(portNumber));
 
-                this.Configuration.Port = portNumber;
-                return this.Configurator;
+                Configuration.Port = portNumber;
+                return Configurator;
             }
 
             /// <summary>
             /// Sets the factory fo ITcpClient implementation.
             /// </summary>
             /// <param name="factory">Delegate that creates instance of ITcpClient implementation.</param>
-            /// <returns>Instance of fluent builder for the PortAvailabilityConfiguration.</returns>
+            /// <returns>Instance of fluent builder for the PortConfiguration.</returns>
             public T WithTcpClientProvider(Func<ITcpClient> factory)
             {
                 if (factory == null) throw new ArgumentNullException(nameof(factory));
 
-                this.Configuration.TcpClientProvider = factory;
-                return this.Configurator;
+                Configuration.TcpClientProvider = factory;
+                return Configurator;
             }
 
             /// <summary>
-            /// Sets the dns resolver provider dactory.
+            /// Sets the dns resolver provider factory.
             /// </summary>
             /// <param name="factory">A factory instance.</param>
-            /// <returns>Instance of fluent builder for the PortAvailabilityConfiguration.</returns>
+            /// <returns>Instance of fluent builder for the PortConfiguration.</returns>
             public T WithDnsResolver(Func<IDnsResolver> factory)
             {
                 if (factory == null) throw new ArgumentNullException(nameof(factory));
 
-                this.Configuration.DnsResolverProvider = factory;
-                return this.Configurator;
+                Configuration.DnsResolverProvider = factory;
+                return Configurator;
             }
 
             /// <summary>
-            /// Sets the timeout for connetion trial.
+            /// Sets the timeout for connection trial.
             /// </summary>
-            /// <param name="timeout">An maximum time for connectio ntrial.</param>
-            /// <returns>Instance of fluent builder for the PortAvailabilityConfiguration.</returns>
+            /// <param name="timeout">An maximum time for connection trial.</param>
+            /// <returns>Instance of fluent builder for the PortConfiguration.</returns>
             public T Timeout(TimeSpan timeout)
             {
-                this.Configuration.Timeout = timeout;
-                return this.Configurator;
-            }       
+                Configuration.Timeout = timeout;
+                return Configurator;
+            }
+
+            private void ValidateHostname(string host)
+            {
+                if (host == null) throw new ArgumentNullException(nameof(host));
+                if (host.Contains("://"))
+                    throw new ArgumentException(
+                        $"The host name should not contain protocol. Did you mean \" {host.GetHostname()}\"",
+                        nameof(host));
+            }    
         }
 
         /// <summary>
-        /// Default PortAvailabilityConfiguration fluent builder used while configuring watcher via lambda expression.
+        /// Default PortConfiguration fluent builder used while configuring watcher via lambda expression.
         /// </summary>
         public class Default : Configurator<Default>
         {
-            public Default(PortAvailabilityConfiguration configuration) : base(configuration)
+            public Default(PortConfiguration configuration) : base(configuration)
             {
                 SetInstance(this);
             }
@@ -136,7 +147,7 @@
             /// Builds the PortAvailbilityConfiugration and return its instance.
             /// </summary>
             /// <returns>Instance of PortAvailbilityConfiugration.</returns>
-            public PortAvailabilityConfiguration Build() => Configuration;
+            public PortConfiguration Build() => Configuration;
 
             /// <summary>
             /// Operator overload to provide casting the Builder configurator into Default configurator.

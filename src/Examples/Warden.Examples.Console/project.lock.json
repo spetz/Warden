@@ -214,6 +214,14 @@
           "Warden": "1.0.2.2"
         }
       },
+      "Warden.Watchers.Port/1.0.2.2": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0",
+          "Warden": "1.0.2.2"
+        }
+      },
       "Warden.Watchers.Process/1.0.2.2": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
@@ -226,14 +234,6 @@
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "StackExchange.Redis": "1.1.572",
-          "Warden": "1.0.2.2"
-        }
-      },
-      "Warden.Watchers.ServerStatus/1.0.2.2": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
-        "dependencies": {
-          "NETStandard.Library": "1.6.0",
           "Warden": "1.0.2.2"
         }
       },
@@ -459,6 +459,14 @@
           "Warden": "1.0.2.2"
         }
       },
+      "Warden.Watchers.Port/1.0.2.2": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0",
+          "Warden": "1.0.2.2"
+        }
+      },
       "Warden.Watchers.Process/1.0.2.2": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
@@ -471,14 +479,6 @@
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "StackExchange.Redis": "1.1.572",
-          "Warden": "1.0.2.2"
-        }
-      },
-      "Warden.Watchers.ServerStatus/1.0.2.2": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
-        "dependencies": {
-          "NETStandard.Library": "1.6.0",
           "Warden": "1.0.2.2"
         }
       },
@@ -704,6 +704,14 @@
           "Warden": "1.0.2.2"
         }
       },
+      "Warden.Watchers.Port/1.0.2.2": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0",
+          "Warden": "1.0.2.2"
+        }
+      },
       "Warden.Watchers.Process/1.0.2.2": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
@@ -716,14 +724,6 @@
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "StackExchange.Redis": "1.1.572",
-          "Warden": "1.0.2.2"
-        }
-      },
-      "Warden.Watchers.ServerStatus/1.0.2.2": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
-        "dependencies": {
-          "NETStandard.Library": "1.6.0",
           "Warden": "1.0.2.2"
         }
       },
@@ -775,6 +775,10 @@
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Performance/project.json"
     },
+    "Warden.Watchers.Port/1.0.2.2": {
+      "type": "project",
+      "path": "../../Watchers/Warden.Watchers.Port/project.json"
+    },
     "Warden.Watchers.Process/1.0.2.2": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Process/project.json"
@@ -782,10 +786,6 @@
     "Warden.Watchers.Redis/1.0.2.2": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Redis/project.json"
-    },
-    "Warden.Watchers.ServerStatus/1.0.2.2": {
-      "type": "project",
-      "path": "../../Watchers/Warden.Watchers.ServerStatus/project.json"
     },
     "Warden.Watchers.Web/1.0.2.2": {
       "type": "project",
@@ -1031,7 +1031,7 @@
       "Warden.Watchers.Process >= 1.0.2.2",
       "Warden.Watchers.Redis >= 1.0.2.2",
       "Warden.Watchers.Web >= 1.0.2.2",
-      "Warden.Watchers.ServerStatus >= 1.0.2.2"
+      "Warden.Watchers.Port >= 1.0.2.2"
     ],
     "DNX,Version=v4.5.1": []
   }
