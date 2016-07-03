@@ -25,6 +25,7 @@ On top of that, you may use all of this information to collect the custom metric
  - **[MongoDB](https://github.com/spetz/Warden/wiki/Watcher-type-MongoDB)**
  - **[MSSQL](https://github.com/spetz/Warden/wiki/Watcher-type-MSSQL)**
  - **[Performance](https://github.com/spetz/Warden/wiki/Watcher-type-Performance)**
+ - **[Port](https://github.com/spetz/Warden/wiki/Watcher-type-Port)**
  - **[Process](https://github.com/spetz/Warden/wiki/Watcher-type-Process)**
  - **[Redis](https://github.com/spetz/Warden/wiki/Watcher-type-Redis)**
  - **[Web](https://github.com/spetz/Warden/wiki/Watcher-type-Web)**
@@ -68,6 +69,7 @@ Install-Package Warden
 | **[MSSQL Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-MSSQL)**        |        +      |        -     | _Dapper not compatible_
 | **[Performance Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Performance)**  |        +      |        -     | _PerformanceCounter not compatible_
 | **[Process Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Process)**          |        +      |        +     |
+| **[Port Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Port)**  |        +      |        -     | _IPAddress not compatible_
 | **[Redis Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Redis)**        |        +      |        -     | _StackExchange.Redis not compatible_
 | **[Web Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Web)**          |        +      |        +     |
 | **[HTTP API Integration](https://github.com/spetz/Warden/wiki/Integration-with-HTTP-API)** |        +      |        +     | 

@@ -1126,8 +1126,6 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "System.Linq >= 4.0.1-beta-23516",
-      "TopShelf >= 3.3.1",
       "Warden >= 1.0.2.2",
       "Warden.Integrations.HttpApi >= 1.0.2.2",
       "Warden.Integrations.SendGrid >= 1.0.2.2",
@@ -1137,10 +1135,12 @@
       "Warden.Watchers.MongoDb >= 1.0.2.2",
       "Warden.Watchers.MsSql >= 1.0.2.2",
       "Warden.Watchers.Performance >= 1.0.2.2",
-      "Warden.Watchers.Process >= 1.0.2.2",
       "Warden.Watchers.Port >= 1.0.2.2",
+      "Warden.Watchers.Process >= 1.0.2.2",
       "Warden.Watchers.Redis >= 1.0.2.2",
-      "Warden.Watchers.Web >= 1.0.2.2"
+      "Warden.Watchers.Web >= 1.0.2.2",
+      "System.Linq >= 4.0.1-beta-23516",
+      "TopShelf >= 3.3.1"
     ],
     "DNX,Version=v4.5.1": []
   }

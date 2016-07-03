@@ -1028,10 +1028,10 @@
       "Warden.Watchers.MongoDb >= 1.0.2.2",
       "Warden.Watchers.MsSql >= 1.0.2.2",
       "Warden.Watchers.Performance >= 1.0.2.2",
+      "Warden.Watchers.Port >= 1.0.2.2",
       "Warden.Watchers.Process >= 1.0.2.2",
       "Warden.Watchers.Redis >= 1.0.2.2",
-      "Warden.Watchers.Web >= 1.0.2.2",
-      "Warden.Watchers.Port >= 1.0.2.2"
+      "Warden.Watchers.Web >= 1.0.2.2"
     ],
     "DNX,Version=v4.5.1": []
   }
