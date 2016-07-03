@@ -1,12 +1,12 @@
 ﻿{
-  "version": "1.0.2.2",
+  "version": "1.1",
   "description": "Warden integration with Twilio.",
   "authors": [ "Piotr Gankiewicz" ],
   "tags": [ "Warden" ],
   "projectUrl": "https://getwarden.net",
   "licenseUrl": "https://github.com/warden-stack/Warden/blob/master/LICENSE",
   "dependencies": {
-    "Warden": "1.0.2.2",
+    "Warden": "1.1",
     "Twilio": "4.7.2"
   },
   "frameworks": {

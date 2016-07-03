@@ -10,10 +10,10 @@ using Warden.Watchers.Disk;
 using Warden.Watchers.MongoDb;
 using Warden.Watchers.MsSql;
 using Warden.Watchers.Performance;
+using Warden.Watchers.Port;
 using Warden.Watchers.Process;
 using Warden.Watchers.Redis;
 using Warden.Watchers.Web;
-using Warden.Watchers.Port;
 
 namespace Warden.Examples.Console
 {

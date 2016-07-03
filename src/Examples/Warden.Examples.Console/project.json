@@ -1,5 +1,5 @@
 {
-  "version": "1.0.2.2",
+  "version": "1.1",
   "description": "Example of Warden Console Application.",
   "authors": [ "Piotr Gankiewicz" ],
   "tags": [ "Warden" ],
@@ -9,19 +9,19 @@
     "emitEntryPoint": true
   },
   "dependencies": {
-    "Warden": "1.0.2.2",
-    "Warden.Integrations.HttpApi": "1.0.2.2",
-    "Warden.Integrations.SendGrid": "1.0.2.2",
-    "Warden.Integrations.Slack": "1.0.2.2",
-    "Warden.Integrations.Twilio": "1.0.2.2",
-    "Warden.Watchers.Disk": "1.0.2.2",
-    "Warden.Watchers.MongoDb": "1.0.2.2",
-    "Warden.Watchers.MsSql": "1.0.2.2",
-    "Warden.Watchers.Performance": "1.0.2.2",
-    "Warden.Watchers.Port": "1.0.2.2",
-    "Warden.Watchers.Process": "1.0.2.2",
-    "Warden.Watchers.Redis": "1.0.2.2",
-    "Warden.Watchers.Web": "1.0.2.2"
+    "Warden": "1.1",
+    "Warden.Integrations.HttpApi": "1.1",
+    "Warden.Integrations.SendGrid": "1.1",
+    "Warden.Integrations.Slack": "1.1",
+    "Warden.Integrations.Twilio": "1.1",
+    "Warden.Watchers.Disk": "1.1",
+    "Warden.Watchers.MongoDb": "1.1",
+    "Warden.Watchers.MsSql": "1.1",
+    "Warden.Watchers.Performance": "1.1",
+    "Warden.Watchers.Port": "1.1",
+    "Warden.Watchers.Process": "1.1",
+    "Warden.Watchers.Redis": "1.1",
+    "Warden.Watchers.Web": "1.1"
   },
   "commands": {
     "Warden.Examples.Console": "Warden.Examples.Console"

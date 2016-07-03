@@ -9,6 +9,7 @@ using Warden.Watchers.Disk;
 using Warden.Watchers.MongoDb;
 using Warden.Watchers.MsSql;
 using Warden.Watchers.Performance;
+using Warden.Watchers.Port;
 using Warden.Watchers.Process;
 using Warden.Watchers.Redis;
 using Warden.Watchers.Web;
@@ -73,7 +74,8 @@ namespace Warden.Examples.WindowsService
                         .OnSuccessAsync(check => WebsiteHookOnSuccessAsync(check))
                         .OnCompletedAsync(check => WebsiteHookOnCompletedAsync(check))
                         .OnFailureAsync(check => WebsiteHookOnFailureAsync(check));
-                })
+                }, interval: TimeSpan.FromMilliseconds(1000))
+                .AddPortWatcher("www.google.pl", 80)
                 .AddWebWatcher("http://httpstat.us/200", HttpRequest.Post("users", new {name = "test"},
                     headers: new Dictionary<string, string>
                     {
@@ -114,7 +116,7 @@ namespace Warden.Examples.WindowsService
                         //    integrations.Slack().SendMessageAsync($"Iteration {iteration.Ordinal} has completed."))
                         .OnIterationCompletedAsync(iteration => integrations.HttpApi()
                             .PostIterationToWardenPanelAsync(iteration))
-                        .OnError(exception => System.Console.WriteLine(exception));
+                        .OnError(exception => Console.WriteLine(exception));
                 })
                 .Build();
 

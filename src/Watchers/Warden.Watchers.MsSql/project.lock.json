@@ -18,7 +18,7 @@
           "lib/net45/Dapper.dll": {}
         }
       },
-      "Warden/1.0.2.2": {
+      "Warden/1.1.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       }
@@ -39,7 +39,7 @@
           "lib/net45/Dapper.dll": {}
         }
       },
-      "Warden/1.0.2.2": {
+      "Warden/1.1.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       }
@@ -60,14 +60,14 @@
           "lib/net45/Dapper.dll": {}
         }
       },
-      "Warden/1.0.2.2": {
+      "Warden/1.1.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       }
     }
   },
   "libraries": {
-    "Warden/1.0.2.2": {
+    "Warden/1.1.0": {
       "type": "project",
       "path": "../../Warden/project.json"
     },
@@ -92,7 +92,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "Warden >= 1.0.2.2",
+      "Warden >= 1.1.0",
       "Dapper >= 1.42.0"
     ],
     ".NETFramework,Version=v4.5.1": []
