@@ -3,6 +3,9 @@ using Warden.Core;
 
 namespace Warden.Watchers.Port
 {
+    /// <summary>
+    /// Custom extension methods for the Port watcher.
+    /// </summary>
     public static class Extensions
     {
         /// <summary>
@@ -51,12 +54,16 @@ namespace Warden.Watchers.Port
         /// <param name="hostname">Hostname to be resolved.</param>
         /// <param name="port">Port number of the hostname.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddPortWatcher(
-            this WardenConfiguration.Builder builder, string hostname, int port,
-            Action<WatcherHooksConfiguration.Builder> hooks = null)
+            this WardenConfiguration.Builder builder, 
+            string hostname, 
+            int port,
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(PortWatcher.Create(hostname, port), hooks);
+            builder.AddWatcher(PortWatcher.Create(hostname, port), hooks, interval);
 
             return builder;
         }
@@ -69,13 +76,17 @@ namespace Warden.Watchers.Port
         /// <param name="hostname">Hostname to be resolved.</param>
         /// <param name="port">Port number of the hostname.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddPortWatcher(
             this WardenConfiguration.Builder builder,
-            string name, string hostname, int port,
-            Action<WatcherHooksConfiguration.Builder> hooks = null)
+            string name, 
+            string hostname, 
+            int port,
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(PortWatcher.Create(name, hostname, port), hooks);
+            builder.AddWatcher(PortWatcher.Create(name, hostname, port), hooks, interval);
 
             return builder;
         }
@@ -88,12 +99,18 @@ namespace Warden.Watchers.Port
         /// <param name="port">Port number of the hostname.</param>
         /// <param name="configurator">Lambda expression for configuring the PortWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
+        /// <returns>Instance of fluent builder for the WardenConfiguration.</returns> 
         public static WardenConfiguration.Builder AddPortWatcher(
-            this WardenConfiguration.Builder builder, string hostname, int port,
+            this WardenConfiguration.Builder builder,
+            string hostname,
+            int port,
             Action<PortWatcherConfiguration.Default> configurator,
-            Action<WatcherHooksConfiguration.Builder> hooks = null)
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(PortWatcher.Create(hostname, port, configurator), hooks);
+            builder.AddWatcher(PortWatcher.Create(hostname, port, configurator),
+                hooks, interval);
 
             return builder;
         }
@@ -107,14 +124,19 @@ namespace Warden.Watchers.Port
         /// <param name="port">Port number of the hostname.</param>
         /// <param name="configurator">Lambda expression for configuring the PortWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddPortWatcher(
             this WardenConfiguration.Builder builder,
-            string name, string hostname, int port,
+            string name,
+            string hostname,
+            int port,
             Action<PortWatcherConfiguration.Default> configurator,
-            Action<WatcherHooksConfiguration.Builder> hooks = null)
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(PortWatcher.Create(name, hostname, port, configurator), hooks);
+            builder.AddWatcher(PortWatcher.Create(name, hostname, port, configurator),
+                hooks, interval);
 
             return builder;
         }
@@ -126,13 +148,16 @@ namespace Warden.Watchers.Port
         /// <param name="name">Name of the PortWatcher.</param>
         /// <param name="configuration">Configuration of PortWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddPortWatcher(
-            this WardenConfiguration.Builder builder, string name,
+            this WardenConfiguration.Builder builder, 
+            string name,
             PortWatcherConfiguration configuration,
-            Action<WatcherHooksConfiguration.Builder> hooks = null)
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(PortWatcher.Create(name, configuration), hooks);
+            builder.AddWatcher(PortWatcher.Create(name, configuration), hooks, interval);
 
             return builder;
         }

@@ -17,12 +17,18 @@ namespace Warden.Watchers.Redis
         /// <param name="database">Name of the Redis database.</param>
         /// <param name="timeout">Optional timeout of the Redis query (5 seconds by default).</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddRedisWatcher(
-            this WardenConfiguration.Builder builder, string connectionString, int database, 
-            TimeSpan? timeout = null, Action<WatcherHooksConfiguration.Builder> hooks = null)
+            this WardenConfiguration.Builder builder,
+            string connectionString,
+            int database,
+            TimeSpan? timeout = null,
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(RedisWatcher.Create(connectionString, database, timeout), hooks);
+            builder.AddWatcher(RedisWatcher.Create(connectionString, database, timeout),
+                hooks, interval);
 
             return builder;
         }
@@ -36,13 +42,19 @@ namespace Warden.Watchers.Redis
         /// <param name="database">Name of the Redis database.</param>
         /// <param name="timeout">Optional timeout of the Redis query (5 seconds by default).</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddRedisWatcher(
-            this WardenConfiguration.Builder builder, string name, 
-            string connectionString, int database, TimeSpan? timeout = null,
-            Action<WatcherHooksConfiguration.Builder> hooks = null)
+            this WardenConfiguration.Builder builder,
+            string name,
+            string connectionString,
+            int database,
+            TimeSpan? timeout = null,
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(RedisWatcher.Create(name, connectionString, database, timeout), hooks);
+            builder.AddWatcher(RedisWatcher.Create(name, connectionString, database, timeout),
+                hooks, interval);
 
             return builder;
         }
@@ -56,13 +68,19 @@ namespace Warden.Watchers.Redis
         /// <param name="configurator">Lambda expression for configuring the RedisWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
         /// <param name="timeout">Optional timeout of the Redis query (5 seconds by default).</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
+        /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddRedisWatcher(
             this WardenConfiguration.Builder builder,
-            string connectionString, int database, 
+            string connectionString,
+            int database,
             Action<RedisWatcherConfiguration.Default> configurator,
-            Action<WatcherHooksConfiguration.Builder> hooks = null, TimeSpan? timeout = null)
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? timeout = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(RedisWatcher.Create(connectionString, database, timeout, configurator), hooks);
+            builder.AddWatcher(RedisWatcher.Create(connectionString, database, timeout, configurator),
+                hooks, interval);
 
             return builder;
         }
@@ -77,14 +95,20 @@ namespace Warden.Watchers.Redis
         /// <param name="configurator">Lambda expression for configuring the RedisWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
         /// <param name="timeout">Optional timeout of the Redis query (5 seconds by default).</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddRedisWatcher(
-            this WardenConfiguration.Builder builder, string name,
-            string connectionString, int database,
+            this WardenConfiguration.Builder builder,
+            string name,
+            string connectionString,
+            int database,
             Action<RedisWatcherConfiguration.Default> configurator,
-            Action<WatcherHooksConfiguration.Builder> hooks = null, TimeSpan? timeout = null)
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? timeout = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(RedisWatcher.Create(name, connectionString, database, timeout, configurator), hooks);
+            builder.AddWatcher(RedisWatcher.Create(name, connectionString, database, timeout, configurator),
+                hooks, interval);
 
             return builder;
         }
@@ -95,13 +119,15 @@ namespace Warden.Watchers.Redis
         /// <param name="builder">Instance of the Warden configuration builder.</param>
         /// <param name="configuration">Configuration of RedisWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddRedisWatcher(
             this WardenConfiguration.Builder builder,
             RedisWatcherConfiguration configuration,
-            Action<WatcherHooksConfiguration.Builder> hooks = null)
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(RedisWatcher.Create(configuration), hooks);
+            builder.AddWatcher(RedisWatcher.Create(configuration), hooks, interval);
 
             return builder;
         }
@@ -113,13 +139,16 @@ namespace Warden.Watchers.Redis
         /// <param name="name">Name of the RedisWatcher.</param>
         /// <param name="configuration">Configuration of RedisWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddRedisWatcher(
-            this WardenConfiguration.Builder builder, string name,
+            this WardenConfiguration.Builder builder,
+            string name,
             RedisWatcherConfiguration configuration,
-            Action<WatcherHooksConfiguration.Builder> hooks = null)
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(RedisWatcher.Create(name, configuration), hooks);
+            builder.AddWatcher(RedisWatcher.Create(name, configuration), hooks, interval);
 
             return builder;
         }

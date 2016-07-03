@@ -17,12 +17,18 @@ namespace Warden.Watchers.MongoDb
         /// <param name="database">Name of the MongoDB database.</param>
         /// <param name="timeout">Optional timeout of the MongoDB query (5 seconds by default).</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddMongoDbWatcher(
-            this WardenConfiguration.Builder builder, string connectionString, string database, 
-            TimeSpan? timeout = null, Action<WatcherHooksConfiguration.Builder> hooks = null)
+            this WardenConfiguration.Builder builder, 
+            string connectionString, 
+            string database,
+            TimeSpan? timeout = null, 
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(MongoDbWatcher.Create(connectionString, database, timeout), hooks);
+            builder.AddWatcher(MongoDbWatcher.Create(connectionString, database, timeout),
+                hooks, interval);
 
             return builder;
         }
@@ -36,13 +42,19 @@ namespace Warden.Watchers.MongoDb
         /// <param name="database">Name of the MongoDB database.</param>
         /// <param name="timeout">Optional timeout of the MongoDB query (5 seconds by default).</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddMongoDbWatcher(
-            this WardenConfiguration.Builder builder, string name, 
-            string connectionString, string database, TimeSpan? timeout = null,
-            Action<WatcherHooksConfiguration.Builder> hooks = null)
+            this WardenConfiguration.Builder builder, 
+            string name,
+            string connectionString, 
+            string database, 
+            TimeSpan? timeout = null,
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(MongoDbWatcher.Create(name, connectionString, database, timeout), hooks);
+            builder.AddWatcher(MongoDbWatcher.Create(name, connectionString, database, timeout),
+                hooks, interval);
 
             return builder;
         }
@@ -56,13 +68,19 @@ namespace Warden.Watchers.MongoDb
         /// <param name="configurator">Lambda expression for configuring the MongoDbWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
         /// <param name="timeout">Optional timeout of the MongoDB query (5 seconds by default).</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
+        /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddMongoDbWatcher(
             this WardenConfiguration.Builder builder,
-            string connectionString, string database, 
+            string connectionString, 
+            string database,
             Action<MongoDbWatcherConfiguration.Default> configurator,
-            Action<WatcherHooksConfiguration.Builder> hooks = null, TimeSpan? timeout = null)
+            Action<WatcherHooksConfiguration.Builder> hooks = null, 
+            TimeSpan? timeout = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(MongoDbWatcher.Create(connectionString, database, timeout, configurator), hooks);
+            builder.AddWatcher(MongoDbWatcher.Create(connectionString, database, timeout, configurator),
+                hooks, interval);
 
             return builder;
         }
@@ -77,14 +95,20 @@ namespace Warden.Watchers.MongoDb
         /// <param name="configurator">Lambda expression for configuring the MongoDbWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
         /// <param name="timeout">Optional timeout of the MongoDB query (5 seconds by default).</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddMongoDbWatcher(
-            this WardenConfiguration.Builder builder, string name,
-            string connectionString, string database,
+            this WardenConfiguration.Builder builder, 
+            string name,
+            string connectionString, 
+            string database,
             Action<MongoDbWatcherConfiguration.Default> configurator,
-            Action<WatcherHooksConfiguration.Builder> hooks = null, TimeSpan? timeout = null)
+            Action<WatcherHooksConfiguration.Builder> hooks = null, 
+            TimeSpan? timeout = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(MongoDbWatcher.Create(name, connectionString, database, timeout, configurator), hooks);
+            builder.AddWatcher(MongoDbWatcher.Create(name, connectionString, database, timeout, configurator),
+                hooks, interval);
 
             return builder;
         }
@@ -95,13 +119,15 @@ namespace Warden.Watchers.MongoDb
         /// <param name="builder">Instance of the Warden configuration builder.</param>
         /// <param name="configuration">Configuration of MongoDbWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddMongoDbWatcher(
             this WardenConfiguration.Builder builder,
             MongoDbWatcherConfiguration configuration,
-            Action<WatcherHooksConfiguration.Builder> hooks = null)
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(MongoDbWatcher.Create(configuration), hooks);
+            builder.AddWatcher(MongoDbWatcher.Create(configuration), hooks, interval);
 
             return builder;
         }
@@ -113,13 +139,16 @@ namespace Warden.Watchers.MongoDb
         /// <param name="name">Name of the MongoDbWatcher.</param>
         /// <param name="configuration">Configuration of MongoDbWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddMongoDbWatcher(
-            this WardenConfiguration.Builder builder, string name,
+            this WardenConfiguration.Builder builder, 
+            string name,
             MongoDbWatcherConfiguration configuration,
-            Action<WatcherHooksConfiguration.Builder> hooks = null)
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(MongoDbWatcher.Create(name, configuration), hooks);
+            builder.AddWatcher(MongoDbWatcher.Create(name, configuration), hooks, interval);
 
             return builder;
         }

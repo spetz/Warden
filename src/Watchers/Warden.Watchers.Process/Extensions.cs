@@ -14,13 +14,15 @@ namespace Warden.Watchers.Process
         /// <param name="builder">Instance of the Warden configuration builder.</param>
         /// <param name="processName">Name of the process.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddProcessWatcher(
             this WardenConfiguration.Builder builder,
             string processName,
-            Action<WatcherHooksConfiguration.Builder> hooks = null)
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(ProcessWatcher.Create(processName), hooks);
+            builder.AddWatcher(ProcessWatcher.Create(processName), hooks, interval);
 
             return builder;
         }
@@ -32,12 +34,16 @@ namespace Warden.Watchers.Process
         /// <param name="name">Name of the ProcessWatcher.</param>
         /// <param name="processName">Name of the process.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddProcessWatcher(
-            this WardenConfiguration.Builder builder, string name, string processName,
-            Action<WatcherHooksConfiguration.Builder> hooks = null)
+            this WardenConfiguration.Builder builder, 
+            string name, 
+            string processName,
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(ProcessWatcher.Create(name, processName), hooks);
+            builder.AddWatcher(ProcessWatcher.Create(name, processName), hooks, interval);
 
             return builder;
         }
@@ -49,13 +55,16 @@ namespace Warden.Watchers.Process
         /// <param name="processName">Name of the process.</param>
         /// <param name="configurator">Lambda expression for configuring the ProcessWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddProcessWatcher(
-            this WardenConfiguration.Builder builder, string processName,
+            this WardenConfiguration.Builder builder, 
+            string processName,
             Action<ProcessWatcherConfiguration.Default> configurator,
-            Action<WatcherHooksConfiguration.Builder> hooks = null)
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(ProcessWatcher.Create(processName, configurator), hooks);
+            builder.AddWatcher(ProcessWatcher.Create(processName, configurator), hooks, interval);
 
             return builder;
         }
@@ -68,13 +77,18 @@ namespace Warden.Watchers.Process
         /// <param name="processName">Name of the process.</param>
         /// <param name="configurator">Lambda expression for configuring the ProcessWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddProcessWatcher(
-            this WardenConfiguration.Builder builder, string name, string processName,
+            this WardenConfiguration.Builder builder, 
+            string name, 
+            string processName,
             Action<ProcessWatcherConfiguration.Default> configurator,
-            Action<WatcherHooksConfiguration.Builder> hooks = null)
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(ProcessWatcher.Create(name, processName, configurator), hooks);
+            builder.AddWatcher(ProcessWatcher.Create(name, processName, configurator),
+                hooks, interval);
 
             return builder;
         }
@@ -85,13 +99,15 @@ namespace Warden.Watchers.Process
         /// <param name="builder">Instance of the Warden configuration builder.</param>
         /// <param name="configuration">Configuration of ProcessWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddProcessWatcher(
             this WardenConfiguration.Builder builder,
             ProcessWatcherConfiguration configuration,
-            Action<WatcherHooksConfiguration.Builder> hooks = null)
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(ProcessWatcher.Create(configuration), hooks);
+            builder.AddWatcher(ProcessWatcher.Create(configuration), hooks, interval);
 
             return builder;
         }
@@ -103,13 +119,16 @@ namespace Warden.Watchers.Process
         /// <param name="name">Name of the ProcessWatcher.</param>
         /// <param name="configuration">Configuration of ProcessWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddProcessWatcher(
-            this WardenConfiguration.Builder builder, string name,
+            this WardenConfiguration.Builder builder, 
+            string name,
             ProcessWatcherConfiguration configuration,
-            Action<WatcherHooksConfiguration.Builder> hooks = null)
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
         {
-            builder.AddWatcher(ProcessWatcher.Create(name, configuration), hooks);
+            builder.AddWatcher(ProcessWatcher.Create(name, configuration), hooks, interval);
 
             return builder;
         }
