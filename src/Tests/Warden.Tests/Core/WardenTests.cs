@@ -615,4 +615,56 @@ namespace Warden.Tests.Core
             should_invoke_on_first_success_async_hook_only_once();
         }
     }
+
+    [Subject("Warden execution with watcher")]
+    public class when_using_different_intervals_for_watchers : Warden_specs
+    {
+        static Mock<IWatcher> FirstWatcherMock { get; set; }
+        static Mock<IWatcher> SecondWatcherMock { get; set; }
+        static Mock<IWatcher> ThirdWatcherMock { get; set; }
+        static TimeSpan FirstWatcherInterval;
+        static TimeSpan SecondWatcherInterval;
+        static TimeSpan ThirdWatcherInterval;
+
+        Establish context = () =>
+        {
+            FirstWatcherMock = new Mock<IWatcher>();
+            SecondWatcherMock = new Mock<IWatcher>();
+            ThirdWatcherMock = new Mock<IWatcher>();
+            FirstWatcherMock.SetupGet(x => x.Name).Returns("First watcher mock");
+            SecondWatcherMock.SetupGet(x => x.Name).Returns("Second watcher mock");
+            ThirdWatcherMock.SetupGet(x => x.Name).Returns("Third watcher mock");
+            FirstWatcherInterval = TimeSpan.FromMilliseconds(10);
+            SecondWatcherInterval = TimeSpan.FromMilliseconds(100);
+            ThirdWatcherInterval = TimeSpan.FromSeconds(1);
+            FirstWatcherMock.Setup(x => x.ExecuteAsync()).ReturnsAsync(WatcherCheckResult.Create(FirstWatcherMock.Object, true));
+            SecondWatcherMock.Setup(x => x.ExecuteAsync()).ReturnsAsync(WatcherCheckResult.Create(SecondWatcherMock.Object, true));
+            ThirdWatcherMock.Setup(x => x.ExecuteAsync()).ReturnsAsync(WatcherCheckResult.Create(ThirdWatcherMock.Object, true));
+            WardenConfiguration = WardenConfiguration
+                .Create()
+                .AddWatcher(FirstWatcherMock.Object, interval: FirstWatcherInterval)
+                .AddWatcher(SecondWatcherMock.Object, interval: SecondWatcherInterval)
+                .AddWatcher(ThirdWatcherMock.Object, interval: ThirdWatcherInterval)
+                .RunOnlyOnce()
+                .Build();
+            Warden = WardenInstance.Create(WardenConfiguration);
+        };
+
+        Because of = async () => await Warden.StartAsync().Await().AsTask;
+
+        It should_invoke_execute_async_method_hundred_times_for_first_watcher = () => FirstWatcherMock.Verify(x => x.ExecuteAsync(), Times.Exactly(100));
+        It should_invoke_execute_async_method_ten_times_for_second_watcher = () => SecondWatcherMock.Verify(x => x.ExecuteAsync(), Times.Exactly(10));
+        It should_invoke_execute_async_method_once_for_third_watcher = () => ThirdWatcherMock.Verify(x => x.ExecuteAsync(), Times.Exactly(1));
+
+        //TODO: Remove when MSpec works with DNX 
+        [Test]
+        public void RunTest()
+        {
+            context();
+            of();
+            should_invoke_execute_async_method_hundred_times_for_first_watcher();
+            should_invoke_execute_async_method_ten_times_for_second_watcher();
+            should_invoke_execute_async_method_once_for_third_watcher();
+        }
+    }
 }

@@ -8,12 +8,12 @@
         /// <summary>
         /// Hostname or IP address that was resolved.
         /// </summary>
-        public string Hostname { get; protected set; }
+        public string Hostname { get; }
 
         /// <summary>
         /// Port number that was checked.
         /// </summary>
-        public int Port { get; protected set; }
+        public int Port { get; }
 
         protected PortWatcherCheckResult(PortWatcher watcher, bool isValid, string description,
             string hostname, int port)
