@@ -25,8 +25,19 @@
         }
       },
       "Warden/1.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1"
+        "type": "package",
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net451/Warden.dll": {}
+        },
+        "runtime": {
+          "lib/net451/Warden.dll": {}
+        }
       }
     },
     ".NETPlatform,Version=v5.4": {
@@ -305,8 +316,7 @@
         }
       },
       "Warden/1.1.0": {
-        "type": "project",
-        "framework": ".NETPlatform,Version=v5.4",
+        "type": "package",
         "dependencies": {
           "Microsoft.CSharp": "4.0.0",
           "System.Collections": "4.0.0",
@@ -314,6 +324,12 @@
           "System.Runtime": "4.0.20",
           "System.Runtime.InteropServices.RuntimeInformation": "4.0.0-beta-23516",
           "System.Threading": "4.0.10"
+        },
+        "compile": {
+          "lib/dotnet5.4/Warden.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet5.4/Warden.dll": {}
         }
       }
     },
@@ -340,8 +356,19 @@
         }
       },
       "Warden/1.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1"
+        "type": "package",
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net451/Warden.dll": {}
+        },
+        "runtime": {
+          "lib/net451/Warden.dll": {}
+        }
       }
     },
     ".NETFramework,Version=v4.5.1/win7-x64": {
@@ -367,8 +394,19 @@
         }
       },
       "Warden/1.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1"
+        "type": "package",
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net451/Warden.dll": {}
+        },
+        "runtime": {
+          "lib/net451/Warden.dll": {}
+        }
       }
     },
     ".NETPlatform,Version=v5.4/win7-x86": {
@@ -660,8 +698,7 @@
         }
       },
       "Warden/1.1.0": {
-        "type": "project",
-        "framework": ".NETPlatform,Version=v5.4",
+        "type": "package",
         "dependencies": {
           "Microsoft.CSharp": "4.0.0",
           "System.Collections": "4.0.0",
@@ -669,6 +706,12 @@
           "System.Runtime": "4.0.20",
           "System.Runtime.InteropServices.RuntimeInformation": "4.0.0-beta-23516",
           "System.Threading": "4.0.10"
+        },
+        "compile": {
+          "lib/dotnet5.4/Warden.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet5.4/Warden.dll": {}
         }
       }
     },
@@ -961,8 +1004,7 @@
         }
       },
       "Warden/1.1.0": {
-        "type": "project",
-        "framework": ".NETPlatform,Version=v5.4",
+        "type": "package",
         "dependencies": {
           "Microsoft.CSharp": "4.0.0",
           "System.Collections": "4.0.0",
@@ -970,15 +1012,17 @@
           "System.Runtime": "4.0.20",
           "System.Runtime.InteropServices.RuntimeInformation": "4.0.0-beta-23516",
           "System.Threading": "4.0.10"
+        },
+        "compile": {
+          "lib/dotnet5.4/Warden.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet5.4/Warden.dll": {}
         }
       }
     }
   },
   "libraries": {
-    "Warden/1.1.0": {
-      "type": "project",
-      "path": "../../Warden/project.json"
-    },
     "Microsoft.CSharp/4.0.0": {
       "type": "package",
       "serviceable": true,
@@ -1908,6 +1952,19 @@
         "System.Threading.Tasks.4.0.0.nupkg",
         "System.Threading.Tasks.4.0.0.nupkg.sha512",
         "System.Threading.Tasks.nuspec"
+      ]
+    },
+    "Warden/1.1.0": {
+      "type": "package",
+      "sha512": "fAmgMRPi3rAGLGYMczq4Ip7zlcS8BISJ9VKyePZFY+/O9mFN7yCWOZKnaWXIrnK8qRhb0OJUbOOZQIcb67S1Qw==",
+      "files": [
+        "lib/dotnet5.4/Warden.dll",
+        "lib/dotnet5.4/Warden.xml",
+        "lib/net451/Warden.dll",
+        "lib/net451/Warden.xml",
+        "Warden.1.1.0.nupkg",
+        "Warden.1.1.0.nupkg.sha512",
+        "Warden.nuspec"
       ]
     }
   },

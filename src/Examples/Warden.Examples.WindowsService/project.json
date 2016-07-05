@@ -13,7 +13,7 @@
     "Warden.Integrations.Twilio": "1.1",
     "Warden.Watchers.Disk": "1.1",
     "Warden.Watchers.MongoDb": "1.1",
-    "Warden.Watchers.MsSql": "1.1",
+    "Warden.Watchers.MsSql": "1.1.1",
     "Warden.Watchers.Performance": "1.1",
     "Warden.Watchers.Port": "1.1",
     "Warden.Watchers.Process": "1.1",
