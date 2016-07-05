@@ -16,6 +16,8 @@
 
 It allows to quickly define the **[watchers](https://github.com/spetz/Warden/wiki/watcher)** responsible for performing checks on specific resources and **[integrations](https://github.com/spetz/Warden/wiki/integration)** to easily notify about any issues related to the possible downtime of your system. 
 
+Each **[watcher](https://github.com/spetz/Warden/wiki/watcher)** might have it's own custom **[interval](https://github.com/warden-stack/Warden/wiki/Interval)**. For example you may want to check e.g. the *API* availability every 500 milliseconds, while the *database* should respond only every 10 seconds and so on. Or you could just set the common one **[interval](https://github.com/warden-stack/Warden/wiki/Interval)** (5 seconds by default) for all of the **[watchers](https://github.com/spetz/Warden/wiki/watcher)**.
+
 On top of that, you may use all of this information to collect the custom metrics thanks to the **[hooks](https://github.com/spetz/Warden/wiki/Hooks)**.
 
 
@@ -69,7 +71,7 @@ Install-Package Warden
 | **[MSSQL Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-MSSQL)**        |        +      |        -     | _Dapper not compatible_
 | **[Performance Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Performance)**  |        +      |        -     | _PerformanceCounter not compatible_
 | **[Process Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Process)**          |        +      |        +     |
-| **[Port Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Port)**  |        +      |        -     | _IPAddress not compatible_
+| **[Port Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Port)**  |        +      |        -     | _System.Net.Sockets not compatible_
 | **[Redis Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Redis)**        |        +      |        -     | _StackExchange.Redis not compatible_
 | **[Web Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Web)**          |        +      |        +     |
 | **[HTTP API Integration](https://github.com/spetz/Warden/wiki/Integration-with-HTTP-API)** |        +      |        +     | 
