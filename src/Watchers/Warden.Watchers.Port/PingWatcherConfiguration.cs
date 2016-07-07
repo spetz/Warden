@@ -124,7 +124,7 @@ namespace Warden.Watchers.Port
             /// </summary>
             /// <param name="pingProvider">Custom provider for the IPingProvider.</param>
             /// <returns>Instance of fluent builder for the PingWatcherConfiguration.</returns>
-            public T WithTcpClientProvider(Func<IPingProvider> pingProvider)
+            public T WithPingProvider(Func<IPingProvider> pingProvider)
             {
                 if (pingProvider == null)
                 {
