@@ -28,7 +28,7 @@
             {IPStatus.IcmpError, "ICMP echo request to host '{0}' failed because of ICMP protocol error." },
             {IPStatus.TtlExpired, "ICMP echo request to host '{0}' failed because its Time To Live (TTL) reached 0, so forwarding node (router or gateway) discared the request." },
             {IPStatus.TimedOut, "ICMP echo request failed because the reply from host '{0}' was not received in specified time." },
-            {IPStatus.SourceQuench, "ICMP echo request failed because host '{0}' discared the packet." },
+            {IPStatus.SourceQuench, "ICMP echo request failed because host '{0}' discarded the packet." },
             {IPStatus.NoResources, "ICMP echo request to host '{0}' failed because of insufficient sources." },
             {IPStatus.Unknown, "ICMP echo request to host '{0}' failed because of uknown error." },
             {IPStatus.PacketTooBig, "ICMP echo request to host '{0}' failed because the packet is larger than MTU of node (router of gateway)" },
