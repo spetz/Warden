@@ -47,6 +47,122 @@ namespace Warden.Watchers.Port
             }
         }
 
+        #region Ping
+
+        /// <summary>
+        /// Extension method for adding the Ping watcher to the the WardenConfiguration with the default name of Ping Watcher.
+        /// </summary>
+        /// <param name="builder">Instance of the Warden configuration builder.</param>
+        /// <param name="hostname">Hostname to be resolved.</param>
+        /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
+        /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
+        public static WardenConfiguration.Builder AddPingWatcher(
+            this WardenConfiguration.Builder builder,
+            string hostname,
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
+        {
+            builder.AddWatcher(PingWatcher.Create(hostname), hooks, interval);
+
+            return builder;
+        }
+
+        /// <summary>
+        /// Extension method for adding the Ping watcher to the the WardenConfiguration..
+        /// </summary>
+        /// <param name="builder">Instance of the Warden configuration builder.</param>
+        /// <param name="name">Name of the Ping watcher.</param>
+        /// <param name="hostname">Hostname to be resolved.</param>
+        /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
+        /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
+        public static WardenConfiguration.Builder AddPingWatcher(
+            this WardenConfiguration.Builder builder,
+            string name,
+            string hostname,
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
+        {
+            builder.AddWatcher(PingWatcher.Create(name, hostname), hooks, interval);
+
+            return builder;
+        }
+
+        /// <summary>
+        /// Extension method for adding the Ping watcher to the the WardenConfiguration with the default name of Ping Watcher.
+        /// </summary>
+        /// <param name="builder">Instance of the Warden configuration builder.</param>
+        /// <param name="hostname">Hostname to be resolved.</param>
+        /// <param name="configurator">Lambda expression for configuring the PingWatcher.</param>
+        /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
+        /// <returns>Instance of fluent builder for the WardenConfiguration.</returns> 
+        public static WardenConfiguration.Builder AddPingWatcher(
+            this WardenConfiguration.Builder builder,
+            string hostname,
+            Action<PingWatcherConfiguration.Default> configurator,
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
+        {
+            builder.AddWatcher(PingWatcher.Create(hostname, configurator),
+                hooks, interval);
+
+            return builder;
+        }
+
+        /// <summary>
+        /// Extension method for adding the Ping watcher to the the WardenConfiguration.
+        /// </summary>
+        /// <param name="builder">Instance of the Warden configuration builder.</param>
+        /// <param name="name">Name of the PingWatcher.</param>
+        /// <param name="hostname">Hostname to be resolved.</param>
+        /// <param name="configurator">Lambda expression for configuring the PingWatcher.</param>
+        /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
+        /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
+        public static WardenConfiguration.Builder AddPingWatcher(
+            this WardenConfiguration.Builder builder,
+            string name,
+            string hostname,
+            int Ping,
+            Action<PingWatcherConfiguration.Default> configurator,
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
+        {
+            builder.AddWatcher(PingWatcher.Create(name, hostname, configurator),
+                hooks, interval);
+
+            return builder;
+        }
+
+        /// <summary>
+        /// Extension method for adding the Ping watcher to the the WardenConfiguration.
+        /// </summary>
+        /// <param name="builder">Instance of the Warden configuration builder.</param>
+        /// <param name="name">Name of the PingWatcher.</param>
+        /// <param name="configuration">Configuration of PingWatcher.</param>
+        /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
+        /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
+        /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
+        public static WardenConfiguration.Builder AddPingWatcher(
+            this WardenConfiguration.Builder builder,
+            string name,
+            PingWatcherConfiguration configuration,
+            Action<WatcherHooksConfiguration.Builder> hooks = null,
+            TimeSpan? interval = null)
+        {
+            builder.AddWatcher(PingWatcher.Create(name, configuration), hooks, interval);
+
+            return builder;
+        }
+
+
+
+        #endregion
+
+        #region Port
+
         /// <summary>
         /// Extension method for adding the Port watcher to the the WardenConfiguration with the default name of Port Watcher.
         /// </summary>
@@ -57,8 +173,8 @@ namespace Warden.Watchers.Port
         /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddPortWatcher(
-            this WardenConfiguration.Builder builder, 
-            string hostname, 
+            this WardenConfiguration.Builder builder,
+            string hostname,
             int port,
             Action<WatcherHooksConfiguration.Builder> hooks = null,
             TimeSpan? interval = null)
@@ -80,8 +196,8 @@ namespace Warden.Watchers.Port
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddPortWatcher(
             this WardenConfiguration.Builder builder,
-            string name, 
-            string hostname, 
+            string name,
+            string hostname,
             int port,
             Action<WatcherHooksConfiguration.Builder> hooks = null,
             TimeSpan? interval = null)
@@ -151,7 +267,7 @@ namespace Warden.Watchers.Port
         /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddPortWatcher(
-            this WardenConfiguration.Builder builder, 
+            this WardenConfiguration.Builder builder,
             string name,
             PortWatcherConfiguration configuration,
             Action<WatcherHooksConfiguration.Builder> hooks = null,
@@ -161,5 +277,7 @@ namespace Warden.Watchers.Port
 
             return builder;
         }
+
+        #endregion
     }
 }
