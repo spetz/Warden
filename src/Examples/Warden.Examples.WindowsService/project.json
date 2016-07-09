@@ -15,7 +15,7 @@
     "Warden.Watchers.MongoDb": "1.1",
     "Warden.Watchers.MsSql": "1.1.1",
     "Warden.Watchers.Performance": "1.1",
-    "Warden.Watchers.Server": "1.1.1",
+    "Warden.Watchers.Server": "1.1.2",
     "Warden.Watchers.Process": "1.1",
     "Warden.Watchers.Redis": "1.1",
     "Warden.Watchers.Web": "1.1",

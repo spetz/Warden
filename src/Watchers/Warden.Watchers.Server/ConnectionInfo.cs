@@ -44,6 +44,7 @@ namespace Warden.Watchers.Server
         {
             Hostname = hostname;
             Port = port;
+            PortOpened = portOpened;
             PingStatus = pingStatus;
             PingStatusMessage = pingStatusMessage;
             IpAddress = ipAddress;
