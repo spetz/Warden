@@ -38,19 +38,8 @@
         }
       },
       "Warden/1.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/net451/Warden.dll": {}
-        },
-        "runtime": {
-          "lib/net451/Warden.dll": {}
-        }
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1"
       }
     },
     ".NETFramework,Version=v4.5.1/win7-x86": {
@@ -89,19 +78,8 @@
         }
       },
       "Warden/1.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/net451/Warden.dll": {}
-        },
-        "runtime": {
-          "lib/net451/Warden.dll": {}
-        }
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1"
       }
     },
     ".NETFramework,Version=v4.5.1/win7-x64": {
@@ -140,23 +118,16 @@
         }
       },
       "Warden/1.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/net451/Warden.dll": {}
-        },
-        "runtime": {
-          "lib/net451/Warden.dll": {}
-        }
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1"
       }
     }
   },
   "libraries": {
+    "Warden/1.1.0": {
+      "type": "project",
+      "path": "../../Warden/project.json"
+    },
     "MongoDB.Bson/2.2.3": {
       "type": "package",
       "sha512": "AwxyD8qYgy1GQkxQV2uMzymm19QwaNNAER6gf/w8f2dDjcboEve1kv9GEz7mtn2K8p6hYQjhgnvGc+xeh0KLmg==",
@@ -190,19 +161,6 @@
         "MongoDB.Driver.Core.2.2.3.nupkg",
         "MongoDB.Driver.Core.2.2.3.nupkg.sha512",
         "MongoDB.Driver.Core.nuspec"
-      ]
-    },
-    "Warden/1.1.0": {
-      "type": "package",
-      "sha512": "fAmgMRPi3rAGLGYMczq4Ip7zlcS8BISJ9VKyePZFY+/O9mFN7yCWOZKnaWXIrnK8qRhb0OJUbOOZQIcb67S1Qw==",
-      "files": [
-        "lib/dotnet5.4/Warden.dll",
-        "lib/dotnet5.4/Warden.xml",
-        "lib/net451/Warden.dll",
-        "lib/net451/Warden.xml",
-        "Warden.1.1.0.nupkg",
-        "Warden.1.1.0.nupkg.sha512",
-        "Warden.nuspec"
       ]
     }
   },
