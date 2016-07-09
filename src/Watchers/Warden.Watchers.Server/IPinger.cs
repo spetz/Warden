@@ -16,7 +16,7 @@ namespace Warden.Watchers.Server
         /// <param name="addressIp">A destination IP address.</param>
         /// <param name="timeout">Optional timeout for connection.</param>
         /// <returns>ICMP echo request status.</returns>
-        Task<IPStatus> PingAsync(IPAddress addressIp, TimeSpan? timeout);
+        Task<IPStatus> PingAsync(IPAddress addressIp, TimeSpan? timeout = null);
     }
 
     public class Pinger : IPinger
