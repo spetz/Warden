@@ -15,7 +15,7 @@ namespace Warden.Watchers.Port
         public string Hostname { get; }
 
         /// <summary>
-        /// Port number for watching.
+        /// Optional port number for watching (0 means not specified).
         /// </summary>
         public int Port { get; }
 
@@ -27,22 +27,27 @@ namespace Warden.Watchers.Port
         /// <summary>
         /// Predicate that has to be satisfied in order to return the valid result.
         /// </summary>
-        public Func<IPAddress, bool> EnsureThat { get; protected set; }
+        public Func<ConnectionInfo, bool> EnsureThat { get; protected set; }
 
         /// <summary>
         /// Async predicate that has to be satisfied in order to return the valid result.
         /// </summary>
-        public Func<IPAddress, Task<bool>> EnsureThatAsync { get; protected set; }
+        public Func<ConnectionInfo, Task<bool>> EnsureThatAsync { get; protected set; }
 
         /// <summary>
         /// Custom provider for the ITcpClient.
         /// </summary>
-        public Func<ITcpClient> TcpClientProvider { get; protected set; } = () => new TcpClient();
+        public Func<ITcpClient> TcpClientProvider { get; protected set; }
 
         /// <summary>
         /// Custom provider for the IDnsResolver.
         /// </summary>
-        public Func<IDnsResolver> DnsResolverProvider { get; protected set; } = () => new DnsResolver();
+        public Func<IDnsResolver> DnsResolverProvider { get; protected set; }
+
+        /// <summary>
+        /// Custom provider for the IPinger.
+        /// </summary>
+        public Func<IPinger> PingerProvider { get; protected set; }
 
         /// <summary>
         /// Factory method for creating a new instance of fluent builder for the PortWatcherConfiguration.
@@ -50,18 +55,19 @@ namespace Warden.Watchers.Port
         /// </summary>
         /// <param name="hostname">Hostname to be resolved.</param>
         /// <param name="port">Port number of the hostname.</param>
-        public static Builder Create(string hostname, int port) => new Builder(hostname, port);
+        public static Builder Create(string hostname, int port = 0) => new Builder(hostname, port);
 
         protected internal PortWatcherConfiguration(string hostname, int port)
         {
             hostname.ValidateHostname();
-            if (port < 1)
-                throw new ArgumentException("Port number can not be less than 1.", nameof(port));
+            if (port < 0)
+                throw new ArgumentException("Port number can not be less than 0.", nameof(port));
 
             Hostname = hostname;
             Port = port;
             DnsResolverProvider = () => new DnsResolver();
             TcpClientProvider = () => new TcpClient();
+            PingerProvider = () => new Pinger();
         }
 
         /// <summary>
@@ -70,7 +76,7 @@ namespace Warden.Watchers.Port
         public abstract class Configurator<T> : WatcherConfigurator<T, PortWatcherConfiguration>
             where T : Configurator<T>
         {
-            protected Configurator(string hostname, int port)
+            protected Configurator(string hostname, int port = 0)
             {
                 ValidateHostnameAndPort(hostname, port);
                 Configuration = new PortWatcherConfiguration(hostname, port);
@@ -80,11 +86,11 @@ namespace Warden.Watchers.Port
             {
             }
 
-            private void ValidateHostnameAndPort(string hostname, int port)
+            private void ValidateHostnameAndPort(string hostname, int port = 0)
             {
                 hostname.ValidateHostname();
-                if (port < 1)
-                    throw new ArgumentException("Port number can not be less than 1.", nameof(port));
+                if (port < 0)
+                    throw new ArgumentException("Port number can not be less than 0.", nameof(port));
             }
 
             /// <summary>
@@ -110,7 +116,7 @@ namespace Warden.Watchers.Port
             /// </summary>
             /// <param name="ensureThat">Lambda expression predicate.</param>
             /// <returns>Instance of fluent builder for the PortWatcherConfiguration.</returns>
-            public T EnsureThat(Func<IPAddress, bool> ensureThat)
+            public T EnsureThat(Func<ConnectionInfo, bool> ensureThat)
             {
                 if (ensureThat == null)
                     throw new ArgumentException("Ensure that predicate can not be null.", nameof(ensureThat));
@@ -125,7 +131,7 @@ namespace Warden.Watchers.Port
             /// <param name="ensureThat">Lambda expression predicate.</param>
             /// </summary>
             /// <returns>Instance of fluent builder for the PortWatcherConfiguration.</returns>
-            public T EnsureThatAsync(Func<IPAddress, Task<bool>> ensureThat)
+            public T EnsureThatAsync(Func<ConnectionInfo, Task<bool>> ensureThat)
             {
                 if (ensureThat == null)
                     throw new ArgumentException("Ensure that async predicate can not be null.", nameof(ensureThat));
@@ -149,6 +155,7 @@ namespace Warden.Watchers.Port
                 }
 
                 Configuration.TcpClientProvider = tcpClientProvider;
+
                 return Configurator;
             }
 
@@ -157,7 +164,7 @@ namespace Warden.Watchers.Port
             /// </summary>
             /// <param name="dsnResolverProvider">Custom provider for the IDnsResolver.</param>
             /// <returns>Instance of fluent builder for the PortWatcherConfiguration.</returns>
-            public T WithDnsResolver(Func<IDnsResolver> dsnResolverProvider)
+            public T WithDnsResolverProvider(Func<IDnsResolver> dsnResolverProvider)
             {
                 if (dsnResolverProvider == null)
                 {
@@ -166,6 +173,24 @@ namespace Warden.Watchers.Port
                 }
 
                 Configuration.DnsResolverProvider = dsnResolverProvider;
+
+                return Configurator;
+            }
+
+            /// <summary>
+            /// Sets the custom provider for the IPinger.
+            /// </summary>
+            /// <param name="pingerProvider">Custom provider for the IPinger.</param>
+            /// <returns>Instance of fluent builder for the PortWatcherConfiguration.</returns>
+            public T WithPingerProvider(Func<IPinger> pingerProvider)
+            {
+                if (pingerProvider == null)
+                {
+                    throw new ArgumentNullException(nameof(pingerProvider),
+                        "Pinger provider can not be null.");
+                }
+
+                Configuration.PingerProvider = pingerProvider;
 
                 return Configurator;
             }

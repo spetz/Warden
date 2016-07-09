@@ -60,7 +60,7 @@ namespace Warden.Watchers.Port
             try
             {
                 var asyncConnectionResult = _socket.BeginConnect(ipAddress, port, null, null);
-                await Task.Factory.StartNew(() => timeout != null
+                await Task.Factory.StartNew(() => timeout.HasValue
                     ? asyncConnectionResult.AsyncWaitHandle.WaitOne(timeout.Value)
                     : asyncConnectionResult.AsyncWaitHandle.WaitOne());
 
