@@ -197,7 +197,7 @@
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       },
-      "Warden.Integrations.HttpApi/1.1.0": {
+      "Warden.Integrations.HttpApi/1.1.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
@@ -277,7 +277,7 @@
           "Warden": "1.1.0"
         }
       },
-      "Warden.Watchers.Server/1.1.0": {
+      "Warden.Watchers.Server/1.1.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
@@ -490,7 +490,7 @@
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       },
-      "Warden.Integrations.HttpApi/1.1.0": {
+      "Warden.Integrations.HttpApi/1.1.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
@@ -570,7 +570,7 @@
           "Warden": "1.1.0"
         }
       },
-      "Warden.Watchers.Server/1.1.0": {
+      "Warden.Watchers.Server/1.1.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
@@ -783,7 +783,7 @@
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       },
-      "Warden.Integrations.HttpApi/1.1.0": {
+      "Warden.Integrations.HttpApi/1.1.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
@@ -863,7 +863,7 @@
           "Warden": "1.1.0"
         }
       },
-      "Warden.Watchers.Server/1.1.0": {
+      "Warden.Watchers.Server/1.1.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
@@ -887,7 +887,7 @@
       "type": "project",
       "path": "../../Warden/project.json"
     },
-    "Warden.Integrations.HttpApi/1.1.0": {
+    "Warden.Integrations.HttpApi/1.1.1": {
       "type": "project",
       "path": "../../Integrations/Warden.Integrations.HttpApi/project.json"
     },
@@ -927,7 +927,7 @@
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Redis/project.json"
     },
-    "Warden.Watchers.Server/1.1.0": {
+    "Warden.Watchers.Server/1.1.1": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Server/project.json"
     },
@@ -1317,7 +1317,7 @@
   "projectFileDependencyGroups": {
     "": [
       "Warden >= 1.1.0",
-      "Warden.Integrations.HttpApi >= 1.1.0",
+      "Warden.Integrations.HttpApi >= 1.1.1",
       "Warden.Integrations.SendGrid >= 1.1.0",
       "Warden.Integrations.Slack >= 1.1.0",
       "Warden.Integrations.Twilio >= 1.1.0",
@@ -1325,7 +1325,7 @@
       "Warden.Watchers.MongoDb >= 1.1.0",
       "Warden.Watchers.MsSql >= 1.1.1",
       "Warden.Watchers.Performance >= 1.1.0",
-      "Warden.Watchers.Server >= 1.1.0",
+      "Warden.Watchers.Server >= 1.1.1",
       "Warden.Watchers.Process >= 1.1.0",
       "Warden.Watchers.Redis >= 1.1.0",
       "Warden.Watchers.Web >= 1.1.0",
