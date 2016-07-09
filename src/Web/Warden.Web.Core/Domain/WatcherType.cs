@@ -9,6 +9,7 @@
         Performance = 4,
         Process = 5,
         Redis = 6,
-        Web = 7
+        Server = 7,
+        Web = 8
     }
 }

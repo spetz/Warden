@@ -20,6 +20,7 @@ namespace Warden.Integrations.HttpApi
             Formatting = Formatting.Indented,
             DefaultValueHandling = DefaultValueHandling.Populate,
             NullValueHandling = NullValueHandling.Include,
+            Error = (serializer, error) => { error.ErrorContext.Handled = true; },
             Converters = new List<JsonConverter>
             {
                 new Newtonsoft.Json.Converters.StringEnumConverter

@@ -69,7 +69,7 @@ namespace Warden.Watchers.Server
             catch (TaskCanceledException exception)
             {
                 var connectionInfo = ConnectionInfo.Create(_configuration.Hostname,
-                    IPAddress.None, _configuration.Port, IPStatus.Unknown, string.Empty);
+                    IPAddress.None, _configuration.Port, false, IPStatus.Unknown, string.Empty);
 
                 return ServerWatcherCheckResult.Create(this, false, connectionInfo,
                     "A connection timeout has occurred while trying to access the hostname: " +
@@ -87,14 +87,14 @@ namespace Warden.Watchers.Server
         {
             using (var servicesProvider = GetServicesProviders())
             {
-                var ipStatusAndAddress = await TryConnectAsync(servicesProvider);
-                var ipStatus = ipStatusAndAddress.Item1;
-                var ipAddress = ipStatusAndAddress.Item2;
+                var ipStatusAndAddressAndOpenedPort = await TryConnectAsync(servicesProvider);
+                var ipStatus = ipStatusAndAddressAndOpenedPort.Item1;
+                var ipAddress = ipStatusAndAddressAndOpenedPort.Item2;
+                var portOpened = ipStatusAndAddressAndOpenedPort.Item3;
                 var ipStatusMessage = _pingStatusMessages[ipStatus];
                 var portSpecified = _configuration.Port > 0;
                 var connectionInfo = ConnectionInfo.Create(_configuration.Hostname,
-                    ipAddress, _configuration.Port, ipStatus, ipStatusMessage);
-
+                    ipAddress, _configuration.Port, portOpened, ipStatus, ipStatusMessage);
 
                 if (ipStatus == IPStatus.Unknown)
                 {
@@ -108,6 +108,13 @@ namespace Warden.Watchers.Server
                     return ServerWatcherCheckResult.Create(this, false, connectionInfo,
                         $"Unable to connect to the hostname '{_configuration.Hostname}' " +
                         $"{(portSpecified ? $"using port: {_configuration.Port}" : string.Empty)}. " +
+                        $"Ping status: '{ipStatusMessage}'");
+                }
+                if (portSpecified && !portOpened)
+                {
+                    return ServerWatcherCheckResult.Create(this, false, connectionInfo,
+                        $"Unable to connect to the hostname '{_configuration.Hostname}' " +
+                        $"using port: {_configuration.Port}. " +
                         $"Ping status: '{ipStatusMessage}'");
                 }
 
@@ -130,21 +137,25 @@ namespace Warden.Watchers.Server
         }
 
         /// <summary>
-        /// Checks if port is available on the remote host.
+        /// Resolves the hostname and checks whether the opened port (if specified) is being opened on the remote host.
         /// </summary>
         /// <param name="servicesProvider"></param>
-        /// <returns>IPStatus, if remote host has accepted connection, otherwise unknown. None IP address if host could not be resolved.</returns>
-        private async Task<Tuple<IPStatus, IPAddress>> TryConnectAsync(ServerServicesProvider servicesProvider)
+        /// <returns>IPStatus, if remote host has accepted connection, otherwise unknown. None IP address if host could not be resolved. True if port is being oepened.</returns>
+        private async Task<Tuple<IPStatus, IPAddress, bool>> TryConnectAsync(ServerServicesProvider servicesProvider)
         {
             var ipAddress = servicesProvider.DnsResolver.GetIpAddress(_configuration.Hostname);
             if (Equals(ipAddress, IPAddress.None))
-                return new Tuple<IPStatus, IPAddress>(IPStatus.Unknown, IPAddress.None);
+                return new Tuple<IPStatus, IPAddress, bool>(IPStatus.Unknown, IPAddress.None, false);
 
+            var portOpened = false;
             var ipStatus = await servicesProvider.Pinger.PingAsync(ipAddress, _configuration.Timeout);
             if (_configuration.Port > 0)
+            {
                 await servicesProvider.TcpClient.ConnectAsync(ipAddress, _configuration.Port, _configuration.Timeout);
+                portOpened = servicesProvider.TcpClient.IsConnected;
+            }
 
-            return new Tuple<IPStatus, IPAddress>(ipStatus, ipAddress);
+            return new Tuple<IPStatus, IPAddress, bool>(ipStatus, ipAddress, portOpened);
         }
 
         /// <summary>

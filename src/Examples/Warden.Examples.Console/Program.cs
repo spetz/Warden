@@ -68,7 +68,7 @@ namespace Warden.Examples.Console
                     {
                         ["User-Agent"] = "Warden",
                         ["Authorization"] = "Token MyBase64EncodedString"
-                    }), cfg => cfg.EnsureThat(response => response.Headers.Any()), interval: TimeSpan.FromSeconds(10) 
+                    }), cfg => cfg.EnsureThat(response => response.Headers.Any()), interval: TimeSpan.FromSeconds(3) 
                 )
                 //Set proper API key or credentials.
                 //.IntegrateWithSendGrid("api-key", "noreply@system.com", cfg =>
@@ -101,8 +101,8 @@ namespace Warden.Examples.Console
                     hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration))
                         //.OnIterationCompletedAsync(iteration =>
                         //    integrations.Slack().SendMessageAsync($"Iteration {iteration.Ordinal} has completed."))
-                        //.OnIterationCompletedAsync(iteration => integrations.HttpApi()
-                        //    .PostIterationToWardenPanelAsync(iteration))
+                        .OnIterationCompletedAsync(iteration => integrations.HttpApi()
+                            .PostIterationToWardenPanelAsync(iteration))
                         .OnError(exception => System.Console.WriteLine(exception));
                 })
                 .Build();
