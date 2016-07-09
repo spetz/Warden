@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Net.NetworkInformation;
 
-namespace Warden.Watchers.Port
+namespace Warden.Watchers.Server
 {
     /// <summary>
     /// Details of the resolved connection to the specified hostname and port.

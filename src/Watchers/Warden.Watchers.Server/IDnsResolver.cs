@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
+using System.Linq;
 
-namespace Warden.Watchers.Port
+namespace Warden.Watchers.Server
 {
     /// <summary>
     /// Custom DNS resolver service.

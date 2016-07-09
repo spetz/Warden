@@ -54,7 +54,7 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Watchers.Process", "
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Integrations.Slack", "Integrations\Warden.Integrations.Slack\Warden.Integrations.Slack.xproj", "{42F2E9A8-81BD-485A-B099-DD6A92DF22E5}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Watchers.Port", "Watchers\Warden.Watchers.Port\Warden.Watchers.Port.xproj", "{6B6B14A8-33A4-42F2-A381-98C19CBAA96F}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Watchers.Server", "Watchers\Warden.Watchers.Server\Warden.Watchers.Server.xproj", "{6B6B14A8-33A4-42F2-A381-98C19CBAA96F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

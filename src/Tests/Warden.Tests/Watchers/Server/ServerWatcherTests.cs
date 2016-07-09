@@ -6,21 +6,21 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using Warden.Watchers;
-using Warden.Watchers.Port;
+using Warden.Watchers.Server;
 
-namespace Warden.Tests.Watchers.Port
+namespace Warden.Tests.Watchers.Server
 {
-    public class PortWatcher_specs
+    public class ServerWatcher_specs
     {
-        protected static PortWatcher Watcher { get; set; }
-        protected static PortWatcherConfiguration Configuration { get; set; }
+        protected static ServerWatcher Watcher { get; set; }
+        protected static ServerWatcherConfiguration Configuration { get; set; }
         protected static IWatcherCheckResult CheckResult { get; set; }
-        protected static PortWatcherCheckResult PortWatcherCheckResult { get; set; }
+        protected static ServerWatcherCheckResult ServerWatcherCheckResult { get; set; }
         protected static Exception Exception { get; set; }
     }
 
-    [Subject("Port watcher initialization")]
-    public class when_initializing_with_invalid_hostname : PortWatcher_specs
+    [Subject("Server watcher initialization")]
+    public class when_initializing_with_invalid_hostname : ServerWatcher_specs
     {
         private const string InvalidHostname = "http://www.google.pl";
         private const int Port = 80;
@@ -30,7 +30,7 @@ namespace Warden.Tests.Watchers.Port
         Because of = () =>
         {
             Exception = Catch.Exception(() =>
-                Configuration = PortWatcherConfiguration
+                Configuration = ServerWatcherConfiguration
                     .Create(InvalidHostname, Port)
                     .Build());
         };
@@ -49,8 +49,8 @@ namespace Warden.Tests.Watchers.Port
         }
     }
 
-    [Subject("Port watcher initialization")]
-    public class when_initializing_with_invalid_port : PortWatcher_specs
+    [Subject("Server watcher initialization")]
+    public class when_initializing_with_invalid_port : ServerWatcher_specs
     {
         private const string Hostname = "www.google.pl";
         private const int InvalidPort = -1;
@@ -60,7 +60,7 @@ namespace Warden.Tests.Watchers.Port
         Because of = () =>
         {
             Exception = Catch.Exception(() =>
-                Configuration = PortWatcherConfiguration
+                Configuration = ServerWatcherConfiguration
                     .Create(Hostname, InvalidPort)
                     .Build());
         };
@@ -79,19 +79,19 @@ namespace Warden.Tests.Watchers.Port
         }
     }
 
-    [Subject("Port watcher initialization")]
-    public class when_trying_to_provide_null_dns_resolver : PortWatcher_specs
+    [Subject("Server watcher initialization")]
+    public class when_trying_to_provide_null_dns_resolver : ServerWatcher_specs
     {
         private static readonly string TestHostname = "website.com";
         private static readonly int TestPort = 80;
 
         Establish context = () =>
         {
-            Configuration = PortWatcherConfiguration
+            Configuration = ServerWatcherConfiguration
                 .Create(TestHostname, TestPort)
                 .WithDnsResolverProvider(() => null)
                 .Build();
-            Watcher = PortWatcher.Create("Port Watcher", Configuration);
+            Watcher = ServerWatcher.Create("Server watcher", Configuration);
         };
 
         Because of = () =>
@@ -111,8 +111,8 @@ namespace Warden.Tests.Watchers.Port
         }
     }
 
-    [Subject("Port watcher initialization")]
-    public class when_trying_to_provide_null_tcp_client : PortWatcher_specs
+    [Subject("Server watcher initialization")]
+    public class when_trying_to_provide_null_tcp_client : ServerWatcher_specs
     {
         private static readonly string TestHostname = "website.com";
         private static readonly int TestPort = 80;
@@ -121,11 +121,11 @@ namespace Warden.Tests.Watchers.Port
 
         Because of = () =>
         {
-            Configuration = PortWatcherConfiguration
+            Configuration = ServerWatcherConfiguration
                 .Create(TestHostname, TestPort)
                 .WithTcpClientProvider(() => null)
                 .Build();
-            Watcher = PortWatcher.Create("Port Watcher", Configuration);
+            Watcher = ServerWatcher.Create("Server watcher", Configuration);
         };
 
         It should_fail = () => Exception.Should().BeOfType<WatcherException>();
@@ -140,8 +140,8 @@ namespace Warden.Tests.Watchers.Port
         }
     }
 
-    [Subject("Port watcher initialization")]
-    public class when_trying_to_provide_null_pinger_provider : PortWatcher_specs
+    [Subject("Server watcher initialization")]
+    public class when_trying_to_provide_null_pinger_provider : ServerWatcher_specs
     {
         private static readonly string TestHostname = "website.com";
         private static readonly int TestPort = 80;
@@ -150,11 +150,11 @@ namespace Warden.Tests.Watchers.Port
 
         Because of = () =>
         {
-            Configuration = PortWatcherConfiguration
+            Configuration = ServerWatcherConfiguration
                 .Create(TestHostname)
                 .WithPingerProvider(() => null)
                 .Build();
-            Watcher = PortWatcher.Create("Ping Watcher", Configuration);
+            Watcher = ServerWatcher.Create("Ping Watcher", Configuration);
         };
 
         It should_fail = () => Exception.Should().BeOfType<WatcherException>();
@@ -169,8 +169,8 @@ namespace Warden.Tests.Watchers.Port
         }
     }
 
-    [Subject("Port watcher execution")]
-    public class when_server_accepts_connection : PortWatcher_specs
+    [Subject("Server watcher execution")]
+    public class when_server_accepts_connection : ServerWatcher_specs
     {
         private static Mock<ITcpClient> TcpClientMock;
         private static Mock<IDnsResolver> DnsResolverMock;
@@ -194,20 +194,20 @@ namespace Warden.Tests.Watchers.Port
             DnsResolverMock.Setup(dn => dn.GetIpAddress(Moq.It.IsAny<string>()))
                 .Returns((string ip) => TestIpAddress);
 
-            Configuration = PortWatcherConfiguration
+            Configuration = ServerWatcherConfiguration
                 .Create(TestHostname, TestPort)
                 .WithTcpClientProvider(() => TcpClientMock.Object)
                 .WithDnsResolverProvider(() => DnsResolverMock.Object)
                 .WithPingerProvider(() => PingerMock.Object)
                 .WithTimeout(TimeSpan.FromSeconds(1))
                 .Build();
-            Watcher = PortWatcher.Create("Port Watcher", Configuration);
+            Watcher = ServerWatcher.Create("Server watcher", Configuration);
         };
 
         Because of = async () =>
         {
             CheckResult = await Watcher.ExecuteAsync().Await().AsTask;
-            PortWatcherCheckResult = CheckResult as PortWatcherCheckResult;
+            ServerWatcherCheckResult = CheckResult as ServerWatcherCheckResult;
         };
 
         It should_have_valid_check_result = () => CheckResult.IsValid.Should().BeTrue();
@@ -229,8 +229,8 @@ namespace Warden.Tests.Watchers.Port
         }
     }
 
-    [Subject("Port watcher execution")]
-    public class when_server_refuses_connection : PortWatcher_specs
+    [Subject("Server watcher execution")]
+    public class when_server_refuses_connection : ServerWatcher_specs
     {
         private static Mock<ITcpClient> TcpClientMock;
         private static Mock<IDnsResolver> DnsResolverMock;
@@ -254,19 +254,19 @@ namespace Warden.Tests.Watchers.Port
             PingerMock.Setup(x => x.PingAsync(Moq.It.IsAny<IPAddress>(), Moq.It.IsAny<TimeSpan?>()))
             .ReturnsAsync(IPStatus.Unknown);
 
-            Configuration = PortWatcherConfiguration
+            Configuration = ServerWatcherConfiguration
                 .Create(TestHostname, TestPort)
                 .WithTcpClientProvider(() => TcpClientMock.Object)
                 .WithDnsResolverProvider(() => DnsResolverMock.Object)
                 .WithPingerProvider(() => PingerMock.Object)
                 .Build();
-            Watcher = PortWatcher.Create("Port Watcher", Configuration);
+            Watcher = ServerWatcher.Create("Server watcher", Configuration);
         };
 
         Because of = async () =>
         {
             CheckResult = await Watcher.ExecuteAsync().Await().AsTask;
-            PortWatcherCheckResult = CheckResult as PortWatcherCheckResult;
+            ServerWatcherCheckResult = CheckResult as ServerWatcherCheckResult;
         };
 
         It should_have_valid_check_result = () => CheckResult.IsValid.Should().BeFalse();
@@ -288,8 +288,8 @@ namespace Warden.Tests.Watchers.Port
         }
     }
 
-    [Subject("Port watcher execution")]
-    public class when_hostname_cannot_be_resolved : PortWatcher_specs
+    [Subject("Server watcher execution")]
+    public class when_hostname_cannot_be_resolved : ServerWatcher_specs
     {
         private static Mock<ITcpClient> TcpClientMock;
         private static Mock<IDnsResolver> DnsResolverMock;
@@ -311,19 +311,19 @@ namespace Warden.Tests.Watchers.Port
             PingerMock.Setup(x => x.PingAsync(Moq.It.IsAny<IPAddress>(), Moq.It.IsAny<TimeSpan?>()))
             .ReturnsAsync(IPStatus.Success);
 
-            Configuration = PortWatcherConfiguration
+            Configuration = ServerWatcherConfiguration
                 .Create(TestHostname, TestPort)
                 .WithTcpClientProvider(() => TcpClientMock.Object)
                 .WithDnsResolverProvider(() => DnsResolverMock.Object)
                 .WithPingerProvider(() => PingerMock.Object)
                 .Build();
-            Watcher = PortWatcher.Create("Port Watcher", Configuration);
+            Watcher = ServerWatcher.Create("Server watcher", Configuration);
         };
 
         Because of = async () =>
         {
             CheckResult = await Watcher.ExecuteAsync().Await().AsTask;
-            PortWatcherCheckResult = CheckResult as PortWatcherCheckResult;
+            ServerWatcherCheckResult = CheckResult as ServerWatcherCheckResult;
         };
 
         It should_have_valid_check_result = () => CheckResult.IsValid.Should().BeFalse();

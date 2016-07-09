@@ -368,15 +368,6 @@
           "Warden": "1.1.0"
         }
       },
-      "Warden.Watchers.Port/1.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
-        "dependencies": {
-          "Microsoft.AspNet.SignalR.Core": "2.2.0",
-          "NETStandard.Library": "1.6.0",
-          "Warden": "1.1.0"
-        }
-      },
       "Warden.Watchers.Process/1.1.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
@@ -389,6 +380,14 @@
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "StackExchange.Redis": "1.1.572",
+          "Warden": "1.1.0"
+        }
+      },
+      "Warden.Watchers.Server/1.1.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0",
           "Warden": "1.1.0"
         }
       },
@@ -768,15 +767,6 @@
           "Warden": "1.1.0"
         }
       },
-      "Warden.Watchers.Port/1.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
-        "dependencies": {
-          "Microsoft.AspNet.SignalR.Core": "2.2.0",
-          "NETStandard.Library": "1.6.0",
-          "Warden": "1.1.0"
-        }
-      },
       "Warden.Watchers.Process/1.1.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
@@ -789,6 +779,14 @@
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "StackExchange.Redis": "1.1.572",
+          "Warden": "1.1.0"
+        }
+      },
+      "Warden.Watchers.Server/1.1.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0",
           "Warden": "1.1.0"
         }
       },
@@ -1168,15 +1166,6 @@
           "Warden": "1.1.0"
         }
       },
-      "Warden.Watchers.Port/1.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
-        "dependencies": {
-          "Microsoft.AspNet.SignalR.Core": "2.2.0",
-          "NETStandard.Library": "1.6.0",
-          "Warden": "1.1.0"
-        }
-      },
       "Warden.Watchers.Process/1.1.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
@@ -1189,6 +1178,14 @@
         "framework": ".NETFramework,Version=v4.5.1",
         "dependencies": {
           "StackExchange.Redis": "1.1.572",
+          "Warden": "1.1.0"
+        }
+      },
+      "Warden.Watchers.Server/1.1.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0",
           "Warden": "1.1.0"
         }
       },
@@ -1240,10 +1237,6 @@
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Performance/project.json"
     },
-    "Warden.Watchers.Port/1.1.0": {
-      "type": "project",
-      "path": "../../Watchers/Warden.Watchers.Port/project.json"
-    },
     "Warden.Watchers.Process/1.1.0": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Process/project.json"
@@ -1251,6 +1244,10 @@
     "Warden.Watchers.Redis/1.1.0": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Redis/project.json"
+    },
+    "Warden.Watchers.Server/1.1.0": {
+      "type": "project",
+      "path": "../../Watchers/Warden.Watchers.Server/project.json"
     },
     "Warden.Watchers.Web/1.1.0": {
       "type": "project",
@@ -1377,7 +1374,6 @@
     },
     "Microsoft.AspNet.SignalR.Core/2.2.0": {
       "type": "package",
-      "serviceable": true,
       "sha512": "y+gx2iv3Da2YIkh/m8BSitF63PAs7sDJY9td9blvgrXzCvKAb664sc/2D7kNSwEiFDLDGCoax6pqe3pRRDSDHQ==",
       "files": [
         "lib/net45/Microsoft.AspNet.SignalR.Core.dll",
@@ -1389,7 +1385,6 @@
     },
     "Microsoft.AspNet.WebApi.Client/5.2.3": {
       "type": "package",
-      "serviceable": true,
       "sha512": "3kiI8peSXbXHDDrRuo+QaX0iCEVRe0nvn2dBDRw656uPX32UalbBlSIDUDlJxu05eau4tnuhsikiUuugvvoUoQ==",
       "files": [
         "lib/net45/System.Net.Http.Formatting.dll",
@@ -1403,7 +1398,6 @@
     },
     "Microsoft.CSharp/4.0.0": {
       "type": "package",
-      "serviceable": true,
       "sha512": "oWqeKUxHXdK6dL2CFjgMcaBISbkk+AqEg+yvJHE4DElNzS4QaTsCflgkkqZwVlWby1Dg9zo9n+iCAMFefFdJ/A==",
       "files": [
         "lib/dotnet/Microsoft.CSharp.dll",
@@ -1444,7 +1438,6 @@
     },
     "Microsoft.Owin/2.1.0": {
       "type": "package",
-      "serviceable": true,
       "sha512": "lk0kK64mlmcmtWX8YOYkZsnZKDoGEzMZhe8e1bcP+FFcgD4f2QfKwvu5Z8Bh8WS0VO7Rgk+DJ0hwW0k+S/UGMg==",
       "files": [
         "lib/net40/Microsoft.Owin.dll",
@@ -1458,7 +1451,6 @@
     },
     "Microsoft.Owin.Security/2.1.0": {
       "type": "package",
-      "serviceable": true,
       "sha512": "4n1V0p+O6W1L0xHUM8Cjp2Y+MmmUkiCZv6PvRNIDCJD9zlerBJa2HECo9lUiWC+KuasQJ3QxB1FmipNBxdXXIQ==",
       "files": [
         "lib/net45/Microsoft.Owin.Security.dll",
@@ -1685,7 +1677,6 @@
     },
     "System.Data.Common/4.1.0": {
       "type": "package",
-      "serviceable": true,
       "sha512": "epU8jeTe7aE7RqGHq9rZ8b0Q4Ah7DgubzHQblgZMSqgW1saW868WmooSyC5ywf8upLBkcVLDu93W9GPWUYsU2Q==",
       "files": [
         "dotnet_library_license.txt",
@@ -1735,7 +1726,6 @@
     },
     "System.Data.SqlClient/4.1.0": {
       "type": "package",
-      "serviceable": true,
       "sha512": "yqMZgzzKHdG84QmA/PPZUORaoisfvztvFqyPs7dPafJhNxlS7STf9OMCFrP/tITQCqImkm1+X4d2oiWOT2oTKg==",
       "files": [
         "dotnet_library_license.txt",
@@ -1789,7 +1779,6 @@
     },
     "System.Linq/4.0.1-beta-23516": {
       "type": "package",
-      "serviceable": true,
       "sha512": "AJaoyeAHLpurbTWnmvOhK/QC2sswKJrIA5RlPea+UdfXpHOw3srPNEPpseZDMV/EviVqAwUfFNkc5QxpGZtsLA==",
       "files": [
         "lib/dotnet5.4/System.Linq.dll",
@@ -1935,7 +1924,7 @@
       "Warden.Watchers.MongoDb >= 1.1.0",
       "Warden.Watchers.MsSql >= 1.1.1",
       "Warden.Watchers.Performance >= 1.1.0",
-      "Warden.Watchers.Port >= 1.1.0",
+      "Warden.Watchers.Server >= 1.1.0",
       "Warden.Watchers.Process >= 1.1.0",
       "Warden.Watchers.Redis >= 1.1.0",
       "Warden.Watchers.Web >= 1.1.0",

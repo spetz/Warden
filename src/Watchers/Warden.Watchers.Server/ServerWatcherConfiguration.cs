@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Net;
 using System.Threading.Tasks;
 
-namespace Warden.Watchers.Port
+namespace Warden.Watchers.Server
 {
     /// <summary>
-    /// Configuration of the PortWatcher.
+    /// Configuration of the ServerWatcher.
     /// </summary>
-    public class PortWatcherConfiguration
+    public class ServerWatcherConfiguration
     {
         /// <summary>
         /// The destination hostname or IP address.
@@ -50,14 +49,14 @@ namespace Warden.Watchers.Port
         public Func<IPinger> PingerProvider { get; protected set; }
 
         /// <summary>
-        /// Factory method for creating a new instance of fluent builder for the PortWatcherConfiguration.
+        /// Factory method for creating a new instance of fluent builder for the ServerWatcherConfiguration.
         /// Uses the default 30 seconds timeout.
         /// </summary>
         /// <param name="hostname">Hostname to be resolved.</param>
         /// <param name="port">Port number of the hostname.</param>
         public static Builder Create(string hostname, int port = 0) => new Builder(hostname, port);
 
-        protected internal PortWatcherConfiguration(string hostname, int port)
+        protected internal ServerWatcherConfiguration(string hostname, int port)
         {
             hostname.ValidateHostname();
             if (port < 0)
@@ -71,18 +70,18 @@ namespace Warden.Watchers.Port
         }
 
         /// <summary>
-        /// Fluent builder for the PortWatcherConfiguration.
+        /// Fluent builder for the ServerWatcherConfiguration.
         /// </summary>
-        public abstract class Configurator<T> : WatcherConfigurator<T, PortWatcherConfiguration>
+        public abstract class Configurator<T> : WatcherConfigurator<T, ServerWatcherConfiguration>
             where T : Configurator<T>
         {
             protected Configurator(string hostname, int port = 0)
             {
                 ValidateHostnameAndPort(hostname, port);
-                Configuration = new PortWatcherConfiguration(hostname, port);
+                Configuration = new ServerWatcherConfiguration(hostname, port);
             }
 
-            protected Configurator(PortWatcherConfiguration configuration) : base(configuration)
+            protected Configurator(ServerWatcherConfiguration configuration) : base(configuration)
             {
             }
 
@@ -97,7 +96,7 @@ namespace Warden.Watchers.Port
             /// Timeout of the connection.
             /// </summary>
             /// <param name="timeout">Timeout.</param>
-            /// <returns>Instance of fluent builder for the PortWatcherConfiguration.</returns>
+            /// <returns>Instance of fluent builder for the ServerWatcherConfiguration.</returns>
             public T WithTimeout(TimeSpan timeout)
             {
                 if (timeout == null)
@@ -115,7 +114,7 @@ namespace Warden.Watchers.Port
             /// Sets the predicate that has to be satisfied in order to return the valid result.
             /// </summary>
             /// <param name="ensureThat">Lambda expression predicate.</param>
-            /// <returns>Instance of fluent builder for the PortWatcherConfiguration.</returns>
+            /// <returns>Instance of fluent builder for the ServerWatcherConfiguration.</returns>
             public T EnsureThat(Func<ConnectionInfo, bool> ensureThat)
             {
                 if (ensureThat == null)
@@ -130,7 +129,7 @@ namespace Warden.Watchers.Port
             /// Sets the async predicate that has to be satisfied in order to return the valid result.
             /// <param name="ensureThat">Lambda expression predicate.</param>
             /// </summary>
-            /// <returns>Instance of fluent builder for the PortWatcherConfiguration.</returns>
+            /// <returns>Instance of fluent builder for the ServerWatcherConfiguration.</returns>
             public T EnsureThatAsync(Func<ConnectionInfo, Task<bool>> ensureThat)
             {
                 if (ensureThat == null)
@@ -145,7 +144,7 @@ namespace Warden.Watchers.Port
             /// Sets the custom provider for the ITcpClient.
             /// </summary>
             /// <param name="tcpClientProvider">Custom provider for the ITcpClient.</param>
-            /// <returns>Instance of fluent builder for the PortWatcherConfiguration.</returns>
+            /// <returns>Instance of fluent builder for the ServerWatcherConfiguration.</returns>
             public T WithTcpClientProvider(Func<ITcpClient> tcpClientProvider)
             {
                 if (tcpClientProvider == null)
@@ -163,7 +162,7 @@ namespace Warden.Watchers.Port
             /// Sets the custom provider for the IDnsResolver.
             /// </summary>
             /// <param name="dsnResolverProvider">Custom provider for the IDnsResolver.</param>
-            /// <returns>Instance of fluent builder for the PortWatcherConfiguration.</returns>
+            /// <returns>Instance of fluent builder for the ServerWatcherConfiguration.</returns>
             public T WithDnsResolverProvider(Func<IDnsResolver> dsnResolverProvider)
             {
                 if (dsnResolverProvider == null)
@@ -181,7 +180,7 @@ namespace Warden.Watchers.Port
             /// Sets the custom provider for the IPinger.
             /// </summary>
             /// <param name="pingerProvider">Custom provider for the IPinger.</param>
-            /// <returns>Instance of fluent builder for the PortWatcherConfiguration.</returns>
+            /// <returns>Instance of fluent builder for the ServerWatcherConfiguration.</returns>
             public T WithPingerProvider(Func<IPinger> pingerProvider)
             {
                 if (pingerProvider == null)
@@ -197,11 +196,11 @@ namespace Warden.Watchers.Port
         }
 
         /// <summary>
-        /// Default PortWatcherConfiguration fluent builder used while configuring watcher via lambda expression.
+        /// Default ServerWatcherConfiguration fluent builder used while configuring watcher via lambda expression.
         /// </summary>
         public class Default : Configurator<Default>
         {
-            public Default(PortWatcherConfiguration configuration) : base(configuration)
+            public Default(ServerWatcherConfiguration configuration) : base(configuration)
             {
                 SetInstance(this);
             }
@@ -221,7 +220,7 @@ namespace Warden.Watchers.Port
             /// Builds the PortConfiugration and return its instance.
             /// </summary>
             /// <returns>Instance of PortConfiugration.</returns>
-            public PortWatcherConfiguration Build() => Configuration;
+            public ServerWatcherConfiguration Build() => Configuration;
 
             /// <summary>
             /// Operator overload to provide casting the Builder configurator into Default configurator.

@@ -53,8 +53,19 @@
         }
       },
       "Warden/1.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1"
+        "type": "package",
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net451/Warden.dll": {}
+        },
+        "runtime": {
+          "lib/net451/Warden.dll": {}
+        }
       }
     },
     ".NETFramework,Version=v4.5.1/win7-x86": {
@@ -108,8 +119,19 @@
         }
       },
       "Warden/1.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1"
+        "type": "package",
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net451/Warden.dll": {}
+        },
+        "runtime": {
+          "lib/net451/Warden.dll": {}
+        }
       }
     },
     ".NETFramework,Version=v4.5.1/win7-x64": {
@@ -163,19 +185,25 @@
         }
       },
       "Warden/1.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1"
+        "type": "package",
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net451/Warden.dll": {}
+        },
+        "runtime": {
+          "lib/net451/Warden.dll": {}
+        }
       }
     }
   },
   "libraries": {
-    "Warden/1.1.0": {
-      "type": "project",
-      "path": "../../Warden/project.json"
-    },
     "Microsoft.AspNet.WebApi.Client/5.2.3": {
       "type": "package",
-      "serviceable": true,
       "sha512": "3kiI8peSXbXHDDrRuo+QaX0iCEVRe0nvn2dBDRw656uPX32UalbBlSIDUDlJxu05eau4tnuhsikiUuugvvoUoQ==",
       "files": [
         "lib/net45/System.Net.Http.Formatting.dll",
@@ -229,6 +257,19 @@
         "SendGrid.SmtpApi.1.3.1.nupkg",
         "SendGrid.SmtpApi.1.3.1.nupkg.sha512",
         "SendGrid.SmtpApi.nuspec"
+      ]
+    },
+    "Warden/1.1.0": {
+      "type": "package",
+      "sha512": "fAmgMRPi3rAGLGYMczq4Ip7zlcS8BISJ9VKyePZFY+/O9mFN7yCWOZKnaWXIrnK8qRhb0OJUbOOZQIcb67S1Qw==",
+      "files": [
+        "lib/dotnet5.4/Warden.dll",
+        "lib/dotnet5.4/Warden.xml",
+        "lib/net451/Warden.dll",
+        "lib/net451/Warden.xml",
+        "Warden.1.1.0.nupkg",
+        "Warden.1.1.0.nupkg.sha512",
+        "Warden.nuspec"
       ]
     }
   },

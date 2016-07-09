@@ -1,13 +1,13 @@
-﻿namespace Warden.Watchers.Port
+﻿namespace Warden.Watchers.Server
 {
     /// <summary>
-    /// Custom check result type for PortWatcher.
+    /// Custom check result type for ServerWatcher.
     /// </summary>    
-    public class PortWatcherCheckResult : WatcherCheckResult
+    public class ServerWatcherCheckResult : WatcherCheckResult
     {
         public ConnectionInfo ConnectionInfo { get; }
 
-        protected PortWatcherCheckResult(PortWatcher watcher, bool isValid, 
+        protected ServerWatcherCheckResult(ServerWatcher watcher, bool isValid, 
             string description, ConnectionInfo connectionInfo)
             : base(watcher, isValid, description)
         {
@@ -15,15 +15,15 @@
         }
 
         /// <summary>
-        /// Factory method for creating a new instance of PortWatcherCheckResult.
+        /// Factory method for creating a new instance of ServerWatcherCheckResult.
         /// </summary>
-        /// <param name="watcher">Instance of PortWatcher.</param>
+        /// <param name="watcher">Instance of ServerWatcher.</param>
         /// <param name="isValid">Flag determining whether the performed check was valid.</param>
         /// <param name="connectionInfo">Details of the resolved connection to the specified hostname and port.</param>
         /// <param name="description">Custom description of the performed check.</param>
-        /// <returns>Instance of PortWatcherCheckResult.</returns>
-        public static PortWatcherCheckResult Create(PortWatcher watcher, bool isValid,
+        /// <returns>Instance of ServerWatcherCheckResult.</returns>
+        public static ServerWatcherCheckResult Create(ServerWatcher watcher, bool isValid,
             ConnectionInfo connectionInfo, string description = "")
-            => new PortWatcherCheckResult(watcher, isValid, description, connectionInfo);
+            => new ServerWatcherCheckResult(watcher, isValid, description, connectionInfo);
     }
 }

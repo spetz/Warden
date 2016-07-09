@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 
-namespace Warden.Watchers.Port
+namespace Warden.Watchers.Server
 {
     /// <summary>
     /// Provides a functionality to ping specified address.

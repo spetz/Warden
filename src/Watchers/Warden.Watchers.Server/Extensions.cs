@@ -1,10 +1,10 @@
 ﻿using System;
 using Warden.Core;
 
-namespace Warden.Watchers.Port
+namespace Warden.Watchers.Server
 {
     /// <summary>
-    /// Custom extension methods for the Port watcher.
+    /// Custom extension methods for the Server watcher.
     /// </summary>
     public static class Extensions
     {
@@ -48,7 +48,7 @@ namespace Warden.Watchers.Port
         }
 
         /// <summary>
-        /// Extension method for adding the Port watcher to the the WardenConfiguration with the default name of Port Watcher.
+        /// Extension method for adding the Server watcher to the the WardenConfiguration with the default name of Server Watcher.
         /// </summary>
         /// <param name="builder">Instance of the Warden configuration builder.</param>
         /// <param name="hostname">Hostname to be resolved.</param>
@@ -56,29 +56,29 @@ namespace Warden.Watchers.Port
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
         /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
-        public static WardenConfiguration.Builder AddPortWatcher(
+        public static WardenConfiguration.Builder AddServerWatcher(
             this WardenConfiguration.Builder builder,
             string hostname,
             int port = 0,
             Action<WatcherHooksConfiguration.Builder> hooks = null,
             TimeSpan? interval = null)
         {
-            builder.AddWatcher(PortWatcher.Create(hostname, port), hooks, interval);
+            builder.AddWatcher(ServerWatcher.Create(hostname, port), hooks, interval);
 
             return builder;
         }
 
         /// <summary>
-        /// Extension method for adding the Port watcher to the the WardenConfiguration..
+        /// Extension method for adding the Server watcher to the the WardenConfiguration..
         /// </summary>
         /// <param name="builder">Instance of the Warden configuration builder.</param>
-        /// <param name="name">Name of the Port watcher.</param>
+        /// <param name="name">Name of the Server watcher.</param>
         /// <param name="hostname">Hostname to be resolved.</param>
         /// <param name="port">Optional port number of the hostname (0 means not specified).</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
         /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
-        public static WardenConfiguration.Builder AddPortWatcher(
+        public static WardenConfiguration.Builder AddServerWatcher(
             this WardenConfiguration.Builder builder,
             string name,
             string hostname,
@@ -86,78 +86,78 @@ namespace Warden.Watchers.Port
             Action<WatcherHooksConfiguration.Builder> hooks = null,
             TimeSpan? interval = null)
         {
-            builder.AddWatcher(PortWatcher.Create(name, hostname, port), hooks, interval);
+            builder.AddWatcher(ServerWatcher.Create(name, hostname, port), hooks, interval);
 
             return builder;
         }
 
         /// <summary>
-        /// Extension method for adding the Port watcher to the the WardenConfiguration with the default name of Port Watcher.
+        /// Extension method for adding the Server watcher to the the WardenConfiguration with the default name of Server watcher.
         /// </summary>
         /// <param name="builder">Instance of the Warden configuration builder.</param>
         /// <param name="hostname">Hostname to be resolved.</param>
-        /// <param name="configurator">Lambda expression for configuring the PortWatcher.</param>
+        /// <param name="configurator">Lambda expression for configuring the ServerWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
         /// <param name="port">Optional port number of the hostname (0 means not specified).</param>
         /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns> 
-        public static WardenConfiguration.Builder AddPortWatcher(
+        public static WardenConfiguration.Builder AddServerWatcher(
             this WardenConfiguration.Builder builder,
             string hostname,
-            Action<PortWatcherConfiguration.Default> configurator,
+            Action<ServerWatcherConfiguration.Default> configurator,
             Action<WatcherHooksConfiguration.Builder> hooks = null,
             int port = 0,
             TimeSpan? interval = null)
         {
-            builder.AddWatcher(PortWatcher.Create(hostname, port, configurator),
+            builder.AddWatcher(ServerWatcher.Create(hostname, port, configurator),
                 hooks, interval);
 
             return builder;
         }
 
         /// <summary>
-        /// Extension method for adding the Port watcher to the the WardenConfiguration.
+        /// Extension method for adding the Server watcher to the the WardenConfiguration.
         /// </summary>
         /// <param name="builder">Instance of the Warden configuration builder.</param>
-        /// <param name="name">Name of the PortWatcher.</param>
+        /// <param name="name">Name of the ServerWatcher.</param>
         /// <param name="hostname">Hostname to be resolved.</param>
-        /// <param name="configurator">Lambda expression for configuring the PortWatcher.</param>
+        /// <param name="configurator">Lambda expression for configuring the ServerWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
         /// <param name="port">Optional port number of the hostname (0 means not specified).</param>
         /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
-        public static WardenConfiguration.Builder AddPortWatcher(
+        public static WardenConfiguration.Builder AddServerWatcher(
             this WardenConfiguration.Builder builder,
             string name,
             string hostname,
-            Action<PortWatcherConfiguration.Default> configurator,
+            Action<ServerWatcherConfiguration.Default> configurator,
             Action<WatcherHooksConfiguration.Builder> hooks = null,
             int port = 0,
             TimeSpan? interval = null)
         {
-            builder.AddWatcher(PortWatcher.Create(name, hostname, port, configurator),
+            builder.AddWatcher(ServerWatcher.Create(name, hostname, port, configurator),
                 hooks, interval);
 
             return builder;
         }
 
         /// <summary>
-        /// Extension method for adding the Port watcher to the the WardenConfiguration.
+        /// Extension method for adding the Server watcher to the the WardenConfiguration.
         /// </summary>
         /// <param name="builder">Instance of the Warden configuration builder.</param>
-        /// <param name="name">Name of the PortWatcher.</param>
-        /// <param name="configuration">Configuration of PortWatcher.</param>
+        /// <param name="name">Name of the ServerWatcher.</param>
+        /// <param name="configuration">Configuration of ServerWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
         /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
-        public static WardenConfiguration.Builder AddPortWatcher(
+        public static WardenConfiguration.Builder AddServerWatcher(
             this WardenConfiguration.Builder builder,
             string name,
-            PortWatcherConfiguration configuration,
+            ServerWatcherConfiguration configuration,
             Action<WatcherHooksConfiguration.Builder> hooks = null,
             TimeSpan? interval = null)
         {
-            builder.AddWatcher(PortWatcher.Create(name, configuration), hooks, interval);
+            builder.AddWatcher(ServerWatcher.Create(name, configuration), hooks, interval);
 
             return builder;
         }

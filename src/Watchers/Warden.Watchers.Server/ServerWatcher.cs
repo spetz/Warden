@@ -4,14 +4,14 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 
-namespace Warden.Watchers.Port
+namespace Warden.Watchers.Server
 {
     /// <summary>
-    /// PortWatcher designed for monitoring hostname availability including available ports (if specified).
+    /// ServerWatcher designed for monitoring server availability including opened ports (if specified).
     /// </summary>
-    public class PortWatcher : IWatcher
+    public class ServerWatcher : IWatcher
     {
-        private readonly PortWatcherConfiguration _configuration;
+        private readonly ServerWatcherConfiguration _configuration;
 
         private readonly Dictionary<IPStatus, string> _pingStatusMessages = new Dictionary<IPStatus, string>
         {
@@ -36,16 +36,16 @@ namespace Warden.Watchers.Port
         };
 
         /// <summary>
-        /// Default name of the PortWatcher.
+        /// Default name of the ServerWatcher.
         /// </summary>
-        public const string DefaultName = "Port Watcher";
+        public const string DefaultName = "Server Watcher";
 
         /// <summary>
-        /// Name of the PortWatcher.
+        /// Name of the ServerWatcher.
         /// </summary>
         public string Name { get; }
 
-        protected PortWatcher(string name, PortWatcherConfiguration configuration)
+        protected ServerWatcher(string name, ServerWatcherConfiguration configuration)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentException("Watcher name can not be empty.");
@@ -53,7 +53,7 @@ namespace Warden.Watchers.Port
             if (configuration == null)
             {
                 throw new ArgumentNullException(nameof(configuration),
-                    "Port Watcher configuration has not been provided.");
+                    "Server watcher configuration has not been provided.");
             }
 
             Name = name;
@@ -71,7 +71,7 @@ namespace Warden.Watchers.Port
                 var connectionInfo = ConnectionInfo.Create(_configuration.Hostname,
                     IPAddress.None, _configuration.Port, IPStatus.Unknown, string.Empty);
 
-                return PortWatcherCheckResult.Create(this, false, connectionInfo,
+                return ServerWatcherCheckResult.Create(this, false, connectionInfo,
                     "A connection timeout has occurred while trying to access the hostname: " +
                     $"'{_configuration.Hostname}' using port: {_configuration.Port}.");
             }
@@ -98,14 +98,14 @@ namespace Warden.Watchers.Port
 
                 if (ipStatus == IPStatus.Unknown)
                 {
-                    return PortWatcherCheckResult.Create(this, false, connectionInfo,
+                    return ServerWatcherCheckResult.Create(this, false, connectionInfo,
                         $"Could not resolve the hostname '{_configuration.Hostname}' " +
                         $"{(portSpecified ? $"using port: {_configuration.Port}" : string.Empty)}. " +
                         $"Ping status: '{ipStatusMessage}'");
                 }
                 if (ipStatus != IPStatus.Success)
                 {
-                    return PortWatcherCheckResult.Create(this, false, connectionInfo,
+                    return ServerWatcherCheckResult.Create(this, false, connectionInfo,
                         $"Unable to connect to the hostname '{_configuration.Hostname}' " +
                         $"{(portSpecified ? $"using port: {_configuration.Port}" : string.Empty)}. " +
                         $"Ping status: '{ipStatusMessage}'");
@@ -124,7 +124,7 @@ namespace Warden.Watchers.Port
 
             isValid = isValid && (_configuration.EnsureThat?.Invoke(connectionInfo) ?? true);
 
-            return PortWatcherCheckResult.Create(this, isValid, connectionInfo,
+            return ServerWatcherCheckResult.Create(this, isValid, connectionInfo,
                 $"Successfully connected to the hostname '{_configuration.Hostname}' " +
                 $"{(portSpecified ? $"using port: {_configuration.Port}" : string.Empty)}.");
         }
@@ -134,7 +134,7 @@ namespace Warden.Watchers.Port
         /// </summary>
         /// <param name="servicesProvider"></param>
         /// <returns>IPStatus, if remote host has accepted connection, otherwise unknown. None IP address if host could not be resolved.</returns>
-        private async Task<Tuple<IPStatus, IPAddress>> TryConnectAsync(PortServicesProvider servicesProvider)
+        private async Task<Tuple<IPStatus, IPAddress>> TryConnectAsync(ServerServicesProvider servicesProvider)
         {
             var ipAddress = servicesProvider.DnsResolver.GetIpAddress(_configuration.Hostname);
             if (Equals(ipAddress, IPAddress.None))
@@ -151,19 +151,19 @@ namespace Warden.Watchers.Port
         /// Creates PortServicesProvider instance.
         /// </summary>
         /// <returns>PortServicesProvider instance.</returns>
-        private PortServicesProvider GetServicesProviders()
+        private ServerServicesProvider GetServicesProviders()
         {
             var client = _configuration.TcpClientProvider();
             var dnsResolver = _configuration.DnsResolverProvider();
             var pinger = _configuration.PingerProvider();
 
-            return new PortServicesProvider(client, dnsResolver, pinger);
+            return new ServerServicesProvider(client, dnsResolver, pinger);
         }
 
         /// <summary>
         /// Class that holds useful providers to check the connection.
         /// </summary>
-        private class PortServicesProvider : IDisposable
+        private class ServerServicesProvider : IDisposable
         {
             /// <summary>
             /// ITcpClient implementation instance.
@@ -180,7 +180,7 @@ namespace Warden.Watchers.Port
             /// </summary>
             public IDnsResolver DnsResolver { get; }
 
-            public PortServicesProvider(ITcpClient tcpClient, IDnsResolver dnsResolver, IPinger pinger)
+            public ServerServicesProvider(ITcpClient tcpClient, IDnsResolver dnsResolver, IPinger pinger)
             {
                 TcpClient = tcpClient;
                 DnsResolver = dnsResolver;
@@ -196,51 +196,51 @@ namespace Warden.Watchers.Port
         }
 
         /// <summary>
-        /// Factory method for creating a new instance of PortWatcher.
+        /// Factory method for creating a new instance of ServerWatcher.
         /// </summary>
         /// <param name="hostname">Hostname to connect to.</param>
         /// <param name="port">Optional port number of the hostname (0 means not specified).</param>
         /// <param name="configurator">A configuration bulider that should be used by watcher.</param>
-        /// <returns>A PortWatcher instance.</returns>
-        public static PortWatcher Create(string hostname, int port = 0, Action<PortWatcherConfiguration.Default> configurator = null)
+        /// <returns>A ServerWatcher instance.</returns>
+        public static ServerWatcher Create(string hostname, int port = 0, Action<ServerWatcherConfiguration.Default> configurator = null)
         {
-            var config = new PortWatcherConfiguration.Builder(hostname, port);
-            configurator?.Invoke((PortWatcherConfiguration.Default)config);
+            var config = new ServerWatcherConfiguration.Builder(hostname, port);
+            configurator?.Invoke((ServerWatcherConfiguration.Default)config);
 
             return Create(DefaultName, config.Build());
         }
 
         /// <summary>
-        /// Factory method for creating a new instance of PortWatcher.
+        /// Factory method for creating a new instance of ServerWatcher.
         /// </summary>
-        /// <param name="name">Name of the PortWatcher.</param>
+        /// <param name="name">Name of the ServerWatcher.</param>
         /// <param name="hostname">Hostname to connect to.</param>
         /// <param name="port">Optional port number of the hostname (0 means not specified).</param>
         /// <param name="configurator">A configuration that should be used by watcher.</param>
-        /// <returns>A PortWatcher instance.</returns>
-        public static PortWatcher Create(string name, string hostname, int port = 0, Action<PortWatcherConfiguration.Default> configurator = null)
+        /// <returns>A ServerWatcher instance.</returns>
+        public static ServerWatcher Create(string name, string hostname, int port = 0, Action<ServerWatcherConfiguration.Default> configurator = null)
         {
-            var config = new PortWatcherConfiguration.Builder(hostname, port);
-            configurator?.Invoke((PortWatcherConfiguration.Default)config);
+            var config = new ServerWatcherConfiguration.Builder(hostname, port);
+            configurator?.Invoke((ServerWatcherConfiguration.Default)config);
 
             return Create(name, config.Build());
         }
 
         /// <summary>
-        /// Factory method for creating a new instance of PortWatcher.
+        /// Factory method for creating a new instance of ServerWatcher.
         /// </summary>
-        /// <param name="name">Name of the PortWatcher.</param>
-        /// <param name="configuration">Configuration of PortWatcher.</param>
-        /// <returns>A PortWatcher instance.</returns>
-        public static PortWatcher Create(string name, PortWatcherConfiguration configuration)
-            => new PortWatcher(name, configuration);
+        /// <param name="name">Name of the ServerWatcher.</param>
+        /// <param name="configuration">Configuration of ServerWatcher.</param>
+        /// <returns>A ServerWatcher instance.</returns>
+        public static ServerWatcher Create(string name, ServerWatcherConfiguration configuration)
+            => new ServerWatcher(name, configuration);
 
         /// <summary>
-        /// Factory method for creating a new instance of PortWatcher with default name of Port Watcher.
+        /// Factory method for creating a new instance of ServerWatcher with default name of Server watcher.
         /// </summary>
-        /// <param name="configuration">Configuration of PortWatcher.</param>
-        /// <returns>A PortWatcher instance.</returns>
-        public static PortWatcher Create(PortWatcherConfiguration configuration)
-            => new PortWatcher(DefaultName, configuration);
+        /// <param name="configuration">Configuration of ServerWatcher.</param>
+        /// <returns>A ServerWatcher instance.</returns>
+        public static ServerWatcher Create(ServerWatcherConfiguration configuration)
+            => new ServerWatcher(DefaultName, configuration);
     }
 }
