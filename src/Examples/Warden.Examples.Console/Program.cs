@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Warden.Core;
 using Warden.Integrations.HttpApi;
+using Warden.Integrations.MsSql;
 using Warden.Integrations.Slack;
 using Warden.Watchers;
 using Warden.Watchers.Disk;
@@ -55,6 +56,7 @@ namespace Warden.Examples.Console
                     cfg.WithQuery("get test")
                         .EnsureThat(results => results.Any(x => x == "test-value"));
                 })
+                .IntegrateWithMsSql(@"Data Source=.\sqlexpress;Initial Catalog=MyDatabase;Integrated Security=True")
                 .AddWebWatcher("http://httpstat.us/200", hooks =>
                 {
                     hooks.OnStartAsync(check => WebsiteHookOnStartAsync(check))

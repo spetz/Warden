@@ -18,6 +18,21 @@
           "lib/net45/Dapper.dll": {}
         }
       },
+      "Microsoft.AspNet.SignalR.Core/2.2.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Owin": "2.1.0",
+          "Microsoft.Owin.Security": "2.1.0",
+          "Newtonsoft.Json": "6.0.4",
+          "Owin": "1.0.0"
+        },
+        "compile": {
+          "lib/net45/Microsoft.AspNet.SignalR.Core.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Microsoft.AspNet.SignalR.Core.dll": {}
+        }
+      },
       "Microsoft.AspNet.WebApi.Client/5.2.3": {
         "type": "package",
         "dependencies": {
@@ -31,6 +46,31 @@
         },
         "runtime": {
           "lib/net45/System.Net.Http.Formatting.dll": {}
+        }
+      },
+      "Microsoft.Owin/2.1.0": {
+        "type": "package",
+        "dependencies": {
+          "Owin": "1.0.0"
+        },
+        "compile": {
+          "lib/net45/Microsoft.Owin.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Microsoft.Owin.dll": {}
+        }
+      },
+      "Microsoft.Owin.Security/2.1.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Owin": "2.1.0",
+          "Owin": "1.0.0"
+        },
+        "compile": {
+          "lib/net45/Microsoft.Owin.Security.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Microsoft.Owin.Security.dll": {}
         }
       },
       "MongoDB.Bson/2.2.3": {
@@ -77,6 +117,15 @@
         },
         "runtime": {
           "lib/net45/Newtonsoft.Json.dll": {}
+        }
+      },
+      "Owin/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Owin.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Owin.dll": {}
         }
       },
       "RestSharp/105.2.2": {
@@ -188,6 +237,16 @@
           "Warden": "1.1.0"
         }
       },
+      "Warden.Integrations.MsSql/1.1.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
+        "dependencies": {
+          "Dapper": "1.42.0",
+          "Microsoft.AspNet.SignalR.Core": "2.2.0",
+          "System.Data.SqlClient": "4.1.0",
+          "Warden": "1.1.0"
+        }
+      },
       "Warden.Integrations.SendGrid/1.1.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
@@ -293,6 +352,21 @@
           "lib/net45/Dapper.dll": {}
         }
       },
+      "Microsoft.AspNet.SignalR.Core/2.2.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Owin": "2.1.0",
+          "Microsoft.Owin.Security": "2.1.0",
+          "Newtonsoft.Json": "6.0.4",
+          "Owin": "1.0.0"
+        },
+        "compile": {
+          "lib/net45/Microsoft.AspNet.SignalR.Core.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Microsoft.AspNet.SignalR.Core.dll": {}
+        }
+      },
       "Microsoft.AspNet.WebApi.Client/5.2.3": {
         "type": "package",
         "dependencies": {
@@ -306,6 +380,31 @@
         },
         "runtime": {
           "lib/net45/System.Net.Http.Formatting.dll": {}
+        }
+      },
+      "Microsoft.Owin/2.1.0": {
+        "type": "package",
+        "dependencies": {
+          "Owin": "1.0.0"
+        },
+        "compile": {
+          "lib/net45/Microsoft.Owin.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Microsoft.Owin.dll": {}
+        }
+      },
+      "Microsoft.Owin.Security/2.1.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Owin": "2.1.0",
+          "Owin": "1.0.0"
+        },
+        "compile": {
+          "lib/net45/Microsoft.Owin.Security.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Microsoft.Owin.Security.dll": {}
         }
       },
       "MongoDB.Bson/2.2.3": {
@@ -352,6 +451,15 @@
         },
         "runtime": {
           "lib/net45/Newtonsoft.Json.dll": {}
+        }
+      },
+      "Owin/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Owin.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Owin.dll": {}
         }
       },
       "RestSharp/105.2.2": {
@@ -460,6 +568,16 @@
         "dependencies": {
           "Newtonsoft.Json": "8.0.3",
           "System.Net.Http": "4.0.0",
+          "Warden": "1.1.0"
+        }
+      },
+      "Warden.Integrations.MsSql/1.1.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
+        "dependencies": {
+          "Dapper": "1.42.0",
+          "Microsoft.AspNet.SignalR.Core": "2.2.0",
+          "System.Data.SqlClient": "4.1.0",
           "Warden": "1.1.0"
         }
       },
@@ -568,6 +686,21 @@
           "lib/net45/Dapper.dll": {}
         }
       },
+      "Microsoft.AspNet.SignalR.Core/2.2.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Owin": "2.1.0",
+          "Microsoft.Owin.Security": "2.1.0",
+          "Newtonsoft.Json": "6.0.4",
+          "Owin": "1.0.0"
+        },
+        "compile": {
+          "lib/net45/Microsoft.AspNet.SignalR.Core.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Microsoft.AspNet.SignalR.Core.dll": {}
+        }
+      },
       "Microsoft.AspNet.WebApi.Client/5.2.3": {
         "type": "package",
         "dependencies": {
@@ -581,6 +714,31 @@
         },
         "runtime": {
           "lib/net45/System.Net.Http.Formatting.dll": {}
+        }
+      },
+      "Microsoft.Owin/2.1.0": {
+        "type": "package",
+        "dependencies": {
+          "Owin": "1.0.0"
+        },
+        "compile": {
+          "lib/net45/Microsoft.Owin.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Microsoft.Owin.dll": {}
+        }
+      },
+      "Microsoft.Owin.Security/2.1.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Owin": "2.1.0",
+          "Owin": "1.0.0"
+        },
+        "compile": {
+          "lib/net45/Microsoft.Owin.Security.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Microsoft.Owin.Security.dll": {}
         }
       },
       "MongoDB.Bson/2.2.3": {
@@ -627,6 +785,15 @@
         },
         "runtime": {
           "lib/net45/Newtonsoft.Json.dll": {}
+        }
+      },
+      "Owin/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Owin.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Owin.dll": {}
         }
       },
       "RestSharp/105.2.2": {
@@ -738,6 +905,16 @@
           "Warden": "1.1.0"
         }
       },
+      "Warden.Integrations.MsSql/1.1.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
+        "dependencies": {
+          "Dapper": "1.42.0",
+          "Microsoft.AspNet.SignalR.Core": "2.2.0",
+          "System.Data.SqlClient": "4.1.0",
+          "Warden": "1.1.0"
+        }
+      },
       "Warden.Integrations.SendGrid/1.1.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1",
@@ -837,6 +1014,10 @@
       "type": "project",
       "path": "../../Integrations/Warden.Integrations.HttpApi/project.json"
     },
+    "Warden.Integrations.MsSql/1.1.0": {
+      "type": "project",
+      "path": "../../Integrations/Warden.Integrations.MsSql/project.json"
+    },
     "Warden.Integrations.SendGrid/1.1.0": {
       "type": "project",
       "path": "../../Integrations/Warden.Integrations.SendGrid/project.json"
@@ -899,6 +1080,18 @@
         "lib/net45/Dapper.xml"
       ]
     },
+    "Microsoft.AspNet.SignalR.Core/2.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "y+gx2iv3Da2YIkh/m8BSitF63PAs7sDJY9td9blvgrXzCvKAb664sc/2D7kNSwEiFDLDGCoax6pqe3pRRDSDHQ==",
+      "files": [
+        "lib/net45/Microsoft.AspNet.SignalR.Core.dll",
+        "lib/net45/Microsoft.AspNet.SignalR.Core.xml",
+        "Microsoft.AspNet.SignalR.Core.2.2.0.nupkg",
+        "Microsoft.AspNet.SignalR.Core.2.2.0.nupkg.sha512",
+        "Microsoft.AspNet.SignalR.Core.nuspec"
+      ]
+    },
     "Microsoft.AspNet.WebApi.Client/5.2.3": {
       "type": "package",
       "sha512": "3kiI8peSXbXHDDrRuo+QaX0iCEVRe0nvn2dBDRw656uPX32UalbBlSIDUDlJxu05eau4tnuhsikiUuugvvoUoQ==",
@@ -910,6 +1103,32 @@
         "Microsoft.AspNet.WebApi.Client.5.2.3.nupkg",
         "Microsoft.AspNet.WebApi.Client.5.2.3.nupkg.sha512",
         "Microsoft.AspNet.WebApi.Client.nuspec"
+      ]
+    },
+    "Microsoft.Owin/2.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "lk0kK64mlmcmtWX8YOYkZsnZKDoGEzMZhe8e1bcP+FFcgD4f2QfKwvu5Z8Bh8WS0VO7Rgk+DJ0hwW0k+S/UGMg==",
+      "files": [
+        "lib/net40/Microsoft.Owin.dll",
+        "lib/net40/Microsoft.Owin.XML",
+        "lib/net45/Microsoft.Owin.dll",
+        "lib/net45/Microsoft.Owin.XML",
+        "Microsoft.Owin.2.1.0.nupkg",
+        "Microsoft.Owin.2.1.0.nupkg.sha512",
+        "Microsoft.Owin.nuspec"
+      ]
+    },
+    "Microsoft.Owin.Security/2.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "4n1V0p+O6W1L0xHUM8Cjp2Y+MmmUkiCZv6PvRNIDCJD9zlerBJa2HECo9lUiWC+KuasQJ3QxB1FmipNBxdXXIQ==",
+      "files": [
+        "lib/net45/Microsoft.Owin.Security.dll",
+        "lib/net45/Microsoft.Owin.Security.XML",
+        "Microsoft.Owin.Security.2.1.0.nupkg",
+        "Microsoft.Owin.Security.2.1.0.nupkg.sha512",
+        "Microsoft.Owin.Security.nuspec"
       ]
     },
     "MongoDB.Bson/2.2.3": {
@@ -978,6 +1197,16 @@
         "Newtonsoft.Json.8.0.3.nupkg.sha512",
         "Newtonsoft.Json.nuspec",
         "tools/install.ps1"
+      ]
+    },
+    "Owin/1.0.0": {
+      "type": "package",
+      "sha512": "OseTFniKmyp76mEzOBwIKGBRS5eMoYNkMKaMXOpxx9jv88+b6mh1rSaw43vjBOItNhaLFG3d0a20PfHyibH5sw==",
+      "files": [
+        "lib/net40/Owin.dll",
+        "Owin.1.0.0.nupkg",
+        "Owin.1.0.0.nupkg.sha512",
+        "Owin.nuspec"
       ]
     },
     "RestSharp/105.2.2": {
@@ -1212,6 +1441,7 @@
     "": [
       "Warden >= 1.1.0",
       "Warden.Integrations.HttpApi >= 1.1.1",
+      "Warden.Integrations.MsSql >= 1.1.0",
       "Warden.Integrations.SendGrid >= 1.1.0",
       "Warden.Integrations.Slack >= 1.1.0",
       "Warden.Integrations.Twilio >= 1.1.0",
