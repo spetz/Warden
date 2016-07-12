@@ -100,7 +100,7 @@ namespace Warden.Integrations.MsSql
         {
             var wardenIterationCommand = "insert into WardenIterations values" +
                                          "(@wardenName, @ordinal, @startedAt, @completedAt, @executionTime, @isValid);" +
-                                         "select cast(scope_identity() as int)";
+                                         "select cast(scope_identity() as bigint)";
 
             var wardenIterationParameters = new Dictionary<string, object>
             {
@@ -112,36 +112,63 @@ namespace Warden.Integrations.MsSql
                 ["isValid"] = iteration.IsValid,
             };
 
-            var iterationResultIds = await QueryAsync<int>(wardenIterationCommand, wardenIterationParameters);
+            var iterationResultIds = await QueryAsync<long>(wardenIterationCommand, wardenIterationParameters);
             var iterationId = iterationResultIds.First();
 
             foreach (var result in iteration.Results)
             {
-                var wardenCheckResultCommand = "insert into WardenCheckResults values (@iteration_id, @isValid, " +
-                                               "@startedAt, @completedAt, @executionTime);select cast(scope_identity() as int)";
+                var wardenCheckResultCommand = "insert into WardenCheckResults values (@wardenIteration_Id, @isValid, " +
+                                               "@startedAt, @completedAt, @executionTime);select cast(scope_identity() as bigint)";
                 var wardenCheckResultParameters = new Dictionary<string, object>
                 {
-                    ["iteration_id"] = iterationId,
+                    ["wardenIteration_Id"] = iterationId,
                     ["isValid"] = result.IsValid,
                     ["startedAt"] = result.StartedAt,
                     ["completedAt"] = result.CompletedAt,
                     ["executionTime"] = result.ExecutionTime
                 };
-                var wardenCheckResultIds = await QueryAsync<int>(wardenCheckResultCommand, wardenCheckResultParameters);
+                var wardenCheckResultIds = await QueryAsync<long>(wardenCheckResultCommand, wardenCheckResultParameters);
                 var wardenCheckResultId = wardenCheckResultIds.First();
 
-                var watcherCheckResultCommand = "insert into WatcherCheckResults values (@result_id, @watcherName, " +
-                                     "@watcherType, @description, @isValid);select cast(scope_identity() as int)";
+                var watcherCheckResultCommand = "insert into WatcherCheckResults values (@wardenCheckResult_Id, @watcherName, " +
+                                     "@watcherType, @description, @isValid)";
                 var watcherCheckResultParameters = new Dictionary<string, object>
                 {
-                    ["result_id"] = wardenCheckResultId,
+                    ["wardenCheckResult_Id"] = wardenCheckResultId,
                     ["watcherName"] = result.WatcherCheckResult.WatcherName,
                     ["watcherType"] = result.WatcherCheckResult.WatcherType.ToString().Split('.').Last(),
                     ["description"] = result.WatcherCheckResult.Description,
                     ["isValid"] = result.WatcherCheckResult.IsValid
                 };
                 await ExecuteAsync(watcherCheckResultCommand, watcherCheckResultParameters);
+                await SaveExceptionAsync(result.Exception, wardenCheckResultId);
             }
+        }
+
+        private async Task<long?> SaveExceptionAsync(Exception exception, long wardenCheckResultId, long? parentExceptionId = null)
+        {
+            if (exception == null)
+                return null;
+
+            var exceptionCommand = "insert into Exceptions values (@wardenCheckResult_Id, @parentException_Id, " +
+                     "@message, @source, @stackTrace);select cast(scope_identity() as bigint)";
+            var exceptionParameters = new Dictionary<string, object>
+            {
+                ["wardenCheckResult_Id"] = wardenCheckResultId,
+                ["parentException_Id"] = parentExceptionId,
+                ["message"] = exception.Message,
+                ["source"] = exception.Source,
+                ["stackTrace"] = exception.StackTrace
+            };
+
+            var exceptionIds = await QueryAsync<long>(exceptionCommand, exceptionParameters);
+            var exceptionId = exceptionIds.First();
+            if (exception.InnerException == null)
+                return exceptionId;
+
+            await SaveExceptionAsync(exception.InnerException, wardenCheckResultId, exceptionId);
+
+            return exceptionId;
         }
 
         /// <summary>
