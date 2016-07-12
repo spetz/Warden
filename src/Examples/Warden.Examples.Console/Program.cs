@@ -56,7 +56,6 @@ namespace Warden.Examples.Console
                     cfg.WithQuery("get test")
                         .EnsureThat(results => results.Any(x => x == "test-value"));
                 })
-                .IntegrateWithMsSql(@"Data Source=.\sqlexpress;Initial Catalog=MyDatabase;Integrated Security=True")
                 .AddWebWatcher("http://httpstat.us/200", hooks =>
                 {
                     hooks.OnStartAsync(check => WebsiteHookOnStartAsync(check))
@@ -72,6 +71,7 @@ namespace Warden.Examples.Console
                         ["Authorization"] = "Token MyBase64EncodedString"
                     }), cfg => cfg.EnsureThat(response => response.Headers.Any()), interval: TimeSpan.FromSeconds(3) 
                 )
+                .IntegrateWithMsSql(@"Data Source=.\sqlexpress;Initial Catalog=MyDatabase;Integrated Security=True")
                 //Set proper API key or credentials.
                 //.IntegrateWithSendGrid("api-key", "noreply@system.com", cfg =>
                 //{
@@ -105,7 +105,8 @@ namespace Warden.Examples.Console
                         //    integrations.Slack().SendMessageAsync($"Iteration {iteration.Ordinal} has completed."))
                         .OnIterationCompletedAsync(iteration => integrations.HttpApi()
                             .PostIterationToWardenPanelAsync(iteration))
-                        .OnError(exception => System.Console.WriteLine(exception));
+                        .OnError(exception => System.Console.WriteLine(exception))
+                        .OnIterationCompletedAsync(iteration => OnIterationCompletedMsSqlAsync(iteration, integrations.MsSql()));
                 })
                 .Build();
 
@@ -177,6 +178,16 @@ namespace Warden.Examples.Console
                                          $"Completed at: {result.CompletedAt}{newLine}" +
                                          $"Execution time: {result.ExecutionTime}{newLine}");
             }
+        }
+
+        private static async Task OnIterationCompletedMsSqlAsync(IWardenIteration wardenIteration,
+            MsSqlIntegration integration)
+        {
+            await integration.ExecuteAsync("insert into messages values(@message)", new Dictionary<string, object>
+            {
+                ["message"] = $"{wardenIteration.WardenName} -> iteration: {wardenIteration.Ordinal}; " +
+                              $"valid: {wardenIteration.IsValid}; completed at: {wardenIteration.CompletedAt}"
+            });
         }
     }
 }

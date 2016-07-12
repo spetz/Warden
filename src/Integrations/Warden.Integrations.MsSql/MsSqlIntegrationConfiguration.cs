@@ -21,9 +21,29 @@ namespace Warden.Integrations.MsSql
         public string Database { get; protected set; }
 
         /// <summary>
+        /// SQL command.
+        /// </summary>
+        public string Command { get; protected set; }
+
+        /// <summary>
+        /// Collection of SQL command parameters.
+        /// </summary>
+        public IDictionary<string, object> CommandParameters { get; protected set; }
+
+        /// <summary>
+        /// Optional timeout of the SQL command.
+        /// </summary>
+        public TimeSpan? CommandTimeout { get; protected set; }
+
+        /// <summary>
         /// SQL Query.
         /// </summary>
         public string Query { get; protected set; }
+
+        /// <summary>
+        /// Collection of SQL query parameters.
+        /// </summary>
+        public IDictionary<string, object> QueryParameters { get; protected set; }
 
         /// <summary>
         /// Optional timeout of the SQL query.
@@ -39,11 +59,6 @@ namespace Warden.Integrations.MsSql
         /// Custom provider for the IMsSqlService.
         /// </summary>
         public Func<IMsSqlService> MsSqlServiceProvider { get; protected set; }
-
-        /// <summary>
-        /// Collection of SQL query parameters.
-        /// </summary>
-        public IDictionary<string, object> QueryParameters { get; protected set; }
 
         protected internal MsSqlIntegrationConfiguration(string connectionString)
         {
@@ -90,6 +105,41 @@ namespace Warden.Integrations.MsSql
             }
 
             /// <summary>
+            /// Sets the SQL command and its parameters (optional).
+            /// </summary>
+            /// <param name="command">SQL command.</param>
+            /// <param name="parameters">Optional SQL command parameters.</param>
+            /// <returns>Instance of fluent builder for the MsSqlIntegrationConfiguration.</returns>
+            public Builder WithCommand(string command, IDictionary<string, object> parameters = null)
+            {
+                if (string.IsNullOrEmpty(command))
+                    throw new ArgumentException("SQL command can not be empty.", nameof(command));
+
+                Configuration.Command = command;
+                Configuration.CommandParameters = parameters;
+
+                return this;
+            }
+
+            /// <summary>
+            /// Sets the timeout for the SQL command execution.
+            /// </summary>
+            /// <param name="timeout">Timeout of SQL command.</param>
+            /// <returns>Instance of fluent builder for the MsSqlIntegrationConfiguration.</returns>
+            public Builder WithCommandTimeout(TimeSpan timeout)
+            {
+                if (timeout == null)
+                    throw new ArgumentNullException(nameof(timeout), "SQL command timeout can not be null.");
+
+                if (timeout == TimeSpan.Zero)
+                    throw new ArgumentException("SQL command timeout can not be equal to zero.", nameof(timeout));
+
+                Configuration.CommandTimeout = timeout;
+
+                return this;
+            }
+
+            /// <summary>
             /// Sets the SQL query and its parameters (optional).
             /// </summary>
             /// <param name="query">SQL query.</param>
@@ -114,10 +164,10 @@ namespace Warden.Integrations.MsSql
             public Builder WithQueryTimeout(TimeSpan timeout)
             {
                 if (timeout == null)
-                    throw new ArgumentNullException(nameof(timeout), "Timeout can not be null.");
+                    throw new ArgumentNullException(nameof(timeout), "SQL query timeout can not be null.");
 
                 if (timeout == TimeSpan.Zero)
-                    throw new ArgumentException("Timeout can not be equal to zero.", nameof(timeout));
+                    throw new ArgumentException("SQL query timeout can not be equal to zero.", nameof(timeout));
 
                 Configuration.QueryTimeout = timeout;
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
+using Dapper;
 
 namespace Warden.Integrations.MsSql
 {
@@ -25,16 +26,25 @@ namespace Warden.Integrations.MsSql
             _msSqlService = _configuration.MsSqlServiceProvider();
         }
 
-        public async Task<IEnumerable<dynamic>>  QueryAsync(string query, IDictionary<string, object> parameters = null)
+
+        /// <summary>
+        /// Executes the SQL query and returns a collection of the dynamic results.
+        /// </summary>
+        /// <param name="query">SQL query.</param>
+        /// <param name="parameters">SQL query parameters.</param>
+        /// <returns>Collection of the dynamic results.</returns>
+        public async Task<IEnumerable<dynamic>> QueryAsync(string query, IDictionary<string, object> parameters = null)
         {
             try
             {
                 using (var connection = _configuration.ConnectionProvider(_configuration.ConnectionString))
                 {
                     connection.Open();
+                    var queryToExecute = string.IsNullOrWhiteSpace(query) ? _configuration.Query : query;
+                    var queryParameters = parameters ?? _configuration.QueryParameters;
 
-                    return await _msSqlService.QueryAsync(connection, _configuration.Query,
-                        _configuration.QueryParameters, _configuration.QueryTimeout);
+                    return await _msSqlService.QueryAsync(connection, queryToExecute,
+                        queryParameters, _configuration.QueryTimeout);
                 }
             }
             catch (SqlException exception)
@@ -43,29 +53,39 @@ namespace Warden.Integrations.MsSql
             }
             catch (Exception exception)
             {
-                throw new IntegrationException("There was an error while trying to access MSSQL database.", exception);
+                throw new IntegrationException("There was an error while trying to access the MS SQL database.",
+                    exception);
             }
         }
 
-        public async Task<IEnumerable<dynamic>> ExecuteCommandAsync(string command, IDictionary<string, object> parameters = null)
+        /// <summary>
+        /// Executes the SQL command and returns a scalar representing the number of affected rows.
+        /// </summary>
+        /// <param name="command">SQL command.</param>
+        /// <param name="parameters">SQL command parameters.</param>
+        /// <returns>Scalar representing the number of affected rows.</returns>
+        public async Task<int> ExecuteAsync(string command, IDictionary<string, object> parameters = null)
         {
             try
             {
                 using (var connection = _configuration.ConnectionProvider(_configuration.ConnectionString))
                 {
                     connection.Open();
+                    var commandToExecute = string.IsNullOrWhiteSpace(command) ? _configuration.Command : command;
+                    var commandParameters = parameters ?? _configuration.CommandParameters;
 
-                    return await _msSqlService.QueryAsync(connection, _configuration.Query,
-                        _configuration.QueryParameters, _configuration.QueryTimeout);
+                    return await _msSqlService.ExecuteAsync(connection, commandToExecute,
+                        commandParameters, _configuration.CommandTimeout);
                 }
             }
             catch (SqlException exception)
             {
-                throw new IntegrationException("There was a SQL error while trying to execute the query.", exception);
+                throw new IntegrationException("There was a SQL error while trying to execute the command.", exception);
             }
             catch (Exception exception)
             {
-                throw new IntegrationException("There was an error while trying to access MSSQL database.", exception);
+                throw new IntegrationException("There was an error while trying to access the MS SQL database.",
+                    exception);
             }
         }
 
