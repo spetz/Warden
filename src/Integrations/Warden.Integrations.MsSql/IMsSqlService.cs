@@ -12,14 +12,14 @@ namespace Warden.Integrations.MsSql
     public interface IMsSqlService
     {
         /// <summary>
-        /// Executes the SQL query and returns a collection of the dynamic results.
+        /// Executes the SQL query and returns a collection of the strongly typed results.
         /// </summary>
         /// <param name="connection">Instance of IDbConnection.</param>
         /// <param name="query">SQL query.</param>
         /// <param name="parameters">SQL query parameters.</param>
         /// <param name="timeout">Optional timeout.</param>
-        /// <returns>Collection of the dynamic results.</returns>
-        Task<IEnumerable<dynamic>> QueryAsync(IDbConnection connection, string query,
+        /// <returns>Collection of the strongly typed results.</returns>
+        Task<IEnumerable<T>> QueryAsync<T>(IDbConnection connection, string query,
             IDictionary<string, object> parameters, TimeSpan? timeout = null);
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Warden.Integrations.MsSql
     /// </summary>
     public class DapperMsSqlService : IMsSqlService
     {
-        public async Task<IEnumerable<dynamic>> QueryAsync(IDbConnection connection, string query,
+        public async Task<IEnumerable<T>> QueryAsync<T>(IDbConnection connection, string query,
             IDictionary<string, object> parameters, TimeSpan? timeout = null)
         {
             var queryParameters = new DynamicParameters();
@@ -51,7 +51,7 @@ namespace Warden.Integrations.MsSql
                 }
             }
 
-            return await connection.QueryAsync<dynamic>(query, queryParameters,
+            return await connection.QueryAsync<T>(query, queryParameters,
                 commandTimeout: (int?)timeout?.TotalSeconds);
         }
 

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using Dapper;
 
 namespace Warden.Integrations.MsSql
 {
@@ -28,12 +29,12 @@ namespace Warden.Integrations.MsSql
 
 
         /// <summary>
-        /// Executes the SQL query and returns a collection of the dynamic results.
+        /// Executes the SQL query and returns a collection of the strongly typed results.
         /// </summary>
         /// <param name="query">SQL query.</param>
         /// <param name="parameters">SQL query parameters.</param>
-        /// <returns>Collection of the dynamic results.</returns>
-        public async Task<IEnumerable<dynamic>> QueryAsync(string query, IDictionary<string, object> parameters = null)
+        /// <returns>Collection of the strongly typed results.</returns>
+        public async Task<IEnumerable<T>> QueryAsync<T>(string query, IDictionary<string, object> parameters = null)
         {
             try
             {
@@ -43,7 +44,7 @@ namespace Warden.Integrations.MsSql
                     var queryToExecute = string.IsNullOrWhiteSpace(query) ? _configuration.Query : query;
                     var queryParameters = parameters ?? _configuration.QueryParameters;
 
-                    return await _msSqlService.QueryAsync(connection, queryToExecute,
+                    return await _msSqlService.QueryAsync<T>(connection, queryToExecute,
                         queryParameters, _configuration.QueryTimeout);
                 }
             }
@@ -86,6 +87,60 @@ namespace Warden.Integrations.MsSql
             {
                 throw new IntegrationException("There was an error while trying to access the MS SQL database.",
                     exception);
+            }
+        }
+
+        //TODO: Refactor and add exception table
+        /// <summary>
+        /// Inserts the IWardenIteration into the MS SQL database.
+        /// </summary>
+        /// <param name="iteration">Iteration object that will be saved into the MS SQL database.</param>
+        /// <returns></returns>
+        public async Task SaveIterationAsync(IWardenIteration iteration)
+        {
+            var wardenIterationCommand = "insert into WardenIterations values" +
+                                         "(@wardenName, @ordinal, @startedAt, @completedAt, @executionTime, @isValid);" +
+                                         "select cast(scope_identity() as int)";
+
+            var wardenIterationParameters = new Dictionary<string, object>
+            {
+                ["wardenName"] = iteration.WardenName,
+                ["ordinal"] = iteration.Ordinal,
+                ["startedAt"] = iteration.StartedAt,
+                ["completedAt"] = iteration.CompletedAt,
+                ["executionTime"] = iteration.ExecutionTime,
+                ["isValid"] = iteration.IsValid,
+            };
+
+            var iterationResultIds = await QueryAsync<int>(wardenIterationCommand, wardenIterationParameters);
+            var iterationId = iterationResultIds.First();
+
+            foreach (var result in iteration.Results)
+            {
+                var wardenCheckResultCommand = "insert into WardenCheckResults values (@iteration_id, @isValid, " +
+                                               "@startedAt, @completedAt, @executionTime);select cast(scope_identity() as int)";
+                var wardenCheckResultParameters = new Dictionary<string, object>
+                {
+                    ["iteration_id"] = iterationId,
+                    ["isValid"] = result.IsValid,
+                    ["startedAt"] = result.StartedAt,
+                    ["completedAt"] = result.CompletedAt,
+                    ["executionTime"] = result.ExecutionTime
+                };
+                var wardenCheckResultIds = await QueryAsync<int>(wardenCheckResultCommand, wardenCheckResultParameters);
+                var wardenCheckResultId = wardenCheckResultIds.First();
+
+                var watcherCheckResultCommand = "insert into WatcherCheckResults values (@result_id, @watcherName, " +
+                                     "@watcherType, @description, @isValid);select cast(scope_identity() as int)";
+                var watcherCheckResultParameters = new Dictionary<string, object>
+                {
+                    ["result_id"] = wardenCheckResultId,
+                    ["watcherName"] = result.WatcherCheckResult.WatcherName,
+                    ["watcherType"] = result.WatcherCheckResult.WatcherType.ToString().Split('.').Last(),
+                    ["description"] = result.WatcherCheckResult.Description,
+                    ["isValid"] = result.WatcherCheckResult.IsValid
+                };
+                await ExecuteAsync(watcherCheckResultCommand, watcherCheckResultParameters);
             }
         }
 

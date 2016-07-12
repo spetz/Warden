@@ -183,11 +183,7 @@ namespace Warden.Examples.Console
         private static async Task OnIterationCompletedMsSqlAsync(IWardenIteration wardenIteration,
             MsSqlIntegration integration)
         {
-            await integration.ExecuteAsync("insert into messages values(@message)", new Dictionary<string, object>
-            {
-                ["message"] = $"{wardenIteration.WardenName} -> iteration: {wardenIteration.Ordinal}; " +
-                              $"valid: {wardenIteration.IsValid}; completed at: {wardenIteration.CompletedAt}"
-            });
+            await integration.SaveIterationAsync(wardenIteration);
         }
     }
 }
