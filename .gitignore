@@ -114,3 +114,8 @@ packages/
 /src/Web/Warden.Web/bower_components
 /src/Web/Warden.Web/wwwroot/content/lib
 /src/Web/Warden.Web/Properties/PublishProfiles
+
+# DNX
+project.lock.json
+project.fragment.lock.json
+artifacts/
