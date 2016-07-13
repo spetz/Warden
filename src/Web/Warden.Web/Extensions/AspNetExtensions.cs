@@ -5,29 +5,12 @@ using NLog;
 using NLog.Config;
 using NLog.Extensions.Logging;
 using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Warden.Web.Extensions
 {
     public static class AspNetExtensions
     {
-        private const string NLogPathKey = "NLOG_PATH";
-        private class NLogConfigurationProvider : ConfigurationProvider
-        {
-            internal NLogConfigurationProvider(string key, string path)
-            {
-                Data[key] = path;
-            }
-            public override void Set(string key, string value) { }
-        }
-
-        public static IConfigurationBuilder AddNLogConfig(this IConfigurationBuilder configurationBuilder, string configFileRelativePath)
-        {
-            var fullPathToConfigFile = Path.Combine(configurationBuilder.GetBasePath(), configFileRelativePath);
-            var provider = new NLogConfigurationProvider(NLogPathKey, fullPathToConfigFile);
-            configurationBuilder.Add(provider);
-            return configurationBuilder;
-        }
-
         public static ILoggerFactory AddNLog(this ILoggerFactory factory, IConfigurationRoot configuration)
         {
             //ignore this
@@ -38,7 +21,7 @@ namespace Warden.Web.Extensions
                 factory.AddProvider(provider);
             }
 
-            var configFilePath = configuration[NLogPathKey];
+            var configFilePath = "nlog.config";
             if (string.IsNullOrEmpty(configFilePath))
                 throw new NLogConfigurationException("Not found NLog config path. Did you add NLog config?");
             ConfigureNLog(configFilePath);

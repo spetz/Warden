@@ -10,6 +10,6 @@
     "Twilio": "4.7.2"
   },
   "frameworks": {
-    "net451": { }
+    "net461": { }
   }
 }

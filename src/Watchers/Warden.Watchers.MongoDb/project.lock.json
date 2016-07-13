@@ -2,7 +2,7 @@
   "locked": false,
   "version": 2,
   "targets": {
-    ".NETFramework,Version=v4.5.1": {
+    ".NETFramework,Version=v4.6.1": {
       "MongoDB.Bson/2.2.3": {
         "type": "package",
         "compile": {
@@ -38,180 +38,67 @@
         }
       },
       "Warden/1.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6.1",
         "compile": {
-          "lib/net451/Warden.dll": {}
+          "net461/Warden.dll": {}
         },
         "runtime": {
-          "lib/net451/Warden.dll": {}
-        }
-      }
-    },
-    ".NETFramework,Version=v4.5.1/win7-x86": {
-      "MongoDB.Bson/2.2.3": {
-        "type": "package",
-        "compile": {
-          "lib/net45/MongoDB.Bson.dll": {}
-        },
-        "runtime": {
-          "lib/net45/MongoDB.Bson.dll": {}
-        }
-      },
-      "MongoDB.Driver/2.2.3": {
-        "type": "package",
-        "dependencies": {
-          "MongoDB.Bson": "2.2.3",
-          "MongoDB.Driver.Core": "2.2.3"
-        },
-        "compile": {
-          "lib/net45/MongoDB.Driver.dll": {}
-        },
-        "runtime": {
-          "lib/net45/MongoDB.Driver.dll": {}
-        }
-      },
-      "MongoDB.Driver.Core/2.2.3": {
-        "type": "package",
-        "dependencies": {
-          "MongoDB.Bson": "2.2.3"
-        },
-        "compile": {
-          "lib/net45/MongoDB.Driver.Core.dll": {}
-        },
-        "runtime": {
-          "lib/net45/MongoDB.Driver.Core.dll": {}
-        }
-      },
-      "Warden/1.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/net451/Warden.dll": {}
-        },
-        "runtime": {
-          "lib/net451/Warden.dll": {}
-        }
-      }
-    },
-    ".NETFramework,Version=v4.5.1/win7-x64": {
-      "MongoDB.Bson/2.2.3": {
-        "type": "package",
-        "compile": {
-          "lib/net45/MongoDB.Bson.dll": {}
-        },
-        "runtime": {
-          "lib/net45/MongoDB.Bson.dll": {}
-        }
-      },
-      "MongoDB.Driver/2.2.3": {
-        "type": "package",
-        "dependencies": {
-          "MongoDB.Bson": "2.2.3",
-          "MongoDB.Driver.Core": "2.2.3"
-        },
-        "compile": {
-          "lib/net45/MongoDB.Driver.dll": {}
-        },
-        "runtime": {
-          "lib/net45/MongoDB.Driver.dll": {}
-        }
-      },
-      "MongoDB.Driver.Core/2.2.3": {
-        "type": "package",
-        "dependencies": {
-          "MongoDB.Bson": "2.2.3"
-        },
-        "compile": {
-          "lib/net45/MongoDB.Driver.Core.dll": {}
-        },
-        "runtime": {
-          "lib/net45/MongoDB.Driver.Core.dll": {}
-        }
-      },
-      "Warden/1.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/net451/Warden.dll": {}
-        },
-        "runtime": {
-          "lib/net451/Warden.dll": {}
+          "net461/Warden.dll": {}
         }
       }
     }
   },
   "libraries": {
     "MongoDB.Bson/2.2.3": {
-      "type": "package",
       "sha512": "AwxyD8qYgy1GQkxQV2uMzymm19QwaNNAER6gf/w8f2dDjcboEve1kv9GEz7mtn2K8p6hYQjhgnvGc+xeh0KLmg==",
+      "type": "package",
       "files": [
-        "lib/net45/MongoDB.Bson.dll",
-        "lib/net45/MongoDB.Bson.XML",
         "License.rtf",
         "MongoDB.Bson.2.2.3.nupkg",
         "MongoDB.Bson.2.2.3.nupkg.sha512",
-        "MongoDB.Bson.nuspec"
+        "MongoDB.Bson.nuspec",
+        "lib/net45/MongoDB.Bson.XML",
+        "lib/net45/MongoDB.Bson.dll"
       ]
     },
     "MongoDB.Driver/2.2.3": {
-      "type": "package",
       "sha512": "ZgRSAv+vxCCYnL/V4mChGNnx8rBnnpDO2S8Fex+G3IrVWRRgJb3rEFOEoyuyR5C5qtOHGVMlGRSSngQwbgV2Dw==",
+      "type": "package",
       "files": [
-        "lib/net45/MongoDB.Driver.dll",
-        "lib/net45/MongoDB.Driver.XML",
         "License.rtf",
         "MongoDB.Driver.2.2.3.nupkg",
         "MongoDB.Driver.2.2.3.nupkg.sha512",
-        "MongoDB.Driver.nuspec"
+        "MongoDB.Driver.nuspec",
+        "lib/net45/MongoDB.Driver.XML",
+        "lib/net45/MongoDB.Driver.dll"
       ]
     },
     "MongoDB.Driver.Core/2.2.3": {
-      "type": "package",
       "sha512": "o9/7behJkN5TEG9KvRHM6HUdnsXgLl31pKRQwiCi4xgd7gAleI3sagBcujh7x40gl1NL/u4+uMPRZFpGAaGEQw==",
+      "type": "package",
       "files": [
-        "lib/net45/MongoDB.Driver.Core.dll",
         "License.rtf",
         "MongoDB.Driver.Core.2.2.3.nupkg",
         "MongoDB.Driver.Core.2.2.3.nupkg.sha512",
-        "MongoDB.Driver.Core.nuspec"
+        "MongoDB.Driver.Core.nuspec",
+        "lib/net45/MongoDB.Driver.Core.dll"
       ]
     },
     "Warden/1.1.0": {
-      "type": "package",
-      "sha512": "fAmgMRPi3rAGLGYMczq4Ip7zlcS8BISJ9VKyePZFY+/O9mFN7yCWOZKnaWXIrnK8qRhb0OJUbOOZQIcb67S1Qw==",
-      "files": [
-        "lib/dotnet5.4/Warden.dll",
-        "lib/dotnet5.4/Warden.xml",
-        "lib/net451/Warden.dll",
-        "lib/net451/Warden.xml",
-        "Warden.1.1.0.nupkg",
-        "Warden.1.1.0.nupkg.sha512",
-        "Warden.nuspec"
-      ]
+      "type": "project",
+      "path": "../../Warden/project.json",
+      "msbuildProject": "../../Warden/Warden.xproj"
     }
   },
   "projectFileDependencyGroups": {
     "": [
       "Warden >= 1.1.0"
     ],
-    ".NETFramework,Version=v4.5.1": [
+    ".NETFramework,Version=v4.6.1": [
       "MongoDB.Driver >= 2.2.3"
     ]
-  }
+  },
+  "tools": {},
+  "projectFileToolGroups": {}
 }

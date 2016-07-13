@@ -9,7 +9,7 @@
     "Warden": "1.1"
   },
   "frameworks": {
-    "net451": {
+    "net461": {
       "dependencies": {
         "MongoDB.Driver": "2.2.3"
       }

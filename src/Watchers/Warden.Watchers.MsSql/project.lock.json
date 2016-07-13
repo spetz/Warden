@@ -2,14 +2,11 @@
   "locked": false,
   "version": 2,
   "targets": {
-    ".NETFramework,Version=v4.5.1": {
+    ".NETFramework,Version=v4.6.1": {
       "Dapper/1.42.0": {
         "type": "package",
         "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "System",
-          "System.Core",
-          "System.Data"
+          "Microsoft.CSharp"
         ],
         "compile": {
           "lib/net45/Dapper.dll": {}
@@ -21,8 +18,8 @@
       "System.Data.Common/4.1.0": {
         "type": "package",
         "frameworkAssemblies": [
-          "mscorlib",
-          "System.Data"
+          "System.Data",
+          "mscorlib"
         ],
         "compile": {
           "ref/net451/System.Data.Common.dll": {}
@@ -37,161 +34,44 @@
           "System.Data.Common": "4.1.0"
         },
         "frameworkAssemblies": [
-          "mscorlib",
-          "System.Data"
+          "System.Data",
+          "mscorlib"
         ],
         "compile": {
-          "ref/net451/System.Data.SqlClient.dll": {}
+          "ref/net46/System.Data.SqlClient.dll": {}
         },
         "runtime": {
-          "lib/net451/System.Data.SqlClient.dll": {}
+          "lib/net46/System.Data.SqlClient.dll": {}
+        },
+        "runtimeTargets": {
+          "runtimes/unix/lib/netstandard1.3/System.Data.SqlClient.dll": {
+            "assetType": "runtime",
+            "rid": "unix"
+          },
+          "runtimes/win/lib/net46/System.Data.SqlClient.dll": {
+            "assetType": "runtime",
+            "rid": "win"
+          }
         }
       },
       "Warden/1.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6.1",
         "compile": {
-          "lib/net451/Warden.dll": {}
+          "net461/Warden.dll": {}
         },
         "runtime": {
-          "lib/net451/Warden.dll": {}
-        }
-      }
-    },
-    ".NETFramework,Version=v4.5.1/win7-x86": {
-      "Dapper/1.42.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "System",
-          "System.Core",
-          "System.Data"
-        ],
-        "compile": {
-          "lib/net45/Dapper.dll": {}
-        },
-        "runtime": {
-          "lib/net45/Dapper.dll": {}
-        }
-      },
-      "System.Data.Common/4.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "mscorlib",
-          "System.Data"
-        ],
-        "compile": {
-          "ref/net451/System.Data.Common.dll": {}
-        },
-        "runtime": {
-          "lib/net451/System.Data.Common.dll": {}
-        }
-      },
-      "System.Data.SqlClient/4.1.0": {
-        "type": "package",
-        "dependencies": {
-          "System.Data.Common": "4.1.0"
-        },
-        "frameworkAssemblies": [
-          "mscorlib",
-          "System.Data"
-        ],
-        "compile": {
-          "ref/net451/System.Data.SqlClient.dll": {}
-        },
-        "runtime": {
-          "runtimes/win/lib/net451/System.Data.SqlClient.dll": {}
-        }
-      },
-      "Warden/1.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/net451/Warden.dll": {}
-        },
-        "runtime": {
-          "lib/net451/Warden.dll": {}
-        }
-      }
-    },
-    ".NETFramework,Version=v4.5.1/win7-x64": {
-      "Dapper/1.42.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "System",
-          "System.Core",
-          "System.Data"
-        ],
-        "compile": {
-          "lib/net45/Dapper.dll": {}
-        },
-        "runtime": {
-          "lib/net45/Dapper.dll": {}
-        }
-      },
-      "System.Data.Common/4.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "mscorlib",
-          "System.Data"
-        ],
-        "compile": {
-          "ref/net451/System.Data.Common.dll": {}
-        },
-        "runtime": {
-          "lib/net451/System.Data.Common.dll": {}
-        }
-      },
-      "System.Data.SqlClient/4.1.0": {
-        "type": "package",
-        "dependencies": {
-          "System.Data.Common": "4.1.0"
-        },
-        "frameworkAssemblies": [
-          "mscorlib",
-          "System.Data"
-        ],
-        "compile": {
-          "ref/net451/System.Data.SqlClient.dll": {}
-        },
-        "runtime": {
-          "runtimes/win/lib/net451/System.Data.SqlClient.dll": {}
-        }
-      },
-      "Warden/1.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/net451/Warden.dll": {}
-        },
-        "runtime": {
-          "lib/net451/Warden.dll": {}
+          "net461/Warden.dll": {}
         }
       }
     }
   },
   "libraries": {
     "Dapper/1.42.0": {
-      "type": "package",
       "sha512": "HBNIulHq5DWD1K60iVABe4oW4HoWmraR20yy9jLrw9tgTbMY2eolYk2UgXFI43lSUMTdhUjPvlHci0TnsfoiXw==",
+      "type": "package",
+      "path": "Dapper/1.42.0",
       "files": [
-        "Dapper.1.42.0.nupkg",
         "Dapper.1.42.0.nupkg.sha512",
         "Dapper.nuspec",
         "lib/net35/Dapper.dll",
@@ -206,9 +86,13 @@
       ]
     },
     "System.Data.Common/4.1.0": {
-      "type": "package",
       "sha512": "epU8jeTe7aE7RqGHq9rZ8b0Q4Ah7DgubzHQblgZMSqgW1saW868WmooSyC5ywf8upLBkcVLDu93W9GPWUYsU2Q==",
+      "type": "package",
       "files": [
+        "System.Data.Common.4.1.0.nupkg",
+        "System.Data.Common.4.1.0.nupkg.sha512",
+        "System.Data.Common.nuspec",
+        "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
         "lib/MonoTouch10/_._",
@@ -222,6 +106,8 @@
         "ref/MonoAndroid10/_._",
         "ref/MonoTouch10/_._",
         "ref/net451/System.Data.Common.dll",
+        "ref/netstandard1.2/System.Data.Common.dll",
+        "ref/netstandard1.2/System.Data.Common.xml",
         "ref/netstandard1.2/de/System.Data.Common.xml",
         "ref/netstandard1.2/es/System.Data.Common.xml",
         "ref/netstandard1.2/fr/System.Data.Common.xml",
@@ -229,10 +115,10 @@
         "ref/netstandard1.2/ja/System.Data.Common.xml",
         "ref/netstandard1.2/ko/System.Data.Common.xml",
         "ref/netstandard1.2/ru/System.Data.Common.xml",
-        "ref/netstandard1.2/System.Data.Common.dll",
-        "ref/netstandard1.2/System.Data.Common.xml",
         "ref/netstandard1.2/zh-hans/System.Data.Common.xml",
         "ref/netstandard1.2/zh-hant/System.Data.Common.xml",
+        "ref/portable-net451+win8+wp8+wpa81/System.Data.Common.dll",
+        "ref/portable-net451+win8+wp8+wpa81/System.Data.Common.xml",
         "ref/portable-net451+win8+wp8+wpa81/de/System.Data.Common.xml",
         "ref/portable-net451+win8+wp8+wpa81/es/System.Data.Common.xml",
         "ref/portable-net451+win8+wp8+wpa81/fr/System.Data.Common.xml",
@@ -240,24 +126,22 @@
         "ref/portable-net451+win8+wp8+wpa81/ja/System.Data.Common.xml",
         "ref/portable-net451+win8+wp8+wpa81/ko/System.Data.Common.xml",
         "ref/portable-net451+win8+wp8+wpa81/ru/System.Data.Common.xml",
-        "ref/portable-net451+win8+wp8+wpa81/System.Data.Common.dll",
-        "ref/portable-net451+win8+wp8+wpa81/System.Data.Common.xml",
         "ref/portable-net451+win8+wp8+wpa81/zh-hans/System.Data.Common.xml",
         "ref/portable-net451+win8+wp8+wpa81/zh-hant/System.Data.Common.xml",
         "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._",
         "ref/xamarintvos10/_._",
-        "ref/xamarinwatchos10/_._",
-        "System.Data.Common.4.1.0.nupkg",
-        "System.Data.Common.4.1.0.nupkg.sha512",
-        "System.Data.Common.nuspec",
-        "ThirdPartyNotices.txt"
+        "ref/xamarinwatchos10/_._"
       ]
     },
     "System.Data.SqlClient/4.1.0": {
-      "type": "package",
       "sha512": "yqMZgzzKHdG84QmA/PPZUORaoisfvztvFqyPs7dPafJhNxlS7STf9OMCFrP/tITQCqImkm1+X4d2oiWOT2oTKg==",
+      "type": "package",
       "files": [
+        "System.Data.SqlClient.4.1.0.nupkg",
+        "System.Data.SqlClient.4.1.0.nupkg.sha512",
+        "System.Data.SqlClient.nuspec",
+        "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
         "lib/MonoTouch10/_._",
@@ -271,6 +155,8 @@
         "ref/MonoTouch10/_._",
         "ref/net451/System.Data.SqlClient.dll",
         "ref/net46/System.Data.SqlClient.dll",
+        "ref/netstandard1.2/System.Data.SqlClient.dll",
+        "ref/netstandard1.2/System.Data.SqlClient.xml",
         "ref/netstandard1.2/de/System.Data.SqlClient.xml",
         "ref/netstandard1.2/es/System.Data.SqlClient.xml",
         "ref/netstandard1.2/fr/System.Data.SqlClient.xml",
@@ -278,10 +164,10 @@
         "ref/netstandard1.2/ja/System.Data.SqlClient.xml",
         "ref/netstandard1.2/ko/System.Data.SqlClient.xml",
         "ref/netstandard1.2/ru/System.Data.SqlClient.xml",
-        "ref/netstandard1.2/System.Data.SqlClient.dll",
-        "ref/netstandard1.2/System.Data.SqlClient.xml",
         "ref/netstandard1.2/zh-hans/System.Data.SqlClient.xml",
         "ref/netstandard1.2/zh-hant/System.Data.SqlClient.xml",
+        "ref/netstandard1.3/System.Data.SqlClient.dll",
+        "ref/netstandard1.3/System.Data.SqlClient.xml",
         "ref/netstandard1.3/de/System.Data.SqlClient.xml",
         "ref/netstandard1.3/es/System.Data.SqlClient.xml",
         "ref/netstandard1.3/fr/System.Data.SqlClient.xml",
@@ -289,8 +175,6 @@
         "ref/netstandard1.3/ja/System.Data.SqlClient.xml",
         "ref/netstandard1.3/ko/System.Data.SqlClient.xml",
         "ref/netstandard1.3/ru/System.Data.SqlClient.xml",
-        "ref/netstandard1.3/System.Data.SqlClient.dll",
-        "ref/netstandard1.3/System.Data.SqlClient.xml",
         "ref/netstandard1.3/zh-hans/System.Data.SqlClient.xml",
         "ref/netstandard1.3/zh-hant/System.Data.SqlClient.xml",
         "ref/xamarinios10/_._",
@@ -300,33 +184,23 @@
         "runtimes/unix/lib/netstandard1.3/System.Data.SqlClient.dll",
         "runtimes/win/lib/net451/System.Data.SqlClient.dll",
         "runtimes/win/lib/net46/System.Data.SqlClient.dll",
-        "runtimes/win/lib/netstandard1.3/System.Data.SqlClient.dll",
-        "System.Data.SqlClient.4.1.0.nupkg",
-        "System.Data.SqlClient.4.1.0.nupkg.sha512",
-        "System.Data.SqlClient.nuspec",
-        "ThirdPartyNotices.txt"
+        "runtimes/win/lib/netstandard1.3/System.Data.SqlClient.dll"
       ]
     },
     "Warden/1.1.0": {
-      "type": "package",
-      "sha512": "fAmgMRPi3rAGLGYMczq4Ip7zlcS8BISJ9VKyePZFY+/O9mFN7yCWOZKnaWXIrnK8qRhb0OJUbOOZQIcb67S1Qw==",
-      "files": [
-        "lib/dotnet5.4/Warden.dll",
-        "lib/dotnet5.4/Warden.xml",
-        "lib/net451/Warden.dll",
-        "lib/net451/Warden.xml",
-        "Warden.1.1.0.nupkg",
-        "Warden.1.1.0.nupkg.sha512",
-        "Warden.nuspec"
-      ]
+      "type": "project",
+      "path": "../../Warden/project.json",
+      "msbuildProject": "../../Warden/Warden.xproj"
     }
   },
   "projectFileDependencyGroups": {
     "": [
-      "Warden >= 1.1.0",
+      "Dapper >= 1.42.0",
       "System.Data.SqlClient >= 4.1.0",
-      "Dapper >= 1.42.0"
+      "Warden >= 1.1.0"
     ],
-    ".NETFramework,Version=v4.5.1": []
-  }
+    ".NETFramework,Version=v4.6.1": []
+  },
+  "tools": {},
+  "projectFileToolGroups": {}
 }

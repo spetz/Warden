@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Warden.Web.Core.Dto;
 using Warden.Web.Core.Queries;
 using Warden.Web.Core.Services;

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Warden.Web.Core.Queries;
 using Warden.Web.Core.Services;
 using Warden.Web.ViewModels;
@@ -26,7 +26,7 @@ namespace Warden.Web.Controllers
         {
             var hasAccess = await _organizationService.IsUserInOrganizationAsync(organizationId, UserId);
             if (!hasAccess)
-                return HttpUnauthorized();
+                return Unauthorized();
 
             var stats = await _watcherService.GetStatsAsync(new GetWatcherStats
             {
@@ -36,7 +36,7 @@ namespace Warden.Web.Controllers
             });
 
             if (stats == null)
-                return HttpNotFound();
+                return NotFound();
 
             var checks = await _watcherService.BrowseChecksAsync(new BrowseWardenCheckResults
             {

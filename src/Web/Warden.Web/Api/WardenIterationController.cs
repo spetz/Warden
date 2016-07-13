@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Warden.Web.Core.Dto;
 using Warden.Web.Core.Queries;
 using Warden.Web.Core.Services;
@@ -33,12 +33,12 @@ namespace Warden.Web.Api
         {
             var isAuthorized = await _organizationService.IsUserInOrganizationAsync(organizationId, UserId);
             if (!isAuthorized)
-                return HttpUnauthorized();
+                return Unauthorized();
 
             var createdIteration = await _wardenService.SaveIterationAsync(iteration, organizationId);
             _signalRService.SendIterationCreated(organizationId, createdIteration);
 
-            return new HttpStatusCodeResult(204);
+            return new StatusCodeResult(204);
         }
 
         [HttpGet]

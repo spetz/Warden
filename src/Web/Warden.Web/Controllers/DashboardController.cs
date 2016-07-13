@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Warden.Web.Core.Services;
 using Warden.Web.ViewModels;
 
@@ -56,20 +56,20 @@ namespace Warden.Web.Controllers
         public async Task<IActionResult> Details(Guid organizationId, Guid wardenId)
         {
             if (organizationId == Guid.Empty)
-                return HttpNotFound();
+                return NotFound();
             var isUserInOrganization = await _organizationService.IsUserInOrganizationAsync(organizationId, UserId);
             if (!isUserInOrganization)
-                return HttpNotFound();
+                return NotFound();
             var organization = await _organizationService.GetAsync(organizationId);
             if (organization == null)
-                return HttpNotFound();
+                return NotFound();
             var warden = organization.Wardens.FirstOrDefault(x => x.Id == wardenId);
             if (warden == null)
-                return HttpNotFound();
+                return NotFound();
 
             var user = await _userService.GetAsync(UserId);
             if(!user.ApiKeys.Any())
-                return HttpNotFound();
+                return NotFound();
 
             await _userService.SetRecentlyViewedWardenInOrganizationAsync(UserId, organizationId, wardenId);
             var viewModel = new DashboardViewModel

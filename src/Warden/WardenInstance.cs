@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using Warden.Core;
 
 namespace Warden
@@ -16,12 +17,12 @@ namespace Warden
         private static string GetDefaultName()
         {
             var environment = string.Empty;
-#if DNXCORE50
+#if NET461
+            environment = Environment.GetEnvironmentVariable(WindowsComputerNameEnvironmentVariable);
+#else
             environment = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
                 ? Environment.GetEnvironmentVariable(WindowsComputerNameEnvironmentVariable)
                 : Environment.GetEnvironmentVariable(UnixComputerNameEnvironmentVariable);
-#else
-            environment = Environment.GetEnvironmentVariable(WindowsComputerNameEnvironmentVariable);
 #endif
 
             return $"Warden @{environment}";
