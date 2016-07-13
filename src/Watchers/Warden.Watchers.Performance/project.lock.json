@@ -3,7 +3,7 @@
   "version": 2,
   "targets": {
     ".NETFramework,Version=v4.6.1": {
-      "Warden/1.1.0": {
+      "Warden/1.2.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "compile": {
@@ -16,7 +16,7 @@
     }
   },
   "libraries": {
-    "Warden/1.1.0": {
+    "Warden/1.2.0": {
       "type": "project",
       "path": "../../Warden/project.json",
       "msbuildProject": "../../Warden/Warden.xproj"
@@ -24,7 +24,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "Warden >= 1.1.0"
+      "Warden >= 1.2.0"
     ],
     ".NETFramework,Version=v4.6.1": []
   },

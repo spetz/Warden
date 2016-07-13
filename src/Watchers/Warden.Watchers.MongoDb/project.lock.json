@@ -37,7 +37,7 @@
           "lib/net45/MongoDB.Driver.Core.dll": {}
         }
       },
-      "Warden/1.1.0": {
+      "Warden/1.2.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "compile": {
@@ -85,7 +85,7 @@
         "lib/net45/MongoDB.Driver.Core.dll"
       ]
     },
-    "Warden/1.1.0": {
+    "Warden/1.2.0": {
       "type": "project",
       "path": "../../Warden/project.json",
       "msbuildProject": "../../Warden/Warden.xproj"
@@ -93,7 +93,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "Warden >= 1.1.0"
+      "Warden >= 1.2.0"
     ],
     ".NETFramework,Version=v4.6.1": [
       "MongoDB.Driver >= 2.2.3"

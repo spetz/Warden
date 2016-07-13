@@ -1,32 +1,34 @@
 {
-  "version": "1.1",
+  "version": "1.2",
   "description": "Example of Warden Windows Service.",
   "authors": [ "Piotr Gankiewicz" ],
-  "tags": [ "Warden" ],
-  "projectUrl": "https://getwarden.net",
-  "licenseUrl": "https://github.com/warden-stack/Warden/blob/master/LICENSE",
+  "packOptions": {
+    "tags": [ "Warden" ],
+    "projectUrl": "https://getwarden.net",
+    "licenseUrl": "https://github.com/warden-stack/Warden/blob/master/LICENSE"
+  },
   "dependencies": {
-    "Warden": "1.1",
-    "Warden.Integrations.HttpApi": "1.1.1",
-    "Warden.Integrations.MsSql": "1.1",
-    "Warden.Integrations.SendGrid": "1.1",
-    "Warden.Integrations.Slack": "1.1",
-    "Warden.Integrations.Twilio": "1.1",
-    "Warden.Watchers.Disk": "1.1",
-    "Warden.Watchers.MongoDb": "1.1",
-    "Warden.Watchers.MsSql": "1.1.1",
-    "Warden.Watchers.Performance": "1.1",
-    "Warden.Watchers.Server": "1.1.2",
-    "Warden.Watchers.Process": "1.1",
-    "Warden.Watchers.Redis": "1.1",
-    "Warden.Watchers.Web": "1.1",
-    "System.Linq": "4.0.1-beta-23516",
+    "Warden": "1.2",
+    "Warden.Integrations.HttpApi": "1.2",
+    "Warden.Integrations.MsSql": "1.2",
+    "Warden.Integrations.SendGrid": "1.2",
+    "Warden.Integrations.Slack": "1.2",
+    "Warden.Integrations.Twilio": "1.2",
+    "Warden.Watchers.Disk": "1.2",
+    "Warden.Watchers.MongoDb": "1.2",
+    "Warden.Watchers.MsSql": "1.2",
+    "Warden.Watchers.Performance": "1.2",
+    "Warden.Watchers.Server": "1.2",
+    "Warden.Watchers.Process": "1.2",
+    "Warden.Watchers.Redis": "1.2",
+    "Warden.Watchers.Web": "1.2",
+    "System.Linq": "4.0.0",
     "TopShelf": "3.3.1"
   },
   "commands": {
     "Warden.Examples.WindowsService": "Warden.Examples.WindowsService"
   },
   "frameworks": {
-    "net461": { }
+    "net461": {}
   }
 }

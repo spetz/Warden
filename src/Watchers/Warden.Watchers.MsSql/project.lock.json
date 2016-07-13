@@ -54,7 +54,7 @@
           }
         }
       },
-      "Warden/1.1.0": {
+      "Warden/1.2.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "compile": {
@@ -68,7 +68,7 @@
   },
   "libraries": {
     "Dapper/1.42.0": {
-      "sha512": "HBNIulHq5DWD1K60iVABe4oW4HoWmraR20yy9jLrw9tgTbMY2eolYk2UgXFI43lSUMTdhUjPvlHci0TnsfoiXw==",
+      "sha512": "4tJlY93CSDCdqh6eEYR7au06R+moIgEQs5/rNrPYvSu+kwtlWnUPFzaWPSmk3biS9qKeI/QsJkfVWnSdb95dTw==",
       "type": "package",
       "path": "Dapper/1.42.0",
       "files": [
@@ -187,7 +187,7 @@
         "runtimes/win/lib/netstandard1.3/System.Data.SqlClient.dll"
       ]
     },
-    "Warden/1.1.0": {
+    "Warden/1.2.0": {
       "type": "project",
       "path": "../../Warden/project.json",
       "msbuildProject": "../../Warden/Warden.xproj"
@@ -197,7 +197,7 @@
     "": [
       "Dapper >= 1.42.0",
       "System.Data.SqlClient >= 4.1.0",
-      "Warden >= 1.1.0"
+      "Warden >= 1.2.0"
     ],
     ".NETFramework,Version=v4.6.1": []
   },

@@ -262,110 +262,6 @@
           "ref/net46/System.Data.SqlClient.dll": {}
         },
         "runtime": {
-<<<<<<< HEAD
-          "lib/3.5/Twilio.Api.dll": {}
-        }
-      },
-      "Warden/1.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1"
-      },
-      "Warden.Integrations.HttpApi/1.1.1": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
-        "dependencies": {
-          "Newtonsoft.Json": "8.0.3",
-          "System.Net.Http": "4.0.0",
-          "Warden": "1.1.0"
-        }
-      },
-      "Warden.Integrations.MsSql/1.1.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Dapper": "1.42.0",
-          "System.Data.SqlClient": "4.1.0",
-          "Warden": "1.1.0"
-        }
-      },
-      "Warden.Integrations.SendGrid/1.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
-        "dependencies": {
-          "Sendgrid": "6.3.4",
-          "Warden": "1.1.0"
-        }
-      },
-      "Warden.Integrations.Slack/1.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
-        "dependencies": {
-          "Newtonsoft.Json": "8.0.3",
-          "System.Net.Http": "4.0.0",
-          "Warden": "1.1.0"
-        }
-      },
-      "Warden.Integrations.Twilio/1.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
-        "dependencies": {
-          "Twilio": "4.7.2",
-          "Warden": "1.1.0"
-        }
-      },
-      "Warden.Watchers.Disk/1.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
-        "dependencies": {
-          "Warden": "1.1.0"
-        }
-      },
-      "Warden.Watchers.MongoDb/1.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
-        "dependencies": {
-          "MongoDB.Driver": "2.2.3",
-          "Warden": "1.1.0"
-        }
-      },
-      "Warden.Watchers.MsSql/1.1.1": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
-        "dependencies": {
-          "Dapper": "1.42.0",
-          "System.Data.SqlClient": "4.1.0",
-          "Warden": "1.1.0"
-        }
-      },
-      "Warden.Watchers.Performance/1.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
-        "dependencies": {
-          "Warden": "1.1.0"
-        }
-      },
-      "Warden.Watchers.Process/1.1.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Warden": "1.1.0"
-        }
-      },
-      "Warden.Watchers.Redis/1.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
-        "dependencies": {
-          "StackExchange.Redis": "1.1.572",
-          "Warden": "1.1.0"
-        }
-      },
-      "Warden.Watchers.Server/1.1.2": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
-        "dependencies": {
-          "NETStandard.Library": "1.6.0",
-          "Warden": "1.1.0"
-=======
           "lib/net46/System.Data.SqlClient.dll": {}
         },
         "runtimeTargets": {
@@ -377,7 +273,6 @@
             "assetType": "runtime",
             "rid": "win"
           }
->>>>>>> 090ff04430b158dcf66bdb7978e4d1f6fb03cebf
         }
       },
       "System.Diagnostics.Debug/4.0.11": {
@@ -518,7 +413,7 @@
           "lib/net46/System.IO.FileSystem.Primitives.dll": {}
         }
       },
-      "System.Linq/4.0.1-beta-23516": {
+      "System.Linq/4.0.0": {
         "type": "package",
         "compile": {
           "ref/net45/_._": {}
@@ -617,84 +512,6 @@
           "lib/net45/_._": {}
         }
       },
-<<<<<<< HEAD
-      "Warden/1.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1"
-      },
-      "Warden.Integrations.HttpApi/1.1.1": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
-        "dependencies": {
-          "Newtonsoft.Json": "8.0.3",
-          "System.Net.Http": "4.0.0",
-          "Warden": "1.1.0"
-        }
-      },
-      "Warden.Integrations.MsSql/1.1.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Dapper": "1.42.0",
-          "System.Data.SqlClient": "4.1.0",
-          "Warden": "1.1.0"
-        }
-      },
-      "Warden.Integrations.SendGrid/1.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
-        "dependencies": {
-          "Sendgrid": "6.3.4",
-          "Warden": "1.1.0"
-        }
-      },
-      "Warden.Integrations.Slack/1.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
-        "dependencies": {
-          "Newtonsoft.Json": "8.0.3",
-          "System.Net.Http": "4.0.0",
-          "Warden": "1.1.0"
-        }
-      },
-      "Warden.Integrations.Twilio/1.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
-        "dependencies": {
-          "Twilio": "4.7.2",
-          "Warden": "1.1.0"
-        }
-      },
-      "Warden.Watchers.Disk/1.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
-        "dependencies": {
-          "Warden": "1.1.0"
-        }
-      },
-      "Warden.Watchers.MongoDb/1.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
-        "dependencies": {
-          "MongoDB.Driver": "2.2.3",
-          "Warden": "1.1.0"
-        }
-      },
-      "Warden.Watchers.MsSql/1.1.1": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
-        "dependencies": {
-          "Dapper": "1.42.0",
-          "System.Data.SqlClient": "4.1.0",
-          "Warden": "1.1.0"
-        }
-      },
-      "Warden.Watchers.Performance/1.1.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
-        "dependencies": {
-          "Warden": "1.1.0"
-=======
       "System.Reflection.Primitives/4.0.1": {
         "type": "package",
         "compile": {
@@ -702,7 +519,6 @@
         },
         "runtime": {
           "lib/net45/_._": {}
->>>>>>> 090ff04430b158dcf66bdb7978e4d1f6fb03cebf
         }
       },
       "System.Resources.ResourceManager/4.0.1": {
@@ -986,7 +802,7 @@
           "lib/3.5/Twilio.Api.dll": {}
         }
       },
-      "Warden/1.1.0": {
+      "Warden/1.2.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "compile": {
@@ -996,13 +812,13 @@
           "net461/Warden.dll": {}
         }
       },
-      "Warden.Integrations.HttpApi/1.1.1": {
+      "Warden.Integrations.HttpApi/1.2.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
           "Newtonsoft.Json": "9.0.1",
           "System.Net.Http": "4.1.0",
-          "Warden": "1.1.0"
+          "Warden": "1.2.0"
         },
         "compile": {
           "net461/Warden.Integrations.HttpApi.dll": {}
@@ -1011,21 +827,27 @@
           "net461/Warden.Integrations.HttpApi.dll": {}
         }
       },
-      "Warden.Integrations.MsSql/1.1.0": {
+      "Warden.Integrations.MsSql/1.2.0": {
         "type": "project",
-        "framework": "DNX,Version=v4.5.1",
+        "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
           "Dapper": "1.42.0",
           "System.Data.SqlClient": "4.1.0",
-          "Warden": "1.1.0"
+          "Warden": "1.2.0"
+        },
+        "compile": {
+          "net461/Warden.Integrations.MsSql.dll": {}
+        },
+        "runtime": {
+          "net461/Warden.Integrations.MsSql.dll": {}
         }
       },
-      "Warden.Integrations.SendGrid/1.1.0": {
+      "Warden.Integrations.SendGrid/1.2.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
           "Sendgrid": "6.3.4",
-          "Warden": "1.1.0"
+          "Warden": "1.2.0"
         },
         "compile": {
           "net461/Warden.Integrations.SendGrid.dll": {}
@@ -1034,13 +856,13 @@
           "net461/Warden.Integrations.SendGrid.dll": {}
         }
       },
-      "Warden.Integrations.Slack/1.1.0": {
+      "Warden.Integrations.Slack/1.2.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
           "Newtonsoft.Json": "9.0.1",
           "System.Net.Http": "4.0.0",
-          "Warden": "1.1.0"
+          "Warden": "1.2.0"
         },
         "compile": {
           "net461/Warden.Integrations.Slack.dll": {}
@@ -1049,12 +871,12 @@
           "net461/Warden.Integrations.Slack.dll": {}
         }
       },
-      "Warden.Integrations.Twilio/1.1.0": {
+      "Warden.Integrations.Twilio/1.2.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
           "Twilio": "4.7.2",
-          "Warden": "1.1.0"
+          "Warden": "1.2.0"
         },
         "compile": {
           "net461/Warden.Integrations.Twilio.dll": {}
@@ -1063,11 +885,11 @@
           "net461/Warden.Integrations.Twilio.dll": {}
         }
       },
-      "Warden.Watchers.Disk/1.1.0": {
+      "Warden.Watchers.Disk/1.2.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
-          "Warden": "1.1.0"
+          "Warden": "1.2.0"
         },
         "compile": {
           "net461/Warden.Watchers.Disk.dll": {}
@@ -1076,12 +898,12 @@
           "net461/Warden.Watchers.Disk.dll": {}
         }
       },
-      "Warden.Watchers.MongoDb/1.1.0": {
+      "Warden.Watchers.MongoDb/1.2.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
           "MongoDB.Driver": "2.2.3",
-          "Warden": "1.1.0"
+          "Warden": "1.2.0"
         },
         "compile": {
           "net461/Warden.Watchers.MongoDb.dll": {}
@@ -1090,13 +912,13 @@
           "net461/Warden.Watchers.MongoDb.dll": {}
         }
       },
-      "Warden.Watchers.MsSql/1.1.1": {
+      "Warden.Watchers.MsSql/1.2.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
           "Dapper": "1.42.0",
           "System.Data.SqlClient": "4.1.0",
-          "Warden": "1.1.0"
+          "Warden": "1.2.0"
         },
         "compile": {
           "net461/Warden.Watchers.MsSql.dll": {}
@@ -1105,11 +927,11 @@
           "net461/Warden.Watchers.MsSql.dll": {}
         }
       },
-      "Warden.Watchers.Performance/1.1.0": {
+      "Warden.Watchers.Performance/1.2.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
-          "Warden": "1.1.0"
+          "Warden": "1.2.0"
         },
         "compile": {
           "net461/Warden.Watchers.Performance.dll": {}
@@ -1118,11 +940,11 @@
           "net461/Warden.Watchers.Performance.dll": {}
         }
       },
-      "Warden.Watchers.Process/1.1.0": {
+      "Warden.Watchers.Process/1.2.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
-          "Warden": "1.1.0"
+          "Warden": "1.2.0"
         },
         "compile": {
           "net461/Warden.Watchers.Process.dll": {}
@@ -1131,12 +953,12 @@
           "net461/Warden.Watchers.Process.dll": {}
         }
       },
-      "Warden.Watchers.Redis/1.1.0": {
+      "Warden.Watchers.Redis/1.2.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
           "StackExchange.Redis": "1.1.572",
-          "Warden": "1.1.0"
+          "Warden": "1.2.0"
         },
         "compile": {
           "net461/Warden.Watchers.Redis.dll": {}
@@ -1145,12 +967,12 @@
           "net461/Warden.Watchers.Redis.dll": {}
         }
       },
-      "Warden.Watchers.Server/1.1.2": {
+      "Warden.Watchers.Server/1.2.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
           "NETStandard.Library": "1.6.0",
-          "Warden": "1.1.0"
+          "Warden": "1.2.0"
         },
         "compile": {
           "net461/Warden.Watchers.Server.dll": {}
@@ -1159,13 +981,13 @@
           "net461/Warden.Watchers.Server.dll": {}
         }
       },
-      "Warden.Watchers.Web/1.1.0": {
+      "Warden.Watchers.Web/1.2.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
           "Newtonsoft.Json": "9.0.1",
           "System.Net.Http": "4.0.0",
-          "Warden": "1.1.0"
+          "Warden": "1.2.0"
         },
         "compile": {
           "net461/Warden.Watchers.Web.dll": {}
@@ -1177,67 +999,8 @@
     }
   },
   "libraries": {
-<<<<<<< HEAD
-    "Warden/1.1.0": {
-      "type": "project",
-      "path": "../../Warden/project.json"
-    },
-    "Warden.Integrations.HttpApi/1.1.1": {
-      "type": "project",
-      "path": "../../Integrations/Warden.Integrations.HttpApi/project.json"
-    },
-    "Warden.Integrations.MsSql/1.1.0": {
-      "type": "project",
-      "path": "../../Integrations/Warden.Integrations.MsSql/project.json"
-    },
-    "Warden.Integrations.SendGrid/1.1.0": {
-      "type": "project",
-      "path": "../../Integrations/Warden.Integrations.SendGrid/project.json"
-    },
-    "Warden.Integrations.Slack/1.1.0": {
-      "type": "project",
-      "path": "../../Integrations/Warden.Integrations.Slack/project.json"
-    },
-    "Warden.Integrations.Twilio/1.1.0": {
-      "type": "project",
-      "path": "../../Integrations/Warden.Integrations.Twilio/project.json"
-    },
-    "Warden.Watchers.Disk/1.1.0": {
-      "type": "project",
-      "path": "../../Watchers/Warden.Watchers.Disk/project.json"
-    },
-    "Warden.Watchers.MongoDb/1.1.0": {
-      "type": "project",
-      "path": "../../Watchers/Warden.Watchers.MongoDb/project.json"
-    },
-    "Warden.Watchers.MsSql/1.1.1": {
-      "type": "project",
-      "path": "../../Watchers/Warden.Watchers.MsSql/project.json"
-    },
-    "Warden.Watchers.Performance/1.1.0": {
-      "type": "project",
-      "path": "../../Watchers/Warden.Watchers.Performance/project.json"
-    },
-    "Warden.Watchers.Process/1.1.0": {
-      "type": "project",
-      "path": "../../Watchers/Warden.Watchers.Process/project.json"
-    },
-    "Warden.Watchers.Redis/1.1.0": {
-      "type": "project",
-      "path": "../../Watchers/Warden.Watchers.Redis/project.json"
-    },
-    "Warden.Watchers.Server/1.1.2": {
-      "type": "project",
-      "path": "../../Watchers/Warden.Watchers.Server/project.json"
-    },
-    "Warden.Watchers.Web/1.1.0": {
-      "type": "project",
-      "path": "../../Watchers/Warden.Watchers.Web/project.json"
-    },
-=======
->>>>>>> 090ff04430b158dcf66bdb7978e4d1f6fb03cebf
     "Dapper/1.42.0": {
-      "sha512": "HBNIulHq5DWD1K60iVABe4oW4HoWmraR20yy9jLrw9tgTbMY2eolYk2UgXFI43lSUMTdhUjPvlHci0TnsfoiXw==",
+      "sha512": "4tJlY93CSDCdqh6eEYR7au06R+moIgEQs5/rNrPYvSu+kwtlWnUPFzaWPSmk3biS9qKeI/QsJkfVWnSdb95dTw==",
       "type": "package",
       "path": "Dapper/1.42.0",
       "files": [
@@ -1257,8 +1020,8 @@
     "Microsoft.AspNet.WebApi.Client/5.2.3": {
       "sha512": "3kiI8peSXbXHDDrRuo+QaX0iCEVRe0nvn2dBDRw656uPX32UalbBlSIDUDlJxu05eau4tnuhsikiUuugvvoUoQ==",
       "type": "package",
+      "path": "Microsoft.AspNet.WebApi.Client/5.2.3",
       "files": [
-        "Microsoft.AspNet.WebApi.Client.5.2.3.nupkg",
         "Microsoft.AspNet.WebApi.Client.5.2.3.nupkg.sha512",
         "Microsoft.AspNet.WebApi.Client.nuspec",
         "lib/net45/System.Net.Http.Formatting.dll",
@@ -1268,7 +1031,7 @@
       ]
     },
     "Microsoft.NETCore.Platforms/1.0.1": {
-      "sha512": "LkxqCYm64YGeN4eOCaCUStBAcllvRrRRVwWs5ODrjqBJ295FMQVS+/7f9pJ0R9iEU7NEHIVov01ikvNpzJ+Vnw==",
+      "sha512": "2G6OjjJzwBfNOO8myRV/nFrbTw5iA+DEm0N+qUqhrOmaVtn4pC77h38I1jsXGw5VH55+dPfQsqHD0We9sCl9FQ==",
       "type": "package",
       "path": "Microsoft.NETCore.Platforms/1.0.1",
       "files": [
@@ -1281,7 +1044,7 @@
       ]
     },
     "Microsoft.Win32.Primitives/4.0.1": {
-      "sha512": "cNdfOfC94faDt6T3nkHhvM+yV2v5bPzNrA5/+rj3ZQ3HGQyDY08KCNYdjyz4oAFQOd0/9n/qYpiT0zEi4pRwRQ==",
+      "sha512": "fQnBHO9DgcmkC9dYSJoBqo6sH1VJwJprUHh8F3hbcRlxiQiBUuTntdk8tUwV490OqC2kQUrinGwZyQHTieuXRA==",
       "type": "package",
       "path": "Microsoft.Win32.Primitives/4.0.1",
       "files": [
@@ -1319,9 +1082,9 @@
     "MongoDB.Bson/2.2.3": {
       "sha512": "AwxyD8qYgy1GQkxQV2uMzymm19QwaNNAER6gf/w8f2dDjcboEve1kv9GEz7mtn2K8p6hYQjhgnvGc+xeh0KLmg==",
       "type": "package",
+      "path": "MongoDB.Bson/2.2.3",
       "files": [
         "License.rtf",
-        "MongoDB.Bson.2.2.3.nupkg",
         "MongoDB.Bson.2.2.3.nupkg.sha512",
         "MongoDB.Bson.nuspec",
         "lib/net45/MongoDB.Bson.XML",
@@ -1331,9 +1094,9 @@
     "MongoDB.Driver/2.2.3": {
       "sha512": "ZgRSAv+vxCCYnL/V4mChGNnx8rBnnpDO2S8Fex+G3IrVWRRgJb3rEFOEoyuyR5C5qtOHGVMlGRSSngQwbgV2Dw==",
       "type": "package",
+      "path": "MongoDB.Driver/2.2.3",
       "files": [
         "License.rtf",
-        "MongoDB.Driver.2.2.3.nupkg",
         "MongoDB.Driver.2.2.3.nupkg.sha512",
         "MongoDB.Driver.nuspec",
         "lib/net45/MongoDB.Driver.XML",
@@ -1343,16 +1106,16 @@
     "MongoDB.Driver.Core/2.2.3": {
       "sha512": "o9/7behJkN5TEG9KvRHM6HUdnsXgLl31pKRQwiCi4xgd7gAleI3sagBcujh7x40gl1NL/u4+uMPRZFpGAaGEQw==",
       "type": "package",
+      "path": "MongoDB.Driver.Core/2.2.3",
       "files": [
         "License.rtf",
-        "MongoDB.Driver.Core.2.2.3.nupkg",
         "MongoDB.Driver.Core.2.2.3.nupkg.sha512",
         "MongoDB.Driver.Core.nuspec",
         "lib/net45/MongoDB.Driver.Core.dll"
       ]
     },
     "NETStandard.Library/1.6.0": {
-      "sha512": "sQmn3HtjmruSpkNGeHUTpY0IBaKOsLlfL1GYCSAGSGRQrOQ2pvQOkPVAWCV+ynuWwxy9SR+aqd7+LilpWo+56w==",
+      "sha512": "ypsCvIdCZ4IoYASJHt6tF2fMo7N30NLgV1EbmC+snO490OMl9FvVxmumw14rhReWU3j3g7BYudG6YCrchwHJlA==",
       "type": "package",
       "path": "NETStandard.Library/1.6.0",
       "files": [
@@ -1389,8 +1152,8 @@
     "RestSharp/105.2.2": {
       "sha512": "DXROmf/5jnJM5Baqzdqc3dMZZQHKPWhYPB9A2/ZYXLOZp9a4rrdvHBza0+tGazPtE+NezyUDYd3qqz5oaU2GZA==",
       "type": "package",
+      "path": "RestSharp/105.2.2",
       "files": [
-        "RestSharp.105.2.2.nupkg",
         "RestSharp.105.2.2.nupkg.sha512",
         "RestSharp.nuspec",
         "lib/MonoAndroid10/RestSharp.dll",
@@ -1423,8 +1186,8 @@
     "Sendgrid/6.3.4": {
       "sha512": "wL1GufLMA4cCNYgmXluwdmEPMmUuW2AGiWPW4fqQTCupdP3xkqBQJw/G4B2rAUrXpcQzCPmI/JN5Dl92fli5Fg==",
       "type": "package",
+      "path": "Sendgrid/6.3.4",
       "files": [
-        "Sendgrid.6.3.4.nupkg",
         "Sendgrid.6.3.4.nupkg.sha512",
         "Sendgrid.nuspec",
         "lib/SendGrid.dll",
@@ -1434,8 +1197,8 @@
     "SendGrid.SmtpApi/1.3.1": {
       "sha512": "SxBvvuwGnGpNd88Y70edON4idaNk9wLi7n9gokpHcImjZM+5Z4CFpjvf/1N3D1ZkuFKacXAoNnyYFvFfgeNtDg==",
       "type": "package",
+      "path": "SendGrid.SmtpApi/1.3.1",
       "files": [
-        "SendGrid.SmtpApi.1.3.1.nupkg",
         "SendGrid.SmtpApi.1.3.1.nupkg.sha512",
         "SendGrid.SmtpApi.nuspec",
         "lib/net40/SendGrid.SmtpApi.dll",
@@ -1463,7 +1226,7 @@
       ]
     },
     "System.AppContext/4.1.0": {
-      "sha512": "5+HKHqsHeOC4MfdwbW9eScJbQa6O+fNQXleK1C2KAj5WFeA0YDtL//5t0RVUqofpymhBDqB3lNaQm4kEcQEOcw==",
+      "sha512": "3QjO4jNV7PdKkmQAVp9atA+usVnKRwI3Kx1nMwJ93T0LcQfx7pKAYk0nKz5wn1oP5iqlhZuy6RXOFdhr7rDwow==",
       "type": "package",
       "path": "System.AppContext/4.1.0",
       "files": [
@@ -1516,7 +1279,7 @@
       ]
     },
     "System.Collections/4.0.11": {
-      "sha512": "kKf55hF9r+pNCKVoEKm83Og7siIS7nEg02Vt7X4K9w8MzpmjNTjH1mR44MG3qaDZvmSATSA/W3QjbzHnJgPKSg==",
+      "sha512": "YUJGz6eFKqS0V//mLt25vFGrrCvOnsXjlvFQs+KimpwNxug9x0Pzy4PlFMU3Q2IzqAa9G2L4LsK3+9vCBK7oTg==",
       "type": "package",
       "path": "System.Collections/4.0.11",
       "files": [
@@ -1582,7 +1345,7 @@
       ]
     },
     "System.Collections.Concurrent/4.0.12": {
-      "sha512": "bI908WOKRN20dlc6X5Oi3WrbAvtEUs2s3fO7jptWKqzSf3/pgzYDY3/7sMSL/GwgytI27oaFf7JoeHJOQNecZA==",
+      "sha512": "2gBcbb3drMLgxlI0fBfxMA31ec6AEyYCHygGse4vxceJan8mRIWeKJ24BFzN7+bi/NFTgdIgufzb94LWO5EERQ==",
       "type": "package",
       "path": "System.Collections.Concurrent/4.0.12",
       "files": [
@@ -1648,7 +1411,7 @@
       ]
     },
     "System.Console/4.0.0": {
-      "sha512": "CpRMPKZxmkXXLKpUWfVlHySeOF27jyqR04ZDcgfIH2rgYpA7jnhE0088nCAdpslsKJOMGwBSpoZ63d3K63Ajkg==",
+      "sha512": "qSKUSOIiYA/a0g5XXdxFcUFmv1hNICBD7QZ0QhGYVipPIhvpiydY8VZqr1thmCXvmn8aipMg64zuanB4eotK9A==",
       "type": "package",
       "path": "System.Console/4.0.0",
       "files": [
@@ -1686,8 +1449,8 @@
     "System.Data.Common/4.1.0": {
       "sha512": "epU8jeTe7aE7RqGHq9rZ8b0Q4Ah7DgubzHQblgZMSqgW1saW868WmooSyC5ywf8upLBkcVLDu93W9GPWUYsU2Q==",
       "type": "package",
+      "path": "System.Data.Common/4.1.0",
       "files": [
-        "System.Data.Common.4.1.0.nupkg",
         "System.Data.Common.4.1.0.nupkg.sha512",
         "System.Data.Common.nuspec",
         "ThirdPartyNotices.txt",
@@ -1735,8 +1498,8 @@
     "System.Data.SqlClient/4.1.0": {
       "sha512": "yqMZgzzKHdG84QmA/PPZUORaoisfvztvFqyPs7dPafJhNxlS7STf9OMCFrP/tITQCqImkm1+X4d2oiWOT2oTKg==",
       "type": "package",
+      "path": "System.Data.SqlClient/4.1.0",
       "files": [
-        "System.Data.SqlClient.4.1.0.nupkg",
         "System.Data.SqlClient.4.1.0.nupkg.sha512",
         "System.Data.SqlClient.nuspec",
         "ThirdPartyNotices.txt",
@@ -1786,7 +1549,7 @@
       ]
     },
     "System.Diagnostics.Debug/4.0.11": {
-      "sha512": "jDYhC2Ahksb5aSBCVj9FajYBlqXUfq4ewVQXA1edl+UVMzNWgZSKXEfg74ZRva4Pc7Pq+jx755QdDliUoTqJjg==",
+      "sha512": "w5U95fVKHY4G8ASs/K5iK3J5LY+/dLFd4vKejsnI/ZhBsWS9hQakfx3Zr7lRWKg4tAw9r4iktyvsTagWkqYCiw==",
       "type": "package",
       "path": "System.Diagnostics.Debug/4.0.11",
       "files": [
@@ -1852,7 +1615,7 @@
       ]
     },
     "System.Diagnostics.DiagnosticSource/4.0.0": {
-      "sha512": "k96fp3PEVJjXa7gRxaFym0Q1Sxfbony2gFIDiiHnnJb/SGA6LY9uRZusCBYJFGwfzUo8eZUyB6n4vQWDFqXEkA==",
+      "sha512": "YKglnq4BMTJxfcr6nuT08g+yJ0UxdePIHxosiLuljuHIUR6t4KhFsyaHOaOc1Ofqp0PUvJ0EmcgiEz6T7vEx3w==",
       "type": "package",
       "path": "System.Diagnostics.DiagnosticSource/4.0.0",
       "files": [
@@ -1871,7 +1634,7 @@
       ]
     },
     "System.Diagnostics.Tools/4.0.1": {
-      "sha512": "XP1Ji4K7516iTlYRosCVqOF8Z04uAr0dQ9qAkLDTO+L8c/rsEpxeRxglyASHKM7UAQ02XsRMcBDW+YlfrDnJCA==",
+      "sha512": "xBfJ8pnd4C17dWaC9FM6aShzbJcRNMChUMD42I6772KGGrqaFdumwhn9OdM68erj1ueNo3xdQ1EwiFjK5k8p0g==",
       "type": "package",
       "path": "System.Diagnostics.Tools/4.0.1",
       "files": [
@@ -1926,7 +1689,7 @@
       ]
     },
     "System.Diagnostics.Tracing/4.1.0": {
-      "sha512": "XS5y6y3uoN0CBUGcp3CO9+OiF++K65X9/WrRVYbzCvRXJediE89TLI6tfuiSKyvHPYkP3NVnLHxwNnPR51JiUw==",
+      "sha512": "vDN1PoMZCkkdNjvZLql592oYJZgS7URcJzJ7bxeBgGtx5UtR5leNm49VmfHGqIffX4FKacHbI3H6UyNSHQknBg==",
       "type": "package",
       "path": "System.Diagnostics.Tracing/4.1.0",
       "files": [
@@ -2014,7 +1777,7 @@
       ]
     },
     "System.Globalization/4.0.11": {
-      "sha512": "lRibKrO6cEnWEFv4i0x2KttevgamQctN7XAoyQWQsDep8mxPXUDjy7z3a8cr28Wwl61dpkgSp8rsCuisOCp1pw==",
+      "sha512": "B95h0YLEL2oSnwF/XjqSWKnwKOy/01VWkNlsCeMTFJLLabflpGV26nK164eRs5GiaRSBGpOxQ3pKoSnnyZN5pg==",
       "type": "package",
       "path": "System.Globalization/4.0.11",
       "files": [
@@ -2080,7 +1843,7 @@
       ]
     },
     "System.Globalization.Calendars/4.0.1": {
-      "sha512": "nHeKcljLdoYTNinfYrQT1+jRo75hQpEBxVQlGZ8ss0LS8+9E9FWVM6gQx6d2BoCrC15PwJlECF5IxXV3Dp3iTA==",
+      "sha512": "L1c6IqeQ88vuzC1P81JeHmHA8mxq8a18NUBNXnIY/BVb+TCyAaGIFbhpZt60h9FJNmisymoQkHEFSE9Vslja1Q==",
       "type": "package",
       "path": "System.Globalization.Calendars/4.0.1",
       "files": [
@@ -2116,7 +1879,7 @@
       ]
     },
     "System.IO/4.1.0": {
-      "sha512": "+LWV72uwF0AY/Y6mhg5tuIoLEu0e0cfJ/HIKxsMxhClhgBky6kfGKm4Yi8K5WjYsQ9naY2WjkGab1lXtWNQCUw==",
+      "sha512": "3KlTJceQc3gnGIaHZ7UBZO26SHL1SHE4ddrmiwumFnId+CEHP+O8r386tZKaE6zlk5/mF8vifMBzHj9SaXN+mQ==",
       "type": "package",
       "path": "System.IO/4.1.0",
       "files": [
@@ -2195,7 +1958,7 @@
       ]
     },
     "System.IO.Compression/4.1.0": {
-      "sha512": "pSwaQWinOY/TTuH0LhLI0RAb7zWs45Gn9+aeausnqswwkpFa82NoYRTG83cDYqdICyZnv44O+XMlk67Vh8Ec4w==",
+      "sha512": "TjnBS6eztThSzeSib+WyVbLzEdLKUcEHN69VtS3u8aAsSc18FU6xCZlNWWsEd8SKcXAE+y1sOu7VbU8sUeM0sg==",
       "type": "package",
       "path": "System.IO.Compression/4.1.0",
       "files": [
@@ -2264,7 +2027,7 @@
       ]
     },
     "System.IO.Compression.ZipFile/4.0.1": {
-      "sha512": "5B+qMgKgaISrlYpVh7ZrW9g35QqP7W+FzBBHXcN3kA7nsCL4poXOIryCDWMIpoUlX8lXYlhTJYXiwEjrmKqZ2Q==",
+      "sha512": "hBQYJzfTbQURF10nLhd+az2NHxsU6MU7AB8RUf4IolBP5lOAm4Luho851xl+CqslmhI5ZH/el8BlngEk4lBkaQ==",
       "type": "package",
       "path": "System.IO.Compression.ZipFile/4.0.1",
       "files": [
@@ -2301,7 +2064,7 @@
       ]
     },
     "System.IO.FileSystem/4.0.1": {
-      "sha512": "Kt8OnaNtVLt0WrItVTr2SdqJR/H4M9K7bDGfwv0adn7/dRdwsUy7hHwBu54EPH3VVA1mZbUuDlIZATce5UewEg==",
+      "sha512": "IBErlVq5jOggAD69bg1t0pJcHaDbJbWNUZTPI96fkYWzwYbN6D9wRHMULLDd9dHsl7C2YsxXL31LMfPI1SWt8w==",
       "type": "package",
       "path": "System.IO.FileSystem/4.0.1",
       "files": [
@@ -2337,7 +2100,7 @@
       ]
     },
     "System.IO.FileSystem.Primitives/4.0.1": {
-      "sha512": "fDzCiM1BU2JO6h4PDxxpW0YQLcjf1cTVv9dOFIqTODqE7DyDObcxgXxerujvY285A1fszqBgg5GCfJk7swE6SQ==",
+      "sha512": "kWkKD203JJKxJeE74p8aF8y4Qc9r9WQx4C0cHzHPrY3fv/L/IhWnyCHaFJ3H1QPOH6A93whlQ2vG5nHlBDvzWQ==",
       "type": "package",
       "path": "System.IO.FileSystem.Primitives/4.0.1",
       "files": [
@@ -2373,49 +2136,40 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "System.Linq/4.0.1-beta-23516": {
-      "sha512": "AJaoyeAHLpurbTWnmvOhK/QC2sswKJrIA5RlPea+UdfXpHOw3srPNEPpseZDMV/EviVqAwUfFNkc5QxpGZtsLA==",
+    "System.Linq/4.0.0": {
+      "sha512": "r6Hlc+ytE6m/9UBr+nNRRdoJEWjoeQiT3L3lXYFDHoXk3VYsRBCDNXrawcexw7KPLaH0zamQLiAb6avhZ50cGg==",
       "type": "package",
+      "path": "System.Linq/4.0.0",
       "files": [
-        "System.Linq.4.0.1-beta-23516.nupkg",
-        "System.Linq.4.0.1-beta-23516.nupkg.sha512",
+        "System.Linq.4.0.0.nupkg.sha512",
         "System.Linq.nuspec",
-        "lib/dotnet5.4/System.Linq.dll",
+        "lib/dotnet/System.Linq.dll",
         "lib/net45/_._",
         "lib/netcore50/System.Linq.dll",
         "lib/win8/_._",
         "lib/wp80/_._",
         "lib/wpa81/_._",
-        "ref/dotnet5.1/System.Linq.dll",
-        "ref/dotnet5.1/System.Linq.xml",
-        "ref/dotnet5.1/de/System.Linq.xml",
-        "ref/dotnet5.1/es/System.Linq.xml",
-        "ref/dotnet5.1/fr/System.Linq.xml",
-        "ref/dotnet5.1/it/System.Linq.xml",
-        "ref/dotnet5.1/ja/System.Linq.xml",
-        "ref/dotnet5.1/ko/System.Linq.xml",
-        "ref/dotnet5.1/ru/System.Linq.xml",
-        "ref/dotnet5.1/zh-hans/System.Linq.xml",
-        "ref/dotnet5.1/zh-hant/System.Linq.xml",
+        "ref/dotnet/System.Linq.dll",
+        "ref/dotnet/System.Linq.xml",
+        "ref/dotnet/de/System.Linq.xml",
+        "ref/dotnet/es/System.Linq.xml",
+        "ref/dotnet/fr/System.Linq.xml",
+        "ref/dotnet/it/System.Linq.xml",
+        "ref/dotnet/ja/System.Linq.xml",
+        "ref/dotnet/ko/System.Linq.xml",
+        "ref/dotnet/ru/System.Linq.xml",
+        "ref/dotnet/zh-hans/System.Linq.xml",
+        "ref/dotnet/zh-hant/System.Linq.xml",
         "ref/net45/_._",
         "ref/netcore50/System.Linq.dll",
         "ref/netcore50/System.Linq.xml",
-        "ref/netcore50/de/System.Linq.xml",
-        "ref/netcore50/es/System.Linq.xml",
-        "ref/netcore50/fr/System.Linq.xml",
-        "ref/netcore50/it/System.Linq.xml",
-        "ref/netcore50/ja/System.Linq.xml",
-        "ref/netcore50/ko/System.Linq.xml",
-        "ref/netcore50/ru/System.Linq.xml",
-        "ref/netcore50/zh-hans/System.Linq.xml",
-        "ref/netcore50/zh-hant/System.Linq.xml",
         "ref/win8/_._",
         "ref/wp80/_._",
         "ref/wpa81/_._"
       ]
     },
     "System.Linq.Expressions/4.1.0": {
-      "sha512": "auzO8AxSCO6Nak0GpOsc1ygjHMqdgWTtgSQOw6btu5Ln3mTEU0YbUa6DMakuv6TaeMtSGZkFzZPsM947Y0LNoQ==",
+      "sha512": "I+y02iqkgmCAyfbqOmSDOgqdZQ5tTj80Akm5BPSS8EeB0VGWdy6X1KCoYe8Pk6pwDoAKZUOdLVxnTJcExiv5zw==",
       "type": "package",
       "path": "System.Linq.Expressions/4.1.0",
       "files": [
@@ -2497,7 +2251,7 @@
       ]
     },
     "System.Net.Http/4.1.0": {
-      "sha512": "N+TiZs+A5XXjpmEDITtXuX32ljKkGwGsgRRAhhonnV8LZbMZsmIOEsvH0HGzh4c2S7dqyfDcPUdNTAn3eABZog==",
+      "sha512": "ULq9g3SOPVuupt+Y3U+A37coXzdNisB1neFCSKzBwo182u0RDddKJF8I5+HfyXqK6OhJPgeoAwWXrbiUXuRDsg==",
       "type": "package",
       "path": "System.Net.Http/4.1.0",
       "files": [
@@ -2577,7 +2331,7 @@
       ]
     },
     "System.Net.Primitives/4.0.11": {
-      "sha512": "Ce/zP41jPvcfRl8gDNehNd5zcY3FxQmhkRBV95NutfZWgXADgWptcAuqvASeck3CSGxvhVX+2Zw4kYe7ZO8sEQ==",
+      "sha512": "hVvfl4405DRjA2408luZekbPhplJK03j2Y2lSfMlny7GHXlkByw1iLnc9mgKW0GdQn73vvMcWrWewAhylXA4Nw==",
       "type": "package",
       "path": "System.Net.Primitives/4.0.11",
       "files": [
@@ -2654,7 +2408,7 @@
       ]
     },
     "System.Net.Sockets/4.1.0": {
-      "sha512": "AVWOsV6bbzsrQ0ky+Gvjk3OAMSDLt2YeuSDq/Z5r5CHK04j4BrdbYO5f1TvCOXjEhGUMek6a0+2TDGY6dDOCRg==",
+      "sha512": "xAz0N3dAV/aR/9g8r0Y5oEqU1JRsz29F5EGb/WVHmX3jVSLqi2/92M5hTad2aNWovruXrJpJtgZ9fccPMG9uSw==",
       "type": "package",
       "path": "System.Net.Sockets/4.1.0",
       "files": [
@@ -2690,7 +2444,7 @@
       ]
     },
     "System.ObjectModel/4.0.12": {
-      "sha512": "Y5x0WSKx6uXSpN+eCNXdSPHRb1cJGpx3NUmJAm1wc1hmg9m42mVRJoXjh6ZaSZu7rEhGSjLHIOgQ7GBDTfV5CA==",
+      "sha512": "tAgJM1xt3ytyMoW4qn4wIqgJYm7L7TShRZG4+Q4Qsi2PCcj96pXN7nRywS9KkB3p/xDUjc2HSwP9SROyPYDYKQ==",
       "type": "package",
       "path": "System.ObjectModel/4.0.12",
       "files": [
@@ -2758,7 +2512,7 @@
       ]
     },
     "System.Reflection/4.1.0": {
-      "sha512": "Pum2xFFdpudJLl99IFwLo8zfXyuCdN9oc2Uz6FCu3MrB7yVh5Pfx5UPxQu5O6G+0LQ377RmlPTUbAGxI0rbWwA==",
+      "sha512": "JCKANJ0TI7kzoQzuwB/OoJANy1Lg338B6+JVacPl4TpUwi3cReg3nMLplMq2uqYfHFQpKIlHAUVAJlImZz/4ng==",
       "type": "package",
       "path": "System.Reflection/4.1.0",
       "files": [
@@ -2837,7 +2591,7 @@
       ]
     },
     "System.Reflection.Extensions/4.0.1": {
-      "sha512": "7lzwLgUJ6gvv0XUzl4ZZgG0SfX3992yZ3jkM7SuxLf7b6wUG43w82yRiAknQT+qZHUIfWhEK2on9rPHostSyUQ==",
+      "sha512": "GYrtRsZcMuHF3sbmRHfMYpvxZoIN2bQGrYGerUiWLEkqdEUQZhH3TRSaC/oI4wO0II1RKBPlpIa1TOMxIcOOzQ==",
       "type": "package",
       "path": "System.Reflection.Extensions/4.0.1",
       "files": [
@@ -2892,7 +2646,7 @@
       ]
     },
     "System.Reflection.Primitives/4.0.1": {
-      "sha512": "AZuDwZa8B3rSx9HvKT0AlFrWTplUPpfOYtmGMdKCAs20ms+6N+NWf3A9YeJbyHzFWHUMIgm6nLmkhNzAeh3msg==",
+      "sha512": "4inTox4wTBaDhB7V3mPvp9XlCbeGYWVEM9/fXALd52vNEAVisc1BoVWQPuUuD0Ga//dNbA/WeMy9u9mzLxGTHQ==",
       "type": "package",
       "path": "System.Reflection.Primitives/4.0.1",
       "files": [
@@ -2947,7 +2701,7 @@
       ]
     },
     "System.Resources.ResourceManager/4.0.1": {
-      "sha512": "ojvw8FFwSEinR7mZYY0ifpQA7hztFIrYQPDm/1nBsgcdQD2eZP3WGEJsQJsc1t2QipfcXOmx+nkAC5SMW7TEuQ==",
+      "sha512": "TxwVeUNoTgUOdQ09gfTjvW411MF+w9MBYL7AtNVc+HtBCFlutPLhUCdZjNkjbhj3bNQWMdHboF0KIWEOjJssbA==",
       "type": "package",
       "path": "System.Resources.ResourceManager/4.0.1",
       "files": [
@@ -3002,7 +2756,7 @@
       ]
     },
     "System.Runtime/4.1.0": {
-      "sha512": "Vrz9KlxIaUlB5EV8+YBVJgrMdmjlbE94ZW859b5C2Fm2oop06iLc08D7/kkJLbZfPtK6agjDEH6LUkk2RyEloA==",
+      "sha512": "v6c/4Yaa9uWsq+JMhnOFewrYkgdNHNG2eMKuNqRn8P733rNXeRCGvV5FkkjBXn2dbVkPXOsO0xjsEeM1q2zC0g==",
       "type": "package",
       "path": "System.Runtime/4.1.0",
       "files": [
@@ -3092,7 +2846,7 @@
       ]
     },
     "System.Runtime.Extensions/4.1.0": {
-      "sha512": "sqyUD6O0onxXz2WH7uu86pSeWLpJ68nr7pDN79YMCEQ2VoTQfpub4xXAceBzy31kEebiOvECjumZErvCtEfwvA==",
+      "sha512": "CUOHjTT/vgP0qGW22U4/hDlOqXmcPq5YicBaXdUR2UiUoLwBT+olO6we4DVbq57jeX5uXH2uerVZhf0qGj+sVQ==",
       "type": "package",
       "path": "System.Runtime.Extensions/4.1.0",
       "files": [
@@ -3171,7 +2925,7 @@
       ]
     },
     "System.Runtime.Handles/4.0.1": {
-      "sha512": "D8ZaiP3q33kEp09Mg6YBAQkaqg4hD1t8ZxzBRKYuHhYjT6N7D/a6h4idGOWTQD9ER5r+Y+GF48qgd/nePTo55g==",
+      "sha512": "nCJvEKguXEvk2ymk1gqj625vVnlK3/xdGzx0vOKicQkoquaTBJTP13AIYkocSUwHCLNBwUbXTqTWGDxBTWpt7g==",
       "type": "package",
       "path": "System.Runtime.Handles/4.0.1",
       "files": [
@@ -3207,7 +2961,7 @@
       ]
     },
     "System.Runtime.InteropServices/4.1.0": {
-      "sha512": "5W6XijwLvx1eC6bq33hjkKf0uUY6J7REIqPMRJ0W/onzVdJQ5QYXt2Nf5VB+VcRal3rljS7ZMee6GUqFVJ2keQ==",
+      "sha512": "16eu3kjHS633yYdkjwShDHZLRNMKVi/s0bY8ODiqJ2RfMhDMAwxZaUaWVnZ2P71kr/or+X9o/xFWtNqz8ivieQ==",
       "type": "package",
       "path": "System.Runtime.InteropServices/4.1.0",
       "files": [
@@ -3295,7 +3049,7 @@
       ]
     },
     "System.Runtime.InteropServices.RuntimeInformation/4.0.0": {
-      "sha512": "tPBJlIReVoFhYry9iamYtZQKykpR/1aBda4UjgwbnPmds/X99AfoBxiXLVR2gQfFqixvaDqqm444o/uW6wBDNA==",
+      "sha512": "hWPhJxc453RCa8Z29O91EmfGeZIHX1ZH2A8L6lYQVSaKzku2DfArSfMEb1/MYYzPQRJZeu0c9dmYeJKxW5Fgng==",
       "type": "package",
       "path": "System.Runtime.InteropServices.RuntimeInformation/4.0.0",
       "files": [
@@ -3327,7 +3081,7 @@
       ]
     },
     "System.Runtime.Numerics/4.0.1": {
-      "sha512": "H9BPTD3YIJC83C+dj8FC0lcMO36Vofyh2A4fgaWQQaOmPS9d4OwBRGP6vkecpUJlARrkqnjaAP9q8ctPRO1CFA==",
+      "sha512": "+XbKFuzdmLP3d1o9pdHu2nxjNr2OEPqGzKeegPLCUMM71a0t50A/rOcIRmGs9wR7a8KuHX6hYs/7/TymIGLNqg==",
       "type": "package",
       "path": "System.Runtime.Numerics/4.0.1",
       "files": [
@@ -3382,7 +3136,7 @@
       ]
     },
     "System.Security.Cryptography.Algorithms/4.2.0": {
-      "sha512": "TY+ZWumj8EKgbZKJFrGpK4v6HNsE8sznjvQFlHsKl4wJ7jsfrvuAWSF3V7txDBT7xsVHFayV3AohRuYepWxtSQ==",
+      "sha512": "8JQFxbLVdrtIOKMDN38Fn0GWnqYZw/oMlwOUG/qz1jqChvyZlnUmu+0s7wLx7JYua/nAXoESpHA3iw11QFWhXg==",
       "type": "package",
       "path": "System.Security.Cryptography.Algorithms/4.2.0",
       "files": [
@@ -3420,7 +3174,7 @@
       ]
     },
     "System.Security.Cryptography.Encoding/4.0.0": {
-      "sha512": "DeBhQctfUYlx78CxBE467l/Ip+hkbkKQmJxjOcptvjdg8y67ezxD25eIYjSsMlucNNwf/ITcNcPHyfbm4h1Sxw==",
+      "sha512": "FbKgE5MbxSQMPcSVRgwM6bXN3GtyAh04NkV8E5zKCBE26X0vYW0UtTa2FIgkH33WVqBVxRgxljlVYumWtU+HcQ==",
       "type": "package",
       "path": "System.Security.Cryptography.Encoding/4.0.0",
       "files": [
@@ -3459,7 +3213,7 @@
       ]
     },
     "System.Security.Cryptography.Primitives/4.0.0": {
-      "sha512": "/3EzLA5lZwe0Ebmq9hAJ279sbhS6TmWPzL201gL3Cu/wqfgQtbBUE0TY0aToFFkrIpeF6CubVvkJOZDB274i0Q==",
+      "sha512": "Wkd7QryWYjkQclX0bngpntW5HSlMzeJU24UaLJQ7YTfI8ydAVAaU2J+HXLLABOVJlKTVvAeL0Aj39VeTe7L+oA==",
       "type": "package",
       "path": "System.Security.Cryptography.Primitives/4.0.0",
       "files": [
@@ -3486,7 +3240,7 @@
       ]
     },
     "System.Security.Cryptography.X509Certificates/4.1.0": {
-      "sha512": "gy1KI2+4WD7J9DV20KYdeSM2DrrrpYNDwLgffWPoxDIgrdaFjuEq85SS7lUuM/w6QX7tjcpqkAZkqhRsij2NKg==",
+      "sha512": "4HEfsQIKAhA1+ApNn729Gi09zh+lYWwyIuViihoMDWp1vQnEkL2ct7mAbhBlLYm+x/L4Rr/pyGge1lIY635e0w==",
       "type": "package",
       "path": "System.Security.Cryptography.X509Certificates/4.1.0",
       "files": [
@@ -3540,7 +3294,7 @@
       ]
     },
     "System.Text.Encoding/4.0.11": {
-      "sha512": "FKzduQGxAp+W8dnASvht4OJtaxUHtOEX9PpSRYEhVO6x7sbroLeM7Px8CZhByw14WGIoMXhvVBVzi50Fq5QYtQ==",
+      "sha512": "U3gGeMlDZXxCEiY4DwVLSacg+DFWCvoiX+JThA/rvw37Sqrku7sEFeVBBBMBnfB6FeZHsyDx85HlKL19x0HtZA==",
       "type": "package",
       "path": "System.Text.Encoding/4.0.11",
       "files": [
@@ -3606,7 +3360,7 @@
       ]
     },
     "System.Text.Encoding.Extensions/4.0.11": {
-      "sha512": "N2y/2ufLJixXHmTmTdDWW4SwYivz47/1TEoyUTZ0FRhyJLpuZD4FXUiaZaXLEJzmurEFoLa4n4ZA+rjlzmLiyw==",
+      "sha512": "jtbiTDtvfLYgXn8PTfWI+SiBs51rrmO4AAckx4KR6vFK9Wzf6tI8kcRdsYQNwriUeQ1+CtQbM1W4cMbLXnj/OQ==",
       "type": "package",
       "path": "System.Text.Encoding.Extensions/4.0.11",
       "files": [
@@ -3672,7 +3426,7 @@
       ]
     },
     "System.Text.RegularExpressions/4.1.0": {
-      "sha512": "fn0AfbE27rZ6mZz4KoEzxPpOfOCbzKq28O+mBARVt9DwqyHcipX2l8R6w85e2s4dQs7sITPtPb7VYbyN+uCkFw==",
+      "sha512": "i88YCXpRTjCnoSQZtdlHkAOx4KNNik4hMy83n0+Ftlb7jvV6ZiZWMpnEZHhjBp6hQVh8gWd/iKNPzlPF7iyA2g==",
       "type": "package",
       "path": "System.Text.RegularExpressions/4.1.0",
       "files": [
@@ -3753,7 +3507,7 @@
       ]
     },
     "System.Threading/4.0.11": {
-      "sha512": "MnHg2D4dmmy3KtY06KwONtp9I8NUU6CMf72azIU4SW3IMdCYtNIYJpWzMiu2DkaK3wYAzF8R5U4epKaxwuIjqQ==",
+      "sha512": "N+3xqIcg3VDKyjwwCGaZ9HawG9aC6cSDI+s7ROma310GQo8vilFZa86hqKppwTHleR/G0sfOzhvgnUxWCR/DrQ==",
       "type": "package",
       "path": "System.Threading/4.0.11",
       "files": [
@@ -3822,7 +3576,7 @@
       ]
     },
     "System.Threading.Tasks/4.0.11": {
-      "sha512": "QCjSzKngjnxnBrri70c1+QzgwJr5p2VUcRz0s/ASbd3AkBGAmAl2rU2u+GslJ3KBNqnXqxYt91N4o/7nZdcjHA==",
+      "sha512": "k1S4Gc6IGwtHGT8188RSeGaX86Qw/wnrgNLshJvsdNUOPP9etMmo8S07c+UlOAx4K/xLuN9ivA1bD0LVurtIxQ==",
       "type": "package",
       "path": "System.Threading.Tasks/4.0.11",
       "files": [
@@ -3888,7 +3642,7 @@
       ]
     },
     "System.Threading.Timer/4.0.1": {
-      "sha512": "i8whrLDmykL3K/g38ZHBSigFsbCRHIJDO8K/CQC2LRfWo/FndBX2cuyqqCGdLHTWmmYjR5dMHsNj5e4+M+TOrw==",
+      "sha512": "saGfUV8uqVW6LeURiqxcGhZ24PzuRNaUBtbhVeuUAvky1naH395A/1nY0P2bWvrw/BreRtIB/EzTDkGBpqCwEw==",
       "type": "package",
       "path": "System.Threading.Timer/4.0.1",
       "files": [
@@ -3941,7 +3695,7 @@
       ]
     },
     "System.Xml.ReaderWriter/4.0.11": {
-      "sha512": "o1LvL1rZK280gpZYraheqEnFsAc2UVWnlgesXPZCN+wK0A5zKcH2W1RGIQQmgE8sFJj7Bzfvug7oQr8+5x23ZQ==",
+      "sha512": "ZIiLPsf67YZ9zgr31vzrFaYQqxRPX9cVHjtPSnmx4eN6lbS/yEyYNr2vs1doGDEscF0tjCZFsk9yUg1sC9e8tg==",
       "type": "package",
       "path": "System.Xml.ReaderWriter/4.0.11",
       "files": [
@@ -4009,7 +3763,7 @@
       ]
     },
     "System.Xml.XDocument/4.0.11": {
-      "sha512": "iHOXVvahAYfKgXPk1fH9L8UrQXn5mID6OHEgV0h128de9SIaP3oZQFNzKJlcjpU4oMZZtqWcmYcT7jxXlV4Dig==",
+      "sha512": "Mk2mKmPi0nWaoiYeotq1dgeNK1fqWh61+EK+w4Wu8SWuTYLzpUnschb59bJtGywaPq7SmTuPf44wrXRwbIrukg==",
       "type": "package",
       "path": "System.Xml.XDocument/4.0.11",
       "files": [
@@ -4079,8 +3833,8 @@
     "TopShelf/3.3.1": {
       "sha512": "HcBcgYHICNnMSzFcVPjz1J6nQFA7dooPam6vDbrjXJGD8rXPQ+xABGZ6PqAWvoc5s8pnsYPafumNjvymGE/ulA==",
       "type": "package",
+      "path": "TopShelf/3.3.1",
       "files": [
-        "Topshelf.3.3.1.nupkg",
         "Topshelf.3.3.1.nupkg.sha512",
         "Topshelf.nuspec",
         "lib/net35/Topshelf.dll",
@@ -4090,8 +3844,8 @@
     "Twilio/4.7.2": {
       "sha512": "3uElm03YJpkh/L01ysetN8uJcNbDXzWzAcbstj2wEfLC1dYf/8EJ7PwYNZZwH4rZdvE76qrjwoCvPj33yiiXgQ==",
       "type": "package",
+      "path": "Twilio/4.7.2",
       "files": [
-        "Twilio.4.7.2.nupkg",
         "Twilio.4.7.2.nupkg.sha512",
         "Twilio.nuspec",
         "lib/3.5/Twilio.Api.dll",
@@ -4105,67 +3859,72 @@
         "lib/WINDOWSPHONE8/Twilio.Api.WindowsPhone.xml"
       ]
     },
-    "Warden/1.1.0": {
+    "Warden/1.2.0": {
       "type": "project",
       "path": "../../Warden/project.json",
       "msbuildProject": "../../Warden/Warden.xproj"
     },
-    "Warden.Integrations.HttpApi/1.1.1": {
+    "Warden.Integrations.HttpApi/1.2.0": {
       "type": "project",
       "path": "../../Integrations/Warden.Integrations.HttpApi/project.json",
       "msbuildProject": "../../Integrations/Warden.Integrations.HttpApi/Warden.Integrations.HttpApi.xproj"
     },
-    "Warden.Integrations.SendGrid/1.1.0": {
+    "Warden.Integrations.MsSql/1.2.0": {
+      "type": "project",
+      "path": "../../Integrations/Warden.Integrations.MsSql/project.json",
+      "msbuildProject": "../../Integrations/Warden.Integrations.MsSql/Warden.Integrations.MsSql.xproj"
+    },
+    "Warden.Integrations.SendGrid/1.2.0": {
       "type": "project",
       "path": "../../Integrations/Warden.Integrations.SendGrid/project.json",
       "msbuildProject": "../../Integrations/Warden.Integrations.SendGrid/Warden.Integrations.SendGrid.xproj"
     },
-    "Warden.Integrations.Slack/1.1.0": {
+    "Warden.Integrations.Slack/1.2.0": {
       "type": "project",
       "path": "../../Integrations/Warden.Integrations.Slack/project.json",
       "msbuildProject": "../../Integrations/Warden.Integrations.Slack/Warden.Integrations.Slack.xproj"
     },
-    "Warden.Integrations.Twilio/1.1.0": {
+    "Warden.Integrations.Twilio/1.2.0": {
       "type": "project",
       "path": "../../Integrations/Warden.Integrations.Twilio/project.json",
       "msbuildProject": "../../Integrations/Warden.Integrations.Twilio/Warden.Integrations.Twilio.xproj"
     },
-    "Warden.Watchers.Disk/1.1.0": {
+    "Warden.Watchers.Disk/1.2.0": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Disk/project.json",
       "msbuildProject": "../../Watchers/Warden.Watchers.Disk/Warden.Watchers.Disk.xproj"
     },
-    "Warden.Watchers.MongoDb/1.1.0": {
+    "Warden.Watchers.MongoDb/1.2.0": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.MongoDb/project.json",
       "msbuildProject": "../../Watchers/Warden.Watchers.MongoDb/Warden.Watchers.MongoDb.xproj"
     },
-    "Warden.Watchers.MsSql/1.1.1": {
+    "Warden.Watchers.MsSql/1.2.0": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.MsSql/project.json",
       "msbuildProject": "../../Watchers/Warden.Watchers.MsSql/Warden.Watchers.MsSql.xproj"
     },
-    "Warden.Watchers.Performance/1.1.0": {
+    "Warden.Watchers.Performance/1.2.0": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Performance/project.json",
       "msbuildProject": "../../Watchers/Warden.Watchers.Performance/Warden.Watchers.Performance.xproj"
     },
-    "Warden.Watchers.Process/1.1.0": {
+    "Warden.Watchers.Process/1.2.0": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Process/project.json",
       "msbuildProject": "../../Watchers/Warden.Watchers.Process/Warden.Watchers.Process.xproj"
     },
-    "Warden.Watchers.Redis/1.1.0": {
+    "Warden.Watchers.Redis/1.2.0": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Redis/project.json",
       "msbuildProject": "../../Watchers/Warden.Watchers.Redis/Warden.Watchers.Redis.xproj"
     },
-    "Warden.Watchers.Server/1.1.2": {
+    "Warden.Watchers.Server/1.2.0": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Server/project.json",
       "msbuildProject": "../../Watchers/Warden.Watchers.Server/Warden.Watchers.Server.xproj"
     },
-    "Warden.Watchers.Web/1.1.0": {
+    "Warden.Watchers.Web/1.2.0": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Web/project.json",
       "msbuildProject": "../../Watchers/Warden.Watchers.Web/Warden.Watchers.Web.xproj"
@@ -4173,22 +3932,22 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "System.Linq >= 4.0.1-beta-23516",
+      "System.Linq >= 4.0.0",
       "TopShelf >= 3.3.1",
-      "Warden >= 1.1.0",
-      "Warden.Integrations.HttpApi >= 1.1.1",
-      "Warden.Integrations.MsSql >= 1.1.0",
-      "Warden.Integrations.SendGrid >= 1.1.0",
-      "Warden.Integrations.Slack >= 1.1.0",
-      "Warden.Integrations.Twilio >= 1.1.0",
-      "Warden.Watchers.Disk >= 1.1.0",
-      "Warden.Watchers.MongoDb >= 1.1.0",
-      "Warden.Watchers.MsSql >= 1.1.1",
-      "Warden.Watchers.Performance >= 1.1.0",
-      "Warden.Watchers.Process >= 1.1.0",
-      "Warden.Watchers.Redis >= 1.1.0",
-      "Warden.Watchers.Server >= 1.1.2",
-      "Warden.Watchers.Web >= 1.1.0"
+      "Warden >= 1.2.0",
+      "Warden.Integrations.HttpApi >= 1.2.0",
+      "Warden.Integrations.MsSql >= 1.2.0",
+      "Warden.Integrations.SendGrid >= 1.2.0",
+      "Warden.Integrations.Slack >= 1.2.0",
+      "Warden.Integrations.Twilio >= 1.2.0",
+      "Warden.Watchers.Disk >= 1.2.0",
+      "Warden.Watchers.MongoDb >= 1.2.0",
+      "Warden.Watchers.MsSql >= 1.2.0",
+      "Warden.Watchers.Performance >= 1.2.0",
+      "Warden.Watchers.Process >= 1.2.0",
+      "Warden.Watchers.Redis >= 1.2.0",
+      "Warden.Watchers.Server >= 1.2.0",
+      "Warden.Watchers.Web >= 1.2.0"
     ],
     ".NETFramework,Version=v4.6.1": []
   },

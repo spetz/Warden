@@ -1,15 +1,17 @@
 ﻿{
-  "version": "1.1",
+  "version": "1.2",
   "description": "Warden watcher for Redis.",
   "authors": [ "Piotr Gankiewicz" ],
-  "tags": [ "Warden" ],
-  "projectUrl": "https://getwarden.net",
-  "licenseUrl": "https://github.com/warden-stack/Warden/blob/master/LICENSE",
+  "packOptions": {
+    "tags": [ "Warden" ],
+    "projectUrl": "https://getwarden.net",
+    "licenseUrl": "https://github.com/warden-stack/Warden/blob/master/LICENSE"
+  },
   "dependencies": {
-    "Warden": "1.1",
+    "Warden": "1.2",
     "StackExchange.Redis": "1.1.572"
   },
   "frameworks": {
-    "net461": { }
+    "net461": {}
   }
 }

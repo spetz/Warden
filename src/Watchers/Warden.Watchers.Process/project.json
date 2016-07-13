@@ -1,28 +1,30 @@
 {
-  "version": "1.1",
+  "version": "1.2",
   "description": "Warden watcher for Process.",
   "authors": [ "Piotr Gankiewicz" ],
-  "tags": [ "Warden" ],
-  "projectUrl": "https://getwarden.net",
-  "licenseUrl": "https://github.com/warden-stack/Warden/blob/master/LICENSE",
-  "dependencies": {
-    "Warden": "1.1"
+  "packOptions": {
+    "tags": [ "Warden" ],
+    "projectUrl": "https://getwarden.net",
+    "licenseUrl": "https://github.com/warden-stack/Warden/blob/master/LICENSE"
   },
-    "frameworks": {
-        "net461": {},
-        "netcoreapp1.0": {
-            "imports": [
-                "dotnet5.6",
-                "dnxcore50"
-            ],
-            "dependencies": {
-                "Microsoft.CSharp": "4.0.1",
-                "System.Collections": "4.0.11",
-                "System.Linq": "4.1.0",
-                "System.Runtime": "4.1.0",
-                "System.Threading": "4.0.11",
-                "System.Diagnostics.Process": "4.1.0"
-            }
-        }
+  "dependencies": {
+    "Warden": "1.2"
+  },
+  "frameworks": {
+    "net461": {},
+    "netcoreapp1.0": {
+      "imports": [
+        "dotnet5.6",
+        "dnxcore50"
+      ],
+      "dependencies": {
+        "Microsoft.CSharp": "4.0.1",
+        "System.Collections": "4.0.11",
+        "System.Linq": "4.1.0",
+        "System.Runtime": "4.1.0",
+        "System.Threading": "4.0.11",
+        "System.Diagnostics.Process": "4.1.0"
+      }
     }
+  }
 }
