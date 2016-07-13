@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Warden.Watchers;
 
 namespace Warden.Integrations.MsSql
 {
@@ -90,9 +91,8 @@ namespace Warden.Integrations.MsSql
             }
         }
 
-        //TODO: Refactor and add exception table
         /// <summary>
-        /// Inserts the IWardenIteration into the MS SQL database.
+        /// Inserts the IWardenIteration into the MS SQL database using tables based on the provided schema file.
         /// </summary>
         /// <param name="iteration">Iteration object that will be saved into the MS SQL database.</param>
         /// <returns></returns>
@@ -101,7 +101,6 @@ namespace Warden.Integrations.MsSql
             var wardenIterationCommand = "insert into WardenIterations values" +
                                          "(@wardenName, @ordinal, @startedAt, @completedAt, @executionTime, @isValid);" +
                                          "select cast(scope_identity() as bigint)";
-
             var wardenIterationParameters = new Dictionary<string, object>
             {
                 ["wardenName"] = iteration.WardenName,
@@ -111,11 +110,14 @@ namespace Warden.Integrations.MsSql
                 ["executionTime"] = iteration.ExecutionTime,
                 ["isValid"] = iteration.IsValid,
             };
-
             var iterationResultIds = await QueryAsync<long>(wardenIterationCommand, wardenIterationParameters);
             var iterationId = iterationResultIds.First();
+            await SaveWardenCheckResultsAsync(iteration.Results, iterationId);
+        }
 
-            foreach (var result in iteration.Results)
+        private async Task SaveWardenCheckResultsAsync(IEnumerable<IWardenCheckResult> results, long iterationId)
+        {
+            foreach (var result in results)
             {
                 var wardenCheckResultCommand = "insert into WardenCheckResults values (@wardenIteration_Id, @isValid, " +
                                                "@startedAt, @completedAt, @executionTime);select cast(scope_identity() as bigint)";
@@ -129,20 +131,27 @@ namespace Warden.Integrations.MsSql
                 };
                 var wardenCheckResultIds = await QueryAsync<long>(wardenCheckResultCommand, wardenCheckResultParameters);
                 var wardenCheckResultId = wardenCheckResultIds.First();
-
-                var watcherCheckResultCommand = "insert into WatcherCheckResults values (@wardenCheckResult_Id, @watcherName, " +
-                                     "@watcherType, @description, @isValid)";
-                var watcherCheckResultParameters = new Dictionary<string, object>
-                {
-                    ["wardenCheckResult_Id"] = wardenCheckResultId,
-                    ["watcherName"] = result.WatcherCheckResult.WatcherName,
-                    ["watcherType"] = result.WatcherCheckResult.WatcherType.ToString().Split('.').Last(),
-                    ["description"] = result.WatcherCheckResult.Description,
-                    ["isValid"] = result.WatcherCheckResult.IsValid
-                };
-                await ExecuteAsync(watcherCheckResultCommand, watcherCheckResultParameters);
+                await SaveWatcherCheckResultAsync(result.WatcherCheckResult, wardenCheckResultId);
                 await SaveExceptionAsync(result.Exception, wardenCheckResultId);
             }
+        }
+
+        private async Task SaveWatcherCheckResultAsync(IWatcherCheckResult result, long wardenCheckResultId)
+        {
+            if (result == null)
+                return;
+
+            var watcherCheckResultCommand = "insert into WatcherCheckResults values " +
+                                            "(@wardenCheckResult_Id, @watcherName, @watcherType, @description, @isValid)";
+            var watcherCheckResultParameters = new Dictionary<string, object>
+            {
+                ["wardenCheckResult_Id"] = wardenCheckResultId,
+                ["watcherName"] = result.WatcherName,
+                ["watcherType"] = result.WatcherType.ToString().Split('.').Last(),
+                ["description"] = result.Description,
+                ["isValid"] = result.IsValid
+            };
+            await ExecuteAsync(watcherCheckResultCommand, watcherCheckResultParameters);
         }
 
         private async Task<long?> SaveExceptionAsync(Exception exception, long wardenCheckResultId, long? parentExceptionId = null)
@@ -160,7 +169,6 @@ namespace Warden.Integrations.MsSql
                 ["source"] = exception.Source,
                 ["stackTrace"] = exception.StackTrace
             };
-
             var exceptionIds = await QueryAsync<long>(exceptionCommand, exceptionParameters);
             var exceptionId = exceptionIds.First();
             if (exception.InnerException == null)
