@@ -36,6 +36,7 @@ On top of that, you may use all of this information to collect the custom metric
 **What are the integrations with external services?**
 ----------------
  - **[HTTP API](https://github.com/spetz/Warden/wiki/Integration-with-HTTP-API)**
+ - **[MS SQL](https://github.com/spetz/Warden/wiki/Integration-with-MSSQL)**
  - **[SendGrid](https://github.com/spetz/Warden/wiki/Integration-with-SendGrid)**
  - **[Slack](https://github.com/spetz/Warden/wiki/Integration-with-Slack)**
  - **[Twilio](https://github.com/spetz/Warden/wiki/Integration-with-Twilio)**
@@ -68,13 +69,14 @@ Install-Package Warden
 | **[Warden Core](https://github.com/spetz/Warden/wiki/Warden)**         |        +      |        +     |     
 | **[Disk Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Disk)**         |        +      |        -     | _System.IO not compatible_
 | **[MongoDB Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-MongoDB)**      |        +      |        -     | _MongoDB Driver not compatible_
-| **[MSSQL Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-MSSQL)**        |        +      |        -     | _Dapper not compatible_
+| **[MS SQL Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-MSSQL)**        |        +      |        -     | _Dapper not compatible_
 | **[Performance Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Performance)**  |        +      |        -     | _PerformanceCounter not compatible_
 | **[Process Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Process)**          |        +      |        +     |
 | **[Redis Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Redis)**        |        +      |        -     | _StackExchange.Redis not compatible_
 | **[Server Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Server)**  |        +      |        -     | _System.Net.Sockets not compatible_
 | **[Web Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Web)**          |        +      |        +     |
 | **[HTTP API Integration](https://github.com/spetz/Warden/wiki/Integration-with-HTTP-API)** |        +      |        +     | 
+| **[MS SQL Integration](https://github.com/spetz/Warden/wiki/Integration-with-MSSQL)** |        +      |        +     | 
 | **[SendGrid Integration](https://github.com/spetz/Warden/wiki/Integration-with-SendGrid)** |        +      |        -     | _SendGrid not compatible_
 | **[Slack Integration](https://github.com/spetz/Warden/wiki/Integration-with-Slack)** |        +      |        +     | 
 | **[Twilio Integration](https://github.com/spetz/Warden/wiki/Integration-with-Twilio )** |        +      |        -     | _Twilio  not compatible_

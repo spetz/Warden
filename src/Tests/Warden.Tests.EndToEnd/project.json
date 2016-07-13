@@ -11,6 +11,7 @@
     "Moq": "4.2.1510.2205",
     "Warden": "1.1",
     "Warden.Integrations.HttpApi": "1.1.1",
+    "Warden.Integrations.MsSql": "1.1",
     "Warden.Integrations.Slack": "1.1",
     "Warden.Integrations.SendGrid": "1.1",
     "Warden.Integrations.Twilio": "1.1",

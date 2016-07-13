@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Warden.Watchers;
 
@@ -21,7 +20,7 @@ namespace Warden.Integrations.MsSql
             if (configuration == null)
             {
                 throw new ArgumentNullException(nameof(configuration),
-                    "MS SQL Integration configuration has not been provided.");
+                    "MS SQL integration configuration has not been provided.");
             }
 
             _configuration = configuration;
@@ -111,7 +110,9 @@ namespace Warden.Integrations.MsSql
                 ["isValid"] = iteration.IsValid,
             };
             var iterationResultIds = await QueryAsync<long>(wardenIterationCommand, wardenIterationParameters);
-            var iterationId = iterationResultIds.First();
+            var iterationId = iterationResultIds.FirstOrDefault();
+            if(iterationId <= 0)
+                return;
             await SaveWardenCheckResultsAsync(iteration.Results, iterationId);
         }
 
@@ -130,7 +131,9 @@ namespace Warden.Integrations.MsSql
                     ["executionTime"] = result.ExecutionTime
                 };
                 var wardenCheckResultIds = await QueryAsync<long>(wardenCheckResultCommand, wardenCheckResultParameters);
-                var wardenCheckResultId = wardenCheckResultIds.First();
+                var wardenCheckResultId = wardenCheckResultIds.FirstOrDefault();
+                if(wardenCheckResultId <= 0)
+                    return;
                 await SaveWatcherCheckResultAsync(result.WatcherCheckResult, wardenCheckResultId);
                 await SaveExceptionAsync(result.Exception, wardenCheckResultId);
             }
@@ -170,7 +173,9 @@ namespace Warden.Integrations.MsSql
                 ["stackTrace"] = exception.StackTrace
             };
             var exceptionIds = await QueryAsync<long>(exceptionCommand, exceptionParameters);
-            var exceptionId = exceptionIds.First();
+            var exceptionId = exceptionIds.FirstOrDefault();
+            if (exceptionId <= 0)
+                return null;
             if (exception.InnerException == null)
                 return exceptionId;
 

@@ -35,7 +35,7 @@ namespace Warden.Integrations.MsSql
     }
 
     /// <summary>
-    /// Default implementation of the IMsSql based on Dapper.
+    /// Default implementation of the IMsSqlService based on Dapper.
     /// </summary>
     public class DapperMsSqlService : IMsSqlService
     {

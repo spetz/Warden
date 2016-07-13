@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Warden.Core;
 using Warden.Integrations.HttpApi;
+using Warden.Integrations.MsSql;
 using Warden.Watchers;
 using Warden.Watchers.Disk;
 using Warden.Watchers.MongoDb;
@@ -83,6 +84,7 @@ namespace Warden.Examples.WindowsService
                         ["Authorization"] = "Token MyBase64EncodedString"
                     }), cfg => cfg.EnsureThat(response => response.Headers.Any())
                 )
+                .IntegrateWithMsSql(@"Data Source=.\sqlexpress;Initial Catalog=MyDatabase;Integrated Security=True")
                 //Set proper API key or credentials.
                 //.IntegrateWithSendGrid("api-key", "noreply@system.com", cfg =>
                 //{
@@ -116,7 +118,8 @@ namespace Warden.Examples.WindowsService
                         //    integrations.Slack().SendMessageAsync($"Iteration {iteration.Ordinal} has completed."))
                         .OnIterationCompletedAsync(iteration => integrations.HttpApi()
                             .PostIterationToWardenPanelAsync(iteration))
-                        .OnError(exception => Console.WriteLine(exception));
+                        .OnError(exception => Console.WriteLine(exception))
+                        .OnIterationCompletedAsync(iteration => OnIterationCompletedMsSqlAsync(iteration, integrations.MsSql()));
                 })
                 .Build();
 
@@ -188,6 +191,12 @@ namespace Warden.Examples.WindowsService
                                   $"Completed at: {result.CompletedAt}{newLine}" +
                                   $"Execution time: {result.ExecutionTime}{newLine}");
             }
+        }
+
+        private static async Task OnIterationCompletedMsSqlAsync(IWardenIteration wardenIteration,
+            MsSqlIntegration integration)
+        {
+            await integration.SaveIterationAsync(wardenIteration);
         }
     }
 }
