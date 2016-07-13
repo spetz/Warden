@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using Warden.Web.Core.Dto;
 using Warden.Web.Core.Queries;
@@ -34,7 +34,7 @@ namespace Warden.Web.Controllers
         {
             var warden = await GetWardenForUserAsync(organizationId, wardenId);
             if (warden == null)
-                return HttpNotFound();
+                return NotFound();
 
             var stats = await _wardenService.GetStatsAsync(new GetWardenStats
             {
@@ -72,7 +72,7 @@ namespace Warden.Web.Controllers
 
             var warden = await GetWardenForUserAsync(organizationId, wardenId);
             if (warden == null)
-                return HttpNotFound();
+                return NotFound();
 
             return await _organizationService.DisableWardenAsync(organizationId, warden.Name)
                 .Execute(
@@ -98,7 +98,7 @@ namespace Warden.Web.Controllers
 
             var warden = await GetWardenForUserAsync(organizationId, wardenId);
             if (warden == null)
-                return HttpNotFound();
+                return NotFound();
 
             return await _organizationService.EnableWardenAsync(organizationId, warden.Name)
                 .Execute(
@@ -120,10 +120,10 @@ namespace Warden.Web.Controllers
         {
             var warden = await GetWardenForUserAsync(organizationId, wardenId);
             if (warden == null)
-                return HttpNotFound();
+                return NotFound();
             var iteration = await _wardenService.GetIterationAsync(iterationId);
             if (iteration == null)
-                return HttpNotFound();
+                return NotFound();
 
             var viewModel = new WardenIterationViewModel
             {
@@ -142,7 +142,7 @@ namespace Warden.Web.Controllers
         {
             var warden = await GetWardenForUserAsync(organizationId, wardenId);
             if (warden == null)
-                return HttpNotFound();
+                return NotFound();
 
             var viewModel = new EditWardenViewModel
             {

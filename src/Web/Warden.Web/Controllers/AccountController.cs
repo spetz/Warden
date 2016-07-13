@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Authentication.Cookies;
-using Microsoft.AspNet.Authorization;
-using Microsoft.AspNet.Http.Authentication;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Authentication;
+using Microsoft.AspNetCore.Mvc;
+using NLog;
 using Warden.Web.Core.Services;
 using Warden.Web.Extensions;
 using Warden.Web.Framework;
@@ -34,6 +35,7 @@ namespace Warden.Web.Controllers
         [ImportModelStateFromTempData]
         public IActionResult Login()
         {
+            Logger.Log(LogLevel.Error, "in login");
             return View();
         }
 

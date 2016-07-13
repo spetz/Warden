@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNet.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Mvc.Filters;
 using NLog;
 
 namespace Warden.Web.Framework.Filters

@@ -2,17 +2,18 @@
   "version": "1.1",
   "description": "Warden.Web.Core library",
   "authors": [ "Piotr Gankiewicz" ],
-  "tags": [ "" ],
-  "projectUrl": "",
-  "licenseUrl": "",
-  "dependencies": {
-    "MongoDB.Driver": "2.2.3",
-    "Newtonsoft.Json": "8.0.3",
-    "NLog.Extensions.Logging": "1.0.0-rc1-final-2016-03-11",
-    "Microsoft.AspNet.SignalR.Core": "2.2.0",
-    "Sendgrid": "6.3.4"
-  },
+    "dependencies": {
+        "MongoDB.Driver": "2.2.3",
+        "Newtonsoft.Json": "9.0.1",
+        "NLog.Extensions.Logging": "1.0.0-rtm-alpha2",
+        "Microsoft.AspNet.SignalR.Core": "2.2.0",
+        "Sendgrid": "6.3.4",
+        "System.Runtime": "4.1.0",
+        "NETStandard.Library": "1.6.0"
+    },
   "frameworks": {
-    "net451": { }
+    "net461": {
+        
+    }
   }
 }

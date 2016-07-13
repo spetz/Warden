@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Microsoft.AspNet.Html.Abstractions;
-using Microsoft.AspNet.Mvc;
-using Microsoft.AspNet.Mvc.Rendering;
+using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Warden.Web.Core.Domain;
 using Warden.Web.Core.Extensions;
 
@@ -18,14 +18,14 @@ namespace Warden.Web.Extensions
             var listTag = new TagBuilder("ul");
             listTag.AddCssClass("pagination");
             var previousPageTag = GetPreviousPageTag(urlHelper, viewModel, action, controller);
-            listTag.InnerHtml.Append(previousPageTag);
+            listTag.InnerHtml.Append(previousPageTag.ToString());
             var pageTags = GetPageTags(urlHelper, viewModel, action, controller);
             foreach (var pageTag in pageTags)
             {
-                listTag.InnerHtml.Append(pageTag);
+                listTag.InnerHtml.Append(pageTag.ToString());
             }
             var nextPageTag = GetNextPageTag(urlHelper, viewModel, action, controller);
-            listTag.InnerHtml.Append(nextPageTag);
+            listTag.InnerHtml.Append(nextPageTag.ToString());
 
             return listTag;
         }
@@ -48,8 +48,8 @@ namespace Warden.Web.Extensions
                 listItemTag.AddCssClass("disabled");
             }
 
-            linkTag.InnerHtml.Append(iconTag);
-            listItemTag.InnerHtml.Append(linkTag);
+            linkTag.InnerHtml.Append(iconTag.ToString());
+            listItemTag.InnerHtml.Append(linkTag.ToString());
 
             return listItemTag;
         }
@@ -73,7 +73,7 @@ namespace Warden.Web.Extensions
                 listItemTag.AddCssClass(pageClass);
 
                 linkTag.InnerHtml.Append(i.ToString());
-                listItemTag.InnerHtml.Append(linkTag);
+                listItemTag.InnerHtml.Append(linkTag.ToString());
 
                 yield return listItemTag;
             }
@@ -99,8 +99,8 @@ namespace Warden.Web.Extensions
                 listItemTag.AddCssClass("disabled");
             }
 
-            linkTag.InnerHtml.Append(iconTag);
-            listItemTag.InnerHtml.Append(linkTag);
+            linkTag.InnerHtml.Append(iconTag.ToString());
+            listItemTag.InnerHtml.Append(linkTag.ToString());
 
             return listItemTag;
         }

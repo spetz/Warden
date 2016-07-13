@@ -26,6 +26,6 @@
     "Warden.Examples.WindowsService": "Warden.Examples.WindowsService"
   },
   "frameworks": {
-    "dnx451": { }
+    "net461": { }
   }
 }

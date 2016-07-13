@@ -1,18 +1,22 @@
 ﻿using System;
-using Microsoft.AspNet.Builder;
+using System.IO;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using Newtonsoft.Json.Serialization;
 using Warden.Web.Core.Mongo;
 using Warden.Web.Core.Services;
-using Microsoft.AspNet.Hosting;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.Owin.Builder;
 using Newtonsoft.Json;
 using NLog;
+using NLog.Extensions.Logging;
 using Owin;
 using Warden.Web.Core.Factories;
 using Warden.Web.Core.Settings;
@@ -31,17 +35,21 @@ namespace Warden.Web
         public Startup(IHostingEnvironment env)
         {
             Configuration = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("config.json")
                 .AddJsonFile($"config.{env.EnvironmentName}.json", optional: true)
-                .AddNLogConfig("nlog.config")
                 .AddEnvironmentVariables()
                 .Build();
+
+            env.ConfigureNLog("nlog.config");
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var settings = Configuration.GetSection("general").Get<GeneralSettings>();
+            GeneralSettings settings = GetConfigurationValue<GeneralSettings>("general");
+
             services.AddOptions();
+
             services.Configure<FeatureSettings>(Configuration.GetSection("feature"));
             services.Configure<GeneralSettings>(Configuration.GetSection("general"));
             services.Configure<EmailSettings>(Configuration.GetSection("email"));
@@ -56,7 +64,7 @@ namespace Warden.Web
                 formatter.Formatting = Formatting.Indented;
                 formatter.ContractResolver = new CamelCasePropertyNamesContractResolver();
             });
-            services.AddCaching();
+            services.AddMemoryCache();
             services.AddSession();
             services.AddScoped<IWardenService, WardenService>();
             services.AddScoped<IWatcherService, WatcherService>();
@@ -66,10 +74,10 @@ namespace Warden.Web
             services.AddSingleton<IStatsCalculator, StatsCalculator>();
             services.AddSingleton<IEmailSender, SendGridEmailSender>();
             services.AddSingleton<ISecuredOperationFactory, SecuredOperationFactory>();
-            services.AddSingleton(provider => Configuration.GetSection("feature").Get<FeatureSettings>());
-            services.AddSingleton(provider => Configuration.GetSection("general").Get<GeneralSettings>());
-            services.AddSingleton(provider => Configuration.GetSection("email").Get<EmailSettings>());
-            services.AddSingleton(provider => Configuration.GetSection("account").Get<AccountSettings>());
+            services.AddSingleton(provider => GetConfigurationValue<FeatureSettings>("feature"));
+            services.AddSingleton(provider => GetConfigurationValue<GeneralSettings>("general"));
+            services.AddSingleton(provider => GetConfigurationValue<EmailSettings>("email"));
+            services.AddSingleton(provider => GetConfigurationValue<AccountSettings>("account"));
             services.AddSingleton<IEncrypter>(provider => new Encrypter(settings.EncrypterKey));
             services.AddSingleton(provider => new MongoClient(settings.ConnectionString));
             services.AddScoped(provider => provider.GetService<MongoClient>().GetDatabase(settings.Database));
@@ -77,7 +85,14 @@ namespace Warden.Web
                 new SignalRService(GlobalHost.ConnectionManager.GetHubContext<WardenHub>()));
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationEnvironment appEnv,
+        private T GetConfigurationValue<T>(string section) where T : new()
+        {
+            T val = new T();
+            Configuration.GetSection(section).Bind(val);
+            return val;
+        }
+
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, 
             ILoggerFactory loggerFactory, IServiceProvider serviceProvider, GeneralSettings settings)
         {
             if (env.IsDevelopment())
@@ -85,18 +100,18 @@ namespace Warden.Web
                 app.UseDeveloperExceptionPage();
             }
             loggerFactory.AddNLog(Configuration);
-            app.UseIISPlatformHandler();
             app.UseStaticFiles();
-            app.UseCookieAuthentication(options =>
+            app.UseCookieAuthentication(new CookieAuthenticationOptions()
             {
-                options.AutomaticAuthenticate = true;
-                options.AutomaticChallenge = true;
-                options.CookieName = settings.AuthCookieName;
-                options.LoginPath = settings.LoginPath;
-                options.LogoutPath = settings.LogoutPath;
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true,
+                CookieName = settings.AuthCookieName,
+                LoginPath = settings.LoginPath,
+                LogoutPath = settings.LogoutPath
             });
             app.UseSession();
             app.UseMvcWithDefaultRoute();
+            app.UseDeveloperExceptionPage();
             MapSignalR(app, serviceProvider);
             MongoConfigurator.Initialize();
             Logger.Info("Application has started.");
@@ -125,6 +140,16 @@ namespace Warden.Web
             //SignalR camelCase JSON resolver does not seem to be working.
         }
 
-        public static void Main(string[] args) => WebApplication.Run<Startup>(args);
+        public static void Main(string[] args)
+        {
+            var host = new WebHostBuilder()
+                .UseKestrel()
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseIISIntegration()
+                .UseStartup<Startup>()
+                .Build();
+
+            host.Run();
+        }
     }
 }

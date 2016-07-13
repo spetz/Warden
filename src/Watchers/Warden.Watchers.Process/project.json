@@ -8,17 +8,21 @@
   "dependencies": {
     "Warden": "1.1"
   },
-  "frameworks": {
-    "dnx451": { },
-    "dotnet5.4": {
-      "dependencies": {
-        "Microsoft.CSharp": "4.0.0",
-        "System.Collections": "4.0.0",
-        "System.Linq": "4.0.0",
-        "System.Runtime": "4.0.20",
-        "System.Threading": "4.0.10",
-        "System.Diagnostics.Process": "4.1.0-beta-23516"
-      }
+    "frameworks": {
+        "net461": {},
+        "netcoreapp1.0": {
+            "imports": [
+                "dotnet5.6",
+                "dnxcore50"
+            ],
+            "dependencies": {
+                "Microsoft.CSharp": "4.0.1",
+                "System.Collections": "4.0.11",
+                "System.Linq": "4.1.0",
+                "System.Runtime": "4.1.0",
+                "System.Threading": "4.0.11",
+                "System.Diagnostics.Process": "4.1.0"
+            }
+        }
     }
-  }
 }

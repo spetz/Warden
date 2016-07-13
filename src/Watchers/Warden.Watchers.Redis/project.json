@@ -10,6 +10,6 @@
     "StackExchange.Redis": "1.1.572"
   },
   "frameworks": {
-    "net451": { }
+    "net461": { }
   }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Warden.Web.Core.Domain;
 using Warden.Web.Core.Services;
 using Warden.Web.Extensions;
@@ -82,7 +82,7 @@ namespace Warden.Web.Controllers
         {
             var apiKey = await _apiKeyService.GetAsync(key);
             if (apiKey?.UserId != UserId)
-                return HttpBadRequest("Invalid API key.");
+                return BadRequest("Invalid API key.");
 
             await _apiKeyService.DeleteAsync(key);
 

@@ -1,40 +1,56 @@
 {
-  "version": "1.1",
-  "compilationOptions": {
-    "emitEntryPoint": true
-  },
-  "dependencies": {
-    "Microsoft.AspNet.IISPlatformHandler": "1.0.0-rc1-final",
-    "Microsoft.AspNet.Server.Kestrel": "1.0.0-rc1-final",
-    "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
-    "Microsoft.AspNet.Authorization": "1.0.0-rc1-final",
-    "Microsoft.AspNet.Authentication.Cookies": "1.0.0-rc1-final",
-    "Microsoft.AspNet.Session": "1.0.0-rc1-final",
-    "Microsoft.AspNet.StaticFiles": "1.0.0-rc1-final",
-    "Microsoft.AspNet.Diagnostics": "1.0.0-rc1-final",
-    "Microsoft.AspNet.Mvc.TagHelpers": "6.0.0-rc1-final",
-    "Microsoft.AspNet.Owin": "1.0.0-rc1-final",
-    "Microsoft.AspNet.SignalR": "2.2.0",
-    "MongoDB.Driver": "2.2.3",
-    "Microsoft.CSharp": "4.0.0",
-    "Microsoft.AspNet.Mvc.WebApiCompatShim": "6.0.0-rc1-final",
-    "Warden.Web.Core": "1.1",
-    "Newtonsoft.Json": "8.0.3",
-    "NLog.Extensions.Logging": "1.0.0-rc1-final-2016-03-11",
-    "Microsoft.AspNet.SignalR.Core": "2.2.0"
-  },
-  "commands": {
-    "web": "Microsoft.AspNet.Server.Kestrel"
-  },
-  "frameworks": {
-    "dnx451": { }
-  },
-  "exclude": [
-    "wwwroot",
-    "node_modules"
-  ],
-  "publishExclude": [
-    "**.user",
-    "**.vspscc"
-  ]
+    "version": "1.1",
+    "buildOptions": {
+        "emitEntryPoint": true,
+        "preserveCompilationContext": true
+    },
+    "dependencies": {
+        "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
+        "Microsoft.AspNetCore.Server.Kestrel": "1.0.0",
+        "Microsoft.AspNetCore.Mvc": "1.0.0",
+        "Microsoft.AspNetCore.Authorization": "1.0.0",
+        "Microsoft.AspNetCore.Authentication.Cookies": "1.0.0",
+        "Microsoft.AspNetCore.Session": "1.0.0",
+        "Microsoft.AspNetCore.StaticFiles": "1.0.0",
+        "Microsoft.AspNetCore.Diagnostics": "1.0.0",
+        "Microsoft.AspNetCore.Mvc.TagHelpers": "1.0.0",
+        "Microsoft.AspNetCore.Owin": "1.0.0",
+        "Microsoft.AspNet.SignalR": "2.2.0",
+        "MongoDB.Driver": "2.2.3",
+        "Microsoft.CSharp": "4.0.1",
+        "Microsoft.AspNetCore.Mvc.WebApiCompatShim": "1.0.0",
+        "Warden.Web.Core": "1.1",
+        "Newtonsoft.Json": "9.0.1",
+        "NLog.Extensions.Logging": "1.0.0-rtm-alpha2",
+        "Microsoft.AspNet.SignalR.Core": "2.2.0",
+        "System.Runtime": "4.1.0",
+        "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
+        "Microsoft.Extensions.Configuration": "1.0.0",
+        "Microsoft.Extensions.Configuration.Json": "1.0.0",
+        "Microsoft.Extensions.Configuration.Binder": "1.0.0",
+        "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0",
+        "Microsoft.Extensions.Caching.Memory": "1.0.0"
+    },
+    "commands": {
+        "web": "Microsoft.AspNet.Server.Kestrel"
+    },
+    "frameworks": {
+        "net461": {}
+    },
+    "publishOptions": {
+        "include": [
+            "wwwroot",
+            "Views",
+            "appsettings.json",
+            "web.config",
+            "config.json",
+            "nlog.config"
+        ]
+    },
+    "tools": {
+        "Microsoft.AspNetCore.Server.IISIntegration.Tools": "1.0.0-preview2-final"
+    },
+    "scripts": {
+        "postpublish": "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%"
+    }
 }

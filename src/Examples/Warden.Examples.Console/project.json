@@ -27,6 +27,6 @@
     "Warden.Examples.Console": "Warden.Examples.Console"
   },
   "frameworks": {
-    "dnx451": { }
+    "net461": { }
   }
 }
