@@ -5,17 +5,22 @@
   "tags": [ "Warden" ],
   "projectUrl": "https://getwarden.net",
   "licenseUrl": "https://github.com/warden-stack/Warden/blob/master/LICENSE",
-  "frameworks": {
-    "net451": { },
-    "dotnet5.4": {
-      "dependencies": {
-        "Microsoft.CSharp": "4.0.0",
-        "System.Collections": "4.0.0",
-        "System.Linq": "4.0.0",
-        "System.Runtime": "4.0.20",
-        "System.Threading": "4.0.10",
-        "System.Runtime.InteropServices.RuntimeInformation": "4.0.0-beta-23516"
-      }
+    "frameworks": {
+        "net461": {},
+        "netcoreapp1.0": {
+            "imports": [
+                "dotnet5.6",
+                "dnxcore50"
+            ],
+            "dependencies": {
+                "Microsoft.CSharp": "4.0.1",
+                "System.Collections": "4.0.11",
+                "System.Linq": "4.1.0",
+                "System.Runtime": "4.1.0",
+                "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
+                "System.Runtime.InteropServices.RuntimeInformation": "4.0.0",
+                "System.Threading": "4.0.11"
+            }
+        }
     }
-  }
 }

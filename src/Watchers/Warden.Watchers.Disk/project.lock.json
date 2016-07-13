@@ -2,77 +2,32 @@
   "locked": false,
   "version": 2,
   "targets": {
-    ".NETFramework,Version=v4.5.1": {
+    ".NETFramework,Version=v4.6.1": {
       "Warden/1.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6.1",
         "compile": {
-          "lib/net451/Warden.dll": {}
+          "net461/Warden.dll": {}
         },
         "runtime": {
-          "lib/net451/Warden.dll": {}
-        }
-      }
-    },
-    ".NETFramework,Version=v4.5.1/win7-x86": {
-      "Warden/1.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/net451/Warden.dll": {}
-        },
-        "runtime": {
-          "lib/net451/Warden.dll": {}
-        }
-      }
-    },
-    ".NETFramework,Version=v4.5.1/win7-x64": {
-      "Warden/1.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/net451/Warden.dll": {}
-        },
-        "runtime": {
-          "lib/net451/Warden.dll": {}
+          "net461/Warden.dll": {}
         }
       }
     }
   },
   "libraries": {
     "Warden/1.1.0": {
-      "type": "package",
-      "sha512": "fAmgMRPi3rAGLGYMczq4Ip7zlcS8BISJ9VKyePZFY+/O9mFN7yCWOZKnaWXIrnK8qRhb0OJUbOOZQIcb67S1Qw==",
-      "files": [
-        "lib/dotnet5.4/Warden.dll",
-        "lib/dotnet5.4/Warden.xml",
-        "lib/net451/Warden.dll",
-        "lib/net451/Warden.xml",
-        "Warden.1.1.0.nupkg",
-        "Warden.1.1.0.nupkg.sha512",
-        "Warden.nuspec"
-      ]
+      "type": "project",
+      "path": "../../Warden/project.json",
+      "msbuildProject": "../../Warden/Warden.xproj"
     }
   },
   "projectFileDependencyGroups": {
     "": [
       "Warden >= 1.1.0"
     ],
-    ".NETFramework,Version=v4.5.1": []
-  }
+    ".NETFramework,Version=v4.6.1": []
+  },
+  "tools": {},
+  "projectFileToolGroups": {}
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Warden.Web.Core.Domain;
 using Warden.Web.Core.Dto;
 using Warden.Web.Core.Queries;
@@ -46,7 +46,7 @@ namespace Warden.Web.Controllers
         {
             var organization = await GetOrganizationForUserAsync(id);
             if (organization == null)
-                return HttpNotFound();
+                return NotFound();
 
             var viewModel = new OrganizationViewModel
             {
@@ -93,7 +93,7 @@ namespace Warden.Web.Controllers
         public async Task<IActionResult> Edit(Guid id)
         {
             if (!await IsOrganizationOwnerAsync(id))
-                return new HttpUnauthorizedResult();
+                return new UnauthorizedResult();
 
             var organization = await _organizationService.GetAsync(id);
             var viewModel = new EditOrganizationViewModel
@@ -110,7 +110,7 @@ namespace Warden.Web.Controllers
         public async Task<IActionResult> Edit(Guid id, EditOrganizationViewModel viewModel)
         {
             if (!await IsOrganizationOwnerAsync(id))
-                return new HttpUnauthorizedResult();
+                return new UnauthorizedResult();
 
             if (!ModelState.IsValid)
                 return RedirectToAction("Edit", new {id});
@@ -135,11 +135,11 @@ namespace Warden.Web.Controllers
         public async Task<IActionResult> AddUser(Guid id)
         {
             if (!await IsOrganizationOwnerAsync(id))
-                return new HttpUnauthorizedResult();
+                return new UnauthorizedResult();
 
             var organization = await GetOrganizationForUserAsync(id);
             if (organization == null)
-                return HttpBadRequest($"Invalid organization id: '{id}'.");
+                return BadRequest($"Invalid organization id: '{id}'.");
 
             return View();
         }
@@ -151,14 +151,14 @@ namespace Warden.Web.Controllers
         public async Task<IActionResult> AddUser(Guid id, AddUserToOrganizationViewModel viewModel)
         {
             if (!await IsOrganizationOwnerAsync(id))
-                return new HttpUnauthorizedResult();
+                return new UnauthorizedResult();
 
             if (!ModelState.IsValid)
                 return RedirectToAction("AddUser");
 
             var organization = await GetOrganizationForUserAsync(id);
             if (organization == null)
-                return HttpBadRequest($"Invalid organization id: '{id}'.");
+                return BadRequest($"Invalid organization id: '{id}'.");
 
             return await _organizationService.AddUserAsync(id, viewModel.Email)
                 .Execute(
@@ -181,7 +181,7 @@ namespace Warden.Web.Controllers
         {
             var organization = await GetOrganizationForUserAsync(id);
             if (organization == null)
-                return HttpBadRequest($"Invalid organization id: '{id}'.");
+                return BadRequest($"Invalid organization id: '{id}'.");
 
             return View();
         }
@@ -197,7 +197,7 @@ namespace Warden.Web.Controllers
 
             var organization = await GetOrganizationForUserAsync(id);
             if (organization == null)
-                return HttpBadRequest($"Invalid organization id: '{id}'.");
+                return BadRequest($"Invalid organization id: '{id}'.");
 
             return await _organizationService.AddWardenAsync(id, viewModel.Name)
                 .Execute(
@@ -219,7 +219,7 @@ namespace Warden.Web.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             if (!await IsOrganizationOwnerAsync(id))
-                return new HttpUnauthorizedResult();
+                return new UnauthorizedResult();
 
             return await _organizationService.DeleteAsync(id)
                 .Execute(
@@ -241,7 +241,7 @@ namespace Warden.Web.Controllers
         public async Task<IActionResult> DeleteUser(Guid id, Guid userId)
         {
             if (!await IsOrganizationOwnerAsync(id))
-                return new HttpUnauthorizedResult();
+                return new UnauthorizedResult();
 
             return await _organizationService.DeleteUserAsync(id, userId)
                 .Execute(
@@ -263,11 +263,11 @@ namespace Warden.Web.Controllers
         {
             var organization = await GetOrganizationForUserAsync(id);
             if (organization == null)
-                return HttpBadRequest($"Invalid organization id: '{id}'.");
+                return BadRequest($"Invalid organization id: '{id}'.");
 
             var user = organization.Users.FirstOrDefault(x => x.Id == userId);
             if (user == null)
-                return HttpNotFound();
+                return NotFound();
 
             var viewModel = new UserInOrganizationViewModel
             {
@@ -285,7 +285,7 @@ namespace Warden.Web.Controllers
         public async Task<IActionResult> EnableAutoRegisterNewWarden(Guid id)
         {
             if (!await IsOrganizationOwnerAsync(id))
-                return new HttpUnauthorizedResult();
+                return new UnauthorizedResult();
 
             return await _organizationService.EnableAutoRegisterNewWardenAsync(id)
                 .Execute(
@@ -307,7 +307,7 @@ namespace Warden.Web.Controllers
         public async Task<IActionResult> DisableAutoRegisterNewWarden(Guid id)
         {
             if (!await IsOrganizationOwnerAsync(id))
-                return new HttpUnauthorizedResult();
+                return new UnauthorizedResult();
 
             return await _organizationService.DisableAutoRegisterNewWardenAsync(id)
                 .Execute(

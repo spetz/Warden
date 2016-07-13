@@ -2,7 +2,7 @@
   "locked": false,
   "version": 2,
   "targets": {
-    ".NETFramework,Version=v4.5.1": {
+    ".NETFramework,Version=v4.6.1": {
       "Microsoft.AspNet.WebApi.Client/5.2.3": {
         "type": "package",
         "dependencies": {
@@ -18,7 +18,7 @@
           "lib/net45/System.Net.Http.Formatting.dll": {}
         }
       },
-      "Newtonsoft.Json/7.0.1-beta1": {
+      "Newtonsoft.Json/7.0.1": {
         "type": "package",
         "compile": {
           "lib/net45/Newtonsoft.Json.dll": {}
@@ -53,172 +53,38 @@
         }
       },
       "Warden/1.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6.1",
         "compile": {
-          "lib/net451/Warden.dll": {}
+          "net461/Warden.dll": {}
         },
         "runtime": {
-          "lib/net451/Warden.dll": {}
-        }
-      }
-    },
-    ".NETFramework,Version=v4.5.1/win7-x86": {
-      "Microsoft.AspNet.WebApi.Client/5.2.3": {
-        "type": "package",
-        "dependencies": {
-          "Newtonsoft.Json": "6.0.4"
-        },
-        "frameworkAssemblies": [
-          "System.Net.Http"
-        ],
-        "compile": {
-          "lib/net45/System.Net.Http.Formatting.dll": {}
-        },
-        "runtime": {
-          "lib/net45/System.Net.Http.Formatting.dll": {}
-        }
-      },
-      "Newtonsoft.Json/7.0.1-beta1": {
-        "type": "package",
-        "compile": {
-          "lib/net45/Newtonsoft.Json.dll": {}
-        },
-        "runtime": {
-          "lib/net45/Newtonsoft.Json.dll": {}
-        }
-      },
-      "Sendgrid/6.3.4": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.AspNet.WebApi.Client": "5.2.3",
-          "Newtonsoft.Json": "7.0.0",
-          "SendGrid.SmtpApi": "1.3.1"
-        },
-        "compile": {
-          "lib/SendGrid.dll": {},
-          "lib/SendGridMail.dll": {}
-        },
-        "runtime": {
-          "lib/SendGrid.dll": {},
-          "lib/SendGridMail.dll": {}
-        }
-      },
-      "SendGrid.SmtpApi/1.3.1": {
-        "type": "package",
-        "compile": {
-          "lib/net40/SendGrid.SmtpApi.dll": {}
-        },
-        "runtime": {
-          "lib/net40/SendGrid.SmtpApi.dll": {}
-        }
-      },
-      "Warden/1.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/net451/Warden.dll": {}
-        },
-        "runtime": {
-          "lib/net451/Warden.dll": {}
-        }
-      }
-    },
-    ".NETFramework,Version=v4.5.1/win7-x64": {
-      "Microsoft.AspNet.WebApi.Client/5.2.3": {
-        "type": "package",
-        "dependencies": {
-          "Newtonsoft.Json": "6.0.4"
-        },
-        "frameworkAssemblies": [
-          "System.Net.Http"
-        ],
-        "compile": {
-          "lib/net45/System.Net.Http.Formatting.dll": {}
-        },
-        "runtime": {
-          "lib/net45/System.Net.Http.Formatting.dll": {}
-        }
-      },
-      "Newtonsoft.Json/7.0.1-beta1": {
-        "type": "package",
-        "compile": {
-          "lib/net45/Newtonsoft.Json.dll": {}
-        },
-        "runtime": {
-          "lib/net45/Newtonsoft.Json.dll": {}
-        }
-      },
-      "Sendgrid/6.3.4": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.AspNet.WebApi.Client": "5.2.3",
-          "Newtonsoft.Json": "7.0.0",
-          "SendGrid.SmtpApi": "1.3.1"
-        },
-        "compile": {
-          "lib/SendGrid.dll": {},
-          "lib/SendGridMail.dll": {}
-        },
-        "runtime": {
-          "lib/SendGrid.dll": {},
-          "lib/SendGridMail.dll": {}
-        }
-      },
-      "SendGrid.SmtpApi/1.3.1": {
-        "type": "package",
-        "compile": {
-          "lib/net40/SendGrid.SmtpApi.dll": {}
-        },
-        "runtime": {
-          "lib/net40/SendGrid.SmtpApi.dll": {}
-        }
-      },
-      "Warden/1.1.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/net451/Warden.dll": {}
-        },
-        "runtime": {
-          "lib/net451/Warden.dll": {}
+          "net461/Warden.dll": {}
         }
       }
     }
   },
   "libraries": {
     "Microsoft.AspNet.WebApi.Client/5.2.3": {
-      "type": "package",
       "sha512": "3kiI8peSXbXHDDrRuo+QaX0iCEVRe0nvn2dBDRw656uPX32UalbBlSIDUDlJxu05eau4tnuhsikiUuugvvoUoQ==",
+      "type": "package",
       "files": [
+        "Microsoft.AspNet.WebApi.Client.5.2.3.nupkg",
+        "Microsoft.AspNet.WebApi.Client.5.2.3.nupkg.sha512",
+        "Microsoft.AspNet.WebApi.Client.nuspec",
         "lib/net45/System.Net.Http.Formatting.dll",
         "lib/net45/System.Net.Http.Formatting.xml",
         "lib/portable-wp8+netcore45+net45+wp81+wpa81/System.Net.Http.Formatting.dll",
-        "lib/portable-wp8+netcore45+net45+wp81+wpa81/System.Net.Http.Formatting.xml",
-        "Microsoft.AspNet.WebApi.Client.5.2.3.nupkg",
-        "Microsoft.AspNet.WebApi.Client.5.2.3.nupkg.sha512",
-        "Microsoft.AspNet.WebApi.Client.nuspec"
+        "lib/portable-wp8+netcore45+net45+wp81+wpa81/System.Net.Http.Formatting.xml"
       ]
     },
-    "Newtonsoft.Json/7.0.1-beta1": {
+    "Newtonsoft.Json/7.0.1": {
+      "sha512": "q3V4KLetMLnt1gpAVWgtXnHjKs0UG/RalBc29u2ZKxd5t5Ze4JBL5WiiYIklJyK/5CRiIiNwigVQUo0FgbsuWA==",
       "type": "package",
-      "sha512": "eh9Z/FYVfAjFevLhAYcVenlVFyXD89f0tZbYBbIkMn7kyCeyKibOdnbVg7XoNiJP1vskSHzW5R2hxlD7TsS2nw==",
       "files": [
+        "Newtonsoft.Json.7.0.1.nupkg",
+        "Newtonsoft.Json.7.0.1.nupkg.sha512",
+        "Newtonsoft.Json.nuspec",
         "lib/net20/Newtonsoft.Json.dll",
         "lib/net20/Newtonsoft.Json.xml",
         "lib/net35/Newtonsoft.Json.dll",
@@ -229,55 +95,46 @@
         "lib/net45/Newtonsoft.Json.xml",
         "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.dll",
         "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.xml",
-        "lib/portable-net45+wp80+win8+wpa81+aspnetcore50/Newtonsoft.Json.dll",
-        "lib/portable-net45+wp80+win8+wpa81+aspnetcore50/Newtonsoft.Json.xml",
-        "Newtonsoft.Json.7.0.1-beta1.nupkg",
-        "Newtonsoft.Json.7.0.1-beta1.nupkg.sha512",
-        "Newtonsoft.Json.nuspec",
+        "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll",
+        "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.xml",
         "tools/install.ps1"
       ]
     },
     "Sendgrid/6.3.4": {
-      "type": "package",
       "sha512": "wL1GufLMA4cCNYgmXluwdmEPMmUuW2AGiWPW4fqQTCupdP3xkqBQJw/G4B2rAUrXpcQzCPmI/JN5Dl92fli5Fg==",
+      "type": "package",
       "files": [
-        "lib/SendGrid.dll",
-        "lib/SendGridMail.dll",
         "Sendgrid.6.3.4.nupkg",
         "Sendgrid.6.3.4.nupkg.sha512",
-        "Sendgrid.nuspec"
+        "Sendgrid.nuspec",
+        "lib/SendGrid.dll",
+        "lib/SendGridMail.dll"
       ]
     },
     "SendGrid.SmtpApi/1.3.1": {
-      "type": "package",
       "sha512": "SxBvvuwGnGpNd88Y70edON4idaNk9wLi7n9gokpHcImjZM+5Z4CFpjvf/1N3D1ZkuFKacXAoNnyYFvFfgeNtDg==",
+      "type": "package",
       "files": [
-        "lib/net40/SendGrid.SmtpApi.dll",
-        "lib/portable-net4+wp81/SendGrid.SmtpApi.dll",
         "SendGrid.SmtpApi.1.3.1.nupkg",
         "SendGrid.SmtpApi.1.3.1.nupkg.sha512",
-        "SendGrid.SmtpApi.nuspec"
+        "SendGrid.SmtpApi.nuspec",
+        "lib/net40/SendGrid.SmtpApi.dll",
+        "lib/portable-net4+wp81/SendGrid.SmtpApi.dll"
       ]
     },
     "Warden/1.1.0": {
-      "type": "package",
-      "sha512": "fAmgMRPi3rAGLGYMczq4Ip7zlcS8BISJ9VKyePZFY+/O9mFN7yCWOZKnaWXIrnK8qRhb0OJUbOOZQIcb67S1Qw==",
-      "files": [
-        "lib/dotnet5.4/Warden.dll",
-        "lib/dotnet5.4/Warden.xml",
-        "lib/net451/Warden.dll",
-        "lib/net451/Warden.xml",
-        "Warden.1.1.0.nupkg",
-        "Warden.1.1.0.nupkg.sha512",
-        "Warden.nuspec"
-      ]
+      "type": "project",
+      "path": "../../Warden/project.json",
+      "msbuildProject": "../../Warden/Warden.xproj"
     }
   },
   "projectFileDependencyGroups": {
     "": [
-      "Warden >= 1.1.0",
-      "Sendgrid >= 6.3.4"
+      "Sendgrid >= 6.3.4",
+      "Warden >= 1.1.0"
     ],
-    ".NETFramework,Version=v4.5.1": []
-  }
+    ".NETFramework,Version=v4.6.1": []
+  },
+  "tools": {},
+  "projectFileToolGroups": {}
 }

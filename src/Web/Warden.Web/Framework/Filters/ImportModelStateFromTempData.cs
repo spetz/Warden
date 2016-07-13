@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Microsoft.AspNet.Mvc.Filters;
-using Microsoft.AspNet.Mvc.ModelBinding;
-using Microsoft.AspNet.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.DependencyInjection;
 using Warden.Web.Core.Extensions;
 
@@ -11,8 +11,10 @@ namespace Warden.Web.Framework.Filters
     {
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
+            // TODO: Why are we doing this??
+            /*
             var tempData = filterContext.HttpContext.RequestServices.GetService<ITempDataDictionary>();
-            if (!tempData.ContainsKey(ModelEntriesKey))
+            if (tempData == null || !tempData.ContainsKey(ModelEntriesKey))
                 return;
 
             var modelEntries = tempData[ModelEntriesKey].ToString().FromJson<Dictionary<string, Entry>>();
@@ -36,6 +38,7 @@ namespace Warden.Web.Framework.Filters
 
             tempData.Remove(ModelEntriesKey);
             base.OnActionExecuted(filterContext);
+            */
         }
     }
 }
