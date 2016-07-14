@@ -11,6 +11,6 @@
     "Warden": "1.2"
   },
   "frameworks": {
-    "net461": {}
+    "net461": {},
   }
 }

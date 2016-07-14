@@ -58,16 +58,16 @@ namespace Warden.Integrations.Slack
                 if (!failFast)
                     return;
 
-                throw new Exception("Received invalid HTTP response from Slack API " +
-                                    $"with status code: {response.StatusCode}. Reason phrase: {response.ReasonPhrase}");
+                throw new IntegrationException("Received invalid HTTP response from Slack API " +
+                                               $"with status code: {response.StatusCode}. Reason phrase: {response.ReasonPhrase}");
             }
             catch (Exception exception)
             {
                 if (!failFast)
                     return;
 
-                throw new Exception("There was an error while executing the SendMessageAsync(): " +
-                                    $"{exception}", exception);
+                throw new IntegrationException("There was an error while executing the SendMessageAsync(): " +
+                                               $"{exception}", exception);
             }
         }
 

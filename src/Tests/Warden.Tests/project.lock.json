@@ -3,30 +3,18 @@
   "version": 2,
   "targets": {
     ".NETFramework,Version=v4.6.1": {
-      "Dapper/1.42.0": {
+      "Dapper/1.50.1": {
         "type": "package",
         "frameworkAssemblies": [
-          "Microsoft.CSharp"
+          "System.Data",
+          "System.Xml",
+          "System.Xml.Linq"
         ],
         "compile": {
-          "lib/net45/Dapper.dll": {}
+          "lib/net451/Dapper.dll": {}
         },
         "runtime": {
-          "lib/net45/Dapper.dll": {}
-        }
-      },
-      "dotnet-test-nunit/3.4.0-beta-1": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Extensions.DependencyModel": "1.0.0",
-          "Microsoft.Extensions.Testing.Abstractions": "1.0.0-preview2-003121",
-          "NUnit.Portable.Agent": "3.4.0-beta-1"
-        },
-        "compile": {
-          "lib/net451/dotnet-test-nunit.exe": {}
-        },
-        "runtime": {
-          "lib/net451/dotnet-test-nunit.exe": {}
+          "lib/net451/Dapper.dll": {}
         }
       },
       "FluentAssertions/4.3.2": {
@@ -84,102 +72,6 @@
         },
         "runtime": {
           "lib/net45/_._": {}
-        }
-      },
-      "Microsoft.DiaSymReader/1.0.8": {
-        "type": "package",
-        "dependencies": {
-          "System.Diagnostics.Debug": "4.0.11",
-          "System.Runtime": "4.1.0",
-          "System.Runtime.InteropServices": "4.1.0"
-        },
-        "compile": {
-          "lib/net20/Microsoft.DiaSymReader.dll": {}
-        },
-        "runtime": {
-          "lib/net20/Microsoft.DiaSymReader.dll": {}
-        }
-      },
-      "Microsoft.DiaSymReader.Native/1.4.0-rc2": {
-        "type": "package",
-        "runtimeTargets": {
-          "runtimes/win-x64/native/Microsoft.DiaSymReader.Native.amd64.dll": {
-            "assetType": "native",
-            "rid": "win-x64"
-          },
-          "runtimes/win-x86/native/Microsoft.DiaSymReader.Native.x86.dll": {
-            "assetType": "native",
-            "rid": "win-x86"
-          },
-          "runtimes/win/native/Microsoft.DiaSymReader.Native.amd64.dll": {
-            "assetType": "native",
-            "rid": "win"
-          },
-          "runtimes/win/native/Microsoft.DiaSymReader.Native.arm.dll": {
-            "assetType": "native",
-            "rid": "win"
-          },
-          "runtimes/win/native/Microsoft.DiaSymReader.Native.x86.dll": {
-            "assetType": "native",
-            "rid": "win"
-          },
-          "runtimes/win8-arm/native/Microsoft.DiaSymReader.Native.arm.dll": {
-            "assetType": "native",
-            "rid": "win8-arm"
-          }
-        }
-      },
-      "Microsoft.DotNet.InternalAbstractions/1.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/net451/Microsoft.DotNet.InternalAbstractions.dll": {}
-        },
-        "runtime": {
-          "lib/net451/Microsoft.DotNet.InternalAbstractions.dll": {}
-        }
-      },
-      "Microsoft.DotNet.ProjectModel/1.0.0-rc3-003121": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Extensions.DependencyModel": "1.0.0",
-          "Newtonsoft.Json": "9.0.1",
-          "NuGet.Packaging": "3.5.0-beta2-1484",
-          "NuGet.RuntimeModel": "3.5.0-beta2-1484",
-          "System.Reflection.Metadata": "1.3.0"
-        },
-        "compile": {
-          "lib/net451/Microsoft.DotNet.ProjectModel.dll": {}
-        },
-        "runtime": {
-          "lib/net451/Microsoft.DotNet.ProjectModel.dll": {}
-        }
-      },
-      "Microsoft.Extensions.DependencyModel/1.0.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.DotNet.InternalAbstractions": "1.0.0",
-          "Newtonsoft.Json": "9.0.1"
-        },
-        "compile": {
-          "lib/net451/Microsoft.Extensions.DependencyModel.dll": {}
-        },
-        "runtime": {
-          "lib/net451/Microsoft.Extensions.DependencyModel.dll": {}
-        }
-      },
-      "Microsoft.Extensions.Testing.Abstractions/1.0.0-preview2-003121": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.DiaSymReader": "1.0.8",
-          "Microsoft.DiaSymReader.Native": "1.4.0-rc2",
-          "Microsoft.DotNet.ProjectModel": "1.0.0-rc3-003121",
-          "Newtonsoft.Json": "9.0.1"
-        },
-        "compile": {
-          "lib/net451/Microsoft.Extensions.Testing.Abstractions.dll": {}
-        },
-        "runtime": {
-          "lib/net451/Microsoft.Extensions.Testing.Abstractions.dll": {}
         }
       },
       "Microsoft.NETCore.Platforms/1.0.1": {
@@ -330,102 +222,6 @@
           "lib/net45/Newtonsoft.Json.dll": {}
         }
       },
-      "NuGet.Common/3.5.0-beta2-1484": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "System",
-          "System.Core",
-          "System.IO.Compression"
-        ],
-        "compile": {
-          "lib/net45/NuGet.Common.dll": {}
-        },
-        "runtime": {
-          "lib/net45/NuGet.Common.dll": {}
-        }
-      },
-      "NuGet.Frameworks/3.5.0-beta2-1484": {
-        "type": "package",
-        "compile": {
-          "lib/net45/NuGet.Frameworks.dll": {}
-        },
-        "runtime": {
-          "lib/net45/NuGet.Frameworks.dll": {}
-        }
-      },
-      "NuGet.Packaging/3.5.0-beta2-1484": {
-        "type": "package",
-        "dependencies": {
-          "NuGet.Common": "3.5.0-beta2-1484",
-          "NuGet.Packaging.Core": "3.5.0-beta2-1484"
-        },
-        "frameworkAssemblies": [
-          "System.IO.Compression",
-          "System.Xml",
-          "System.Xml.Linq"
-        ],
-        "compile": {
-          "lib/net45/NuGet.Packaging.dll": {}
-        },
-        "runtime": {
-          "lib/net45/NuGet.Packaging.dll": {}
-        }
-      },
-      "NuGet.Packaging.Core/3.5.0-beta2-1484": {
-        "type": "package",
-        "dependencies": {
-          "NuGet.Common": "3.5.0-beta2-1484",
-          "NuGet.Packaging.Core.Types": "3.5.0-beta2-1484"
-        },
-        "frameworkAssemblies": [
-          "System.IO.Compression",
-          "System.Xml",
-          "System.Xml.Linq"
-        ],
-        "compile": {
-          "lib/net45/NuGet.Packaging.Core.dll": {}
-        },
-        "runtime": {
-          "lib/net45/NuGet.Packaging.Core.dll": {}
-        }
-      },
-      "NuGet.Packaging.Core.Types/3.5.0-beta2-1484": {
-        "type": "package",
-        "dependencies": {
-          "NuGet.Frameworks": "3.5.0-beta2-1484",
-          "NuGet.Versioning": "3.5.0-beta2-1484"
-        },
-        "compile": {
-          "lib/net45/NuGet.Packaging.Core.Types.dll": {}
-        },
-        "runtime": {
-          "lib/net45/NuGet.Packaging.Core.Types.dll": {}
-        }
-      },
-      "NuGet.RuntimeModel/3.5.0-beta2-1484": {
-        "type": "package",
-        "dependencies": {
-          "Newtonsoft.Json": "6.0.4",
-          "NuGet.Frameworks": "3.5.0-beta2-1484",
-          "NuGet.Versioning": "3.5.0-beta2-1484"
-        },
-        "compile": {
-          "lib/net45/NuGet.RuntimeModel.dll": {}
-        },
-        "runtime": {
-          "lib/net45/NuGet.RuntimeModel.dll": {}
-        }
-      },
-      "NuGet.Versioning/3.5.0-beta2-1484": {
-        "type": "package",
-        "compile": {
-          "lib/net45/NuGet.Versioning.dll": {}
-        },
-        "runtime": {
-          "lib/net45/NuGet.Versioning.dll": {}
-        }
-      },
       "NUnit/3.4.1": {
         "type": "package",
         "compile": {
@@ -433,42 +229,6 @@
         },
         "runtime": {
           "lib/net45/nunit.framework.dll": {}
-        }
-      },
-      "NUnit.Portable.Agent/3.4.0-beta-1": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System.Globalization",
-          "System.Linq",
-          "System.ObjectModel",
-          "System.Reflection",
-          "System.Reflection.Extensions",
-          "System.Runtime",
-          "System.Runtime.Extensions",
-          "System.Runtime.Serialization.Primitives",
-          "System.Text.RegularExpressions",
-          "System.Threading",
-          "System.Xml",
-          "System.Xml.Linq",
-          "System.Xml.XDocument"
-        ],
-        "compile": {
-          "lib/net45/NUnit.Portable.Agent.dll": {}
-        },
-        "runtime": {
-          "lib/net45/NUnit.Portable.Agent.dll": {}
-        }
-      },
-      "NUnitLite/3.4.1": {
-        "type": "package",
-        "dependencies": {
-          "NUnit": "[3.4.1]"
-        },
-        "compile": {
-          "lib/net45/nunitlite.dll": {}
-        },
-        "runtime": {
-          "lib/net45/nunitlite.dll": {}
         }
       },
       "Owin/1.0.0": {
@@ -514,7 +274,7 @@
           "lib/net40/SendGrid.SmtpApi.dll": {}
         }
       },
-      "StackExchange.Redis/1.1.572": {
+      "StackExchange.Redis/1.1.603": {
         "type": "package",
         "compile": {
           "lib/net46/StackExchange.Redis.dll": {}
@@ -558,15 +318,6 @@
         },
         "runtime": {
           "lib/net45/_._": {}
-        }
-      },
-      "System.Collections.Immutable/1.2.0": {
-        "type": "package",
-        "compile": {
-          "lib/portable-net45+win8+wp8+wpa81/System.Collections.Immutable.dll": {}
-        },
-        "runtime": {
-          "lib/portable-net45+win8+wp8+wpa81/System.Collections.Immutable.dll": {}
         }
       },
       "System.Console/4.0.0": {
@@ -870,18 +621,6 @@
         },
         "runtime": {
           "lib/net45/_._": {}
-        }
-      },
-      "System.Reflection.Metadata/1.3.0": {
-        "type": "package",
-        "dependencies": {
-          "System.Collections.Immutable": "1.2.0"
-        },
-        "compile": {
-          "lib/portable-net45+win8/System.Reflection.Metadata.dll": {}
-        },
-        "runtime": {
-          "lib/portable-net45+win8/System.Reflection.Metadata.dll": {}
         }
       },
       "System.Reflection.Primitives/4.0.1": {
@@ -1194,7 +933,7 @@
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
-          "Dapper": "1.42.0",
+          "Dapper": "1.50.1",
           "System.Data.SqlClient": "4.1.0",
           "Warden": "1.2.0"
         },
@@ -1279,7 +1018,7 @@
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
-          "Dapper": "1.42.0",
+          "Dapper": "1.50.1",
           "System.Data.SqlClient": "4.1.0",
           "Warden": "1.2.0"
         },
@@ -1320,7 +1059,7 @@
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
-          "StackExchange.Redis": "1.1.572",
+          "StackExchange.Redis": "1.1.603",
           "Warden": "1.2.0"
         },
         "compile": {
@@ -1362,34 +1101,21 @@
     }
   },
   "libraries": {
-    "Dapper/1.42.0": {
-      "sha512": "4tJlY93CSDCdqh6eEYR7au06R+moIgEQs5/rNrPYvSu+kwtlWnUPFzaWPSmk3biS9qKeI/QsJkfVWnSdb95dTw==",
+    "Dapper/1.50.1": {
+      "sha512": "UnvcSLoFOriBz9uMTwWmhhpvkPke91OfouxkWK+88zrFXbm38DP0MmQNjFYIsnPUnvPd/pC+nhgm+nM+mkdtTg==",
       "type": "package",
-      "path": "Dapper/1.42.0",
+      "path": "Dapper/1.50.1",
       "files": [
-        "Dapper.1.42.0.nupkg.sha512",
+        "Dapper.1.50.1.nupkg.sha512",
         "Dapper.nuspec",
-        "lib/net35/Dapper.dll",
-        "lib/net35/Dapper.pdb",
-        "lib/net35/Dapper.xml",
         "lib/net40/Dapper.dll",
-        "lib/net40/Dapper.pdb",
         "lib/net40/Dapper.xml",
         "lib/net45/Dapper.dll",
-        "lib/net45/Dapper.pdb",
-        "lib/net45/Dapper.xml"
-      ]
-    },
-    "dotnet-test-nunit/3.4.0-beta-1": {
-      "sha512": "ZPG1+TWadbMIap0H55ZezNNPXcnLD1vU3Yc5hrrvqKZqkoEWfpel9bEIdLX4rbur7r8tREOCC3UippqabRztVg==",
-      "type": "package",
-      "path": "dotnet-test-nunit/3.4.0-beta-1",
-      "files": [
-        "dotnet-test-nunit.3.4.0-beta-1.nupkg.sha512",
-        "dotnet-test-nunit.nuspec",
-        "lib/net451/dotnet-test-nunit.exe",
-        "lib/netcoreapp1.0/dotnet-test-nunit.dll",
-        "lib/netcoreapp1.0/dotnet-test-nunit.runtimeconfig.json"
+        "lib/net45/Dapper.xml",
+        "lib/net451/Dapper.dll",
+        "lib/net451/Dapper.xml",
+        "lib/netstandard1.3/Dapper.dll",
+        "lib/netstandard1.3/Dapper.xml"
       ]
     },
     "FluentAssertions/4.3.2": {
@@ -1574,81 +1300,6 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "Microsoft.DiaSymReader/1.0.8": {
-      "sha512": "ABLULVhCAiyBFLBT5xX6vB4NhZDgwUylGRQK+zW5nZn2rbh1f8LOnFZ9gVSxzL6qOzPNb32Nu3QZ43iZerHOxA==",
-      "type": "package",
-      "path": "Microsoft.DiaSymReader/1.0.8",
-      "files": [
-        "Microsoft.DiaSymReader.1.0.8.nupkg.sha512",
-        "Microsoft.DiaSymReader.nuspec",
-        "lib/net20/Microsoft.DiaSymReader.dll",
-        "lib/net20/Microsoft.DiaSymReader.xml",
-        "lib/netstandard1.1/Microsoft.DiaSymReader.dll",
-        "lib/netstandard1.1/Microsoft.DiaSymReader.xml",
-        "lib/portable-net45+win8/Microsoft.DiaSymReader.dll",
-        "lib/portable-net45+win8/Microsoft.DiaSymReader.xml"
-      ]
-    },
-    "Microsoft.DiaSymReader.Native/1.4.0-rc2": {
-      "sha512": "KIQOG+U6btTHL5KkXYofMpyCzVx+6EcDPS9GBRGGhlrTjJqcqAM6a6a0D0Dur/HPnAdmGLtSHVjCDZijGJFCAA==",
-      "type": "package",
-      "path": "Microsoft.DiaSymReader.Native/1.4.0-rc2",
-      "files": [
-        "Microsoft.DiaSymReader.Native.1.4.0-rc2.nupkg.sha512",
-        "Microsoft.DiaSymReader.Native.nuspec",
-        "build/Microsoft.DiaSymReader.Native.props",
-        "runtimes/win-x64/native/Microsoft.DiaSymReader.Native.amd64.dll",
-        "runtimes/win-x86/native/Microsoft.DiaSymReader.Native.x86.dll",
-        "runtimes/win/native/Microsoft.DiaSymReader.Native.amd64.dll",
-        "runtimes/win/native/Microsoft.DiaSymReader.Native.arm.dll",
-        "runtimes/win/native/Microsoft.DiaSymReader.Native.x86.dll",
-        "runtimes/win8-arm/native/Microsoft.DiaSymReader.Native.arm.dll"
-      ]
-    },
-    "Microsoft.DotNet.InternalAbstractions/1.0.0": {
-      "sha512": "AAguUq7YyKk3yDWPoWA8DrLZvURxB/LrDdTn1h5lmPeznkFUpfC3p459w5mQYQE0qpquf/CkSQZ0etiV5vRHFA==",
-      "type": "package",
-      "path": "Microsoft.DotNet.InternalAbstractions/1.0.0",
-      "files": [
-        "Microsoft.DotNet.InternalAbstractions.1.0.0.nupkg.sha512",
-        "Microsoft.DotNet.InternalAbstractions.nuspec",
-        "lib/net451/Microsoft.DotNet.InternalAbstractions.dll",
-        "lib/netstandard1.3/Microsoft.DotNet.InternalAbstractions.dll"
-      ]
-    },
-    "Microsoft.DotNet.ProjectModel/1.0.0-rc3-003121": {
-      "sha512": "wnWw5KsKinG2wWxdoQIJXZlMFvPNhL7WmIyW9q6xrZFUi/uld5PC3ksq2QDZepF148FUjCIyTP+TnRwU3RJqUg==",
-      "type": "package",
-      "path": "Microsoft.DotNet.ProjectModel/1.0.0-rc3-003121",
-      "files": [
-        "Microsoft.DotNet.ProjectModel.1.0.0-rc3-003121.nupkg.sha512",
-        "Microsoft.DotNet.ProjectModel.nuspec",
-        "lib/net451/Microsoft.DotNet.ProjectModel.dll",
-        "lib/netstandard1.6/Microsoft.DotNet.ProjectModel.dll"
-      ]
-    },
-    "Microsoft.Extensions.DependencyModel/1.0.0": {
-      "sha512": "n55Y2T4qMgCNMrJaqAN+nlG2EH4XL+e9uxIg4vdFsQeF+L8UKxRdD3C35Bt+xk3vO3Zwp3g+6KFq2VPH2COSmg==",
-      "type": "package",
-      "path": "Microsoft.Extensions.DependencyModel/1.0.0",
-      "files": [
-        "Microsoft.Extensions.DependencyModel.1.0.0.nupkg.sha512",
-        "Microsoft.Extensions.DependencyModel.nuspec",
-        "lib/net451/Microsoft.Extensions.DependencyModel.dll",
-        "lib/netstandard1.6/Microsoft.Extensions.DependencyModel.dll"
-      ]
-    },
-    "Microsoft.Extensions.Testing.Abstractions/1.0.0-preview2-003121": {
-      "sha512": "q3Uq07d6LbYr0NiX5Dz9GCbXJv4vkmSbUvFEmov3Vo4prZWjhFzF+byk2tWAEEqtZ6ereMYXBUt99wCTtANk6Q==",
-      "type": "package",
-      "path": "Microsoft.Extensions.Testing.Abstractions/1.0.0-preview2-003121",
-      "files": [
-        "Microsoft.Extensions.Testing.Abstractions.1.0.0-preview2-003121.nupkg.sha512",
-        "Microsoft.Extensions.Testing.Abstractions.nuspec",
-        "lib/net451/Microsoft.Extensions.Testing.Abstractions.dll",
-        "lib/netstandard1.6/Microsoft.Extensions.Testing.Abstractions.dll"
-      ]
-    },
     "Microsoft.NETCore.Platforms/1.0.1": {
       "sha512": "2G6OjjJzwBfNOO8myRV/nFrbTw5iA+DEm0N+qUqhrOmaVtn4pC77h38I1jsXGw5VH55+dPfQsqHD0We9sCl9FQ==",
       "type": "package",
@@ -1807,99 +1458,6 @@
         "tools/install.ps1"
       ]
     },
-    "NuGet.Common/3.5.0-beta2-1484": {
-      "sha512": "rLBmcZOPVF7Mne/LumDNACZZyI5B67hjylt+Z/WSEUQ/IXE9nLv8IVL0+T9xljIaSSQCjO8cOtmJ6ztqrsQKcQ==",
-      "type": "package",
-      "path": "NuGet.Common/3.5.0-beta2-1484",
-      "files": [
-        "NuGet.Common.3.5.0-beta2-1484.nupkg.sha512",
-        "NuGet.Common.nuspec",
-        "lib/net45/NuGet.Common.dll",
-        "lib/net45/NuGet.Common.xml",
-        "lib/netstandard1.3/NuGet.Common.dll",
-        "lib/netstandard1.3/NuGet.Common.xml"
-      ]
-    },
-    "NuGet.Frameworks/3.5.0-beta2-1484": {
-      "sha512": "AZoX0c05qgSfx0IOGTbLXa2fD7eM2WUqKP3osMMvSxK+tOGmctHuFlvjXxMHBv9yg0/13KdH0osV/zI7+SjzOA==",
-      "type": "package",
-      "path": "NuGet.Frameworks/3.5.0-beta2-1484",
-      "files": [
-        "NuGet.Frameworks.3.5.0-beta2-1484.nupkg.sha512",
-        "NuGet.Frameworks.nuspec",
-        "lib/net40-client/NuGet.Frameworks.dll",
-        "lib/net40-client/NuGet.Frameworks.xml",
-        "lib/net45/NuGet.Frameworks.dll",
-        "lib/net45/NuGet.Frameworks.xml",
-        "lib/netstandard1.3/NuGet.Frameworks.dll",
-        "lib/netstandard1.3/NuGet.Frameworks.xml"
-      ]
-    },
-    "NuGet.Packaging/3.5.0-beta2-1484": {
-      "sha512": "/+7d3vvCel4KhJo6AyOneg07fbAkUsy/ORgIaxW3nNdJubCXSrAdg1wfQpwzBygmErjrPcdYzzk2y2Sc6m7hwQ==",
-      "type": "package",
-      "path": "NuGet.Packaging/3.5.0-beta2-1484",
-      "files": [
-        "NuGet.Packaging.3.5.0-beta2-1484.nupkg.sha512",
-        "NuGet.Packaging.nuspec",
-        "lib/net45/NuGet.Packaging.dll",
-        "lib/net45/NuGet.Packaging.xml",
-        "lib/netstandard1.3/NuGet.Packaging.dll",
-        "lib/netstandard1.3/NuGet.Packaging.xml"
-      ]
-    },
-    "NuGet.Packaging.Core/3.5.0-beta2-1484": {
-      "sha512": "Lsz2lgYH0mdOvuL8C3G4XLm9EaAheBOqrgLgnBNxCeLGLU+n+Zu8Lt6K1bpzgkeKyTyAhJdWbv/3lS4w7s04gw==",
-      "type": "package",
-      "path": "NuGet.Packaging.Core/3.5.0-beta2-1484",
-      "files": [
-        "NuGet.Packaging.Core.3.5.0-beta2-1484.nupkg.sha512",
-        "NuGet.Packaging.Core.nuspec",
-        "lib/net45/NuGet.Packaging.Core.dll",
-        "lib/net45/NuGet.Packaging.Core.xml",
-        "lib/netstandard1.3/NuGet.Packaging.Core.dll",
-        "lib/netstandard1.3/NuGet.Packaging.Core.xml"
-      ]
-    },
-    "NuGet.Packaging.Core.Types/3.5.0-beta2-1484": {
-      "sha512": "4mEXZBoe/RKTDVQGwdrl/f5gqolU2d1JWjpbGdQv5EG/xQCC8IQ8FTNYzk0+ydV/vuRM1yaNe+6UQ90nGE+1kQ==",
-      "type": "package",
-      "path": "NuGet.Packaging.Core.Types/3.5.0-beta2-1484",
-      "files": [
-        "NuGet.Packaging.Core.Types.3.5.0-beta2-1484.nupkg.sha512",
-        "NuGet.Packaging.Core.Types.nuspec",
-        "lib/net45/NuGet.Packaging.Core.Types.dll",
-        "lib/net45/NuGet.Packaging.Core.Types.xml",
-        "lib/netstandard1.3/NuGet.Packaging.Core.Types.dll",
-        "lib/netstandard1.3/NuGet.Packaging.Core.Types.xml"
-      ]
-    },
-    "NuGet.RuntimeModel/3.5.0-beta2-1484": {
-      "sha512": "vg29WbKcExD9AJrKMr7NB9pnp+0MTAcDHB6gFHCqRynSo6jgjC8q+ZPAlxC115rQiO8fqzOEP59Q8hx20anUtA==",
-      "type": "package",
-      "path": "NuGet.RuntimeModel/3.5.0-beta2-1484",
-      "files": [
-        "NuGet.RuntimeModel.3.5.0-beta2-1484.nupkg.sha512",
-        "NuGet.RuntimeModel.nuspec",
-        "lib/net45/NuGet.RuntimeModel.dll",
-        "lib/net45/NuGet.RuntimeModel.xml",
-        "lib/netstandard1.3/NuGet.RuntimeModel.dll",
-        "lib/netstandard1.3/NuGet.RuntimeModel.xml"
-      ]
-    },
-    "NuGet.Versioning/3.5.0-beta2-1484": {
-      "sha512": "Stok+SI5lWxOkTgZZM7jT4xuAZogm5+j85mKJeHSXb8o0OAbB+qDX9jkdM2wIEnjoR8R29J0nQYwk2Kl2lWFpA==",
-      "type": "package",
-      "path": "NuGet.Versioning/3.5.0-beta2-1484",
-      "files": [
-        "NuGet.Versioning.3.5.0-beta2-1484.nupkg.sha512",
-        "NuGet.Versioning.nuspec",
-        "lib/net45/NuGet.Versioning.dll",
-        "lib/net45/NuGet.Versioning.xml",
-        "lib/netstandard1.0/NuGet.Versioning.dll",
-        "lib/netstandard1.0/NuGet.Versioning.xml"
-      ]
-    },
     "NUnit/3.4.1": {
       "sha512": "G/9h/ENn8+GvT5DvBqVNrUhIWuxtAr0/oVGN2ljKVUw50EAZYBzeWSy9s6nqMswaQACpQzljql1sWQ/peE2eJg==",
       "type": "package",
@@ -1923,43 +1481,6 @@
         "lib/net45/nunit.framework.xml",
         "lib/portable-net45+win8+wp8+wpa81+Xamarin.Mac+MonoAndroid10+MonoTouch10+Xamarin.iOS10/nunit.framework.dll",
         "lib/portable-net45+win8+wp8+wpa81+Xamarin.Mac+MonoAndroid10+MonoTouch10+Xamarin.iOS10/nunit.framework.xml"
-      ]
-    },
-    "NUnit.Portable.Agent/3.4.0-beta-1": {
-      "sha512": "lYmhh1Qk95XQNe1zySqOQxJPE6F/RRUqKWNQwtRTp4eTRmn4TT3it5NAlujHPwH0gpvF+paQ2AhOObHkiqTJmA==",
-      "type": "package",
-      "path": "NUnit.Portable.Agent/3.4.0-beta-1",
-      "files": [
-        "NUnit.Portable.Agent.3.4.0-beta-1.nupkg.sha512",
-        "NUnit.Portable.Agent.nuspec",
-        "lib/net45/NUnit.Portable.Agent.dll",
-        "lib/netstandard1.3/NUnit.Portable.Agent.dll"
-      ]
-    },
-    "NUnitLite/3.4.1": {
-      "sha512": "eQB3CXwW+z+QZj1qsXd4aCgvmpTaMQCGDUauTTLrPFrseOCUztJz4sOQfDPLtCG5pN6y5vlMImij5WLW85Reww==",
-      "type": "package",
-      "path": "NUnitLite/3.4.1",
-      "files": [
-        "CHANGES.txt",
-        "LICENSE.txt",
-        "NOTICES.txt",
-        "NUnitLite.3.4.1.nupkg.sha512",
-        "NUnitLite.nuspec",
-        "content/Program.cs",
-        "content/Program.vb",
-        "lib/dotnet/nunitlite.dll",
-        "lib/net20/nunitlite.dll",
-        "lib/net35/nunitlite.dll",
-        "lib/net40/nunitlite.dll",
-        "lib/net45/nunitlite.dll",
-        "lib/portable-net45+win8+wp8+wpa81+Xamarin.Mac/nunitlite.dll",
-        "tools/install.ps1",
-        "tools/net20/nunitlite-runner.exe",
-        "tools/net35/nunitlite-runner.exe",
-        "tools/net40/nunitlite-runner.exe",
-        "tools/net45/nunitlite-runner.exe",
-        "tools/portable/nunitlite-runner.exe"
       ]
     },
     "Owin/1.0.0": {
@@ -2028,12 +1549,12 @@
         "lib/portable-net4+wp81/SendGrid.SmtpApi.dll"
       ]
     },
-    "StackExchange.Redis/1.1.572": {
-      "sha512": "yhjI/cgg0ImlgFi4WS6HIJ6DlFEZbPIPTcnVtg8LhtRU0x6Av7v3mb4y0lmxThqK6NRcOlF5G3g8TH0tyQSaBg==",
+    "StackExchange.Redis/1.1.603": {
+      "sha512": "p1r0jd4HiJHQ72ynTJ/ypNzf4xvCKtPJdqpeS8h9Raa5wakJ8a0Bxw1f8iYvqUOLC2CMfZMkHv3IlNYijktSAw==",
       "type": "package",
-      "path": "StackExchange.Redis/1.1.572",
+      "path": "StackExchange.Redis/1.1.603",
       "files": [
-        "StackExchange.Redis.1.1.572.nupkg.sha512",
+        "StackExchange.Redis.1.1.603.nupkg.sha512",
         "StackExchange.Redis.nuspec",
         "lib/net40/StackExchange.Redis.dll",
         "lib/net40/StackExchange.Redis.dll.config",
@@ -2231,21 +1752,6 @@
         "ref/xamarinmac20/_._",
         "ref/xamarintvos10/_._",
         "ref/xamarinwatchos10/_._"
-      ]
-    },
-    "System.Collections.Immutable/1.2.0": {
-      "sha512": "Cma8cBW6di16ZLibL8LYQ+cLjGzoKxpOTu/faZfDcx94ZjAGq6Nv5RO7+T1YZXqEXTZP9rt1wLVEONVpURtUqw==",
-      "type": "package",
-      "path": "System.Collections.Immutable/1.2.0",
-      "files": [
-        "System.Collections.Immutable.1.2.0.nupkg.sha512",
-        "System.Collections.Immutable.nuspec",
-        "ThirdPartyNotices.txt",
-        "dotnet_library_license.txt",
-        "lib/netstandard1.0/System.Collections.Immutable.dll",
-        "lib/netstandard1.0/System.Collections.Immutable.xml",
-        "lib/portable-net45+win8+wp8+wpa81/System.Collections.Immutable.dll",
-        "lib/portable-net45+win8+wp8+wpa81/System.Collections.Immutable.xml"
       ]
     },
     "System.Console/4.0.0": {
@@ -3578,21 +3084,6 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "System.Reflection.Metadata/1.3.0": {
-      "sha512": "jMSCxA4LSyKBGRDm/WtfkO03FkcgRzHxwvQRib1bm2GZ8ifKM1MX1al6breGCEQK280mdl9uQS7JNPXRYk90jw==",
-      "type": "package",
-      "path": "System.Reflection.Metadata/1.3.0",
-      "files": [
-        "System.Reflection.Metadata.1.3.0.nupkg.sha512",
-        "System.Reflection.Metadata.nuspec",
-        "ThirdPartyNotices.txt",
-        "dotnet_library_license.txt",
-        "lib/netstandard1.1/System.Reflection.Metadata.dll",
-        "lib/netstandard1.1/System.Reflection.Metadata.xml",
-        "lib/portable-net45+win8/System.Reflection.Metadata.dll",
-        "lib/portable-net45+win8/System.Reflection.Metadata.xml"
-      ]
-    },
     "System.Reflection.Primitives/4.0.1": {
       "sha512": "4inTox4wTBaDhB7V3mPvp9XlCbeGYWVEM9/fXALd52vNEAVisc1BoVWQPuUuD0Ga//dNbA/WeMy9u9mzLxGTHQ==",
       "type": "package",
@@ -4873,7 +4364,7 @@
       "Microsoft.AspNet.SignalR.Core >= 2.2.0",
       "Microsoft.CSharp >= 4.0.1",
       "Moq >= 4.2.1510.2205",
-      "NUnitLite >= 3.4.1",
+      "NUnit >= 3.4.1",
       "System.Linq >= 4.0.1",
       "System.Linq.Queryable >= 4.0.1",
       "Warden >= 1.2.0",
@@ -4889,8 +4380,7 @@
       "Warden.Watchers.Process >= 1.2.0",
       "Warden.Watchers.Redis >= 1.2.0",
       "Warden.Watchers.Server >= 1.2.0",
-      "Warden.Watchers.Web >= 1.2.0",
-      "dotnet-test-nunit >= 3.4.0-beta-1"
+      "Warden.Watchers.Web >= 1.2.0"
     ],
     ".NETFramework,Version=v4.6.1": []
   },

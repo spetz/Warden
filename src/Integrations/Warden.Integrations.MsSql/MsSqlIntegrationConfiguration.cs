@@ -195,7 +195,7 @@ namespace Warden.Integrations.MsSql
             }
 
             /// <summary>
-            /// Sets the custom provider for the IMsSql.
+            /// Sets the custom provider for the IMsSqlService.
             /// </summary>
             /// <param name="msSqlServiceProvider">Custom provider for the IMsSqlService.</param>
             /// <returns>Lambda expression returning an instance of the IMsSqlService.</returns>

@@ -69,7 +69,7 @@ namespace Warden.Examples.Console
                     {
                         ["User-Agent"] = "Warden",
                         ["Authorization"] = "Token MyBase64EncodedString"
-                    }), cfg => cfg.EnsureThat(response => response.Headers.Any()), interval: TimeSpan.FromSeconds(3) 
+                    }), cfg => cfg.EnsureThat(response => response.Headers.Any()), interval: TimeSpan.FromSeconds(3)
                 )
                 .IntegrateWithMsSql(@"Data Source=.\sqlexpress;Initial Catalog=MyDatabase;Integrated Security=True")
                 //Set proper API key or credentials.
@@ -100,18 +100,21 @@ namespace Warden.Examples.Console
                 })
                 .SetHooks((hooks, integrations) =>
                 {
-                    hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration))
-                        //.OnIterationCompletedAsync(iteration =>
-                        //    integrations.Slack().SendMessageAsync($"Iteration {iteration.Ordinal} has completed."))
-                        .OnIterationCompletedAsync(iteration => integrations.HttpApi()
-                            .PostIterationToWardenPanelAsync(iteration))
-                        .OnError(exception => System.Console.WriteLine(exception))
-                        .OnIterationCompletedAsync(iteration => OnIterationCompletedMsSqlAsync(iteration, integrations.MsSql()));
+                    hooks.OnIterationCompletedAsync(iteration => integrations.MsSql()
+                        .QueryAsync<int>("select * from users where id = @id", GetSqlQueryParams()))
+                        .OnIterationCompletedAsync(iteration => integrations.MsSql()
+                            .ExecuteAsync("insert into messages values(@message)", GetSqlCommandParams()));
                 })
                 .Build();
 
             return WardenInstance.Create(wardenConfiguration);
         }
+
+        private static IDictionary<string, object> GetSqlQueryParams()
+            => new Dictionary<string, object> {["id"] = 1};
+
+        private static IDictionary<string, object> GetSqlCommandParams()
+            => new Dictionary<string, object> {["message"] = "Iteration completed"};
 
         private static async Task WebsiteHookOnStartAsync(IWatcherCheck check)
         {

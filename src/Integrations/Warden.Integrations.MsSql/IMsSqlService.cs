@@ -26,7 +26,7 @@ namespace Warden.Integrations.MsSql
         /// Executes the SQL command and returns a scalar representing number of affected rows.
         /// </summary>
         /// <param name="connection">Instance of IDbConnection.</param>
-        /// <param name="query">SQL command.</param>
+        /// <param name="command">SQL command.</param>
         /// <param name="parameters">SQL command parameters.</param>
         /// <param name="timeout">Optional timeout.</param>
         /// <returns>Scalar representing the number of affected rows.</returns>

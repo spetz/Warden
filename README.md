@@ -69,7 +69,7 @@ Install-Package Warden
 | **[Warden Core](https://github.com/spetz/Warden/wiki/Warden)**         |        +      |        +     |     
 | **[Disk Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Disk)**         |        +      |        -     | _System.IO not compatible_
 | **[MongoDB Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-MongoDB)**      |        +      |        -     | _MongoDB Driver not compatible_
-| **[MS SQL Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-MSSQL)**        |        +      |        -     | _Dapper not compatible_
+| **[MS SQL Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-MSSQL)**        |        +      |        +     | 
 | **[Performance Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Performance)**  |        +      |        -     | _PerformanceCounter not compatible_
 | **[Process Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Process)**          |        +      |        +     |
 | **[Redis Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Redis)**        |        +      |        -     | _StackExchange.Redis not compatible_

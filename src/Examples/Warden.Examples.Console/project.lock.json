@@ -3,16 +3,18 @@
   "version": 2,
   "targets": {
     ".NETFramework,Version=v4.6.1": {
-      "Dapper/1.42.0": {
+      "Dapper/1.50.1": {
         "type": "package",
         "frameworkAssemblies": [
-          "Microsoft.CSharp"
+          "System.Data",
+          "System.Xml",
+          "System.Xml.Linq"
         ],
         "compile": {
-          "lib/net45/Dapper.dll": {}
+          "lib/net451/Dapper.dll": {}
         },
         "runtime": {
-          "lib/net45/Dapper.dll": {}
+          "lib/net451/Dapper.dll": {}
         }
       },
       "Microsoft.AspNet.WebApi.Client/5.2.3": {
@@ -178,7 +180,7 @@
           "lib/net40/SendGrid.SmtpApi.dll": {}
         }
       },
-      "StackExchange.Redis/1.1.572": {
+      "StackExchange.Redis/1.1.603": {
         "type": "package",
         "compile": {
           "lib/net46/StackExchange.Redis.dll": {}
@@ -825,7 +827,7 @@
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
-          "Dapper": "1.42.0",
+          "Dapper": "1.50.1",
           "System.Data.SqlClient": "4.1.0",
           "Warden": "1.2.0"
         },
@@ -910,7 +912,7 @@
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
-          "Dapper": "1.42.0",
+          "Dapper": "1.50.1",
           "System.Data.SqlClient": "4.1.0",
           "Warden": "1.2.0"
         },
@@ -951,7 +953,7 @@
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
-          "StackExchange.Redis": "1.1.572",
+          "StackExchange.Redis": "1.1.603",
           "Warden": "1.2.0"
         },
         "compile": {
@@ -993,22 +995,21 @@
     }
   },
   "libraries": {
-    "Dapper/1.42.0": {
-      "sha512": "4tJlY93CSDCdqh6eEYR7au06R+moIgEQs5/rNrPYvSu+kwtlWnUPFzaWPSmk3biS9qKeI/QsJkfVWnSdb95dTw==",
+    "Dapper/1.50.1": {
+      "sha512": "UnvcSLoFOriBz9uMTwWmhhpvkPke91OfouxkWK+88zrFXbm38DP0MmQNjFYIsnPUnvPd/pC+nhgm+nM+mkdtTg==",
       "type": "package",
-      "path": "Dapper/1.42.0",
+      "path": "Dapper/1.50.1",
       "files": [
-        "Dapper.1.42.0.nupkg.sha512",
+        "Dapper.1.50.1.nupkg.sha512",
         "Dapper.nuspec",
-        "lib/net35/Dapper.dll",
-        "lib/net35/Dapper.pdb",
-        "lib/net35/Dapper.xml",
         "lib/net40/Dapper.dll",
-        "lib/net40/Dapper.pdb",
         "lib/net40/Dapper.xml",
         "lib/net45/Dapper.dll",
-        "lib/net45/Dapper.pdb",
-        "lib/net45/Dapper.xml"
+        "lib/net45/Dapper.xml",
+        "lib/net451/Dapper.dll",
+        "lib/net451/Dapper.xml",
+        "lib/netstandard1.3/Dapper.dll",
+        "lib/netstandard1.3/Dapper.xml"
       ]
     },
     "Microsoft.AspNet.WebApi.Client/5.2.3": {
@@ -1199,12 +1200,12 @@
         "lib/portable-net4+wp81/SendGrid.SmtpApi.dll"
       ]
     },
-    "StackExchange.Redis/1.1.572": {
-      "sha512": "yhjI/cgg0ImlgFi4WS6HIJ6DlFEZbPIPTcnVtg8LhtRU0x6Av7v3mb4y0lmxThqK6NRcOlF5G3g8TH0tyQSaBg==",
+    "StackExchange.Redis/1.1.603": {
+      "sha512": "p1r0jd4HiJHQ72ynTJ/ypNzf4xvCKtPJdqpeS8h9Raa5wakJ8a0Bxw1f8iYvqUOLC2CMfZMkHv3IlNYijktSAw==",
       "type": "package",
-      "path": "StackExchange.Redis/1.1.572",
+      "path": "StackExchange.Redis/1.1.603",
       "files": [
-        "StackExchange.Redis.1.1.572.nupkg.sha512",
+        "StackExchange.Redis.1.1.603.nupkg.sha512",
         "StackExchange.Redis.nuspec",
         "lib/net40/StackExchange.Redis.dll",
         "lib/net40/StackExchange.Redis.dll.config",

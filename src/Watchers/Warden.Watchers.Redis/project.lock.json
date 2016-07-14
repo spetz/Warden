@@ -3,7 +3,7 @@
   "version": 2,
   "targets": {
     ".NETFramework,Version=v4.6.1": {
-      "StackExchange.Redis/1.1.572": {
+      "StackExchange.Redis/1.1.603": {
         "type": "package",
         "compile": {
           "lib/net46/StackExchange.Redis.dll": {}
@@ -25,12 +25,12 @@
     }
   },
   "libraries": {
-    "StackExchange.Redis/1.1.572": {
-      "sha512": "yhjI/cgg0ImlgFi4WS6HIJ6DlFEZbPIPTcnVtg8LhtRU0x6Av7v3mb4y0lmxThqK6NRcOlF5G3g8TH0tyQSaBg==",
+    "StackExchange.Redis/1.1.603": {
+      "sha512": "p1r0jd4HiJHQ72ynTJ/ypNzf4xvCKtPJdqpeS8h9Raa5wakJ8a0Bxw1f8iYvqUOLC2CMfZMkHv3IlNYijktSAw==",
       "type": "package",
-      "path": "StackExchange.Redis/1.1.572",
+      "path": "StackExchange.Redis/1.1.603",
       "files": [
-        "StackExchange.Redis.1.1.572.nupkg.sha512",
+        "StackExchange.Redis.1.1.603.nupkg.sha512",
         "StackExchange.Redis.nuspec",
         "lib/net40/StackExchange.Redis.dll",
         "lib/net40/StackExchange.Redis.dll.config",
@@ -53,7 +53,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "StackExchange.Redis >= 1.1.572",
+      "StackExchange.Redis >= 1.1.603",
       "Warden >= 1.2.0"
     ],
     ".NETFramework,Version=v4.6.1": []
