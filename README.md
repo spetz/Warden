@@ -64,7 +64,7 @@ Install-Package Warden
 **Cross-platform support**
 ----------------
 
-| Project              |   .NET 4.5.1  |  DotNet 5.4  |            Comment              |      
+| Project              |   .NET 4.6.1  |  DotNet 5.6  |            Comment              |      
 |----------------------|:-------------:|:------------:|---------------------------------
 | **[Warden Core](https://github.com/spetz/Warden/wiki/Warden)**         |        +      |        +     |     
 | **[Disk Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Disk)**         |        +      |        -     | _System.IO not compatible_
