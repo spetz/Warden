@@ -11,6 +11,11 @@
     "Warden": "1.2"
   },
   "frameworks": {
-    "net461": {},
+    "net461": {}
+  },
+  "scripts": {
+    "postcompile": [
+      "dotnet pack --no-build --configuration %compile:Configuration%"
+    ]
   }
 }

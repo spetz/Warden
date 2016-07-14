@@ -813,7 +813,7 @@
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
           "Newtonsoft.Json": "9.0.1",
-          "System.Net.Http": "4.1.0",
+          "System.Net.Http": "4.0.0",
           "Warden": "1.2.0"
         },
         "compile": {

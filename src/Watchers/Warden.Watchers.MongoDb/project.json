@@ -16,5 +16,10 @@
         "MongoDB.Driver": "2.2.3"
       }
     }
+  },
+  "scripts": {
+    "postcompile": [
+      "dotnet pack --no-build --configuration %compile:Configuration%"
+    ]
   }
 }
