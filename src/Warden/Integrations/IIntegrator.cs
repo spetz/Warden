@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 
 namespace Warden.Integrations
 {
@@ -11,28 +11,25 @@ namespace Warden.Integrations
 
     public class Integrator : IIntegrator
     {
-        protected readonly IDictionary<Type, IIntegration> Integrations = new Dictionary<Type, IIntegration>(); 
+        protected readonly ConcurrentDictionary<Type, IIntegration> Integrations = new ConcurrentDictionary<Type, IIntegration>(); 
 
         public void Register<T>(T integration) where T : class, IIntegration
         {
             var key = GetKey<T>();
-            if (Integrations.ContainsKey(key))
-            {
-                throw new InvalidOperationException($"Integration: {typeof(T).Name} has been already registered.");
-            }
 
-            Integrations[key] = integration;
+            if (!Integrations.TryAdd(key, integration))
+                throw new InvalidOperationException($"Integration: {typeof(T).Name} has been already registered.");
         }
 
         public T Resolve<T>() where T : class, IIntegration
         {
             var key = GetKey<T>();
-            if (!Integrations.ContainsKey(key))
-            {
-                throw new InvalidOperationException($"Integration: {typeof(T).Name} has not been registered.");
-            }
 
-            return Integrations[key] as T;
+            IIntegration integration;
+            if (!Integrations.TryGetValue(key, out integration))
+                throw new InvalidOperationException($"Integration: {typeof(T).Name} has not been registered.");
+
+            return integration as T;
         }
 
         private static Type GetKey<T>() => typeof (T);
