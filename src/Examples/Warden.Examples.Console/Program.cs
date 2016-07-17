@@ -100,8 +100,9 @@ namespace Warden.Examples.Console
                 })
                 .SetHooks((hooks, integrations) =>
                 {
-                    hooks.OnIterationCompletedAsync(iteration => integrations.MsSql()
-                        .QueryAsync<int>("select * from users where id = @id", GetSqlQueryParams()))
+                    hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration))
+                        .OnIterationCompletedAsync(iteration => integrations.MsSql()
+                            .QueryAsync<int>("select * from users where id = @id", GetSqlQueryParams()))
                         .OnIterationCompletedAsync(iteration => integrations.MsSql()
                             .ExecuteAsync("insert into messages values(@message)", GetSqlCommandParams()));
                 })

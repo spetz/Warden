@@ -64,7 +64,7 @@
           "lib/net45/_._": {}
         }
       },
-      "Warden/1.2.0": {
+      "Warden/1.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
@@ -138,7 +138,7 @@
       ]
     },
     "System.Collections.Concurrent/4.0.12": {
-      "sha512": "kgylq/W5wQWD/xw0PNCvP/FwS5MtnK7M1ySzmQTfd4xK3kbAPntmHefbsG2UviuABBo6SHaMfBiKY30h+dhfqw==",
+      "sha512": "2gBcbb3drMLgxlI0fBfxMA31ec6AEyYCHygGse4vxceJan8mRIWeKJ24BFzN7+bi/NFTgdIgufzb94LWO5EERQ==",
       "type": "package",
       "path": "System.Collections.Concurrent/4.0.12",
       "files": [
@@ -203,7 +203,7 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "Warden/1.2.0": {
+    "Warden/1.2.1": {
       "type": "project",
       "path": "../../Warden/project.json",
       "msbuildProject": "../../Warden/Warden.xproj"
@@ -212,7 +212,7 @@
   "projectFileDependencyGroups": {
     "": [
       "Sendgrid >= 6.3.4",
-      "Warden >= 1.2.0"
+      "Warden >= 1.2.1"
     ],
     ".NETFramework,Version=v4.6.1": []
   },

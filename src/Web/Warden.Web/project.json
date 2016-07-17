@@ -1,5 +1,5 @@
 {
-    "version": "1.2",
+    "version": "1.2.1",
     "buildOptions": {
         "emitEntryPoint": true,
         "preserveCompilationContext": true
@@ -19,7 +19,7 @@
         "MongoDB.Driver": "2.2.3",
         "Microsoft.CSharp": "4.0.1",
         "Microsoft.AspNetCore.Mvc.WebApiCompatShim": "1.0.0",
-        "Warden.Web.Core": "1.2",
+        "Warden.Web.Core": "1.2.1",
         "Newtonsoft.Json": "9.0.1",
         "NLog.Extensions.Logging": "1.0.0-rtm-alpha2",
         "Microsoft.AspNet.SignalR.Core": "2.2.0",

@@ -1,5 +1,5 @@
 ﻿{
-  "version": "1.2",
+  "version": "1.2.1",
   "description": "Warden integration with Twilio.",
   "authors": [ "Piotr Gankiewicz" ],
   "packOptions": {
@@ -8,7 +8,7 @@
     "licenseUrl": "https://github.com/warden-stack/Warden/blob/master/LICENSE"
   },
   "dependencies": {
-    "Warden": "1.2",
+    "Warden": "1.2.1",
     "Twilio": "4.7.2"
   },
   "frameworks": {

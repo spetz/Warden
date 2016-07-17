@@ -1,5 +1,5 @@
 {
-  "version": "1.2",
+  "version": "1.2.1",
   "description": "Warden watcher for Server.",
   "authors": [ "Piotr Gankiewicz", "Patryk Wąsiewicz" ],
   "packOptions": {
@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "NETStandard.Library": "1.6.0",
-    "Warden": "1.2"
+    "Warden": "1.2.1"
   },
   "frameworks": {
     "net461": {}
