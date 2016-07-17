@@ -29,5 +29,8 @@
     "postcompile": [
       "dotnet pack --no-build --configuration %compile:Configuration%"
     ]
+  },
+  "dependencies": {
+    "System.Collections.Concurrent": "4.0.12"
   }
 }
