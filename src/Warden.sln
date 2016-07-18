@@ -58,6 +58,8 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Watchers.Server", "W
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Integrations.MsSql", "Integrations\Warden.Integrations.MsSql\Warden.Integrations.MsSql.xproj", "{BF9764B1-BCEE-4379-8E13-661E64784CD4}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Integrations.Cachet", "Integrations\Warden.Integrations.Cachet\Warden.Integrations.Cachet.xproj", "{59533599-205A-4878-813F-FE2044DAA79D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -144,6 +146,10 @@ Global
 		{BF9764B1-BCEE-4379-8E13-661E64784CD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF9764B1-BCEE-4379-8E13-661E64784CD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF9764B1-BCEE-4379-8E13-661E64784CD4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59533599-205A-4878-813F-FE2044DAA79D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59533599-205A-4878-813F-FE2044DAA79D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59533599-205A-4878-813F-FE2044DAA79D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59533599-205A-4878-813F-FE2044DAA79D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -168,5 +174,6 @@ Global
 		{42F2E9A8-81BD-485A-B099-DD6A92DF22E5} = {DB63BF6C-E9C3-4777-9F83-258AF50EC58D}
 		{6B6B14A8-33A4-42F2-A381-98C19CBAA96F} = {01B1C35B-4DC0-402B-A17B-CC278CB06913}
 		{BF9764B1-BCEE-4379-8E13-661E64784CD4} = {DB63BF6C-E9C3-4777-9F83-258AF50EC58D}
+		{59533599-205A-4878-813F-FE2044DAA79D} = {DB63BF6C-E9C3-4777-9F83-258AF50EC58D}
 	EndGlobalSection
 EndGlobal

@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "Warden": "1.2.1",
+    "Warden.Integrations.Cachet": "1.2.1",
     "Warden.Integrations.HttpApi": "1.2.1",
     "Warden.Integrations.MsSql": "1.2.1",
     "Warden.Integrations.SendGrid": "1.2.1",

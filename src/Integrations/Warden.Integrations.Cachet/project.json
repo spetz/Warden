@@ -1,0 +1,36 @@
+﻿{
+  "version": "1.2.1",
+  "description": "Warden integration with the Cachet (https://cachethq.io).",
+  "authors": [ "Piotr Gankiewicz" ],
+  "packOptions": {
+    "tags": [ "Warden" ],
+    "projectUrl": "https://getwarden.net",
+    "licenseUrl": "https://github.com/warden-stack/Warden/blob/master/LICENSE"
+  },
+  "dependencies": {
+    "Warden": "1.2.1",
+    "System.Net.Http": "4.0.0",
+    "Newtonsoft.Json": "9.0.1"
+  },
+  "frameworks": {
+    "net461": {},
+    "netcoreapp1.0": {
+      "imports": [
+        "dotnet5.6",
+        "dnxcore50"
+      ],
+      "dependencies": {
+        "Microsoft.CSharp": "4.0.1",
+        "System.Collections": "4.0.11",
+        "System.Linq": "4.1.0",
+        "System.Runtime": "4.1.0",
+        "System.Threading": "4.0.11"
+      }
+    }
+  },
+  "scripts": {
+    "postcompile": [
+      "dotnet pack --no-build --configuration %compile:Configuration%"
+    ]
+  }
+}

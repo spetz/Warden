@@ -811,6 +811,21 @@
           "net461/Warden.dll": {}
         }
       },
+      "Warden.Integrations.Cachet/1.2.1": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.6.1",
+        "dependencies": {
+          "Newtonsoft.Json": "9.0.1",
+          "System.Net.Http": "4.0.0",
+          "Warden": "1.2.1"
+        },
+        "compile": {
+          "net461/Warden.Integrations.Cachet.dll": {}
+        },
+        "runtime": {
+          "net461/Warden.Integrations.Cachet.dll": {}
+        }
+      },
       "Warden.Integrations.HttpApi/1.2.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
@@ -3889,6 +3904,11 @@
       "path": "../../Warden/project.json",
       "msbuildProject": "../../Warden/Warden.xproj"
     },
+    "Warden.Integrations.Cachet/1.2.1": {
+      "type": "project",
+      "path": "../../Integrations/Warden.Integrations.Cachet/project.json",
+      "msbuildProject": "../../Integrations/Warden.Integrations.Cachet/Warden.Integrations.Cachet.xproj"
+    },
     "Warden.Integrations.HttpApi/1.2.1": {
       "type": "project",
       "path": "../../Integrations/Warden.Integrations.HttpApi/project.json",
@@ -3958,6 +3978,7 @@
   "projectFileDependencyGroups": {
     "": [
       "Warden >= 1.2.1",
+      "Warden.Integrations.Cachet >= 1.2.1",
       "Warden.Integrations.HttpApi >= 1.2.1",
       "Warden.Integrations.MsSql >= 1.2.1",
       "Warden.Integrations.SendGrid >= 1.2.1",
