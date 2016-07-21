@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Warden.Integrations.Cachet
 {
@@ -7,6 +10,25 @@ namespace Warden.Integrations.Cachet
     /// </summary>
     public class CachetIntegrationConfiguration
     {
+        public static readonly JsonSerializerSettings DefaultJsonSerializerSettings = new JsonSerializerSettings
+        {
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+            ContractResolver = new CamelCasePropertyNamesContractResolver(),
+            DateFormatString = "yyyy-MM-dd H:mm:ss",
+            Formatting = Formatting.Indented,
+            DefaultValueHandling = DefaultValueHandling.Populate,
+            NullValueHandling = NullValueHandling.Include,
+            Error = (serializer, error) => { error.ErrorContext.Handled = true; },
+            Converters = new List<JsonConverter>
+            {
+                new Newtonsoft.Json.Converters.StringEnumConverter
+                {
+                    AllowIntegerValues = true,
+                    CamelCaseText = true
+                }
+            }
+        };
+
         /// <summary>
         /// Default request header name of the API key.
         /// </summary>
@@ -36,6 +58,11 @@ namespace Warden.Integrations.Cachet
         /// Optional timeout of the HTTP request.
         /// </summary>
         public TimeSpan? Timeout { get; protected set; }
+
+        /// <summary>
+        /// Custom JSON serializer settings of the Newtonsoft.Json library.
+        /// </summary>
+        public JsonSerializerSettings JsonSerializerSettings { get; protected set; } = DefaultJsonSerializerSettings;
 
         /// <summary>
         /// Factory method for creating a new instance of fluent builder for the CachetIntegrationConfiguration.
@@ -125,6 +152,22 @@ namespace Warden.Integrations.Cachet
                     throw new ArgumentException("Timeout can not be equal to zero.", nameof(timeout));
 
                 Configuration.Timeout = timeout;
+
+                return this;
+            }
+
+            /// <summary>
+            /// Sets the custom JSON serializer settings of the Newtonsoft.Json library.
+            /// </summary>
+            /// <param name="jsonSerializerSettings">Custom JSON serializer settings of the Newtonsoft.Json library.</param>
+            /// <returns>Instance of fluent builder for the CachetIntegrationConfiguration.</returns>
+            public Builder WithJsonSerializerSettings(JsonSerializerSettings jsonSerializerSettings)
+            {
+                if (jsonSerializerSettings == null)
+                    throw new ArgumentNullException(nameof(jsonSerializerSettings),
+                        "JSON serializer settings can not be null.");
+
+                Configuration.JsonSerializerSettings = jsonSerializerSettings;
 
                 return this;
             }
