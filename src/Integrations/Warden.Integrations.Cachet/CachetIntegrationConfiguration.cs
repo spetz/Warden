@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -55,14 +57,29 @@ namespace Warden.Integrations.Cachet
         public string Password { get; protected set; }
 
         /// <summary>
+        /// Request headers.
+        /// </summary>
+        public IDictionary<string, string> Headers { get; protected set; }
+
+        /// <summary>
         /// Optional timeout of the HTTP request.
         /// </summary>
         public TimeSpan? Timeout { get; protected set; }
 
         /// <summary>
+        /// Flag determining whether an exception should be thrown if HTTP request returns invalid reponse (false by default).
+        /// </summary>
+        public bool FailFast { get; protected set; }
+
+        /// <summary>
         /// Custom JSON serializer settings of the Newtonsoft.Json library.
         /// </summary>
         public JsonSerializerSettings JsonSerializerSettings { get; protected set; } = DefaultJsonSerializerSettings;
+
+        /// <summary>
+        /// Custom provider for the ICachetService.
+        /// </summary>
+        public Func<ICachetService> CachetServiceProvider { get; protected set; }
 
         /// <summary>
         /// Factory method for creating a new instance of fluent builder for the CachetIntegrationConfiguration.
@@ -92,6 +109,8 @@ namespace Warden.Integrations.Cachet
 
             ApiUrl = new Uri(apiUrl);
             AccessToken = accessToken;
+            CachetServiceProvider = () => new CachetService(ApiUrl);
+            Headers = new Dictionary<string, string>();
         }
 
         protected CachetIntegrationConfiguration(string apiUrl, string username, string password)
@@ -106,6 +125,8 @@ namespace Warden.Integrations.Cachet
             ApiUrl = new Uri(apiUrl);
             Username = username;
             Password = password;
+            CachetServiceProvider = () => new CachetService(ApiUrl);
+            Headers = new Dictionary<string, string>();
         }
 
         /// <summary>
@@ -157,6 +178,21 @@ namespace Warden.Integrations.Cachet
             }
 
             /// <summary>
+            /// Request headers of the HTTP request.
+            /// </summary>
+            /// <param name="headers">Collection of the HTTP request headers.</param>
+            /// <returns>Instance of fluent builder for the CachetIntegrationConfiguration.</returns>
+            public Builder WithHeaders(IDictionary<string, string> headers)
+            {
+                if (headers == null || !headers.Any())
+                    throw new ArgumentNullException(nameof(headers), "Request headers can not be empty.");
+
+                Configuration.Headers = headers;
+
+                return this;
+            }
+
+            /// <summary>
             /// Sets the custom JSON serializer settings of the Newtonsoft.Json library.
             /// </summary>
             /// <param name="jsonSerializerSettings">Custom JSON serializer settings of the Newtonsoft.Json library.</param>
@@ -168,6 +204,36 @@ namespace Warden.Integrations.Cachet
                         "JSON serializer settings can not be null.");
 
                 Configuration.JsonSerializerSettings = jsonSerializerSettings;
+
+                return this;
+            }
+
+            /// <summary>
+            /// Flag determining whether an exception should be thrown if HTTP request returns invalid reponse (false by default).
+            /// </summary>
+            /// <returns>Instance of fluent builder for the CachetIntegrationConfiguration.</returns>
+            public Builder FailFast()
+            {
+                Configuration.FailFast = true;
+
+                return this;
+            }
+
+            /// <summary>
+            /// Sets the custom provider for the ICachetService.
+            /// </summary>
+            /// <param name="cachetServiceProvider">Custom provider for the ICachetService.</param>
+            /// <returns>Lambda expression returning an instance of the ICachetService.</returns>
+            /// <returns>Instance of fluent builder for the CachetIntegrationConfiguration.</returns>
+            public Builder WithCachetServiceProvider(Func<ICachetService> cachetServiceProvider)
+            {
+                if (cachetServiceProvider == null)
+                {
+                    throw new ArgumentNullException(nameof(cachetServiceProvider),
+                        "Cachet service provider can not be null.");
+                }
+
+                Configuration.CachetServiceProvider = cachetServiceProvider;
 
                 return this;
             }
