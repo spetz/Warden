@@ -86,9 +86,9 @@ namespace Warden.Examples.Console
                 //            integrations.SendGrid().SendEmailAsync("Everything is up and running again!"));
                 //})
                 //Set proper URL of the Warden Web API
-                .IntegrateWithHttpApi("http://localhost:11223/api",
-                    "1pi0Tp9/n2wdLSRsUBAKXwHGPXoFU/58wV8Dc+vIL+k2/fWF14VXPiuK",
-                    "0b8351f1-dc93-4137-90b9-e3a7d7e12054")
+                .IntegrateWithHttpApi("https://panel.getwarden.net/api",
+                    "pMBXwekquqlfvGPXTNT1k32RHisgguAV2yv3tJq1Wq0d2eqMsx2HuR97Lfc=",
+                    "150bd13b-ef0d-41e7-8817-e52c3831b319")
                 //Set proper Slack webhook URL
                 //.IntegrateWithSlack("https://hooks.slack.com/services/XXX/YYY/ZZZ")
                 .SetGlobalWatcherHooks(hooks =>
