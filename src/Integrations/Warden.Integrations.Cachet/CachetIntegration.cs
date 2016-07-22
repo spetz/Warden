@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Warden.Integrations.Cachet
 {
@@ -8,6 +9,7 @@ namespace Warden.Integrations.Cachet
     public class CachetIntegration : IIntegration
     {
         private readonly CachetIntegrationConfiguration _configuration;
+        private readonly ICachetService _cachetService;
 
         public CachetIntegration(CachetIntegrationConfiguration configuration)
         {
@@ -18,7 +20,89 @@ namespace Warden.Integrations.Cachet
             }
 
             _configuration = configuration;
+            _cachetService = _configuration.CachetServiceProvider();
         }
+
+        /// <summary>
+        /// Creates a component using the Cachet API.
+        /// </summary>
+        /// <param name="name">Name of the component.</param>
+        /// <param name="status">Status of the component (1-4).</param>
+        /// <param name="description">Description of the component.</param>
+        /// <param name="link">A hyperlink to the component.</param>
+        /// <param name="order">Order of the component (0 by default)</param>
+        /// <param name="groupId">The group id that the component is within (0 by default).</param>
+        /// <param name="enabled">Whether the component is enabled (true by default).</param>
+        /// <returns>Details of created component if operation has succeeded.</returns>
+        public async Task<Component> CreateComponentAsync(string name, int status, string description = null,
+            string link = null, int order = 0, int groupId = 0, bool enabled = true)
+            => await _cachetService.CreateComponentAsync(name, status, description, link, order, groupId, enabled);
+
+        /// <summary>
+        /// Updates a component using the Cachet API.
+        /// </summary>
+        /// <param name="id">Id of the component.</param>
+        /// <param name="name">Name of the component.</param>
+        /// <param name="status">Status of the component (1-4).</param>
+        /// <param name="link">A hyperlink to the component.</param>
+        /// <param name="order">Order of the component (0 by default)</param>
+        /// <param name="groupId">The group id that the component is within (0 by default).</param>
+        /// <param name="enabled">Whether the component is enabled (true by default).</param>
+        /// <returns>Details of created component if operation has succeeded.</returns>
+        public async Task<Component> UpdateComponentAsync(int id, string name = null, int status = 1,
+            string link = null, int order = 0, int groupId = 0, bool enabled = true)
+            => await _cachetService.UpdateComponentAsync(id, name, status, link, order, groupId, enabled);
+
+        /// <summary>
+        /// Deletes a component using the Cachet API.
+        /// </summary>
+        /// <param name="id">Id of the component.</param>
+        /// <returns>True if operation has succeeded, otherwise false.</returns>
+        public async Task<bool> DeleteComponentAsync(int id) => await _cachetService.DeleteComponentAsync(id);
+
+        /// <summary>
+        /// Creates an incident using the Cachet API.
+        /// </summary>
+        /// <param name="name">Name of the incident.</param>
+        /// <param name="message">A message (supporting Markdown) to explain more.</param>
+        /// <param name="status">Status of the incident (1-4).</param>
+        /// <param name="visible">Whether the incident is publicly visible (1 = true by default).</param>
+        /// <param name="componentId">Component to update. (Required with component_status).</param>
+        /// <param name="componentStatus">The status to update the given component with (1-4).</param>
+        /// <param name="notify">Whether to notify subscribers (false by default).</param>
+        /// <param name="createdAt">When the incident was created (actual UTC date by default).</param>
+        /// <param name="template">The template slug to use.</param>
+        /// <param name="vars">The variables to pass to the template.</param>
+        /// <returns>Details of created incident if operation has succeeded.</returns>
+        public async Task<Incident> CreateIncidentAsync(string name, string message, int status, int visible = 1,
+            string componentId = null, int componentStatus = 1, bool notify = false,
+            DateTime? createdAt = null, string template = null, params string[] vars)
+            => await _cachetService.CreateIncidentAsync(name, message, status, visible, componentId,
+                componentStatus, notify, createdAt, template, vars);
+
+        /// <summary>
+        /// Updates an incident using the Cachet API.
+        /// </summary>
+        /// <param name="id">Id of the incident.</param>
+        /// <param name="name">Name of the incident.</param>
+        /// <param name="message">A message (supporting Markdown) to explain more.</param>
+        /// <param name="status">Status of the incident (1-4).</param>
+        /// <param name="visible">Whether the incident is publicly visible (1 = true by default).</param>
+        /// <param name="componentId">Component to update. (Required with component_status).</param>
+        /// <param name="componentStatus">The status to update the given component with (1-4).</param>
+        /// <param name="notify">Whether to notify subscribers (false by default).</param>
+        /// <returns>Details of updated incident if operation has succeeded.</returns>
+        public async Task<Incident> UpdateIncidentAsync(int id, string name = null, string message = null,
+            int status = 1, int visible = 1, string componentId = null, int componentStatus = 1, bool notify = false)
+            => await _cachetService.UpdateIncidentAsync(id, name, message, status, visible, componentId,
+                componentStatus, notify);
+
+        /// <summary>
+        /// Deletes an incident using the Cachet API.
+        /// </summary>
+        /// <param name="id">Id of the incident.</param>
+        /// <returns>True if operation has succeeded, otherwise false.</returns>
+        public async Task<bool> DeleteIncidentAsync(int id) => await _cachetService.DeleteIncidentAsync(id);
 
         /// <summary>
         /// Factory method for creating a new instance of CachetIntegration.

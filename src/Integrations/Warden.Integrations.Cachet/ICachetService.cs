@@ -66,7 +66,6 @@ namespace Warden.Integrations.Cachet
             string componentId = null, int componentStatus = 1, bool notify = false,
             DateTime? createdAt = null, string template = null, params string[] vars);
 
-
         /// <summary>
         /// Updates an incident using the Cachet API.
         /// </summary>
@@ -97,13 +96,23 @@ namespace Warden.Integrations.Cachet
     public class CachetService : ICachetService
     {
         private readonly JsonSerializerSettings _jsonSerializerSettings;
+        private readonly string _accessToken;
+        private readonly string _accessTokenHeader;
+        private readonly string _username;
+        private readonly string _password;
         private readonly HttpClient _client = new HttpClient();
         private static readonly string ComponentsEndpoint = "/components";
         private static readonly string IncidentsEndpoint = "/incidents";
 
-        public CachetService(Uri apiUrl, JsonSerializerSettings jsonSerializerSettings)
+        public CachetService(Uri apiUrl, JsonSerializerSettings jsonSerializerSettings,
+            string accessToken = null, string accessTokenHeader = null, 
+            string username = null, string password = null)
         {
             _jsonSerializerSettings = jsonSerializerSettings;
+            _accessToken = accessToken;
+            _accessTokenHeader = accessTokenHeader;
+            _username = username;
+            _password = password;
             _client.BaseAddress = apiUrl;
         }
 
@@ -225,6 +234,9 @@ namespace Warden.Integrations.Cachet
 
         private void SetRequestHeaders(IDictionary<string, string> headers)
         {
+            SetAccessTokenHeader();
+            SetAuthHeader();
+
             if (headers == null)
                 return;
 
@@ -237,6 +249,29 @@ namespace Warden.Integrations.Cachet
 
                 _client.DefaultRequestHeaders.Add(header.Key, header.Value);
             }
+        }
+
+        private void SetAccessTokenHeader()
+        {
+            if (string.IsNullOrWhiteSpace(_accessToken))
+                return;
+            if (string.IsNullOrWhiteSpace(_accessTokenHeader))
+                return;
+
+            _client.DefaultRequestHeaders.Add(_accessTokenHeader, _accessToken);
+        }
+
+        private void SetAuthHeader()
+        {
+            if (string.IsNullOrWhiteSpace(_username))
+                return;
+            if (string.IsNullOrWhiteSpace(_password))
+                return;
+
+            var credentials = $"{_username}:{_password}";
+            var credentialsBytes = Encoding.UTF8.GetBytes(credentials);
+            var headerValue = $"Basic: {Convert.ToBase64String(credentialsBytes)}";
+            _client.DefaultRequestHeaders.Add("Authorization", headerValue);
         }
     }
 }
