@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using Warden.Core;
 
 namespace Warden.Integrations.Cachet
@@ -8,6 +9,11 @@ namespace Warden.Integrations.Cachet
     /// </summary>
     public static class Extensions
     {
+        internal static string ToJson(this object data, JsonSerializerSettings serializerSettings)
+        {
+            return JsonConvert.SerializeObject(data, serializerSettings);
+        }
+
         /// <summary>
         /// Extension method for adding the Cachet integration to the the WardenConfiguration.
         /// </summary>

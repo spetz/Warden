@@ -109,7 +109,7 @@ namespace Warden.Integrations.Cachet
 
             ApiUrl = new Uri(apiUrl);
             AccessToken = accessToken;
-            CachetServiceProvider = () => new CachetService(ApiUrl);
+            CachetServiceProvider = () => new CachetService(ApiUrl, JsonSerializerSettings);
             Headers = new Dictionary<string, string>();
         }
 
@@ -125,7 +125,7 @@ namespace Warden.Integrations.Cachet
             ApiUrl = new Uri(apiUrl);
             Username = username;
             Password = password;
-            CachetServiceProvider = () => new CachetService(ApiUrl);
+            CachetServiceProvider = () => new CachetService(ApiUrl, JsonSerializerSettings);
             Headers = new Dictionary<string, string>();
         }
 

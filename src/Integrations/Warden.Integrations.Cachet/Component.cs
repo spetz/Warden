@@ -9,40 +9,81 @@ namespace Warden.Integrations.Cachet
     public class Component
     {
         /// <summary>
+        /// Id of the component.
+        /// </summary>
+        [JsonProperty]
+        public int Id { get; protected set; }
+
+        /// <summary>
         /// Name of the component.
         /// </summary>
-        public string Name { get; }
+        [JsonProperty]
+        public string Name { get; protected set; }
 
         /// <summary>
         /// Status of the component (1-4).
         /// </summary>
-        public int Status { get; }
+        [JsonProperty]
+        public int Status { get; protected set; }
 
         /// <summary>
         /// Description of the component.
         /// </summary>
-        public string Description { get; }
+        public string Description { get; protected set; }
 
         /// <summary>
         /// A hyperlink to the component.
         /// </summary>
-        public string Link { get; }
+        [JsonProperty]
+        public string Link { get; protected set; }
 
         /// <summary>
         /// Order of the component (0 by default).
         /// </summary>
-        public int Order { get; }
+        [JsonProperty]
+        public int Order { get; protected set; }
 
         /// <summary>
         /// The group id that the component is within (0 by default).
         /// </summary>
         [JsonProperty("group_id")]
-        public int GroupId { get; }
+        public int GroupId { get; protected set; }
 
         /// <summary>
         /// Whether the component is enabled (true by default).
         /// </summary>
-        public bool Enabled { get; }
+        [JsonProperty]
+        public bool Enabled { get; protected set; }
+
+        /// <summary>
+        /// When the component was created.
+        /// </summary>
+        [JsonProperty("created_at")]
+        public DateTime CreatedAt { get; protected set; }
+
+        /// <summary>
+        /// When the component was updated.
+        /// </summary>
+        [JsonProperty("updated_at")]
+        public DateTime UpdatedAt { get; protected set; }
+
+        /// <summary>
+        /// When the component was deleted.
+        /// </summary>
+        [JsonProperty("deleted_at")]
+        public DateTime DeletedAt { get; protected set; }
+
+        /// <summary>
+        /// A name of the status.
+        /// </summary>
+        [JsonProperty("status_name")]
+        public string StatusName { get; protected set; }
+
+        /// <summary>
+        /// Tags of the component.
+        /// </summary>
+        [JsonProperty]
+        public string[] Tags { get; protected set; }
 
         protected Component(string name, int status, string description,
             string link, int order, int groupId, bool enabled)

@@ -11,55 +11,86 @@ namespace Warden.Integrations.Cachet
         /// <summary>
         /// Name of the incident.
         /// </summary>
-        public string Name { get; }
+        [JsonProperty]
+        public string Name { get; protected set; }
 
         /// <summary>
         /// A message (supporting Markdown) to explain more.
         /// </summary>
-        public string Message { get; }
+        [JsonProperty]
+        public string Message { get; protected set; }
 
         /// <summary>
         /// Status of the incident (1-4).
         /// </summary>
-        public int Status { get; }
+        [JsonProperty]
+        public int Status { get; protected set; }
 
         /// <summary>
         /// Whether the incident is publicly visible (1 = true by default).
         /// </summary>
-        public int Visible { get; }
+        [JsonProperty]
+        public int Visible { get; protected set; }
 
         /// <summary>
         /// Component to update. (Required with component_status).
         /// </summary>
         [JsonProperty("component_id")]
-        public string ComponentId { get; }
+        public string ComponentId { get; protected set; }
 
         /// <summary>
         /// The status to update the given component (1-4).
         /// </summary>
         [JsonProperty("component_status")]
-        public int ComponentStatus { get; }
+        public int ComponentStatus { get; protected set; }
 
         /// <summary>
         /// Whether to notify subscribers (false by default).
         /// </summary>
-        public bool Notify { get; }
+        [JsonProperty]
+        public bool Notify { get; protected set; }
 
         /// <summary>
         /// When the incident was created (actual UTC date by default).
         /// </summary>
         [JsonProperty("created_at")]
-        public DateTime CreatedAt { get; }
+        public DateTime CreatedAt { get; protected set; }
+
+        /// <summary>
+        /// When the incident was updated.
+        /// </summary>
+        [JsonProperty("updated_at")]
+        public DateTime UpdatedAt { get; protected set; }
+
+        /// <summary>
+        /// When the incident was deleted.
+        /// </summary>
+        [JsonProperty("deleted_at")]
+        public DateTime DeletedAt { get; protected set; }
+
+        /// <summary>
+        /// When the incident was scheduled (actual UTC date by default).
+        /// </summary>
+        [JsonProperty("scheduled_at")]
+        public DateTime ScheduledAt { get; protected set; }
+
+        /// <summary>
+        /// A name of the status.
+        /// </summary>
+        [JsonProperty("human_status")]
+        public string HumanStatus { get; protected set; }
 
         /// <summary>
         /// The template slug to use.
         /// </summary>
-        public string Template { get; }
+        [JsonProperty]
+        public string Template { get; protected set; }
 
         /// <summary>
         /// The variables to pass to the template.
         /// </summary>
-        public string[] Vars { get; }
+        [JsonProperty]
+        public string[] Vars { get; protected set; }
 
         protected Incident(string name, string message, int status, int visible,
             string componentId, int componentStatus, bool notify,
