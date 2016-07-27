@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
+using Warden.Watchers;
 
 namespace Warden.Integrations.Cachet
 {
@@ -67,15 +69,15 @@ namespace Warden.Integrations.Cachet
         /// <param name="message">A message (supporting Markdown) to explain more.</param>
         /// <param name="status">Status of the incident (1-4).</param>
         /// <param name="visible">Whether the incident is publicly visible (1 = true by default).</param>
-        /// <param name="componentId">Component to update. (Required with component_status).</param>
+        /// <param name="componentId">Id of the component (0 by default).</param>
         /// <param name="componentStatus">The status to update the given component with (1-4).</param>
         /// <param name="notify">Whether to notify subscribers (false by default).</param>
-        /// <param name="createdAt">When the incident was created (actual UTC date by default).</param>
+        /// <param name="createdAt">When the incident was created.</param>
         /// <param name="template">The template slug to use.</param>
         /// <param name="vars">The variables to pass to the template.</param>
         /// <returns>Details of created incident if operation has succeeded.</returns>
         public async Task<Incident> CreateIncidentAsync(string name, string message, int status, int visible = 1,
-            string componentId = null, int componentStatus = 1, bool notify = false,
+            int componentId = 0, int componentStatus = 1, bool notify = false,
             DateTime? createdAt = null, string template = null, params string[] vars)
             => await _cachetService.CreateIncidentAsync(name, message, status, visible, componentId,
                 componentStatus, notify, createdAt, template, vars);
@@ -88,12 +90,12 @@ namespace Warden.Integrations.Cachet
         /// <param name="message">A message (supporting Markdown) to explain more.</param>
         /// <param name="status">Status of the incident (1-4).</param>
         /// <param name="visible">Whether the incident is publicly visible (1 = true by default).</param>
-        /// <param name="componentId">Component to update. (Required with component_status).</param>
+        /// <param name="componentId">Id of the component (0 by default).</param>
         /// <param name="componentStatus">The status to update the given component with (1-4).</param>
         /// <param name="notify">Whether to notify subscribers (false by default).</param>
         /// <returns>Details of updated incident if operation has succeeded.</returns>
         public async Task<Incident> UpdateIncidentAsync(int id, string name = null, string message = null,
-            int status = 1, int visible = 1, string componentId = null, int componentStatus = 1, bool notify = false)
+            int status = 1, int visible = 1, int componentId = 0, int componentStatus = 1, bool notify = false)
             => await _cachetService.UpdateIncidentAsync(id, name, message, status, visible, componentId,
                 componentStatus, notify);
 
@@ -103,6 +105,27 @@ namespace Warden.Integrations.Cachet
         /// <param name="id">Id of the incident.</param>
         /// <returns>True if operation has succeeded, otherwise false.</returns>
         public async Task<bool> DeleteIncidentAsync(int id) => await _cachetService.DeleteIncidentAsync(id);
+
+        public async Task SaveIterationAsync(IWardenIteration iteration)
+        {
+            var tasks = iteration.Results.Select(SaveWardenCheckResultAsync);
+            await Task.WhenAll(tasks);
+        }
+
+        public async Task SaveWardenCheckResultAsync(IWardenCheckResult result)
+        {
+            var checkResult = result.WatcherCheckResult;
+            var status = checkResult.IsValid ? Status.Operational : Status.MajorOutage;
+            var component = await _cachetService.CreateComponentAsync(checkResult.WatcherName, status);
+            await SaveIncidentAsync(component.Id, checkResult);
+        }
+
+        public async Task SaveIncidentAsync(int componentId, IWatcherCheckResult result)
+        {
+            var status = result.IsValid ? Status.Operational : Status.MajorOutage;
+            var incident = await _cachetService.CreateIncidentAsync(result.WatcherName, result.Description,
+                status, componentId: componentId, componentStatus: status);
+        }
 
         /// <summary>
         /// Factory method for creating a new instance of CachetIntegration.

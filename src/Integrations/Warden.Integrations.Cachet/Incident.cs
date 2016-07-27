@@ -33,10 +33,10 @@ namespace Warden.Integrations.Cachet
         public int Visible { get; protected set; }
 
         /// <summary>
-        /// Component to update. (Required with component_status).
+        /// Id of the component;
         /// </summary>
         [JsonProperty("component_id")]
-        public string ComponentId { get; protected set; }
+        public int ComponentId { get; protected set; }
 
         /// <summary>
         /// The status to update the given component (1-4).
@@ -51,28 +51,28 @@ namespace Warden.Integrations.Cachet
         public bool Notify { get; protected set; }
 
         /// <summary>
-        /// When the incident was created (actual UTC date by default).
+        /// When the incident was created.
         /// </summary>
         [JsonProperty("created_at")]
-        public DateTime CreatedAt { get; protected set; }
+        public DateTime? CreatedAt { get; protected set; }
 
         /// <summary>
         /// When the incident was updated.
         /// </summary>
         [JsonProperty("updated_at")]
-        public DateTime UpdatedAt { get; protected set; }
+        public DateTime? UpdatedAt { get; protected set; }
 
         /// <summary>
         /// When the incident was deleted.
         /// </summary>
         [JsonProperty("deleted_at")]
-        public DateTime DeletedAt { get; protected set; }
+        public DateTime? DeletedAt { get; protected set; }
 
         /// <summary>
-        /// When the incident was scheduled (actual UTC date by default).
+        /// When the incident was scheduled.
         /// </summary>
         [JsonProperty("scheduled_at")]
-        public DateTime ScheduledAt { get; protected set; }
+        public DateTime? ScheduledAt { get; protected set; }
 
         /// <summary>
         /// A name of the status.
@@ -97,8 +97,8 @@ namespace Warden.Integrations.Cachet
         }
 
         protected Incident(string name, string message, int status, int visible,
-            string componentId, int componentStatus, bool notify,
-            DateTime createdAt, string template, params string[] vars)
+            int componentId, int componentStatus, bool notify,
+            DateTime? createdAt, string template, params string[] vars)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Name of the incident can not be empty.", nameof(name));
@@ -130,17 +130,17 @@ namespace Warden.Integrations.Cachet
         /// <param name="message">A message (supporting Markdown) to explain more.</param>
         /// <param name="status">Status of the incident (1-4).</param>
         /// <param name="visible">Whether the incident is publicly visible (1 = true by default).</param>
-        /// <param name="componentId">Component to update. (Required with component_status).</param>
-        /// <param name="componentStatus">The status to update the given component with (1-4).</param>
+        /// <param name="componentId">Id of the component. (Required with component_status).</param>
+        /// <param name="componentStatus">The status to update the given incident with (1-4).</param>
         /// <param name="notify">Whether to notify subscribers (false by default).</param>
-        /// <param name="createdAt">When the incident was created (actual UTC date by default).</param>
+        /// <param name="createdAt">When the incident was created.</param>
         /// <param name="template">The template slug to use.</param>
         /// <param name="vars">The variables to pass to the template.</param>
         /// <returns>Instance of Incident.</returns>
         public static Incident Create(string name, string message, int status, int visible = 1,
-            string componentId = null, int componentStatus = 1, bool notify = false,
+            int componentId = 0, int componentStatus = 1, bool notify = false,
             DateTime? createdAt = null, string template = null, params string[] vars)
             => new Incident(name, message, status, visible, componentId, componentStatus,
-                notify, createdAt.GetValueOrDefault(DateTime.UtcNow), template, vars);
+                notify, createdAt, template, vars);
     }
 }

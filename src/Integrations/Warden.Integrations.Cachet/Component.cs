@@ -65,13 +65,13 @@ namespace Warden.Integrations.Cachet
         /// When the component was updated.
         /// </summary>
         [JsonProperty("updated_at")]
-        public DateTime UpdatedAt { get; protected set; }
+        public DateTime? UpdatedAt { get; protected set; }
 
         /// <summary>
         /// When the component was deleted.
         /// </summary>
         [JsonProperty("deleted_at")]
-        public DateTime DeletedAt { get; protected set; }
+        public DateTime? DeletedAt { get; protected set; }
 
         /// <summary>
         /// A name of the status.

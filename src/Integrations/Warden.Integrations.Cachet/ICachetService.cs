@@ -14,6 +14,20 @@ namespace Warden.Integrations.Cachet
     public interface ICachetService
     {
         /// <summary>
+        /// Gets a component by id using the Cachet API.
+        /// </summary>
+        /// <param name="id">Id of the component.</param>
+        /// <returns>Details of component if exists.</returns>
+        Task<Component> GetComponentAsync(int id);
+
+        /// <summary>
+        /// Gets a components by name using the Cachet API.
+        /// </summary>
+        /// <param name="name">Name of the component.</param>
+        /// <returns>Details of components if exist.</returns>
+        Task<IEnumerable<Component>> GetComponentsAsync(string name);
+
+        /// <summary>
         /// Creates a component using the Cachet API.
         /// </summary>
         /// <param name="name">Name of the component.</param>
@@ -23,9 +37,11 @@ namespace Warden.Integrations.Cachet
         /// <param name="order">Order of the component (0 by default)</param>
         /// <param name="groupId">The group id that the component is within (0 by default).</param>
         /// <param name="enabled">Whether the component is enabled (true by default).</param>
+        /// <param name="createEvenIfNameIsAlreadyInUse">Flag determining whether the component should be created even if there's already existing one for the given name.</param>
         /// <returns>Details of created component if operation has succeeded.</returns>
         Task<Component> CreateComponentAsync(string name, int status, string description = null,
-            string link = null, int order = 0, int groupId = 0, bool enabled = true);
+            string link = null, int order = 0, int groupId = 0, bool enabled = true,
+            bool createEvenIfNameIsAlreadyInUse = false);
 
         /// <summary>
         /// Updates a component using the Cachet API.
@@ -55,15 +71,15 @@ namespace Warden.Integrations.Cachet
         /// <param name="message">A message (supporting Markdown) to explain more.</param>
         /// <param name="status">Status of the incident (1-4).</param>
         /// <param name="visible">Whether the incident is publicly visible (1 = true by default).</param>
-        /// <param name="componentId">Component to update. (Required with component_status).</param>
+        /// <param name="componentId">Id of the component (0 by default).</param>
         /// <param name="componentStatus">The status to update the given component with (1-4).</param>
         /// <param name="notify">Whether to notify subscribers (false by default).</param>
-        /// <param name="createdAt">When the incident was created (actual UTC date by default).</param>
+        /// <param name="createdAt">When the incident was created.</param>
         /// <param name="template">The template slug to use.</param>
         /// <param name="vars">The variables to pass to the template.</param>
         /// <returns>Details of created incident if operation has succeeded.</returns>
         Task<Incident> CreateIncidentAsync(string name, string message, int status, int visible = 1,
-            string componentId = null, int componentStatus = 1, bool notify = false,
+            int componentId = 0, int componentStatus = 1, bool notify = false,
             DateTime? createdAt = null, string template = null, params string[] vars);
 
         /// <summary>
@@ -74,12 +90,12 @@ namespace Warden.Integrations.Cachet
         /// <param name="message">A message (supporting Markdown) to explain more.</param>
         /// <param name="status">Status of the incident (1-4).</param>
         /// <param name="visible">Whether the incident is publicly visible (1 = true by default).</param>
-        /// <param name="componentId">Component to update. (Required with component_status).</param>
+        /// <param name="componentId">Id of the component (0 by default).</param>
         /// <param name="componentStatus">The status to update the given component with (1-4).</param>
         /// <param name="notify">Whether to notify subscribers (false by default).</param>
         /// <returns>Details of updated incident if operation has succeeded.</returns>
         Task<Incident> UpdateIncidentAsync(int id, string name = null, string message = null,
-            int status = 1, int visible = 1, string componentId = null, int componentStatus = 1,
+            int status = 1, int visible = 1, int componentId = 0, int componentStatus = 1,
             bool notify = false);
 
         /// <summary>
@@ -103,6 +119,7 @@ namespace Warden.Integrations.Cachet
         private readonly HttpClient _client = new HttpClient();
         private static readonly string ComponentsEndpoint = "components";
         private static readonly string IncidentsEndpoint = "incidents";
+        private static readonly string AuthorizationHeader = "Authorization";
 
         public CachetService(Uri apiUrl, JsonSerializerSettings jsonSerializerSettings,
             string accessToken = null, string accessTokenHeader = null, 
@@ -116,19 +133,44 @@ namespace Warden.Integrations.Cachet
             _client.BaseAddress = apiUrl;
         }
 
-        public async Task<Component> CreateComponentAsync(string name, int status, string description = null,
-            string link = null, int order = 0, int groupId = 0, bool enabled = true)
+        public async Task<Component> GetComponentAsync(int id)
         {
-            var component = Component.Create(name, status, description, link, order, groupId, enabled);
-            var response = await PostAsync(ComponentsEndpoint, component);
+            var response = await GetAsync($"{ComponentsEndpoint}/{id}");
 
             return await ProcessResponseAsync<Component>(response);
+        }
+
+        public async Task<IEnumerable<Component>> GetComponentsAsync(string name)
+        {
+            var response = await GetAsync($"{ComponentsEndpoint}?name={name}");
+
+            return await ProcessCollectionResponseAsync<Component>(response);
+        }
+
+        public async Task<Component> CreateComponentAsync(string name, int status, string description = null,
+            string link = null, int order = 0, int groupId = 0, bool enabled = true,
+            bool createEvenIfNameIsAlreadyInUse = false)
+        {
+            var component = await GetComponentByNameAsync(name);
+            if (createEvenIfNameIsAlreadyInUse || component == null)
+            {
+                component = Component.Create(name, status, description, link, order, groupId, enabled);
+                var response = await PostAsync(ComponentsEndpoint, component);
+
+                return await ProcessResponseAsync<Component>(response);
+            }
+
+            return component;
         }
 
         public async Task<Component> UpdateComponentAsync(int id, string name = null, int status = 1,
             string link = null, int order = 0, int groupId = 0, bool enabled = true)
         {
-            var component = Component.Create(name, status, string.Empty, link, order, groupId, enabled);
+            var component = await GetComponentAsync(id);
+            if (component == null)
+                return null;
+
+            component = Component.Create(name, status, string.Empty, link, order, groupId, enabled);
             var response = await PutAsync($"{ComponentsEndpoint}/{id}", component);
 
             return await ProcessResponseAsync<Component>(response);
@@ -141,8 +183,15 @@ namespace Warden.Integrations.Cachet
             return response.IsSuccessStatusCode;
         }
 
+        private async Task<Component> GetComponentByNameAsync(string name)
+        {
+            var components = await GetComponentsAsync(name);
+
+            return components.FirstOrDefault(x => x.Name.Equals(name));
+        }
+
         public async Task<Incident> CreateIncidentAsync(string name, string message, int status, int visible = 1,
-            string componentId = null, int componentStatus = 1, bool notify = false,
+            int componentId = 0, int componentStatus = 1, bool notify = false,
             DateTime? createdAt = null, string template = null, params string[] vars)
         {
             var incident = Incident.Create(name, message, status, visible, componentId, componentStatus, notify,
@@ -153,7 +202,7 @@ namespace Warden.Integrations.Cachet
         }
 
         public async Task<Incident> UpdateIncidentAsync(int id, string name = null, string message = null,
-            int status = 1, int visible = 1, string componentId = null, int componentStatus = 1,
+            int status = 1, int visible = 1, int componentId = 0, int componentStatus = 1,
             bool notify = false)
         {
             var incident = Incident.Create(name, message, status, visible, componentId, componentStatus, notify);
@@ -178,6 +227,21 @@ namespace Warden.Integrations.Cachet
 
             return JsonConvert.DeserializeObject<Envelope<T>>(content).Data;
         }
+
+        private static async Task<IEnumerable<T>> ProcessCollectionResponseAsync<T>(HttpResponseMessage response)
+        {
+            if (!response.IsSuccessStatusCode)
+                return Enumerable.Empty<T>();
+
+            var content = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<EnvelopeCollection<T>>(content).Data;
+        }
+
+        private async Task<HttpResponseMessage> GetAsync(string endpoint,
+            IDictionary<string, string> headers = null, TimeSpan? timeout = null, bool failFast = false)
+            => await ExecuteAsync(() => _client.GetAsync(GetFullUrl(endpoint)),
+                headers, timeout, failFast);
 
         private async Task<HttpResponseMessage> PostAsync(string endpoint, object data,
             IDictionary<string, string> headers = null, TimeSpan? timeout = null, bool failFast = false)
@@ -253,6 +317,8 @@ namespace Warden.Integrations.Cachet
 
         private void SetAccessTokenHeader()
         {
+            if (_client.DefaultRequestHeaders.Any(x => x.Key == _accessTokenHeader))
+                return;
             if (string.IsNullOrWhiteSpace(_accessToken))
                 return;
             if (string.IsNullOrWhiteSpace(_accessTokenHeader))
@@ -263,6 +329,8 @@ namespace Warden.Integrations.Cachet
 
         private void SetAuthHeader()
         {
+            if (_client.DefaultRequestHeaders.Any(x => x.Key == AuthorizationHeader))
+                return;
             if (string.IsNullOrWhiteSpace(_username))
                 return;
             if (string.IsNullOrWhiteSpace(_password))
@@ -271,7 +339,7 @@ namespace Warden.Integrations.Cachet
             var credentials = $"{_username}:{_password}";
             var credentialsBytes = Encoding.UTF8.GetBytes(credentials);
             var headerValue = $"Basic: {Convert.ToBase64String(credentialsBytes)}";
-            _client.DefaultRequestHeaders.Add("Authorization", headerValue);
+            _client.DefaultRequestHeaders.Add(AuthorizationHeader, headerValue);
         }
     }
 }
