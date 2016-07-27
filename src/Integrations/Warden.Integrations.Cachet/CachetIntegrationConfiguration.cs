@@ -107,9 +107,10 @@ namespace Warden.Integrations.Cachet
             if (string.IsNullOrWhiteSpace(accessToken))
                 throw new ArgumentException("Access token can not be empty.", nameof(accessToken));
 
-            ApiUrl = new Uri(apiUrl);
+            ApiUrl = GetApiUrl(apiUrl);
             AccessToken = accessToken;
-            CachetServiceProvider = () => new CachetService(ApiUrl, JsonSerializerSettings);
+            CachetServiceProvider = () => new CachetService(ApiUrl, JsonSerializerSettings,
+                accessToken, AccessTokenHeader);
             Headers = new Dictionary<string, string>();
         }
 
@@ -122,12 +123,17 @@ namespace Warden.Integrations.Cachet
             if (string.IsNullOrWhiteSpace(password))
                 throw new ArgumentException("Password can not be empty.", nameof(password));
 
-            ApiUrl = new Uri(apiUrl);
+            ApiUrl = GetApiUrl(apiUrl);
             Username = username;
             Password = password;
-            CachetServiceProvider = () => new CachetService(ApiUrl, JsonSerializerSettings);
+            CachetServiceProvider = () => new CachetService(ApiUrl, JsonSerializerSettings,
+                username: username, password: password);
             Headers = new Dictionary<string, string>();
         }
+
+        private static Uri GetApiUrl(string apiUrl) => apiUrl.EndsWith("/")
+            ? new Uri(apiUrl.Substring(0, apiUrl.Length - 1))
+            : new Uri(apiUrl);
 
         /// <summary>
         /// Fluent builder for the SlackIntegrationConfiguration.

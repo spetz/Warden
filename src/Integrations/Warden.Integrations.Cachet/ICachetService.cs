@@ -101,8 +101,8 @@ namespace Warden.Integrations.Cachet
         private readonly string _username;
         private readonly string _password;
         private readonly HttpClient _client = new HttpClient();
-        private static readonly string ComponentsEndpoint = "/components";
-        private static readonly string IncidentsEndpoint = "/incidents";
+        private static readonly string ComponentsEndpoint = "components";
+        private static readonly string IncidentsEndpoint = "incidents";
 
         public CachetService(Uri apiUrl, JsonSerializerSettings jsonSerializerSettings,
             string accessToken = null, string accessTokenHeader = null, 

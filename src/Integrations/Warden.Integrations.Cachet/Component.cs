@@ -85,6 +85,10 @@ namespace Warden.Integrations.Cachet
         [JsonProperty]
         public string[] Tags { get; protected set; }
 
+        protected Component()
+        {
+        }
+
         protected Component(string name, int status, string description,
             string link, int order, int groupId, bool enabled)
         {

@@ -92,6 +92,10 @@ namespace Warden.Integrations.Cachet
         [JsonProperty]
         public string[] Vars { get; protected set; }
 
+        protected Incident()
+        {
+        }
+
         protected Incident(string name, string message, int status, int visible,
             string componentId, int componentStatus, bool notify,
             DateTime createdAt, string template, params string[] vars)
