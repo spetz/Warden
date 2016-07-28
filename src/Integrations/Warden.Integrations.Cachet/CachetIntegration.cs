@@ -162,7 +162,7 @@ namespace Warden.Integrations.Cachet
             var groupId = _configuration.GroupId;
             var checkResult = result.WatcherCheckResult;
             var name = checkResult.WatcherName;
-            var status = checkResult.IsValid ? Status.Operational : Status.MajorOutage;
+            var status = checkResult.IsValid ? ComponentStatus.Operational : ComponentStatus.MajorOutage;
             var component = await _cachetService.GetComponentAsync(checkResult.WatcherName);
             if (component == null)
             {
@@ -180,7 +180,8 @@ namespace Warden.Integrations.Cachet
         private async Task SaveIncidentAsync(int componentId, IWatcherCheckResult result)
         {
             var date = _configuration.DateTimeProvider().Date;
-            var status = result.IsValid ? Status.Operational : Status.MajorOutage;
+            var componentStatus = result.IsValid ? ComponentStatus.Operational : ComponentStatus.MajorOutage;
+            var incidentStatus = result.IsValid ? IncidentStatus.Fixed : IncidentStatus.Identified;
             var name = $"{result.WatcherName} check is {(result.IsValid ? "valid" : "invalid")}";
             var incidents = await _cachetService.GetIncidentsAsync(componentId);
             var incident = incidents.FirstOrDefault(x => x.ComponentId == componentId &&
@@ -188,12 +189,13 @@ namespace Warden.Integrations.Cachet
             if (incident == null)
             {
                 incident = await _cachetService.CreateIncidentAsync(name, result.Description,
-                    status, componentId: componentId, componentStatus: status);
+                    incidentStatus, componentId: componentId, componentStatus: componentStatus);
             }
             else
             {
                 incident = await _cachetService.UpdateIncidentAsync(incident.ComponentId, name,
-                    incident.Message, status);
+                    incident.Message, incidentStatus, componentId: componentId,
+                    componentStatus: componentStatus);
             }
         }
 

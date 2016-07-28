@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Warden.Core;
+using Warden.Integrations.Cachet;
 using Warden.Integrations.HttpApi;
 using Warden.Integrations.MsSql;
 using Warden.Integrations.Slack;
@@ -91,6 +92,8 @@ namespace Warden.Examples.Console
                     "150bd13b-ef0d-41e7-8817-e52c3831b319")
                 //Set proper Slack webhook URL
                 //.IntegrateWithSlack("https://hooks.slack.com/services/XXX/YYY/ZZZ")
+                //Set proper URL of Cachet API and access token or username & password
+                //.IntegrateWithCachet("http://localhost/api/v1", "XYZ")
                 .SetGlobalWatcherHooks(hooks =>
                 {
                     hooks.OnStart(check => GlobalHookOnStart(check))
@@ -101,6 +104,7 @@ namespace Warden.Examples.Console
                 .SetHooks((hooks, integrations) =>
                 {
                     hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration))
+                        //.OnIterationCompletedAsync(iteration => OnIterationCompletedCachetAsync(iteration, integrations.Cachet()))
                         .OnIterationCompletedAsync(iteration => integrations.MsSql()
                             .QueryAsync<int>("select * from users where id = @id", GetSqlQueryParams()))
                         .OnIterationCompletedAsync(iteration => integrations.MsSql()
@@ -125,7 +129,7 @@ namespace Warden.Examples.Console
 
         private static async Task WebsiteHookOnSuccessAsync(IWardenCheckResult check)
         {
-            var webWatcherCheckResult = (WebWatcherCheckResult)check.WatcherCheckResult;
+            var webWatcherCheckResult = (WebWatcherCheckResult) check.WatcherCheckResult;
             System.Console.WriteLine("Invoking the hook OnSuccessAsync() " +
                                      $"by watcher: '{webWatcherCheckResult.WatcherName}'.");
             await Task.FromResult(true);
@@ -188,6 +192,12 @@ namespace Warden.Examples.Console
             MsSqlIntegration integration)
         {
             await integration.SaveIterationAsync(wardenIteration);
+        }
+
+        private static async Task OnIterationCompletedCachetAsync(IWardenIteration wardenIteration,
+            CachetIntegration cachet)
+        {
+            await cachet.SaveIterationAsync(wardenIteration);
         }
     }
 }

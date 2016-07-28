@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Warden.Core;
+using Warden.Integrations.Cachet;
 using Warden.Integrations.HttpApi;
 using Warden.Integrations.MsSql;
 using Warden.Watchers;
@@ -100,10 +101,12 @@ namespace Warden.Examples.WindowsService
                 //})
                 //Set proper URL of the Warden Web API
                 .IntegrateWithHttpApi("http://localhost:11223/api",
-                "yroWbGkozycDLMI7+Jkyw0FzJv/O6xHzhR8+DcKTNEQECZHFBFmBbYCKJ2wiHYI=",
-                "20afbd7c-f803-4a2d-be64-640776930930")
+                    "yroWbGkozycDLMI7+Jkyw0FzJv/O6xHzhR8+DcKTNEQECZHFBFmBbYCKJ2wiHYI=",
+                    "20afbd7c-f803-4a2d-be64-640776930930")
                 //Set proper Slack webhook URL
                 //.IntegrateWithSlack("https://hooks.slack.com/services/XXX/YYY/ZZZ")
+                //Set proper URL of Cachet API and access token or username & password
+                //.IntegrateWithCachet("http://localhost/api/v1", "XYZ")
                 .SetGlobalWatcherHooks(hooks =>
                 {
                     hooks.OnStart(check => GlobalHookOnStart(check))
@@ -114,12 +117,14 @@ namespace Warden.Examples.WindowsService
                 .SetHooks((hooks, integrations) =>
                 {
                     hooks.OnIterationCompleted(iteration => OnIterationCompleted(iteration))
+                        .OnIterationCompletedAsync(iteration => OnIterationCompletedCachetAsync(iteration, integrations.Cachet()))
                         //.OnIterationCompletedAsync(iteration =>
                         //    integrations.Slack().SendMessageAsync($"Iteration {iteration.Ordinal} has completed."))
                         .OnIterationCompletedAsync(iteration => integrations.HttpApi()
                             .PostIterationToWardenPanelAsync(iteration))
                         .OnError(exception => Console.WriteLine(exception))
-                        .OnIterationCompletedAsync(iteration => OnIterationCompletedMsSqlAsync(iteration, integrations.MsSql()));
+                        .OnIterationCompletedAsync(
+                            iteration => OnIterationCompletedMsSqlAsync(iteration, integrations.MsSql()));
                 })
                 .Build();
 
@@ -150,7 +155,7 @@ namespace Warden.Examples.WindowsService
         private static async Task WebsiteHookOnFailureAsync(IWardenCheckResult check)
         {
             Console.WriteLine("Invoking the hook OnFailureAsync() " +
-                                     $"by watcher: '{check.WatcherCheckResult.WatcherName}'.");
+                              $"by watcher: '{check.WatcherCheckResult.WatcherName}'.");
             await Task.FromResult(true);
         }
 
@@ -197,6 +202,12 @@ namespace Warden.Examples.WindowsService
             MsSqlIntegration integration)
         {
             await integration.SaveIterationAsync(wardenIteration);
+        }
+
+        private static async Task OnIterationCompletedCachetAsync(IWardenIteration wardenIteration,
+            CachetIntegration cachet)
+        {
+            await cachet.SaveIterationAsync(wardenIteration);
         }
     }
 }

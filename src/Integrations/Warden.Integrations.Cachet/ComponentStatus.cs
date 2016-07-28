@@ -1,6 +1,7 @@
 ﻿namespace Warden.Integrations.Cachet
 {
-    public static class Status
+    //Status of the component
+    public static class ComponentStatus
     {
         public static int Operational => 1;
         public static int PerformanceIssues => 2;
