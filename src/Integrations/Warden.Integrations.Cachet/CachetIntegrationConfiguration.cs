@@ -71,9 +71,19 @@ namespace Warden.Integrations.Cachet
         public bool FailFast { get; protected set; }
 
         /// <summary>
+        /// Id of the group to which will be assigned the watchers (components) - 0 by default.
+        /// </summary>
+        public int GroupId { get; protected set; }
+
+        /// <summary>
         /// Custom JSON serializer settings of the Newtonsoft.Json library.
         /// </summary>
         public JsonSerializerSettings JsonSerializerSettings { get; protected set; } = DefaultJsonSerializerSettings;
+
+        /// <summary>
+        /// Custom provider for the DateTime (UTC by default).
+        /// </summary>
+        public Func<DateTime> DateTimeProvider { get; protected set; }
 
         /// <summary>
         /// Custom provider for the ICachetService.
@@ -111,6 +121,7 @@ namespace Warden.Integrations.Cachet
             CachetServiceProvider = () => new CachetService(ApiUrl, JsonSerializerSettings,
                 accessToken, AccessTokenHeader);
             Headers = new Dictionary<string, string>();
+            DateTimeProvider = () => DateTime.UtcNow;
         }
 
         protected CachetIntegrationConfiguration(string apiUrl, string username, string password)
@@ -128,6 +139,7 @@ namespace Warden.Integrations.Cachet
             CachetServiceProvider = () => new CachetService(ApiUrl, JsonSerializerSettings,
                 username: username, password: password);
             Headers = new Dictionary<string, string>();
+            DateTimeProvider = () => DateTime.UtcNow;
         }
 
         private static Uri GetApiUrl(string apiUrl) => apiUrl.EndsWith("/")
@@ -198,6 +210,28 @@ namespace Warden.Integrations.Cachet
             }
 
             /// <summary>
+            /// Flag determining whether an exception should be thrown if HTTP request returns invalid reponse (false by default).
+            /// </summary>
+            /// <returns>Instance of fluent builder for the CachetIntegrationConfiguration.</returns>
+            public Builder FailFast()
+            {
+                Configuration.FailFast = true;
+
+                return this;
+            }
+
+            /// <summary>
+            /// Id of the group to which will be assigned the watchers (components) - 0 by default.
+            /// </summary>
+            /// <returns>Instance of fluent builder for the CachetIntegrationConfiguration.</returns>
+            public Builder WithGroupId(int groupId)
+            {
+                Configuration.GroupId = groupId;
+
+                return this;
+            }
+
+            /// <summary>
             /// Sets the custom JSON serializer settings of the Newtonsoft.Json library.
             /// </summary>
             /// <param name="jsonSerializerSettings">Custom JSON serializer settings of the Newtonsoft.Json library.</param>
@@ -214,12 +248,13 @@ namespace Warden.Integrations.Cachet
             }
 
             /// <summary>
-            /// Flag determining whether an exception should be thrown if HTTP request returns invalid reponse (false by default).
+            /// Provider for the custom DateTime (UTC by default).
             /// </summary>
+            /// <param name="dateTimeProvider">Custom DateTime provider.</param>
             /// <returns>Instance of fluent builder for the CachetIntegrationConfiguration.</returns>
-            public Builder FailFast()
+            public Builder WithDateTimeProvider(Func<DateTime> dateTimeProvider)
             {
-                Configuration.FailFast = true;
+                Configuration.DateTimeProvider = dateTimeProvider;
 
                 return this;
             }

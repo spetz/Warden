@@ -21,6 +21,13 @@ namespace Warden.Integrations.Cachet
         Task<Component> GetComponentAsync(int id);
 
         /// <summary>
+        /// Gets a component by name using the Cachet API.
+        /// </summary>
+        /// <param name="name">Name of the component.</param>
+        /// <returns>Details of component if exists.</returns>
+        Task<Component> GetComponentAsync(string name);
+
+        /// <summary>
         /// Gets a components by name using the Cachet API.
         /// </summary>
         /// <param name="name">Name of the component.</param>
@@ -63,6 +70,13 @@ namespace Warden.Integrations.Cachet
         /// <param name="id">Id of the component.</param>
         /// <returns>True if operation has succeeded, otherwise false.</returns>
         Task<bool> DeleteComponentAsync(int id);
+
+        /// <summary>
+        /// Gets incidents by component id using the Cachet API.
+        /// </summary>
+        /// <param name="componentId">Id of the component.</param>
+        /// <returns>Details of incidents if exist.</returns>
+        Task<IEnumerable<Incident>> GetIncidentsAsync(int componentId);
 
         /// <summary>
         /// Creates an incident using the Cachet API.
@@ -140,9 +154,16 @@ namespace Warden.Integrations.Cachet
             return await ProcessResponseAsync<Component>(response);
         }
 
+        public async Task<Component> GetComponentAsync(string name)
+        {
+            var components = await GetComponentsAsync(name);
+
+            return components.FirstOrDefault(x => x.Name.Equals(name));
+        }
+
         public async Task<IEnumerable<Component>> GetComponentsAsync(string name)
         {
-            var response = await GetAsync($"{ComponentsEndpoint}?name={name}");
+            var response = await GetAsync($"{ComponentsEndpoint}?name={name}&sort=created_at&order=desc&per_page=1000");
 
             return await ProcessCollectionResponseAsync<Component>(response);
         }
@@ -151,7 +172,7 @@ namespace Warden.Integrations.Cachet
             string link = null, int order = 0, int groupId = 0, bool enabled = true,
             bool createEvenIfNameIsAlreadyInUse = false)
         {
-            var component = await GetComponentByNameAsync(name);
+            var component = await GetComponentAsync(name);
             if (createEvenIfNameIsAlreadyInUse || component == null)
             {
                 component = Component.Create(name, status, description, link, order, groupId, enabled);
@@ -183,11 +204,11 @@ namespace Warden.Integrations.Cachet
             return response.IsSuccessStatusCode;
         }
 
-        private async Task<Component> GetComponentByNameAsync(string name)
+        public async Task<IEnumerable<Incident>> GetIncidentsAsync(int componentId)
         {
-            var components = await GetComponentsAsync(name);
+            var response = await GetAsync($"{IncidentsEndpoint}?component_Id={componentId}&sort=created_at&order=desc&per_page=1000");
 
-            return components.FirstOrDefault(x => x.Name.Equals(name));
+            return await ProcessCollectionResponseAsync<Incident>(response);
         }
 
         public async Task<Incident> CreateIncidentAsync(string name, string message, int status, int visible = 1,

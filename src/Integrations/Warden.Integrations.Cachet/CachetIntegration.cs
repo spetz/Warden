@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Warden.Watchers;
@@ -24,6 +25,30 @@ namespace Warden.Integrations.Cachet
             _configuration = configuration;
             _cachetService = _configuration.CachetServiceProvider();
         }
+
+        /// <summary>
+        /// Gets a component by id using the Cachet API.
+        /// </summary>
+        /// <param name="id">Id of the component.</param>
+        /// <returns>Details of component if exists.</returns>
+        public async Task<Component> GetComponentAsync(int id)
+            => await _cachetService.GetComponentAsync(id);
+
+        /// <summary>
+        /// Gets a component by name using the Cachet API.
+        /// </summary>
+        /// <param name="name">Name of the component.</param>
+        /// <returns>Details of component if exists.</returns>
+        public async Task<Component> GetComponentAsync(string name)
+            => await _cachetService.GetComponentAsync(name);
+
+        /// <summary>
+        /// Gets a components by name using the Cachet API.
+        /// </summary>
+        /// <param name="name">Name of the component.</param>
+        /// <returns>Details of components if exist.</returns>
+        public async Task<IEnumerable<Component>> GetComponentsAsync(string name)
+            => await _cachetService.GetComponentsAsync(name);
 
         /// <summary>
         /// Creates a component using the Cachet API.
@@ -60,7 +85,16 @@ namespace Warden.Integrations.Cachet
         /// </summary>
         /// <param name="id">Id of the component.</param>
         /// <returns>True if operation has succeeded, otherwise false.</returns>
-        public async Task<bool> DeleteComponentAsync(int id) => await _cachetService.DeleteComponentAsync(id);
+        public async Task<bool> DeleteComponentAsync(int id) 
+            => await _cachetService.DeleteComponentAsync(id);
+
+        /// <summary>
+        /// Gets incidents by component id using the Cachet API.
+        /// </summary>
+        /// <param name="componentId">Id of the component.</param>
+        /// <returns>Details of incidents if exist.</returns>
+        public async Task<IEnumerable<Incident>> GetIncidentsAsync(int componentId)
+            => await _cachetService.GetIncidentsAsync(componentId);
 
         /// <summary>
         /// Creates an incident using the Cachet API.
@@ -104,27 +138,63 @@ namespace Warden.Integrations.Cachet
         /// </summary>
         /// <param name="id">Id of the incident.</param>
         /// <returns>True if operation has succeeded, otherwise false.</returns>
-        public async Task<bool> DeleteIncidentAsync(int id) => await _cachetService.DeleteIncidentAsync(id);
+        public async Task<bool> DeleteIncidentAsync(int id)
+            => await _cachetService.DeleteIncidentAsync(id);
 
+        /// <summary>
+        /// Saves the IWardenIteration using Cachet API.
+        /// </summary>
+        /// <param name="iteration">Iteration object that will be saved using Cachet API.</param>
+        /// <returns></returns>
         public async Task SaveIterationAsync(IWardenIteration iteration)
         {
-            var tasks = iteration.Results.Select(SaveWardenCheckResultAsync);
+            var tasks = iteration.Results.Select(SaveCheckResultAsync);
             await Task.WhenAll(tasks);
         }
 
-        public async Task SaveWardenCheckResultAsync(IWardenCheckResult result)
+        /// <summary>
+        /// Saves the IWardenCheckResult using Cachet API.
+        /// </summary>
+        /// <param name="result">Result object that will be saved using Cachet API.</param>
+        /// <returns></returns>
+        public async Task SaveCheckResultAsync(IWardenCheckResult result)
         {
+            var groupId = _configuration.GroupId;
             var checkResult = result.WatcherCheckResult;
+            var name = checkResult.WatcherName;
             var status = checkResult.IsValid ? Status.Operational : Status.MajorOutage;
-            var component = await _cachetService.CreateComponentAsync(checkResult.WatcherName, status);
+            var component = await _cachetService.GetComponentAsync(checkResult.WatcherName);
+            if (component == null)
+            {
+                component = await _cachetService.CreateComponentAsync(name,
+                    status, groupId: groupId);
+            }
+            else
+            {
+                component = await _cachetService.UpdateComponentAsync(component.Id,
+                    name, status, groupId: groupId);
+            }
             await SaveIncidentAsync(component.Id, checkResult);
         }
 
-        public async Task SaveIncidentAsync(int componentId, IWatcherCheckResult result)
+        private async Task SaveIncidentAsync(int componentId, IWatcherCheckResult result)
         {
+            var date = _configuration.DateTimeProvider().Date;
             var status = result.IsValid ? Status.Operational : Status.MajorOutage;
-            var incident = await _cachetService.CreateIncidentAsync(result.WatcherName, result.Description,
-                status, componentId: componentId, componentStatus: status);
+            var name = $"{result.WatcherName} check is {(result.IsValid ? "valid" : "invalid")}";
+            var incidents = await _cachetService.GetIncidentsAsync(componentId);
+            var incident = incidents.FirstOrDefault(x => x.ComponentId == componentId &&
+                                                         x.CreatedAt?.Date == date);
+            if (incident == null)
+            {
+                incident = await _cachetService.CreateIncidentAsync(name, result.Description,
+                    status, componentId: componentId, componentStatus: status);
+            }
+            else
+            {
+                incident = await _cachetService.UpdateIncidentAsync(incident.ComponentId, name,
+                    incident.Message, status);
+            }
         }
 
         /// <summary>
