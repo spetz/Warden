@@ -9,6 +9,12 @@ namespace Warden.Integrations.Cachet
     public class Incident
     {
         /// <summary>
+        /// Id of the incident.
+        /// </summary>
+        [JsonProperty]
+        public int Id { get; protected set; }
+
+        /// <summary>
         /// Name of the incident.
         /// </summary>
         [JsonProperty]

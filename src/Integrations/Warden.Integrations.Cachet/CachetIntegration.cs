@@ -145,10 +145,11 @@ namespace Warden.Integrations.Cachet
         /// Saves the IWardenIteration using Cachet API.
         /// </summary>
         /// <param name="iteration">Iteration object that will be saved using Cachet API.</param>
+        /// <param name="notify">Flag determining whether to notify the system administrator(s).</param>
         /// <returns></returns>
-        public async Task SaveIterationAsync(IWardenIteration iteration)
+        public async Task SaveIterationAsync(IWardenIteration iteration, bool notify = false)
         {
-            var tasks = iteration.Results.Select(SaveCheckResultAsync);
+            var tasks = iteration.Results.Select(x => SaveCheckResultAsync(x, notify));
             await Task.WhenAll(tasks);
         }
 
@@ -156,8 +157,9 @@ namespace Warden.Integrations.Cachet
         /// Saves the IWardenCheckResult using Cachet API.
         /// </summary>
         /// <param name="result">Result object that will be saved using Cachet API.</param>
+        /// <param name="notify">Flag determining whether to notify the system administrator(s).</param>
         /// <returns></returns>
-        public async Task SaveCheckResultAsync(IWardenCheckResult result)
+        public async Task SaveCheckResultAsync(IWardenCheckResult result, bool notify = false)
         {
             var groupId = _configuration.GroupId;
             var checkResult = result.WatcherCheckResult;
@@ -174,10 +176,10 @@ namespace Warden.Integrations.Cachet
                 component = await _cachetService.UpdateComponentAsync(component.Id,
                     name, status, groupId: groupId);
             }
-            await SaveIncidentAsync(component.Id, checkResult);
+            await SaveIncidentAsync(component.Id, checkResult, notify);
         }
 
-        private async Task SaveIncidentAsync(int componentId, IWatcherCheckResult result)
+        private async Task SaveIncidentAsync(int componentId, IWatcherCheckResult result, bool notify = false)
         {
             var date = _configuration.DateTimeProvider().Date;
             var componentStatus = result.IsValid ? ComponentStatus.Operational : ComponentStatus.MajorOutage;
@@ -186,15 +188,17 @@ namespace Warden.Integrations.Cachet
             var incidents = await _cachetService.GetIncidentsAsync(componentId);
             var incident = incidents.FirstOrDefault(x => x.ComponentId == componentId &&
                                                          x.CreatedAt?.Date == date);
+            var message = result.Description;
             if (incident == null)
             {
-                incident = await _cachetService.CreateIncidentAsync(name, result.Description,
-                    incidentStatus, componentId: componentId, componentStatus: componentStatus);
+                incident = await _cachetService.CreateIncidentAsync(name, message,
+                    incidentStatus, notify: notify, componentId: componentId,
+                    componentStatus: componentStatus);
             }
             else
             {
-                incident = await _cachetService.UpdateIncidentAsync(incident.ComponentId, name,
-                    incident.Message, incidentStatus, componentId: componentId,
+                incident = await _cachetService.UpdateIncidentAsync(incident.Id, name,
+                    message, incidentStatus, notify: notify, componentId: componentId,
                     componentStatus: componentStatus);
             }
         }
