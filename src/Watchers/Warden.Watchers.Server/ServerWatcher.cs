@@ -35,6 +35,8 @@ namespace Warden.Watchers.Server
             {IPStatus.ParameterProblem, "ICMP echo request to host '{0}' failed because the node (router or gateway) failed while processing packet header." },
         };
 
+        public string Group { get; }
+
         /// <summary>
         /// Default name of the ServerWatcher.
         /// </summary>

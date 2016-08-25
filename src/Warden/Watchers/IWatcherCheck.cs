@@ -14,6 +14,11 @@ namespace Warden.Watchers
         string WatcherName { get; }
 
         /// <summary>
+        /// Name of the group to which belongs to watcher that performed the check.
+        /// </summary>
+        string WatcherGroup { get; }
+
+        /// <summary>
         /// Type of the watcher that performed the check.
         /// </summary>
         Type WatcherType { get; }
@@ -22,6 +27,7 @@ namespace Warden.Watchers
     public class WatcherCheck : IWatcherCheck
     {
         public string WatcherName { get; }
+        public string WatcherGroup { get; }
         public Type WatcherType { get; }
 
         protected WatcherCheck(IWatcher watcher)
@@ -33,6 +39,7 @@ namespace Warden.Watchers
                 throw new ArgumentException("Watcher name can not be empty.");
 
             WatcherName = watcher.Name;
+            WatcherGroup = watcher.Group;
             WatcherType = watcher.GetType();
         }
 

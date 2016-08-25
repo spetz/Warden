@@ -14,6 +14,11 @@ namespace Warden.Watchers
         string Name { get; }
 
         /// <summary>
+        /// Optional name of the group that watcher belongs to.
+        /// </summary>
+        string Group { get; }
+
+        /// <summary>
         /// Performs a single check for the watcher.
         /// </summary>
         /// <returns>Instance of IWatcherCheckResult.</returns>

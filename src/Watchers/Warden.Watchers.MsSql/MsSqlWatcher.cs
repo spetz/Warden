@@ -14,6 +14,7 @@ namespace Warden.Watchers.MsSql
         private readonly IMsSql _msSql;
         private readonly MsSqlWatcherConfiguration _configuration;
         public string Name { get; }
+        public string Group { get; }
         public const string DefaultName = "MSSQL Watcher";
 
         protected MsSqlWatcher(string name, MsSqlWatcherConfiguration configuration)

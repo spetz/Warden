@@ -11,9 +11,10 @@ namespace Warden.Watchers.Web
         private readonly WebWatcherConfiguration _configuration;
         private readonly IHttpService _httpService;
         public string Name { get; }
+        public string Group { get; }
         public const string DefaultName = "Web Watcher";
 
-        protected WebWatcher(string name, WebWatcherConfiguration configuration)
+        protected WebWatcher(string name, WebWatcherConfiguration configuration, string group)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentException("Watcher name can not be empty.");
@@ -26,6 +27,7 @@ namespace Warden.Watchers.Web
 
             Name = name;
             _configuration = configuration;
+            Group = group;
             _httpService = configuration.HttpServiceProvider();
         }
 
@@ -83,13 +85,15 @@ namespace Warden.Watchers.Web
         /// </summary>
         /// <param name="url">Base URL of the request.</param>
         /// <param name="configurator">Optional lambda expression for configuring the WebWatcher.</param>
+        /// <param name="group">Optional name of the group that WebWatcher belongs to.</param>
         /// <returns>Instance of WebWatcher.</returns>
-        public static WebWatcher Create(string url, Action<WebWatcherConfiguration.Default> configurator = null)
+        public static WebWatcher Create(string url, Action<WebWatcherConfiguration.Default> configurator = null, 
+            string group = null)
         {
             var config = new WebWatcherConfiguration.Builder(url);
             configurator?.Invoke((WebWatcherConfiguration.Default)config);
 
-            return Create(DefaultName, config.Build());
+            return Create(DefaultName, config.Build(), group);
         }
 
         /// <summary>
@@ -98,10 +102,11 @@ namespace Warden.Watchers.Web
         /// <param name="url">Base URL of the request.</param>
         /// <param name="request">Instance of the IHttpRequest.</param>
         /// <param name="configurator">Optional lambda expression for configuring the WebWatcher.</param>
+        /// <param name="group">Optional name of the group that WebWatcher belongs to.</param>
         /// <returns>Instance of WebWatcher.</returns>
         public static WebWatcher Create(string url, IHttpRequest request,
-            Action<WebWatcherConfiguration.Default> configurator = null)
-            => Create(DefaultName, url, request, configurator);
+            Action<WebWatcherConfiguration.Default> configurator = null, string group = null)
+            => Create(DefaultName, url, request, configurator, group);
 
         /// <summary>
         /// Factory method for creating a new instance of WebWatcher.
@@ -110,31 +115,34 @@ namespace Warden.Watchers.Web
         /// <param name="url">Base URL of the request.</param>
         /// <param name="request">Instance of the IHttpRequest.</param>
         /// <param name="configurator">Optional lambda expression for configuring the WebWatcher.</param>
+        /// <param name="group">Optional name of the group that WebWatcher belongs to.</param>
         /// <returns>Instance of WebWatcher.</returns>
         public static WebWatcher Create(string name, string url, IHttpRequest request,
-            Action<WebWatcherConfiguration.Default> configurator = null)
+            Action<WebWatcherConfiguration.Default> configurator = null, string group = null)
         {
             var config = new WebWatcherConfiguration.Builder(url, request);
             configurator?.Invoke((WebWatcherConfiguration.Default) config);
 
-            return Create(name, config.Build());
+            return Create(name, config.Build(), group);
         }
 
         /// <summary>
         /// Factory method for creating a new instance of WebWatcher with default name of Web Watcher.
         /// </summary>
         /// <param name="configuration">Configuration of WebWatcher.</param>
+        /// <param name="group">Optional name of the group that WebWatcher belongs to.</param>
         /// <returns>Instance of WebWatcher.</returns>
-        public static WebWatcher Create(WebWatcherConfiguration configuration)
-            => Create(DefaultName, configuration);
+        public static WebWatcher Create(WebWatcherConfiguration configuration, string group = null)
+            => Create(DefaultName, configuration, group);
 
         /// <summary>
         /// Factory method for creating a new instance of WebWatcher.
         /// </summary>
         /// <param name="name">Name of the WebWatcher.</param>
         /// <param name="configuration">Configuration of WebWatcher.</param>
+        /// <param name="group">Optional name of the group that WebWatcher belongs to.</param>
         /// <returns>Instance of WebWatcher.</returns>
-        public static WebWatcher Create(string name, WebWatcherConfiguration configuration)
-            => new WebWatcher(name, configuration);
+        public static WebWatcher Create(string name, WebWatcherConfiguration configuration, string group = null)
+            => new WebWatcher(name, configuration, group);
     }
 }

@@ -12,6 +12,7 @@ namespace Warden.Watchers.Redis
         private readonly IRedisConnection _connection;
         private readonly RedisWatcherConfiguration _configuration;
         public string Name { get; }
+        public string Group { get; }
         public const string DefaultName = "Redis Watcher";
 
         protected RedisWatcher(string name, RedisWatcherConfiguration configuration)

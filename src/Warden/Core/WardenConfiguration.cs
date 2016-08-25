@@ -98,7 +98,8 @@ namespace Warden.Core
             /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
             /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
             /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
-            public Builder AddWatcher(IWatcher watcher, Action<WatcherHooksConfiguration.Builder> hooks = null, TimeSpan? interval = null)
+            public Builder AddWatcher(IWatcher watcher, Action<WatcherHooksConfiguration.Builder> hooks = null, 
+                TimeSpan? interval = null)
             {
                 var hooksConfiguration = WatcherHooksConfiguration.Empty;
                 if (hooks != null)

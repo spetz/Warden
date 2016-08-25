@@ -12,6 +12,7 @@ namespace Warden.Watchers.Disk
     {
         private readonly DiskWatcherConfiguration _configuration;
         public string Name { get; }
+        public string Group { get; }
         public const string DefaultName = "Disk Watcher";
 
         protected DiskWatcher(string name, DiskWatcherConfiguration configuration)

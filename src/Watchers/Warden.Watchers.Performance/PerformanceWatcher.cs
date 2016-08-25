@@ -10,6 +10,7 @@ namespace Warden.Watchers.Performance
     {
         private readonly PerformanceWatcherConfiguration _configuration;
         public string Name { get; }
+        public string Group { get; }
         public const string DefaultName = "Performance Watcher";
 
         protected PerformanceWatcher(string name, PerformanceWatcherConfiguration configuration)

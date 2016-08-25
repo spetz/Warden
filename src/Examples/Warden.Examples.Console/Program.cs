@@ -63,7 +63,7 @@ namespace Warden.Examples.Console
                         .OnSuccessAsync(check => WebsiteHookOnSuccessAsync(check))
                         .OnCompletedAsync(check => WebsiteHookOnCompletedAsync(check))
                         .OnFailureAsync(check => WebsiteHookOnFailureAsync(check));
-                }, interval: TimeSpan.FromMilliseconds(1000))
+                }, interval: TimeSpan.FromMilliseconds(1000), group: "websites")
                 .AddServerWatcher("www.google.pl", 80)
                 .AddWebWatcher("API watcher", "http://httpstat.us/200", HttpRequest.Post("users", new {name = "test"},
                     headers: new Dictionary<string, string>
@@ -138,7 +138,8 @@ namespace Warden.Examples.Console
         private static async Task WebsiteHookOnCompletedAsync(IWardenCheckResult check)
         {
             System.Console.WriteLine("Invoking the hook OnCompletedAsync() " +
-                                     $"by watcher: '{check.WatcherCheckResult.WatcherName}'.");
+                                     $"by watcher: '{check.WatcherCheckResult.WatcherName}' " +
+                                     $"in group '{check.WatcherCheckResult.WatcherGroup}'.");
             await Task.FromResult(true);
         }
 

@@ -10,6 +10,7 @@ namespace Warden.Watchers.Process
     {
         private readonly ProcessWatcherConfiguration _configuration;
         public string Name { get; }
+        public string Group { get; }
         public const string DefaultName = "Process Watcher";
 
         protected ProcessWatcher(string name, ProcessWatcherConfiguration configuration)

@@ -12,6 +12,7 @@ namespace Warden.Watchers.MongoDb
         private readonly MongoDbWatcherConfiguration _configuration;
         private readonly IMongoDbConnection _connection;
         public string Name { get; }
+        public string Group { get; }
         public const string DefaultName = "MongoDB Watcher";
 
         protected MongoDbWatcher(string name, MongoDbWatcherConfiguration configuration)
