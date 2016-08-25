@@ -12,6 +12,10 @@ namespace Warden.Watchers.Process
         /// Name of the process.
         /// </summary>
         public string Name { get; }
+        /// <summary>
+        /// Name of the remote machine, if any.
+        /// </summary>
+        public string MachineName { get; }
 
         /// <summary>
         /// Flag determining whether the existing but not responding process should be treated as valid one.
@@ -33,12 +37,13 @@ namespace Warden.Watchers.Process
         /// </summary>
         public Func<IProcessService> ProcessServiceProvider { get; protected set; }
 
-        protected internal ProcessWatcherConfiguration(string name)
+        protected internal ProcessWatcherConfiguration(string name, string machineName = null)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Process name can not be empty.", nameof(name));
 
             Name = name;
+            MachineName = machineName;
             ProcessServiceProvider = () => new ProcessService();
         }
 
@@ -48,13 +53,14 @@ namespace Warden.Watchers.Process
         /// <param name="name">Name of the process.</param>
         /// <returns>Instance of fluent builder for the ProcessWatcherConfiguration.</returns>
         public static Builder Create(string name) => new Builder(name);
+        public static Builder Create(string name, string machineName) => new Builder(name, machineName);
 
         public abstract class Configurator<T> : WatcherConfigurator<T, ProcessWatcherConfiguration>
             where T : Configurator<T>
         {
-            protected Configurator(string name)
+            protected Configurator(string name, string machineName)
             {
-                Configuration = new ProcessWatcherConfiguration(name);
+                Configuration = new ProcessWatcherConfiguration(name, machineName);
             }
 
             protected Configurator(ProcessWatcherConfiguration configuration) : base(configuration)
@@ -138,7 +144,7 @@ namespace Warden.Watchers.Process
         /// </summary>
         public class Builder : Configurator<Builder>
         {
-            public Builder(string name) : base(name)
+            public Builder(string name, string machineName = null) : base(name, machineName)
             {
                 SetInstance(this);
             }

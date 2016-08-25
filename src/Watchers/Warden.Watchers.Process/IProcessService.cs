@@ -13,7 +13,7 @@ namespace Warden.Watchers.Process
         /// </summary>
         /// <param name="name">Name of the process.</param>
         /// <returns></returns>
-        Task<ProcessInfo> GetProcessInfoAsync(string name);
+        Task<ProcessInfo> GetProcessInfoAsync(string name, string machineName = null);
     }
 
     /// <summary>
@@ -21,9 +21,11 @@ namespace Warden.Watchers.Process
     /// </summary>
     public class ProcessService : IProcessService
     {
-        public async Task<ProcessInfo> GetProcessInfoAsync(string name)
+        public async Task<ProcessInfo> GetProcessInfoAsync(string name, string machineName = null)
         {
-            var processes = System.Diagnostics.Process.GetProcessesByName(name);
+            var processes = machineName == null 
+                ? System.Diagnostics.Process.GetProcessesByName(name) 
+                : System.Diagnostics.Process.GetProcessesByName(name, machineName);
             var process = processes.FirstOrDefault();
             var processId = process?.Id ?? 0;
             var exists = process != null;
@@ -32,7 +34,7 @@ namespace Warden.Watchers.Process
             //TODO: Fix this when .NET Core finally gets this property.
             //var isResponding = process?.Responding ?? false;
 
-            return await Task.FromResult(ProcessInfo.Create(processId, name, exists, isResponding));
+            return await Task.FromResult(ProcessInfo.Create(processId, name, machineName, exists, isResponding));
         }
     }
 }
