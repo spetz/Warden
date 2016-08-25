@@ -60,7 +60,7 @@ namespace Warden.Web.Core.Domain
             UpdatedAt = DateTime.UtcNow;
         }
 
-        public void AddWatcher(string name, WatcherType type)
+        public void AddWatcher(string name, WatcherType type, string group = null)
         {
             if (name.Empty())
                 throw new DomainException("Can not add a watcher without a name to the Warden.");
@@ -69,7 +69,7 @@ namespace Warden.Web.Core.Domain
             if (watcher != null)
                 throw new DomainException($"Watcher with name: '{name}' has been already added.");
 
-            _watchers.Add(Watcher.Create(name, type));
+            _watchers.Add(Watcher.Create(name, type, group));
             UpdatedAt = DateTime.UtcNow;
         }
 

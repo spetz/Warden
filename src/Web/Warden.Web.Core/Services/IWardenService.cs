@@ -90,7 +90,7 @@ namespace Warden.Web.Core.Services
                     }
 
                     updateOrganization = true;
-                    warden.AddWatcher(watcherName, watcherType);
+                    warden.AddWatcher(watcherName, watcherType, result.WatcherCheckResult.WatcherGroup);
                     watcher = warden.GetWatcherByName(watcherName);
                 }
 
