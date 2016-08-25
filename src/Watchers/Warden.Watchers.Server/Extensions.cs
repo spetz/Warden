@@ -55,15 +55,17 @@ namespace Warden.Watchers.Server
         /// <param name="port">Optional port number of the hostname (0 means not specified).</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
         /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
+        /// <param name="group">Optional name of the group that ServerWatcher belongs to.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddServerWatcher(
             this WardenConfiguration.Builder builder,
             string hostname,
             int port = 0,
             Action<WatcherHooksConfiguration.Builder> hooks = null,
-            TimeSpan? interval = null)
+            TimeSpan? interval = null,
+            string group = null)
         {
-            builder.AddWatcher(ServerWatcher.Create(hostname, port), hooks, interval);
+            builder.AddWatcher(ServerWatcher.Create(hostname, port, group: group), hooks, interval);
 
             return builder;
         }
@@ -77,6 +79,7 @@ namespace Warden.Watchers.Server
         /// <param name="port">Optional port number of the hostname (0 means not specified).</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
         /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
+        /// <param name="group">Optional name of the group that ServerWatcher belongs to.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddServerWatcher(
             this WardenConfiguration.Builder builder,
@@ -84,9 +87,10 @@ namespace Warden.Watchers.Server
             string hostname,
             int port = 0,
             Action<WatcherHooksConfiguration.Builder> hooks = null,
-            TimeSpan? interval = null)
+            TimeSpan? interval = null,
+            string group = null)
         {
-            builder.AddWatcher(ServerWatcher.Create(name, hostname, port), hooks, interval);
+            builder.AddWatcher(ServerWatcher.Create(name, hostname, port, group: group), hooks, interval);
 
             return builder;
         }
@@ -100,6 +104,7 @@ namespace Warden.Watchers.Server
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
         /// <param name="port">Optional port number of the hostname (0 means not specified).</param>
         /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
+        /// <param name="group">Optional name of the group that ServerWatcher belongs to.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns> 
         public static WardenConfiguration.Builder AddServerWatcher(
             this WardenConfiguration.Builder builder,
@@ -107,9 +112,10 @@ namespace Warden.Watchers.Server
             Action<ServerWatcherConfiguration.Default> configurator,
             Action<WatcherHooksConfiguration.Builder> hooks = null,
             int port = 0,
-            TimeSpan? interval = null)
+            TimeSpan? interval = null,
+            string group = null)
         {
-            builder.AddWatcher(ServerWatcher.Create(hostname, port, configurator),
+            builder.AddWatcher(ServerWatcher.Create(hostname, port, configurator, group),
                 hooks, interval);
 
             return builder;
@@ -125,6 +131,7 @@ namespace Warden.Watchers.Server
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
         /// <param name="port">Optional port number of the hostname (0 means not specified).</param>
         /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
+        /// <param name="group">Optional name of the group that ServerWatcher belongs to.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddServerWatcher(
             this WardenConfiguration.Builder builder,
@@ -133,9 +140,10 @@ namespace Warden.Watchers.Server
             Action<ServerWatcherConfiguration.Default> configurator,
             Action<WatcherHooksConfiguration.Builder> hooks = null,
             int port = 0,
-            TimeSpan? interval = null)
+            TimeSpan? interval = null,
+            string group = null)
         {
-            builder.AddWatcher(ServerWatcher.Create(name, hostname, port, configurator),
+            builder.AddWatcher(ServerWatcher.Create(name, hostname, port, configurator, group),
                 hooks, interval);
 
             return builder;
@@ -149,15 +157,17 @@ namespace Warden.Watchers.Server
         /// <param name="configuration">Configuration of ServerWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
         /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
+        /// <param name="group">Optional name of the group that ServerWatcher belongs to.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddServerWatcher(
             this WardenConfiguration.Builder builder,
             string name,
             ServerWatcherConfiguration configuration,
             Action<WatcherHooksConfiguration.Builder> hooks = null,
-            TimeSpan? interval = null)
+            TimeSpan? interval = null,
+            string group = null)
         {
-            builder.AddWatcher(ServerWatcher.Create(name, configuration), hooks, interval);
+            builder.AddWatcher(ServerWatcher.Create(name, configuration, group), hooks, interval);
 
             return builder;
         }

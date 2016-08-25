@@ -13,7 +13,7 @@ namespace Warden.Watchers.Performance
         public string Group { get; }
         public const string DefaultName = "Performance Watcher";
 
-        protected PerformanceWatcher(string name, PerformanceWatcherConfiguration configuration)
+        protected PerformanceWatcher(string name, PerformanceWatcherConfiguration configuration, string group)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentException("Watcher name can not be empty.");
@@ -26,6 +26,7 @@ namespace Warden.Watchers.Performance
 
             Name = name;
             _configuration = configuration;
+            Group = group;
         }
 
         public async Task<IWatcherCheckResult> ExecuteAsync()
@@ -55,10 +56,12 @@ namespace Warden.Watchers.Performance
         /// </summary>
         /// <param name="delay">Delay between resource usage calculation while using the default performance counter (100 ms by default).</param>
         /// <param name="configurator">Optional lambda expression for configuring the PerformanceWatcher.</param>
+        /// <param name="group">Optional name of the group that PerformanceWatcher belongs to.</param>
         /// <returns>Instance of PerformanceWatcher.</returns>
         public static PerformanceWatcher Create(TimeSpan? delay = null,
-            Action<PerformanceWatcherConfiguration.Default> configurator = null)
-            => Create(DefaultName, delay, configurator);
+            Action<PerformanceWatcherConfiguration.Default> configurator = null,
+            string group = null)
+            => Create(DefaultName, delay, configurator, group);
 
         /// <summary>
         /// Factory method for creating a new instance of PerformanceWatcher with default name of Performance Watcher.
@@ -66,31 +69,37 @@ namespace Warden.Watchers.Performance
         /// <param name="name">Name of the PerformanceWatcher.</param>
         /// <param name="delay">Delay between resource usage calculation while using the default performance counter (100 ms by default).</param>
         /// <param name="configurator">Optional lambda expression for configuring the PerformanceWatcher.</param>
+        /// <param name="group">Optional name of the group that PerformanceWatcher belongs to.</param>
         /// <returns>Instance of PerformanceWatcher.</returns>
         public static PerformanceWatcher Create(string name, TimeSpan? delay = null,
-            Action<PerformanceWatcherConfiguration.Default> configurator = null)
+            Action<PerformanceWatcherConfiguration.Default> configurator = null,
+            string group = null)
         {
             var config = new PerformanceWatcherConfiguration.Builder(delay);
             configurator?.Invoke((PerformanceWatcherConfiguration.Default) config);
 
-            return Create(name, config.Build());
+            return Create(name, config.Build(), group);
         }
 
         /// <summary>
         /// Factory method for creating a new instance of PerformanceWatcher with default name of Performance Watcher.
         /// </summary>
         /// <param name="configuration">Configuration of PerformanceWatcher.</param>
+        /// <param name="group">Optional name of the group that PerformanceWatcher belongs to.</param>
         /// <returns>Instance of PerformanceWatcher.</returns>
-        public static PerformanceWatcher Create(PerformanceWatcherConfiguration configuration)
-            => Create(DefaultName, configuration);
+        public static PerformanceWatcher Create(PerformanceWatcherConfiguration configuration, 
+            string group = null)
+            => Create(DefaultName, configuration, group);
 
         /// <summary>
         /// Factory method for creating a new instance of PerformanceWatcher.
         /// </summary>
         /// <param name="name">Name of the PerformanceWatcher.</param>
         /// <param name="configuration">Configuration of PerformanceWatcher.</param>
+        /// <param name="group">Optional name of the group that PerformanceWatcher belongs to.</param> 
         /// <returns>Instance of PerformanceWatcher.</returns>
-        public static PerformanceWatcher Create(string name, PerformanceWatcherConfiguration configuration)
-            => new PerformanceWatcher(name, configuration);
+        public static PerformanceWatcher Create(string name, PerformanceWatcherConfiguration configuration,
+            string group = null)
+            => new PerformanceWatcher(name, configuration, group);
     }
 }

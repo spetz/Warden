@@ -14,13 +14,15 @@ namespace Warden.Watchers.Disk
         /// <param name="builder">Instance of the Warden configuration builder.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
         /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
+        /// <param name="group">Optional name of the group that DiskWatcher belongs to.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddDiskWatcher(
             this WardenConfiguration.Builder builder,
             Action<WatcherHooksConfiguration.Builder> hooks = null,
-            TimeSpan? interval = null)
+            TimeSpan? interval = null,
+            string group = null)
         {
-            builder.AddWatcher(DiskWatcher.Create(), hooks, interval);
+            builder.AddWatcher(DiskWatcher.Create(group: group), hooks, interval);
 
             return builder;
         }
@@ -32,14 +34,16 @@ namespace Warden.Watchers.Disk
         /// <param name="name">Name of the DiskWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
         /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
+        /// <param name="group">Optional name of the group that DiskWatcher belongs to.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddDiskWatcher(
             this WardenConfiguration.Builder builder,
             string name,
             Action<WatcherHooksConfiguration.Builder> hooks = null,
-            TimeSpan? interval = null)
+            TimeSpan? interval = null,
+            string group = null)
         {
-            builder.AddWatcher(DiskWatcher.Create(name), hooks, interval);
+            builder.AddWatcher(DiskWatcher.Create(name, group: group), hooks, interval);
 
             return builder;
         }
@@ -51,14 +55,16 @@ namespace Warden.Watchers.Disk
         /// <param name="configurator">Lambda expression for configuring the DiskWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
         /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
+        /// <param name="group">Optional name of the group that DiskWatcher belongs to.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddDiskWatcher(
             this WardenConfiguration.Builder builder,
             Action<DiskWatcherConfiguration.Default> configurator,
             Action<WatcherHooksConfiguration.Builder> hooks = null,
-            TimeSpan? interval = null)
+            TimeSpan? interval = null,
+            string group = null)
         {
-            builder.AddWatcher(DiskWatcher.Create(configurator), hooks, interval);
+            builder.AddWatcher(DiskWatcher.Create(configurator, group), hooks, interval);
 
             return builder;
         }
@@ -72,15 +78,17 @@ namespace Warden.Watchers.Disk
         /// <param name="configurator">Lambda expression for configuring the DiskWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
         /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
+        /// <param name="group">Optional name of the group that DiskWatcher belongs to.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddDiskWatcher(
             this WardenConfiguration.Builder builder,
             string name,
             Action<DiskWatcherConfiguration.Default> configurator,
             Action<WatcherHooksConfiguration.Builder> hooks = null,
-            TimeSpan? interval = null)
+            TimeSpan? interval = null,
+            string group = null)
         {
-            builder.AddWatcher(DiskWatcher.Create(name, configurator), hooks, interval);
+            builder.AddWatcher(DiskWatcher.Create(name, configurator, group), hooks, interval);
 
             return builder;
         }
@@ -92,14 +100,16 @@ namespace Warden.Watchers.Disk
         /// <param name="configuration">Configuration of DiskWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
         /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
+        /// <param name="group">Optional name of the group that DiskWatcher belongs to.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddDiskWatcher(
             this WardenConfiguration.Builder builder,
             DiskWatcherConfiguration configuration,
             Action<WatcherHooksConfiguration.Builder> hooks = null,
-            TimeSpan? interval = null)
+            TimeSpan? interval = null,
+            string group = null)
         {
-            builder.AddWatcher(DiskWatcher.Create(configuration), hooks, interval);
+            builder.AddWatcher(DiskWatcher.Create(configuration, group), hooks, interval);
 
             return builder;
         }
@@ -112,14 +122,16 @@ namespace Warden.Watchers.Disk
         /// <param name="configuration">Configuration of DiskWatcher.</param>
         /// <param name="hooks">Optional lambda expression for configuring the watcher hooks.</param>
         /// <param name="interval">Optional interval (5 seconds by default) after which the next check will be invoked.</param>
+        /// <param name="group">Optional name of the group that DiskWatcher belongs to.</param>
         /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
         public static WardenConfiguration.Builder AddDiskWatcher(
             this WardenConfiguration.Builder builder, string name,
             DiskWatcherConfiguration configuration,
             Action<WatcherHooksConfiguration.Builder> hooks = null,
-            TimeSpan? interval = null)
+            TimeSpan? interval = null,
+            string group = null)
         {
-            builder.AddWatcher(DiskWatcher.Create(name, configuration), hooks, interval);
+            builder.AddWatcher(DiskWatcher.Create(name, configuration, group), hooks, interval);
 
             return builder;
         }

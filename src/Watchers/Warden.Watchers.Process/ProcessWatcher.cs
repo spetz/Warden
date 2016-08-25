@@ -13,7 +13,7 @@ namespace Warden.Watchers.Process
         public string Group { get; }
         public const string DefaultName = "Process Watcher";
 
-        protected ProcessWatcher(string name, ProcessWatcherConfiguration configuration)
+        protected ProcessWatcher(string name, ProcessWatcherConfiguration configuration, string group)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentException("Watcher name can not be empty.");
@@ -26,6 +26,7 @@ namespace Warden.Watchers.Process
 
             Name = name;
             _configuration = configuration;
+            Group = group;
         }
 
         public async Task<IWatcherCheckResult> ExecuteAsync()
@@ -47,10 +48,12 @@ namespace Warden.Watchers.Process
         /// </summary>
         /// <param name="processName">Name of the process.</param>
         /// <param name="configurator">Optional lambda expression for configuring the ProcessWatcher.</param>
+        /// <param name="group">Optional name of the group that ProcessWatcher belongs to.</param>
         /// <returns>Instance of ProcessWatcher.</returns>
         public static ProcessWatcher Create(string processName,
-            Action<ProcessWatcherConfiguration.Default> configurator = null)
-            => Create(DefaultName, processName, configurator);
+            Action<ProcessWatcherConfiguration.Default> configurator = null, 
+            string group = null)
+            => Create(DefaultName, processName, configurator, group);
 
         /// <summary>
         /// Factory method for creating a new instance of ProcessWatcher with default name of Process Watcher.
@@ -58,31 +61,36 @@ namespace Warden.Watchers.Process
         /// <param name="name">Name of the ProcessWatcher.</param>
         /// <param name="processName">Name of the process.</param>
         /// <param name="configurator">Optional lambda expression for configuring the ProcessWatcher.</param>
+        /// <param name="group">Optional name of the group that ProcessWatcher belongs to.</param>
         /// <returns>Instance of ProcessWatcher.</returns>
         public static ProcessWatcher Create(string name, string processName,
-            Action<ProcessWatcherConfiguration.Default> configurator = null)
+            Action<ProcessWatcherConfiguration.Default> configurator = null, 
+            string group = null)
         {
             var config = new ProcessWatcherConfiguration.Builder(processName);
             configurator?.Invoke((ProcessWatcherConfiguration.Default)config);
 
-            return Create(name, config.Build());
+            return Create(name, config.Build(), group);
         }
 
         /// <summary>
         /// Factory method for creating a new instance of ProcessWatcher with default name of Process Watcher.
         /// </summary>
         /// <param name="configuration">Configuration of ProcessWatcher.</param>
+        /// <param name="group">Optional name of the group that ProcessWatcher belongs to.</param>
         /// <returns>Instance of ProcessWatcher.</returns>
-        public static ProcessWatcher Create(ProcessWatcherConfiguration configuration)
-            => Create(DefaultName, configuration);
+        public static ProcessWatcher Create(ProcessWatcherConfiguration configuration, string group = null)
+            => Create(DefaultName, configuration, group);
 
         /// <summary>
         /// Factory method for creating a new instance of ProcessWatcher.
         /// </summary>
         /// <param name="name">Name of the ProcessWatcher.</param>
         /// <param name="configuration">Configuration of ProcessWatcher.</param>
+        /// <param name="group">Optional name of the group that ProcessWatcher belongs to.</param>
         /// <returns>Instance of ProcessWatcher.</returns>
-        public static ProcessWatcher Create(string name, ProcessWatcherConfiguration configuration)
-            => new ProcessWatcher(name, configuration);
+        public static ProcessWatcher Create(string name, ProcessWatcherConfiguration configuration, 
+            string group = null)
+            => new ProcessWatcher(name, configuration, group);
     }
 }

@@ -15,24 +15,48 @@ namespace Warden.Watchers.Server
 
         private readonly Dictionary<IPStatus, string> _pingStatusMessages = new Dictionary<IPStatus, string>
         {
-            {IPStatus.Unknown, "ICMP echo request to host '{0}' failed because of uknown error." },
+            {IPStatus.Unknown, "ICMP echo request to host '{0}' failed because of uknown error."},
             {IPStatus.Success, "Success."},
             {IPStatus.BadDestination, "ICMP echo request failed. Host '{0}' cannot receive ICMP echo requests."},
-            {IPStatus.BadHeader, "ICMP echo request to host '{0}' failed because of invalid header." },
-            {IPStatus.BadOption, "ICMP echo request to host '{0}' failed contains invalid option." },
-            {IPStatus.BadRoute, "ICMP echo request failed because there is no valid route between source and host '{0}'." },
-            {IPStatus.DestinationHostUnreachable, "ICMP echo request failed because host '{0}' is not reachable." },
-            {IPStatus.DestinationNetworkUnreachable, "ICMP echo request failed because network that contains host '{0}' is not reachable." },
-            {IPStatus.DestinationPortUnreachable, "ICMP echo request failed because the Ping on host '{0}' is not reachable." },
-            {IPStatus.DestinationProtocolUnreachable, "ICMP echo request failed because host '{0}' doesn't supPing the packet's protocol." },
-            {IPStatus.HardwareError, "ICMP echo request to host '{0}' failed because of hardware error." },
-            {IPStatus.IcmpError, "ICMP echo request to host '{0}' failed because of ICMP protocol error." },
-            {IPStatus.TtlExpired, "ICMP echo request to host '{0}' failed because its Time To Live (TTL) reached 0, so forwarding node (router or gateway) discared the request." },
-            {IPStatus.TimedOut, "ICMP echo request failed because the reply from host '{0}' was not received in specified time." },
-            {IPStatus.SourceQuench, "ICMP echo request failed because host '{0}' discarded the packet." },
-            {IPStatus.NoResources, "ICMP echo request to host '{0}' failed because of insufficient sources." },
-            {IPStatus.PacketTooBig, "ICMP echo request to host '{0}' failed because the packet is larger than MTU of node (router of gateway)." },
-            {IPStatus.ParameterProblem, "ICMP echo request to host '{0}' failed because the node (router or gateway) failed while processing packet header." },
+            {IPStatus.BadHeader, "ICMP echo request to host '{0}' failed because of invalid header."},
+            {IPStatus.BadOption, "ICMP echo request to host '{0}' failed contains invalid option."},
+            {
+                IPStatus.BadRoute,
+                "ICMP echo request failed because there is no valid route between source and host '{0}'."
+            },
+            {IPStatus.DestinationHostUnreachable, "ICMP echo request failed because host '{0}' is not reachable."},
+            {
+                IPStatus.DestinationNetworkUnreachable,
+                "ICMP echo request failed because network that contains host '{0}' is not reachable."
+            },
+            {
+                IPStatus.DestinationPortUnreachable,
+                "ICMP echo request failed because the Ping on host '{0}' is not reachable."
+            },
+            {
+                IPStatus.DestinationProtocolUnreachable,
+                "ICMP echo request failed because host '{0}' doesn't supPing the packet's protocol."
+            },
+            {IPStatus.HardwareError, "ICMP echo request to host '{0}' failed because of hardware error."},
+            {IPStatus.IcmpError, "ICMP echo request to host '{0}' failed because of ICMP protocol error."},
+            {
+                IPStatus.TtlExpired,
+                "ICMP echo request to host '{0}' failed because its Time To Live (TTL) reached 0, so forwarding node (router or gateway) discared the request."
+            },
+            {
+                IPStatus.TimedOut,
+                "ICMP echo request failed because the reply from host '{0}' was not received in specified time."
+            },
+            {IPStatus.SourceQuench, "ICMP echo request failed because host '{0}' discarded the packet."},
+            {IPStatus.NoResources, "ICMP echo request to host '{0}' failed because of insufficient sources."},
+            {
+                IPStatus.PacketTooBig,
+                "ICMP echo request to host '{0}' failed because the packet is larger than MTU of node (router of gateway)."
+            },
+            {
+                IPStatus.ParameterProblem,
+                "ICMP echo request to host '{0}' failed because the node (router or gateway) failed while processing packet header."
+            },
         };
 
         public string Group { get; }
@@ -47,7 +71,7 @@ namespace Warden.Watchers.Server
         /// </summary>
         public string Name { get; }
 
-        protected ServerWatcher(string name, ServerWatcherConfiguration configuration)
+        protected ServerWatcher(string name, ServerWatcherConfiguration configuration, string group)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentException("Watcher name can not be empty.");
@@ -60,6 +84,7 @@ namespace Warden.Watchers.Server
 
             Name = name;
             _configuration = configuration;
+            Group = group;
         }
 
         public async Task<IWatcherCheckResult> ExecuteAsync()
@@ -214,13 +239,15 @@ namespace Warden.Watchers.Server
         /// <param name="hostname">Hostname to connect to.</param>
         /// <param name="port">Optional port number of the hostname (0 means not specified).</param>
         /// <param name="configurator">A configuration bulider that should be used by watcher.</param>
+        /// <param name="group">Optional name of the group that ServerWatcher belongs to.</param>
         /// <returns>A ServerWatcher instance.</returns>
-        public static ServerWatcher Create(string hostname, int port = 0, Action<ServerWatcherConfiguration.Default> configurator = null)
+        public static ServerWatcher Create(string hostname, int port = 0,
+            Action<ServerWatcherConfiguration.Default> configurator = null, string group = null)
         {
             var config = new ServerWatcherConfiguration.Builder(hostname, port);
-            configurator?.Invoke((ServerWatcherConfiguration.Default)config);
+            configurator?.Invoke((ServerWatcherConfiguration.Default) config);
 
-            return Create(DefaultName, config.Build());
+            return Create(DefaultName, config.Build(), group);
         }
 
         /// <summary>
@@ -230,30 +257,36 @@ namespace Warden.Watchers.Server
         /// <param name="hostname">Hostname to connect to.</param>
         /// <param name="port">Optional port number of the hostname (0 means not specified).</param>
         /// <param name="configurator">A configuration that should be used by watcher.</param>
+        /// <param name="group">Optional name of the group that ServerWatcher belongs to.</param>
         /// <returns>A ServerWatcher instance.</returns>
-        public static ServerWatcher Create(string name, string hostname, int port = 0, Action<ServerWatcherConfiguration.Default> configurator = null)
+        public static ServerWatcher Create(string name, string hostname, int port = 0,
+            Action<ServerWatcherConfiguration.Default> configurator = null, string group = null)
         {
             var config = new ServerWatcherConfiguration.Builder(hostname, port);
-            configurator?.Invoke((ServerWatcherConfiguration.Default)config);
+            configurator?.Invoke((ServerWatcherConfiguration.Default) config);
 
-            return Create(name, config.Build());
+            return Create(name, config.Build(), group);
         }
+
+        /// <summary>
+        /// Factory method for creating a new instance of ServerWatcher with default name of Server watcher.
+        /// </summary>
+        /// <param name="configuration">Configuration of ServerWatcher.</param>
+        /// <param name="group">Optional name of the group that ServerWatcher belongs to.</param>
+        /// <returns>A ServerWatcher instance.</returns>
+        public static ServerWatcher Create(ServerWatcherConfiguration configuration,
+            string group = null)
+            => Create(DefaultName, configuration, group);
 
         /// <summary>
         /// Factory method for creating a new instance of ServerWatcher.
         /// </summary>
         /// <param name="name">Name of the ServerWatcher.</param>
         /// <param name="configuration">Configuration of ServerWatcher.</param>
+        /// <param name="group">Optional name of the group that ServerWatcher belongs to.</param>
         /// <returns>A ServerWatcher instance.</returns>
-        public static ServerWatcher Create(string name, ServerWatcherConfiguration configuration)
-            => new ServerWatcher(name, configuration);
-
-        /// <summary>
-        /// Factory method for creating a new instance of ServerWatcher with default name of Server watcher.
-        /// </summary>
-        /// <param name="configuration">Configuration of ServerWatcher.</param>
-        /// <returns>A ServerWatcher instance.</returns>
-        public static ServerWatcher Create(ServerWatcherConfiguration configuration)
-            => new ServerWatcher(DefaultName, configuration);
+        public static ServerWatcher Create(string name, ServerWatcherConfiguration configuration,
+            string group = null)
+            => new ServerWatcher(name, configuration, group);
     }
 }

@@ -15,7 +15,7 @@ namespace Warden.Watchers.Redis
         public string Group { get; }
         public const string DefaultName = "Redis Watcher";
 
-        protected RedisWatcher(string name, RedisWatcherConfiguration configuration)
+        protected RedisWatcher(string name, RedisWatcherConfiguration configuration, string group)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentException("Watcher name can not be empty.");
@@ -28,6 +28,7 @@ namespace Warden.Watchers.Redis
 
             Name = name;
             _configuration = configuration;
+            Group = group;
             _connection = _configuration.ConnectionProvider(_configuration.ConnectionString);
         }
 
@@ -83,10 +84,12 @@ namespace Warden.Watchers.Redis
         /// <param name="database">Id of the Redis database.</param>
         /// <param name="timeout">Optional timeout of the Redis query (5 seconds by default).</param>
         /// <param name="configurator">Optional lambda expression for configuring the RedisWatcher.</param>
+        /// <param name="group">Optional name of the group that param belongs to.</param>
         /// <returns>Instance of RedisWatcher.</returns>
         public static RedisWatcher Create(string connectionString, int database,
-            TimeSpan? timeout = null, Action<RedisWatcherConfiguration.Default> configurator = null)
-            => Create(DefaultName, connectionString, database, timeout, configurator);
+            TimeSpan? timeout = null, Action<RedisWatcherConfiguration.Default> configurator = null,
+            string group = null)
+            => Create(DefaultName, connectionString, database, timeout, configurator, group);
 
         /// <summary>
         /// Factory method for creating a new instance of RedisWatcher.
@@ -96,31 +99,35 @@ namespace Warden.Watchers.Redis
         /// <param name="database">Id of the Redis database.</param>
         /// <param name="timeout">Optional timeout of the Redis query (5 seconds by default).</param>
         /// <param name="configurator">Optional lambda expression for configuring the RedisWatcher.</param>
+        /// <param name="group">Optional name of the group that param belongs to.</param>
         /// <returns>Instance of RedisWatcher.</returns>
         public static RedisWatcher Create(string name, string connectionString, int database,
-            TimeSpan? timeout = null, Action<RedisWatcherConfiguration.Default> configurator = null)
+            TimeSpan? timeout = null, Action<RedisWatcherConfiguration.Default> configurator = null,
+            string group = null)
         {
             var config = new RedisWatcherConfiguration.Builder(connectionString, database, timeout);
             configurator?.Invoke((RedisWatcherConfiguration.Default)config);
 
-            return Create(name, config.Build());
+            return Create(name, config.Build(), group);
         }
 
         /// <summary>
         /// Factory method for creating a new instance of RedisWatcher with default name of Redis Watcher.
         /// </summary>
         /// <param name="configuration">Configuration of RedisWatcher.</param>
+        /// <param name="group">Optional name of the group that param belongs to.</param>
         /// <returns>Instance of RedisWatcher.</returns>
-        public static RedisWatcher Create(RedisWatcherConfiguration configuration)
-            => Create(DefaultName, configuration);
+        public static RedisWatcher Create(RedisWatcherConfiguration configuration, string group = null)
+            => Create(DefaultName, configuration, group);
 
         /// <summary>
         /// Factory method for creating a new instance of RedisWatcher.
         /// </summary>
         /// <param name="name">Name of the RedisWatcher.</param>
         /// <param name="configuration">Configuration of RedisWatcher.</param>
+        /// <param name="group">Optional name of the group that param belongs to.</param>
         /// <returns>Instance of RedisWatcher.</returns>
-        public static RedisWatcher Create(string name, RedisWatcherConfiguration configuration)
-            => new RedisWatcher(name, configuration);
+        public static RedisWatcher Create(string name, RedisWatcherConfiguration configuration, string group = null)
+            => new RedisWatcher(name, configuration, group);
     }
 }

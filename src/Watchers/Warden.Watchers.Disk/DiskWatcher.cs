@@ -15,7 +15,7 @@ namespace Warden.Watchers.Disk
         public string Group { get; }
         public const string DefaultName = "Disk Watcher";
 
-        protected DiskWatcher(string name, DiskWatcherConfiguration configuration)
+        protected DiskWatcher(string name, DiskWatcherConfiguration configuration, string group)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentException("Watcher name can not be empty.");
@@ -28,6 +28,7 @@ namespace Warden.Watchers.Disk
 
             Name = name;
             _configuration = configuration;
+            Group = group;
         }
 
         public async Task<IWatcherCheckResult> ExecuteAsync()
@@ -65,13 +66,15 @@ namespace Warden.Watchers.Disk
         /// Factory method for creating a new instance of DiskWatcher with default name of Disk Watcher.
         /// </summary>
         /// <param name="configurator">Optional lambda expression for configuring the DiskWatcher.</param>
+        /// <param name="group">Optional name of the group that DiskWatcher belongs to.</param>
         /// <returns>Instance of DiskWatcher.</returns>
-        public static DiskWatcher Create(Action<DiskWatcherConfiguration.Default> configurator = null)
+        public static DiskWatcher Create(Action<DiskWatcherConfiguration.Default> configurator = null,
+            string group = null)
         {
             var config = new DiskWatcherConfiguration.Builder();
             configurator?.Invoke((DiskWatcherConfiguration.Default) config);
 
-            return Create(DefaultName, config.Build());
+            return Create(DefaultName, config.Build(), group);
         }
 
         /// <summary>
@@ -79,31 +82,36 @@ namespace Warden.Watchers.Disk
         /// </summary>
         /// <param name="name">Name of the DiskWatcher.</param>
         /// <param name="configurator">Optional lambda expression for configuring the DiskWatcher.</param>
+        /// <param name="group">Optional name of the group that DiskWatcher belongs to.</param>
         /// <returns>Instance of DiskWatcher.</returns>
         public static DiskWatcher Create(string name,
-            Action<DiskWatcherConfiguration.Default> configurator = null)
+            Action<DiskWatcherConfiguration.Default> configurator = null,
+            string group = null)
         {
             var config = new DiskWatcherConfiguration.Builder();
             configurator?.Invoke((DiskWatcherConfiguration.Default) config);
 
-            return Create(name, config.Build());
+            return Create(name, config.Build(), group);
         }
 
         /// <summary>
         /// Factory method for creating a new instance of DiskWatcher with default name of Disk DiskWatcher.
         /// </summary>
         /// <param name="configuration">Configuration of DiskWatcher.</param>
+        /// <param name="group">Optional name of the group that DiskWatcher belongs to.</param>
         /// <returns>Instance of DiskWatcher.</returns>
-        public static DiskWatcher Create(DiskWatcherConfiguration configuration)
-            => Create(DefaultName, configuration);
+        public static DiskWatcher Create(DiskWatcherConfiguration configuration, string group = null)
+            => Create(DefaultName, configuration, group);
 
         /// <summary>
         /// Factory method for creating a new instance of DiskWatcher.
         /// </summary>
         /// <param name="name">Name of the DiskWatcher.</param>
         /// <param name="configuration">Configuration of DiskWatcher.</param>
+        /// <param name="group">Optional name of the group that DiskWatcher belongs to.</param>
         /// <returns>Instance of DiskWatcher.</returns>
-        public static DiskWatcher Create(string name, DiskWatcherConfiguration configuration)
-            => new DiskWatcher(name, configuration);
+        public static DiskWatcher Create(string name, DiskWatcherConfiguration configuration, 
+            string group = null)
+            => new DiskWatcher(name, configuration, group);
     }
 }

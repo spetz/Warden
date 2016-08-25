@@ -15,7 +15,7 @@ namespace Warden.Watchers.MongoDb
         public string Group { get; }
         public const string DefaultName = "MongoDB Watcher";
 
-        protected MongoDbWatcher(string name, MongoDbWatcherConfiguration configuration)
+        protected MongoDbWatcher(string name, MongoDbWatcherConfiguration configuration, string group)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentException("Watcher name can not be empty.");
@@ -28,6 +28,7 @@ namespace Warden.Watchers.MongoDb
 
             Name = name;
             _configuration = configuration;
+            Group = group;
             _connection = configuration.ConnectionProvider(configuration.ConnectionString);
         }
 
@@ -83,10 +84,12 @@ namespace Warden.Watchers.MongoDb
         /// <param name="database">Name of the MongoDB database.</param>
         /// <param name="timeout">Optional timeout of the MongoDB query (5 seconds by default).</param>
         /// <param name="configurator">Optional lambda expression for configuring the MongoDbWatcher.</param>
+        /// <param name="group">Optional name of the group that MongoDbWatcher belongs to.</param>
         /// <returns>Instance of MongoDbWatcher.</returns>
         public static MongoDbWatcher Create(string connectionString, string database,
-            TimeSpan? timeout = null, Action<MongoDbWatcherConfiguration.Default> configurator = null)
-            => Create(DefaultName, connectionString, database, timeout, configurator);
+            TimeSpan? timeout = null, Action<MongoDbWatcherConfiguration.Default> configurator = null,
+            string group = null)
+            => Create(DefaultName, connectionString, database, timeout, configurator, group);
 
         /// <summary>
         /// Factory method for creating a new instance of MongoDbWatcher.
@@ -96,31 +99,37 @@ namespace Warden.Watchers.MongoDb
         /// <param name="database">Name of the MongoDB database.</param>
         /// <param name="timeout">Optional timeout of the MongoDB query (5 seconds by default).</param>
         /// <param name="configurator">Optional lambda expression for configuring the MongoDbWatcher.</param>
+        /// <param name="group">Optional name of the group that MongoDbWatcher belongs to.</param>
         /// <returns>Instance of MongoDbWatcher.</returns>
         public static MongoDbWatcher Create(string name, string connectionString, string database,
-            TimeSpan? timeout = null, Action<MongoDbWatcherConfiguration.Default> configurator = null)
+            TimeSpan? timeout = null, Action<MongoDbWatcherConfiguration.Default> configurator = null,
+            string group = null)
         {
             var config = new MongoDbWatcherConfiguration.Builder(connectionString, database, timeout);
             configurator?.Invoke((MongoDbWatcherConfiguration.Default) config);
 
-            return Create(name, config.Build());
+            return Create(name, config.Build(), group);
         }
 
         /// <summary>
         /// Factory method for creating a new instance of MongoDbWatcher with default name of MongoDB Watcher.
         /// </summary>
         /// <param name="configuration">Configuration of MongoDbWatcher.</param>
+        /// <param name="group">Optional name of the group that MongoDbWatcher belongs to.</param>
         /// <returns>Instance of MongoDbWatcher.</returns>
-        public static MongoDbWatcher Create(MongoDbWatcherConfiguration configuration)
-            => Create(DefaultName, configuration);
+        public static MongoDbWatcher Create(MongoDbWatcherConfiguration configuration, 
+            string group = null)
+            => Create(DefaultName, configuration, group);
 
         /// <summary>
         /// Factory method for creating a new instance of MongoDbWatcher.
         /// </summary>
         /// <param name="name">Name of the MongoDbWatcher.</param>
         /// <param name="configuration">Configuration of MongoDbWatcher.</param>
+        /// <param name="group">Optional name of the group that MongoDbWatcher belongs to.</param>
         /// <returns>Instance of MongoDbWatcher.</returns>
-        public static MongoDbWatcher Create(string name, MongoDbWatcherConfiguration configuration)
-            => new MongoDbWatcher(name, configuration);
+        public static MongoDbWatcher Create(string name, MongoDbWatcherConfiguration configuration,
+            string group = null)
+            => new MongoDbWatcher(name, configuration, group);
     }
 }
