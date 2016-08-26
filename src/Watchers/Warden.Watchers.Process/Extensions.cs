@@ -46,7 +46,7 @@ namespace Warden.Watchers.Process
             this WardenConfiguration.Builder builder, 
             string name, 
             string processName,
-            string machineName = null,
+            string machineName,
             Action<WatcherHooksConfiguration.Builder> hooks = null,
             TimeSpan? interval = null,
             string group = null)
