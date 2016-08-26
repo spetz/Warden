@@ -12,8 +12,9 @@ namespace Warden.Watchers.Process
         /// Name of the process.
         /// </summary>
         public string Name { get; }
+
         /// <summary>
-        /// Name of the remote machine, if any.
+        /// Optional name of the remote machine.
         /// </summary>
         public string MachineName { get; }
 
@@ -51,9 +52,9 @@ namespace Warden.Watchers.Process
         /// Factory method for creating a new instance of fluent builder for the ProcessWatcherConfiguration.
         /// </summary>
         /// <param name="name">Name of the process.</param>
+        /// <param name="machineName">Optional name of the remote machine.</param>
         /// <returns>Instance of fluent builder for the ProcessWatcherConfiguration.</returns>
-        public static Builder Create(string name) => new Builder(name);
-        public static Builder Create(string name, string machineName) => new Builder(name, machineName);
+        public static Builder Create(string name, string machineName = null) => new Builder(name, machineName);
 
         public abstract class Configurator<T> : WatcherConfigurator<T, ProcessWatcherConfiguration>
             where T : Configurator<T>

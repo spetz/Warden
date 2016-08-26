@@ -47,27 +47,31 @@ namespace Warden.Watchers.Process
         /// Factory method for creating a new instance of ProcessWatcher with default name of Process Watcher.
         /// </summary>
         /// <param name="processName">Name of the process.</param>
+        /// <param name="machineName">Optional name of the remote machine.</param>
         /// <param name="configurator">Optional lambda expression for configuring the ProcessWatcher.</param>
         /// <param name="group">Optional name of the group that ProcessWatcher belongs to.</param>
         /// <returns>Instance of ProcessWatcher.</returns>
         public static ProcessWatcher Create(string processName,
+            string machineName = null,
             Action<ProcessWatcherConfiguration.Default> configurator = null, 
             string group = null)
-            => Create(DefaultName, processName, configurator, group);
+            => Create(DefaultName, processName, machineName, configurator, group);
 
         /// <summary>
         /// Factory method for creating a new instance of ProcessWatcher with default name of Process Watcher.
         /// </summary>
         /// <param name="name">Name of the ProcessWatcher.</param>
         /// <param name="processName">Name of the process.</param>
+        /// <param name="machineName">Optional name of the remote machine.</param>
         /// <param name="configurator">Optional lambda expression for configuring the ProcessWatcher.</param>
         /// <param name="group">Optional name of the group that ProcessWatcher belongs to.</param>
         /// <returns>Instance of ProcessWatcher.</returns>
         public static ProcessWatcher Create(string name, string processName,
+            string machineName = null,
             Action<ProcessWatcherConfiguration.Default> configurator = null, 
             string group = null)
         {
-            var config = new ProcessWatcherConfiguration.Builder(processName);
+            var config = new ProcessWatcherConfiguration.Builder(processName, machineName);
             configurator?.Invoke((ProcessWatcherConfiguration.Default)config);
 
             return Create(name, config.Build(), group);
