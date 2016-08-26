@@ -51,9 +51,9 @@ namespace Warden.Tests.Watchers.Process
         Establish context = () =>
         {
             ProcessMock = new Mock<IProcessService>();
-            ProcessInfo = ProcessInfo.Create(ProcessId, ProcessName, ProcessExists, ProcessResponding);
+            ProcessInfo = ProcessInfo.Create(ProcessId, ProcessName, null, ProcessExists, ProcessResponding);
             ProcessMock.Setup(x =>
-                x.GetProcessInfoAsync(Moq.It.IsAny<string>()))
+                x.GetProcessInfoAsync(Moq.It.IsAny<string>(), null))
                 .ReturnsAsync(ProcessInfo);
 
             Configuration = ProcessWatcherConfiguration
@@ -70,7 +70,7 @@ namespace Warden.Tests.Watchers.Process
         };
 
         It should_invoke_process_get_process_info_async_method_only_once = () =>
-            ProcessMock.Verify(x => x.GetProcessInfoAsync(Moq.It.IsAny<string>()), Times.Once);
+            ProcessMock.Verify(x => x.GetProcessInfoAsync(Moq.It.IsAny<string>(), null), Times.Once);
 
         It should_have_valid_check_result = () => CheckResult.IsValid.Should().BeTrue();
         It should_have_check_result_of_type_process = () => ProcessCheckResult.Should().NotBeNull();
@@ -108,9 +108,9 @@ namespace Warden.Tests.Watchers.Process
         Establish context = () =>
         {
             ProcessMock = new Mock<IProcessService>();
-            ProcessInfo = ProcessInfo.Create(ProcessId, ProcessName, ProcessExists, ProcessResponding);
+            ProcessInfo = ProcessInfo.Create(ProcessId, ProcessName, null, ProcessExists, ProcessResponding);
             ProcessMock.Setup(x =>
-                x.GetProcessInfoAsync(Moq.It.IsAny<string>()))
+                x.GetProcessInfoAsync(Moq.It.IsAny<string>(), null))
                 .ReturnsAsync(ProcessInfo);
 
             Configuration = ProcessWatcherConfiguration
@@ -128,7 +128,7 @@ namespace Warden.Tests.Watchers.Process
         };
 
         It should_invoke_process_get_process_info_async_method_only_once = () =>
-            ProcessMock.Verify(x => x.GetProcessInfoAsync(Moq.It.IsAny<string>()), Times.Once);
+            ProcessMock.Verify(x => x.GetProcessInfoAsync(Moq.It.IsAny<string>(), null), Times.Once);
 
         It should_have_valid_check_result = () => CheckResult.IsValid.Should().BeTrue();
         It should_have_check_result_of_type_process = () => ProcessCheckResult.Should().NotBeNull();
@@ -166,9 +166,9 @@ namespace Warden.Tests.Watchers.Process
         Establish context = () =>
         {
             ProcessMock = new Mock<IProcessService>();
-            ProcessInfo = ProcessInfo.Create(ProcessId, ProcessName, ProcessExists, ProcessResponding);
+            ProcessInfo = ProcessInfo.Create(ProcessId, ProcessName, null, ProcessExists, ProcessResponding);
             ProcessMock.Setup(x =>
-                x.GetProcessInfoAsync(Moq.It.IsAny<string>()))
+                x.GetProcessInfoAsync(Moq.It.IsAny<string>(), null))
                 .ReturnsAsync(ProcessInfo);
 
             Configuration = ProcessWatcherConfiguration
@@ -189,7 +189,7 @@ namespace Warden.Tests.Watchers.Process
         };
 
         It should_invoke_process_get_process_info_async_method_only_once = () =>
-            ProcessMock.Verify(x => x.GetProcessInfoAsync(Moq.It.IsAny<string>()), Times.Once);
+            ProcessMock.Verify(x => x.GetProcessInfoAsync(Moq.It.IsAny<string>(), null), Times.Once);
 
         It should_have_valid_check_result = () => CheckResult.IsValid.Should().BeTrue();
         It should_have_check_result_of_type_process = () => ProcessCheckResult.Should().NotBeNull();
@@ -227,9 +227,9 @@ namespace Warden.Tests.Watchers.Process
         Establish context = () =>
         {
             ProcessMock = new Mock<IProcessService>();
-            ProcessInfo = ProcessInfo.Create(ProcessId, ProcessName, ProcessExists, ProcessResponding);
+            ProcessInfo = ProcessInfo.Create(ProcessId, ProcessName, null, ProcessExists, ProcessResponding);
             ProcessMock.Setup(x =>
-                x.GetProcessInfoAsync(Moq.It.IsAny<string>()))
+                x.GetProcessInfoAsync(Moq.It.IsAny<string>(), null))
                 .ReturnsAsync(ProcessInfo);
 
             Configuration = ProcessWatcherConfiguration
@@ -250,7 +250,7 @@ namespace Warden.Tests.Watchers.Process
         };
 
         It should_invoke_process_get_process_info_async_method_only_once = () =>
-            ProcessMock.Verify(x => x.GetProcessInfoAsync(Moq.It.IsAny<string>()), Times.Once);
+            ProcessMock.Verify(x => x.GetProcessInfoAsync(Moq.It.IsAny<string>(), null), Times.Once);
 
         It should_have_valid_check_result = () => CheckResult.IsValid.Should().BeTrue();
         It should_have_check_result_of_type_process = () => ProcessCheckResult.Should().NotBeNull();
@@ -288,9 +288,9 @@ namespace Warden.Tests.Watchers.Process
         Establish context = () =>
         {
             ProcessMock = new Mock<IProcessService>();
-            ProcessInfo = ProcessInfo.Create(ProcessId, ProcessName, false, false);
+            ProcessInfo = ProcessInfo.Create(ProcessId, ProcessName, null, false, false);
             ProcessMock.Setup(x =>
-                x.GetProcessInfoAsync(Moq.It.IsAny<string>()))
+                x.GetProcessInfoAsync(Moq.It.IsAny<string>(), null))
                 .ReturnsAsync(ProcessInfo);
             Configuration = ProcessWatcherConfiguration
                 .Create(ProcessName)
@@ -310,7 +310,7 @@ namespace Warden.Tests.Watchers.Process
         };
 
         It should_invoke_process_get_process_info_async_method_only_once = () =>
-            ProcessMock.Verify(x => x.GetProcessInfoAsync(Moq.It.IsAny<string>()), Times.Once);
+            ProcessMock.Verify(x => x.GetProcessInfoAsync(Moq.It.IsAny<string>(), null), Times.Once);
 
         It should_have_invalid_check_result = () => CheckResult.IsValid.Should().BeFalse();
         It should_have_check_result_of_type_process = () => ProcessCheckResult.Should().NotBeNull();
@@ -348,9 +348,9 @@ namespace Warden.Tests.Watchers.Process
         Establish context = () =>
         {
             ProcessMock = new Mock<IProcessService>();
-            ProcessInfo = ProcessInfo.Create(ProcessId, ProcessName, false, false);
+            ProcessInfo = ProcessInfo.Create(ProcessId, ProcessName, null, false, false);
             ProcessMock.Setup(x =>
-                x.GetProcessInfoAsync(Moq.It.IsAny<string>()))
+                x.GetProcessInfoAsync(Moq.It.IsAny<string>(), null))
                 .ReturnsAsync(ProcessInfo);
             Configuration = ProcessWatcherConfiguration
                 .Create(ProcessName)
@@ -370,7 +370,7 @@ namespace Warden.Tests.Watchers.Process
         };
 
         It should_invoke_process_get_process_info_async_method_only_once = () =>
-            ProcessMock.Verify(x => x.GetProcessInfoAsync(Moq.It.IsAny<string>()), Times.Once);
+            ProcessMock.Verify(x => x.GetProcessInfoAsync(Moq.It.IsAny<string>(), null), Times.Once);
 
         It should_have_invalid_check_result = () => CheckResult.IsValid.Should().BeFalse();
         It should_have_check_result_of_type_process = () => ProcessCheckResult.Should().NotBeNull();

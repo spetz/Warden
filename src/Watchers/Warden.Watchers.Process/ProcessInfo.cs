@@ -16,6 +16,12 @@
         public string Name { get; }
 
         /// <summary>
+        /// Name of the remote machine, if specified.
+        /// </summary>
+        public string Machine { get; set; }
+
+
+        /// <summary>
         /// Flag determining whether the process exists.
         /// </summary>
         public bool Exists { get; }
@@ -30,10 +36,11 @@
         {
         }
 
-        protected ProcessInfo(int id, string name, bool exists, bool responding)
+        protected ProcessInfo(int id, string name, string machine, bool exists, bool responding)
         {
             Id = id;
             Name = name;
+            Machine = machine;
             Exists = exists;
             Responding = responding;
         }
@@ -46,8 +53,8 @@
         /// <param name="exists">Flag determining whether the process exists.</param>
         /// <param name="responding">Flag determining whether the process is responding.</param>
         /// <returns>Instance of DirectoryInfo.</returns>
-        public static ProcessInfo Create(int id, string name, bool exists, bool responding)
-            => new ProcessInfo(id, name, exists, responding);
+        public static ProcessInfo Create(int id, string name, string machine, bool exists, bool responding)
+            => new ProcessInfo(id, name, machine, exists, responding);
 
         /// <summary>
         /// Factory method for creating empty process details.
