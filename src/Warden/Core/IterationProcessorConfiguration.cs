@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Warden.Utils;
 using Warden.Watchers;
 
 namespace Warden.Core
@@ -42,12 +43,18 @@ namespace Warden.Core
         /// </summary>
         public bool OverrideCustomIntervals { get; protected set; }
 
+        /// <summary>
+        /// Custom provider for the IWardenLogger.
+        /// </summary>
+        public Func<IWardenLogger> WardenLoggerProvider { get; protected set; }
+
         protected internal IterationProcessorConfiguration()
         {
             GlobalWatcherHooks = WatcherHooksConfiguration.Empty;
             AggregatedGlobalWatcherHooks = AggregatedWatcherHooksConfiguration.Empty;
             Watchers = new HashSet<WatcherConfiguration>();
             DateTimeProvider = () => DateTime.UtcNow;
+            WardenLoggerProvider = () => new EmptyWardenLogger();
         }
 
         /// <summary>
@@ -107,6 +114,21 @@ namespace Warden.Core
             public Builder SetDateTimeProvider(Func<DateTime> dateTimeProvider)
             {
                 _configuration.DateTimeProvider = dateTimeProvider;
+
+                return this;
+            }
+
+            /// <summary>
+            /// Sets the custom provider for IWardenLogger.
+            /// </summary>
+            /// <param name="wardenLoggerProvider">Custom provider for IWardenLogger.</param>
+            /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
+            public Builder SetLogger(Func<IWardenLogger> wardenLoggerProvider)
+            {
+                if (wardenLoggerProvider == null)
+                    throw new ArgumentNullException(nameof(wardenLoggerProvider), "Warden logger can not be null.");
+
+                _configuration.WardenLoggerProvider = wardenLoggerProvider;
 
                 return this;
             }

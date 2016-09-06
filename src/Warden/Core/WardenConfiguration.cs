@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Warden.Integrations;
+using Warden.Utils;
 using Warden.Watchers;
 
 namespace Warden.Core
@@ -65,6 +66,11 @@ namespace Warden.Core
         /// </summary>
         public Func<IIntegrator> IntegratorProvider { get; protected set; }
 
+        /// <summary>
+        /// Custom provider for the IWardenLogger.
+        /// </summary>
+        public Func<IWardenLogger> WardenLoggerProvider { get; protected set; }
+
 
         protected internal WardenConfiguration()
         {
@@ -75,6 +81,7 @@ namespace Warden.Core
             Interval = DefaultInterval;
             DateTimeProvider = () => DateTime.UtcNow;
             IntegratorProvider = () => DefaultIntegrator;
+            WardenLoggerProvider = () => new EmptyWardenLogger();
         }
 
         /// <summary>
@@ -246,6 +253,19 @@ namespace Warden.Core
             }
 
             /// <summary>
+            /// Sets the Console Logger for Warden.
+            /// <param name="minLevel">Minimal level of the messages that will be logged (all by default).</param>
+            ///  /// <param name="useColors">Flag determining whether to use colors for different levels (true by default).</param>
+            /// </summary>
+            /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
+            public Builder WithConsoleLogger(WardenLoggerLevel minLevel = WardenLoggerLevel.All, bool useColors = true)
+            {
+                _configuration.WardenLoggerProvider = () => new ConsoleWardenLogger(minLevel, useColors);
+
+                return this;
+            }
+
+            /// <summary>
             /// Sets the total number of iterations in a loop executed by IIterationProcessor.
             /// </summary>
             /// <param name="iterationsCount">Total number of iterations (infinite by default).</param>
@@ -319,6 +339,21 @@ namespace Warden.Core
                 return this;
             }
 
+            /// <summary>
+            /// Sets the custom provider for IWardenLogger.
+            /// </summary>
+            /// <param name="wardenLoggerProvider">Custom provider for IWardenLogger.</param>
+            /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
+            public Builder SetLogger(Func<IWardenLogger> wardenLoggerProvider)
+            {
+                if (wardenLoggerProvider == null)
+                    throw new ArgumentNullException(nameof(wardenLoggerProvider), "Warden logger can not be null.");
+
+                _configuration.WardenLoggerProvider = wardenLoggerProvider;
+
+                return this;
+            }
+
             private void InitializeDefaultWardenIterationProcessorIfRequired()
             {
                 if (_configuration.IterationProcessorProvider != null)
@@ -331,6 +366,7 @@ namespace Warden.Core
                     .SetAggregatedWatcherHooks(_configuration.AggregatedWatcherHooks)
                     .SetDateTimeProvider(_configuration.DateTimeProvider)
                     .WithInterval(_configuration.Interval, _configuration.OverrideCustomIntervals)
+                    .SetLogger(_configuration.WardenLoggerProvider)
                     .Build();
 
                 _configuration.IterationProcessorProvider = () => new IterationProcessor(iterationProcessorConfiguration);

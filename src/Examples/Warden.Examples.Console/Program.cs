@@ -7,6 +7,7 @@ using Warden.Integrations.Cachet;
 using Warden.Integrations.HttpApi;
 using Warden.Integrations.MsSql;
 using Warden.Integrations.Slack;
+using Warden.Utils;
 using Warden.Watchers;
 using Warden.Watchers.Disk;
 using Warden.Watchers.MongoDb;
@@ -110,6 +111,7 @@ namespace Warden.Examples.Console
                         .OnIterationCompletedAsync(iteration => integrations.MsSql()
                             .ExecuteAsync("insert into messages values(@message)", GetSqlCommandParams()));
                 })
+                .WithConsoleLogger(minLevel: WardenLoggerLevel.Info, useColors: true)
                 .Build();
 
             return WardenInstance.Create(wardenConfiguration);

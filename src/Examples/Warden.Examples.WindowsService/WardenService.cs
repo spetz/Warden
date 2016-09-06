@@ -6,6 +6,7 @@ using Warden.Core;
 using Warden.Integrations.Cachet;
 using Warden.Integrations.HttpApi;
 using Warden.Integrations.MsSql;
+using Warden.Utils;
 using Warden.Watchers;
 using Warden.Watchers.Disk;
 using Warden.Watchers.MongoDb;
@@ -126,6 +127,7 @@ namespace Warden.Examples.WindowsService
                         .OnIterationCompletedAsync(
                             iteration => OnIterationCompletedMsSqlAsync(iteration, integrations.MsSql()));
                 })
+                .WithConsoleLogger(minLevel: WardenLoggerLevel.Info, useColors: true)
                 .Build();
 
             return WardenInstance.Create(wardenConfiguration);

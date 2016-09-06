@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Warden.Utils;
 using Warden.Watchers;
 
 namespace Warden.Core
@@ -26,7 +27,7 @@ namespace Warden.Core
     public class IterationProcessor : IIterationProcessor
     {
         private readonly IterationProcessorConfiguration _configuration;
-
+        private readonly IWardenLogger _logger;
         private readonly Dictionary<IWatcher, WatcherResultState> _latestWatcherResultStates =
             new Dictionary<IWatcher, WatcherResultState>();
 
@@ -45,6 +46,7 @@ namespace Warden.Core
         public IterationProcessor(IterationProcessorConfiguration configuration)
         {
             _configuration = configuration;
+            _logger = _configuration.WardenLoggerProvider();
         }
 
         /// <summary>
@@ -87,7 +89,8 @@ namespace Warden.Core
             return results;
         }
 
-        private async Task<IList<WatcherExecutionResult>> TryExecuteWatcherCheckAndHooksAsync(WatcherConfiguration watcherConfiguration)
+        private async Task<IList<WatcherExecutionResult>> TryExecuteWatcherCheckAndHooksAsync(
+            WatcherConfiguration watcherConfiguration)
         {
             var startedAt = _configuration.DateTimeProvider();
             var watcher = watcherConfiguration.Watcher;
@@ -96,7 +99,11 @@ namespace Warden.Core
             try
             {
                 await InvokeOnStartHooksAsync(watcherConfiguration, WatcherCheck.Create(watcher));
+                _logger.Info($"Executing Watcher: {watcher.Name}.");
                 var watcherCheckResult = await watcher.ExecuteAsync();
+                _logger.Info($"Completed executing Watcher: {watcher.Name}. " +
+                              $"Is valid: {watcherCheckResult.IsValid}. " +
+                              $"Description: {watcherCheckResult.Description}");
                 var completedAt = _configuration.DateTimeProvider();
                 wardenCheckResult = WardenCheckResult.Create(watcherCheckResult, startedAt, completedAt);
                 var watcherResults = await ExecuteWatcherCheckAsync(watcher, watcherCheckResult, wardenCheckResult,
@@ -105,6 +112,7 @@ namespace Warden.Core
             }
             catch (Exception exception)
             {
+                _logger.Error($"There was an error while executing Watcher: {watcher.Name}.", exception);
                 var completedAt = _configuration.DateTimeProvider();
                 wardenCheckResult = WardenCheckResult.Create(WatcherCheckResult.Create(watcher, false),
                     startedAt, completedAt, exception);
@@ -171,7 +179,7 @@ namespace Warden.Core
             }
             catch (Exception exception)
             {
-                //Think what to do about it
+                _logger.Error("There was an error while executing internal Aggregated Global Watcher hooks ", exception);
             }
         }
 
@@ -217,7 +225,9 @@ namespace Warden.Core
         private async Task InvokeAggregatedOnSuccessHooksAsync(IEnumerable<WatcherExecutionResult> results)
         {
             var validResults = results.Select(x => x.WardenCheckResult).Where(x => x.IsValid);
+            _logger.Trace("Executing Aggregated Global Watcher hooks OnSuccess.");
             _configuration.AggregatedGlobalWatcherHooks.OnSuccess.Execute(validResults);
+            _logger.Trace("Executing Aggregated Global Watcher hooks OnSuccessAsync.");
             await _configuration.AggregatedGlobalWatcherHooks.OnSuccessAsync.ExecuteAsync(validResults);
         }
 
@@ -230,14 +240,18 @@ namespace Warden.Core
             if (!filteredResults.Any())
                 return;
 
+            _logger.Trace("Executing Aggregated Global Watcher hooks OnFirstSuccess.");
             _configuration.AggregatedGlobalWatcherHooks.OnFirstSuccess.Execute(filteredResults);
+            _logger.Trace("Executing Aggregated Global Watcher hooks OnFirstSuccessAsync.");
             await _configuration.AggregatedGlobalWatcherHooks.OnFirstSuccessAsync.ExecuteAsync(filteredResults);
         }
 
         private async Task InvokeAggregatedOnFailureHooksAsync(IEnumerable<WatcherExecutionResult> results)
         {
             var invalidResults = results.Select(x => x.WardenCheckResult).Where(x => x.IsValid);
+            _logger.Trace("Executing Aggregated Global Watcher hooks OnFailure.");
             _configuration.AggregatedGlobalWatcherHooks.OnFailure.Execute(invalidResults);
+            _logger.Trace("Executing Aggregated Global Watcher hooks OnFailureAsync.");
             await _configuration.AggregatedGlobalWatcherHooks.OnFailureAsync.ExecuteAsync(invalidResults);
         }
 
@@ -249,14 +263,18 @@ namespace Warden.Core
             if (!filteredResults.Any())
                 return;
 
+            _logger.Trace("Executing Aggregated Global Watcher hooks OnFirstFailure.");
             _configuration.AggregatedGlobalWatcherHooks.OnFirstFailure.Execute(filteredResults);
+            _logger.Trace("Executing Aggregated Global Watcher hooks OnFirstFailureAsync.");
             await _configuration.AggregatedGlobalWatcherHooks.OnFirstFailureAsync.ExecuteAsync(filteredResults);
         }
 
         private async Task InvokeAggregatedOnErrorHooksAsync(IEnumerable<WatcherExecutionResult> results)
         {
             var exceptions = results.Select(x => x.Exception).Where(x => x != null);
+            _logger.Trace("Executing Aggregated Global Watcher hooks OnError.");
             _configuration.AggregatedGlobalWatcherHooks.OnError.Execute(exceptions);
+            _logger.Trace("Executing Aggregated Global Watcher hooks OnErrorAsync.");
             await _configuration.AggregatedGlobalWatcherHooks.OnErrorAsync.ExecuteAsync(exceptions);
         }
 
@@ -268,83 +286,119 @@ namespace Warden.Core
             if (!exceptions.Any())
                 return;
 
+            _logger.Trace("Executing Aggregated Global Watcher hooks OnFirstError.");
             _configuration.AggregatedGlobalWatcherHooks.OnFirstError.Execute(exceptions);
+            _logger.Trace("Executing Aggregated Global Watcher hooks OnFirstErrorAsync.");
             await _configuration.AggregatedGlobalWatcherHooks.OnFirstErrorAsync.ExecuteAsync(exceptions);
         }
 
         private async Task InvokeAggregatedOnCompletedHooksAsync(IEnumerable<WatcherExecutionResult> results)
         {
             var allResults = results.Select(x => x.WardenCheckResult);
+            _logger.Trace("Executing Aggregated Global Watcher hooks OnCompleted.");
             _configuration.AggregatedGlobalWatcherHooks.OnCompleted.Execute(allResults);
+            _logger.Trace("Executing Aggregated Global Watcher hooks OnCompletedAsync.");
             await _configuration.AggregatedGlobalWatcherHooks.OnCompletedAsync.ExecuteAsync(allResults);
         }
 
         private async Task InvokeOnStartHooksAsync(WatcherConfiguration watcherConfiguration, IWatcherCheck check)
         {
+            _logger.Trace($"Executing Watcher: {check.WatcherName} hooks OnStart.");
             watcherConfiguration.Hooks.OnStart.Execute(check);
+            _logger.Trace($"Executing Watcher: {check.WatcherName} hooks OnStartAsync.");
             await watcherConfiguration.Hooks.OnStartAsync.ExecuteAsync(check);
+            _logger.Trace("Executing Global Watcher hooks OnStart.");
             _configuration.GlobalWatcherHooks.OnStart.Execute(check);
+            _logger.Trace("Executing Global Watcher hooks OnStartAsync.");
             await _configuration.GlobalWatcherHooks.OnStartAsync.ExecuteAsync(check);
         }
 
         private async Task InvokeOnSuccessHooksAsync(WatcherConfiguration watcherConfiguration,
             IWardenCheckResult checkResult)
         {
+            _logger.Trace($"Executing Watcher: {checkResult.WatcherCheckResult.WatcherName} hooks OnSuccess.");
             watcherConfiguration.Hooks.OnSuccess.Execute(checkResult);
+            _logger.Trace($"Executing Watcher: {checkResult.WatcherCheckResult.WatcherName} hooks OnSuccessAsync.");
             await watcherConfiguration.Hooks.OnSuccessAsync.ExecuteAsync(checkResult);
+            _logger.Trace("Executing Global Watcher hooks OnSuccess.");
             _configuration.GlobalWatcherHooks.OnSuccess.Execute(checkResult);
+            _logger.Trace("Executing Global Watcher hooks OnSuccessAsync.");
             await _configuration.GlobalWatcherHooks.OnSuccessAsync.ExecuteAsync(checkResult);
         }
 
         private async Task InvokeOnFirstSuccessHooksAsync(WatcherConfiguration watcherConfiguration,
             IWardenCheckResult checkResult)
         {
+            _logger.Trace($"Executing Watcher: {checkResult.WatcherCheckResult.WatcherName} hooks OnFirstSuccess.");
             watcherConfiguration.Hooks.OnFirstSuccess.Execute(checkResult);
+            _logger.Trace($"Executing Watcher: {checkResult.WatcherCheckResult.WatcherName} hooks OnFirstSuccessAsync.");
             await watcherConfiguration.Hooks.OnFirstSuccessAsync.ExecuteAsync(checkResult);
+            _logger.Trace("Executing Global Watcher hooks OnFirstSuccess.");
             _configuration.GlobalWatcherHooks.OnFirstSuccess.Execute(checkResult);
+            _logger.Trace("Executing Global Watcher hooks OnFirstSuccessAsync.");
             await _configuration.GlobalWatcherHooks.OnFirstSuccessAsync.ExecuteAsync(checkResult);
         }
 
         private async Task InvokeOnFailureHooksAsync(WatcherConfiguration watcherConfiguration,
             IWardenCheckResult checkResult)
         {
+            _logger.Trace($"Executing Watcher: {checkResult.WatcherCheckResult.WatcherName} hooks OnFailure.");
             watcherConfiguration.Hooks.OnFailure.Execute(checkResult);
+            _logger.Trace($"Executing Watcher: {checkResult.WatcherCheckResult.WatcherName} hooks OnFailureAsync.");
             await watcherConfiguration.Hooks.OnFailureAsync.ExecuteAsync(checkResult);
+            _logger.Trace("Executing Global Watcher hooks OnFailure.");
             _configuration.GlobalWatcherHooks.OnFailure.Execute(checkResult);
+            _logger.Trace("Executing Global Watcher hooks OnFailureAsync.");
             await _configuration.GlobalWatcherHooks.OnFailureAsync.ExecuteAsync(checkResult);
         }
 
         private async Task InvokeOnFirstFailureHooksAsync(WatcherConfiguration watcherConfiguration,
             IWardenCheckResult checkResult)
         {
+            _logger.Trace($"Executing Watcher: {checkResult.WatcherCheckResult.WatcherName} hooks OnFirstFailure.");
             watcherConfiguration.Hooks.OnFirstFailure.Execute(checkResult);
+            _logger.Trace($"Executing Watcher: {checkResult.WatcherCheckResult.WatcherName} hooks OnFirstFailureAsync.");
             await watcherConfiguration.Hooks.OnFirstFailureAsync.ExecuteAsync(checkResult);
+            _logger.Trace("Executing Global Watcher hooks OnFirstFailure.");
             _configuration.GlobalWatcherHooks.OnFirstFailure.Execute(checkResult);
+            _logger.Trace("Executing Global Watcher hooks OnFirstFailureAsync.");
             await _configuration.GlobalWatcherHooks.OnFirstFailureAsync.ExecuteAsync(checkResult);
         }
 
         private async Task InvokeOnCompletedHooksAsync(WatcherConfiguration watcherConfiguration,
             IWardenCheckResult checkResult)
         {
+            _logger.Trace($"Executing Watcher: {checkResult.WatcherCheckResult.WatcherName} hooks OnCompleted.");
             watcherConfiguration.Hooks.OnCompleted.Execute(checkResult);
+            _logger.Trace($"Executing Watcher: {checkResult.WatcherCheckResult.WatcherName} hooks OnCompletedAsync.");
             await watcherConfiguration.Hooks.OnCompletedAsync.ExecuteAsync(checkResult);
+            _logger.Trace("Executing Global Watcher hooks OnCompleted.");
             _configuration.GlobalWatcherHooks.OnCompleted.Execute(checkResult);
+            _logger.Trace("Executing Global Watcher hooks OnCompletedAsync.");
             await _configuration.GlobalWatcherHooks.OnCompletedAsync.ExecuteAsync(checkResult);
         }
 
         private async Task InvokeOnErrorHooksAsync(WatcherConfiguration watcherConfiguration, Exception exception)
         {
+            _logger.Trace($"Executing Watcher: {watcherConfiguration.Watcher.Name} hooks OnError.");
             watcherConfiguration.Hooks.OnError.Execute(exception);
+            _logger.Trace($"Executing Watcher: {watcherConfiguration.Watcher.Name} hooks OnErrorAsync.");
             await watcherConfiguration.Hooks.OnErrorAsync.ExecuteAsync(exception);
+            _logger.Trace("Executing Global Watcher hooks OnError.");
             _configuration.GlobalWatcherHooks.OnError.Execute(exception);
+            _logger.Trace("Executing Global Watcher hooks OnErrorAsync.");
             await _configuration.GlobalWatcherHooks.OnErrorAsync.ExecuteAsync(exception);
         }
 
         private async Task InvokeOnFirstErrorHooksAsync(WatcherConfiguration watcherConfiguration, Exception exception)
         {
+            _logger.Trace($"Executing Watcher: {watcherConfiguration.Watcher.Name} hooks OnFirstError.");
             watcherConfiguration.Hooks.OnFirstError.Execute(exception);
+            _logger.Trace($"Executing Watcher: {watcherConfiguration.Watcher.Name} hooks OnFirstErrorAsync.");
             await watcherConfiguration.Hooks.OnFirstErrorAsync.ExecuteAsync(exception);
+            _logger.Trace("Executing Global Watcher OnFirstError OnError.");
             _configuration.GlobalWatcherHooks.OnFirstError.Execute(exception);
+            _logger.Trace("Executing Global Watcher OnFirstErrorAsync OnError.");
             await _configuration.GlobalWatcherHooks.OnFirstErrorAsync.ExecuteAsync(exception);
         }
 

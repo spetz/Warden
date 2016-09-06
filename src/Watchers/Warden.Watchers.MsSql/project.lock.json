@@ -271,6 +271,19 @@
           "lib/netstandard1.3/System.Collections.NonGeneric.dll": {}
         }
       },
+      "System.Console/4.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "1.0.1",
+          "Microsoft.NETCore.Targets": "1.0.1",
+          "System.IO": "4.1.0",
+          "System.Runtime": "4.1.0",
+          "System.Text.Encoding": "4.0.11"
+        },
+        "compile": {
+          "ref/netstandard1.3/System.Console.dll": {}
+        }
+      },
       "System.Data.Common/4.1.0": {
         "type": "package",
         "dependencies": {
@@ -1411,7 +1424,7 @@
           "lib/netstandard1.3/System.Xml.XmlDocument.dll": {}
         }
       },
-      "Warden/1.2.1": {
+      "Warden/1.2.2": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v1.0",
         "dependencies": {
@@ -1419,6 +1432,7 @@
           "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
           "System.Collections": "4.0.11",
           "System.Collections.Concurrent": "4.0.12",
+          "System.Console": "4.0.0",
           "System.Linq": "4.1.0",
           "System.Runtime": "4.1.0",
           "System.Runtime.InteropServices.RuntimeInformation": "4.0.0",
@@ -1498,7 +1512,7 @@
           }
         }
       },
-      "Warden/1.2.1": {
+      "Warden/1.2.2": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
@@ -1942,6 +1956,42 @@
         "ref/netstandard1.3/ru/System.Collections.NonGeneric.xml",
         "ref/netstandard1.3/zh-hans/System.Collections.NonGeneric.xml",
         "ref/netstandard1.3/zh-hant/System.Collections.NonGeneric.xml",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._"
+      ]
+    },
+    "System.Console/4.0.0": {
+      "sha512": "qSKUSOIiYA/a0g5XXdxFcUFmv1hNICBD7QZ0QhGYVipPIhvpiydY8VZqr1thmCXvmn8aipMg64zuanB4eotK9A==",
+      "type": "package",
+      "path": "System.Console/4.0.0",
+      "files": [
+        "System.Console.4.0.0.nupkg.sha512",
+        "System.Console.nuspec",
+        "ThirdPartyNotices.txt",
+        "dotnet_library_license.txt",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net46/System.Console.dll",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net46/System.Console.dll",
+        "ref/netstandard1.3/System.Console.dll",
+        "ref/netstandard1.3/System.Console.xml",
+        "ref/netstandard1.3/de/System.Console.xml",
+        "ref/netstandard1.3/es/System.Console.xml",
+        "ref/netstandard1.3/fr/System.Console.xml",
+        "ref/netstandard1.3/it/System.Console.xml",
+        "ref/netstandard1.3/ja/System.Console.xml",
+        "ref/netstandard1.3/ko/System.Console.xml",
+        "ref/netstandard1.3/ru/System.Console.xml",
+        "ref/netstandard1.3/zh-hans/System.Console.xml",
+        "ref/netstandard1.3/zh-hant/System.Console.xml",
         "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._",
         "ref/xamarintvos10/_._",
@@ -4928,7 +4978,7 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "Warden/1.2.1": {
+    "Warden/1.2.2": {
       "type": "project",
       "path": "../../Warden/project.json",
       "msbuildProject": "../../Warden/Warden.xproj"
@@ -4938,7 +4988,7 @@
     "": [
       "Dapper >= 1.50.1",
       "System.Data.SqlClient >= 4.1.0",
-      "Warden >= 1.2.1"
+      "Warden >= 1.2.2"
     ],
     ".NETCoreApp,Version=v1.0": [
       "Microsoft.CSharp >= 4.0.1",
