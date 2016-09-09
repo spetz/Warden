@@ -104,15 +104,20 @@ namespace Warden.Examples.WindowsService
                 .IntegrateWithHttpApi("http://localhost:11223/api",
                     "yroWbGkozycDLMI7+Jkyw0FzJv/O6xHzhR8+DcKTNEQECZHFBFmBbYCKJ2wiHYI=",
                     "20afbd7c-f803-4a2d-be64-640776930930")
+                //New Warden API integration
+                //.IntegrateWithHttpApi("http://localhost:20899",
+                //    "9l5G2m695GOUvcfnIVIDX/QptT/2U30QFa95cdfmNMzBJirqF6Epcr2h",
+                //    "WzoJnQI0oEq5tmu9irTKXg", "R8wO5nNnXU6kFojXyiG1GA")
                 //Set proper Slack webhook URL
                 //.IntegrateWithSlack("https://hooks.slack.com/services/XXX/YYY/ZZZ")
                 //Set proper URL of Cachet API and access token or username & password
                 //.IntegrateWithCachet("http://localhost/api/v1", "XYZ")
-                .SetGlobalWatcherHooks(hooks =>
+                .SetGlobalWatcherHooks((hooks, integrations) =>
                 {
                     hooks.OnStart(check => GlobalHookOnStart(check))
                         .OnFailure(result => GlobalHookOnFailure(result))
                         .OnSuccess(result => GlobalHookOnSuccess(result))
+                        //.OnCompletedAsync(result => GlobalHookOnCompletedPostToNewApiAsync(result, integrations.HttpApi()))
                         .OnCompleted(result => GlobalHookOnCompleted(result));
                 })
                 .SetHooks((hooks, integrations) =>
@@ -177,6 +182,12 @@ namespace Warden.Examples.WindowsService
         {
             Console.WriteLine("Invoking the global hook OnCompleted() " +
                               $"by watcher: '{check.WatcherCheckResult.WatcherName}'.");
+        }
+
+        private static async Task GlobalHookOnCompletedPostToNewApiAsync(IWardenCheckResult check,
+            HttpApiIntegration httpApiIntegration)
+        {
+            await httpApiIntegration.PostCheckResultToWardenPanelAsync(check);
         }
 
         private static void GlobalHookOnFailure(IWardenCheckResult check)

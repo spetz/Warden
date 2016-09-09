@@ -64,7 +64,6 @@ namespace Warden.Integrations.HttpApi
             var fixedWardenName = iteration.WardenName.Replace(" ", "%20");
             var endpoint = GetWardenApiIterationEndpoint(_configuration.OrganizationId, fixedWardenName);
             var fullUrl = baseUrl.GetFullUrl(endpoint);
-
             await _configuration.HttpServiceProvider().PostAsync(fullUrl,
                 iteration.ToJson(_configuration.JsonSerializerSettings), _configuration.Headers,
                 _configuration.Timeout, _configuration.FailFast);
@@ -74,19 +73,48 @@ namespace Warden.Integrations.HttpApi
             => $"organizations/{organizationId}/wardens/{wardenName}/iterations";
 
         /// <summary>
+        /// Sends a POST request to the new Warden Panel API endpoint.
+        /// </summary>
+        /// <param name="checkResult">Warden check result object that will be serialized to the JSON.</param>
+        /// <returns></returns>
+        public async Task PostCheckResultToWardenPanelAsync(IWardenCheckResult checkResult)
+        {
+            if (checkResult == null)
+                throw new ArgumentNullException(nameof(checkResult), "Warden check result can not be null.");
+
+            if (string.IsNullOrWhiteSpace(checkResult.WatcherCheckResult.WatcherName))
+            {
+                throw new ArgumentException("Watcher name can not be empty.",
+                    nameof(checkResult.WatcherCheckResult.WatcherName));
+            }
+
+            var baseUrl = _configuration.Uri.ToString();
+            var endpoint = GetWardenApiChecksEndpoint(_configuration.OrganizationId, _configuration.WardenId);
+            var fullUrl = baseUrl.GetFullUrl(endpoint);
+            var data = new {check = checkResult};
+            await _configuration.HttpServiceProvider().PostAsync(fullUrl,
+                data.ToJson(_configuration.JsonSerializerSettings),
+                _configuration.Headers, _configuration.Timeout, _configuration.FailFast);
+        }
+
+        private static string GetWardenApiChecksEndpoint(string organizationId, string wardenId)
+            => $"organizations/{organizationId}/wardens/{wardenId}/checks";
+
+        /// <summary>
         /// Factory method for creating a new instance of HttpApiIntegration.
         /// </summary>
         /// <param name="url">URL of the HTTP API.</param>
         /// <param name="apiKey">Optional API key of the HTTP API passed inside the custom "X-Api-Key" header.</param>
         /// <param name="organizationId">Optional id of the organization that should be used in the Warden Web Panel.</param>
+        /// <param name="wardenId">Optional id of the warden that should be used in the new Warden Web Panel.</param>
         /// <param name="headers">Optional request headers.</param>
         /// <param name="configurator">Lambda expression for configuring the HttpApiIntegration integration.</param>
         /// <returns>Instance of HttpApiIntegration.</returns>
         public static HttpApiIntegration Create(string url, string apiKey = null,
-            string organizationId = null, IDictionary<string, string> headers = null,
+            string organizationId = null, string wardenId = null, IDictionary<string, string> headers = null,
             Action<HttpApiIntegrationConfiguration.Builder> configurator = null)
         {
-            var config = new HttpApiIntegrationConfiguration.Builder(url, apiKey, organizationId, headers);
+            var config = new HttpApiIntegrationConfiguration.Builder(url, apiKey, organizationId, wardenId, headers);
             configurator?.Invoke(config);
 
             return Create(config.Build());

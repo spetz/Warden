@@ -52,6 +52,11 @@ namespace Warden.Integrations.HttpApi
         public string OrganizationId { get; protected set; }
 
         /// <summary>
+        /// Id of the warden that should be used in the Warden Web Panel.
+        /// </summary>
+        public string WardenId { get; protected set; }
+
+        /// <summary>
         /// Request headers.
         /// </summary>
         public IDictionary<string, string> Headers { get; protected set; }
@@ -82,14 +87,17 @@ namespace Warden.Integrations.HttpApi
         /// <param name="url">URL of the HTTP API.</param>
         /// <param name="apiKey">Optional API key of the HTTP API passed inside the custom "X-Api-Key" header.</param>
         /// <param name="organizationId">Optional id of the organization that should be used in the Warden Web Panel.</param>
+        /// <param name="wardenId">Optional id of the warden that should be used in the new Warden Web Panel.</param>
         /// <param name="headers">Optional request headers.</param>
         /// <returns>Instance of fluent builder for the HttpApiIntegrationConfiguration.</returns>
         public static Builder Create(string url, string apiKey = null, 
-            string organizationId = null, IDictionary<string, string> headers = null)
-            => new Builder(url, apiKey, organizationId, headers);
+            string organizationId = null, string wardenId = null, 
+            IDictionary<string, string> headers = null)
+            => new Builder(url, apiKey, organizationId, wardenId, headers);
 
         protected HttpApiIntegrationConfiguration(string url, string apiKey = null,
-            string organizationId = null, IDictionary<string, string> headers = null)
+            string organizationId = null, string wardenId = null, 
+            IDictionary<string, string> headers = null)
         {
             if (string.IsNullOrEmpty(url))
                 throw new ArgumentException("URL can not be empty.", nameof(url));
@@ -102,6 +110,7 @@ namespace Warden.Integrations.HttpApi
 
             ApiKey = apiKey;
             OrganizationId = organizationId;
+            WardenId = wardenId;
             Headers.Add(ApiKeyHeader, ApiKey);
         }
 
@@ -112,10 +121,10 @@ namespace Warden.Integrations.HttpApi
         {
             protected readonly HttpApiIntegrationConfiguration Configuration;
 
-            public Builder(string url, string apiKey = null, string organizationId = null, 
-                IDictionary<string, string> headers = null)
+            public Builder(string url, string apiKey = null, string organizationId = null,
+                string wardenId = null, IDictionary<string, string> headers = null)
             {
-                Configuration = new HttpApiIntegrationConfiguration(url, apiKey, organizationId, headers);
+                Configuration = new HttpApiIntegrationConfiguration(url, apiKey, organizationId, wardenId, headers);
             }
 
             /// <summary>
