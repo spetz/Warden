@@ -181,7 +181,7 @@ namespace Warden.Integrations.Cachet
                 component = await _cachetService.UpdateComponentAsync(component.Id,
                     name, status, groupId: groupId);
             }
-            await SaveIncidentAsync(component.Id, checkResult, notify);
+            await SaveIncidentAsync(component.Id, checkResult, notify, saveValidIncidents);
         }
 
         private async Task SaveIncidentAsync(int componentId, IWatcherCheckResult result, bool notify = false,
