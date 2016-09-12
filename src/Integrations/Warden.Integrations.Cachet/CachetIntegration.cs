@@ -146,10 +146,12 @@ namespace Warden.Integrations.Cachet
         /// </summary>
         /// <param name="iteration">Iteration object that will be saved using Cachet API.</param>
         /// <param name="notify">Flag determining whether to notify the system administrator(s).</param>
+        /// <param name="saveValidIncidents">Flag determining whether to save the valid incidents even if there were no errors previously reported.</param>
         /// <returns></returns>
-        public async Task SaveIterationAsync(IWardenIteration iteration, bool notify = false)
+        public async Task SaveIterationAsync(IWardenIteration iteration, bool notify = false, 
+            bool saveValidIncidents = false)
         {
-            var tasks = iteration.Results.Select(x => SaveCheckResultAsync(x, notify));
+            var tasks = iteration.Results.Select(x => SaveCheckResultAsync(x, notify, saveValidIncidents));
             await Task.WhenAll(tasks);
         }
 
