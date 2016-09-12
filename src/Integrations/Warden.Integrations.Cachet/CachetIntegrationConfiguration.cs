@@ -91,6 +91,11 @@ namespace Warden.Integrations.Cachet
         public Func<ICachetService> CachetServiceProvider { get; protected set; }
 
         /// <summary>
+        /// Mappings between the Watcher group names and group ids used in Cachet to organize the similar components.
+        /// </summary>
+        public IDictionary<string, int> WatcherGroups { get; protected set; } = new Dictionary<string, int>();
+
+        /// <summary>
         /// Factory method for creating a new instance of fluent builder for the CachetIntegrationConfiguration.
         /// </summary>
         /// <param name="apiUrl">URL of the Cachet API.</param>
@@ -222,11 +227,32 @@ namespace Warden.Integrations.Cachet
 
             /// <summary>
             /// Id of the group to which will be assigned the watchers (components) - 0 by default.
+            /// Overriden by the Watcher group mappings parameter if provided.
             /// </summary>
+            /// <param name="groupId">Id of the component group (0 by default).</param>
             /// <returns>Instance of fluent builder for the CachetIntegrationConfiguration.</returns>
             public Builder WithGroupId(int groupId)
             {
                 Configuration.GroupId = groupId;
+
+                return this;
+            }
+
+            /// <summary>
+            /// Mappings between the Watcher group names and group ids used in Cachet to organize the similar components.
+            /// Overrides the global Watcher Group id parameter.
+            /// </summary>
+            /// <param name="watcherGroups">Dictionary of watcher group names and component group ids.</param>
+            /// <returns>Instance of fluent builder for the CachetIntegrationConfiguration.</returns>
+            public Builder WithWatcherGroups(IDictionary<string, int> watcherGroups)
+            {
+                if (watcherGroups == null)
+                {
+                    throw new ArgumentNullException(nameof(watcherGroups),
+                        "Watcher groups can not be null.");
+                }
+
+                Configuration.WatcherGroups = watcherGroups;
 
                 return this;
             }
@@ -239,8 +265,11 @@ namespace Warden.Integrations.Cachet
             public Builder WithJsonSerializerSettings(JsonSerializerSettings jsonSerializerSettings)
             {
                 if (jsonSerializerSettings == null)
+                {
                     throw new ArgumentNullException(nameof(jsonSerializerSettings),
                         "JSON serializer settings can not be null.");
+                }
+
 
                 Configuration.JsonSerializerSettings = jsonSerializerSettings;
 

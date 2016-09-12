@@ -158,10 +158,15 @@ namespace Warden.Integrations.Cachet
         /// </summary>
         /// <param name="result">Result object that will be saved using Cachet API.</param>
         /// <param name="notify">Flag determining whether to notify the system administrator(s).</param>
+        /// <param name="saveValidIncidents">Flag determining whether to save the valid incidents even if there were no errors previously reported.</param>
         /// <returns></returns>
-        public async Task SaveCheckResultAsync(IWardenCheckResult result, bool notify = false)
+        public async Task SaveCheckResultAsync(IWardenCheckResult result, bool notify = false,
+             bool saveValidIncidents = false)
         {
-            var groupId = _configuration.GroupId;
+            var groupKey = result.WatcherCheckResult.WatcherGroup ?? string.Empty;
+            var groupId = _configuration.WatcherGroups.ContainsKey(groupKey)
+                ? _configuration.WatcherGroups[groupKey]
+                : _configuration.GroupId;
             var checkResult = result.WatcherCheckResult;
             var name = checkResult.WatcherName;
             var status = checkResult.IsValid ? ComponentStatus.Operational : ComponentStatus.MajorOutage;
@@ -179,13 +184,21 @@ namespace Warden.Integrations.Cachet
             await SaveIncidentAsync(component.Id, checkResult, notify);
         }
 
-        private async Task SaveIncidentAsync(int componentId, IWatcherCheckResult result, bool notify = false)
+        private async Task SaveIncidentAsync(int componentId, IWatcherCheckResult result, bool notify = false,
+            bool saveValidIncident = false)
         {
             var date = _configuration.DateTimeProvider().Date;
             var componentStatus = result.IsValid ? ComponentStatus.Operational : ComponentStatus.MajorOutage;
             var incidentStatus = result.IsValid ? IncidentStatus.Fixed : IncidentStatus.Identified;
-            var name = $"{result.WatcherName} check is {(result.IsValid ? "valid" : "invalid")}";
             var incidents = await _cachetService.GetIncidentsAsync(componentId);
+            var existingIncidentStatus = incidents.FirstOrDefault(x => x.ComponentId == componentId)?.Status;
+
+            //If there's neither failure nor previous incident reported, do not report a valid service check.
+            if (!saveValidIncident && result.IsValid &&
+                (existingIncidentStatus == null || existingIncidentStatus == incidentStatus))
+                return;
+
+            var name = $"{result.WatcherName} check is {(result.IsValid ? "valid" : "invalid")}";
             var incident = incidents.FirstOrDefault(x => x.ComponentId == componentId &&
                                                          x.CreatedAt?.Date == date);
             var message = result.Description;
