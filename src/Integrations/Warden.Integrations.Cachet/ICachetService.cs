@@ -21,11 +21,12 @@ namespace Warden.Integrations.Cachet
         Task<Component> GetComponentAsync(int id);
 
         /// <summary>
-        /// Gets a component by name using the Cachet API.
+        /// Gets a component by name and group id using the Cachet API.
         /// </summary>
         /// <param name="name">Name of the component.</param>
+        /// <param name="groupId">The group id that the component is within (0 by default).</param>
         /// <returns>Details of component if exists.</returns>
-        Task<Component> GetComponentAsync(string name);
+        Task<Component> GetComponentAsync(string name, int groupId);
 
         /// <summary>
         /// Gets a components by name using the Cachet API.
@@ -60,9 +61,11 @@ namespace Warden.Integrations.Cachet
         /// <param name="order">Order of the component (0 by default)</param>
         /// <param name="groupId">The group id that the component is within (0 by default).</param>
         /// <param name="enabled">Whether the component is enabled (true by default).</param>
+        /// <param name="updateIfStatusIsTheSame">Flag determining whether to update the component even if the previous status is the same (false by default).</param>
         /// <returns>Details of created component if operation has succeeded.</returns>
         Task<Component> UpdateComponentAsync(int id, string name = null, int status = 1,
-            string link = null, int order = 0, int groupId = 0, bool enabled = true);
+            string link = null, int order = 0, int groupId = 0, bool enabled = true,
+            bool updateIfStatusIsTheSame = false);
 
         /// <summary>
         /// Deletes a component using the Cachet API.
@@ -154,11 +157,11 @@ namespace Warden.Integrations.Cachet
             return await ProcessResponseAsync<Component>(response);
         }
 
-        public async Task<Component> GetComponentAsync(string name)
+        public async Task<Component> GetComponentAsync(string name, int groupId)
         {
             var components = await GetComponentsAsync(name);
 
-            return components.FirstOrDefault(x => x.Name.Equals(name));
+            return components.FirstOrDefault(x => x.Name.Equals(name) && x.GroupId == groupId);
         }
 
         public async Task<IEnumerable<Component>> GetComponentsAsync(string name)
@@ -172,7 +175,7 @@ namespace Warden.Integrations.Cachet
             string link = null, int order = 0, int groupId = 0, bool enabled = true,
             bool createEvenIfNameIsAlreadyInUse = false)
         {
-            var component = await GetComponentAsync(name);
+            var component = await GetComponentAsync(name, groupId);
             if (createEvenIfNameIsAlreadyInUse || component == null)
             {
                 component = Component.Create(name, status, description, link, order, groupId, enabled);
@@ -185,10 +188,14 @@ namespace Warden.Integrations.Cachet
         }
 
         public async Task<Component> UpdateComponentAsync(int id, string name = null, int status = 1,
-            string link = null, int order = 0, int groupId = 0, bool enabled = true)
+            string link = null, int order = 0, int groupId = 0, bool enabled = true, 
+            bool updateIfStatusIsTheSame = false)
         {
             var component = await GetComponentAsync(id);
             if (component == null)
+                return null;
+
+            if (!updateIfStatusIsTheSame && component.Status == status)
                 return null;
 
             component = Component.Create(name, status, string.Empty, link, order, groupId, enabled);

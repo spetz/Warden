@@ -35,12 +35,13 @@ namespace Warden.Integrations.Cachet
             => await _cachetService.GetComponentAsync(id);
 
         /// <summary>
-        /// Gets a component by name using the Cachet API.
+        /// Gets a component by name and group id using the Cachet API.
         /// </summary>
         /// <param name="name">Name of the component.</param>
+        /// <param name="groupId">The group id that the component is within (0 by default).</param>
         /// <returns>Details of component if exists.</returns>
-        public async Task<Component> GetComponentAsync(string name)
-            => await _cachetService.GetComponentAsync(name);
+        public async Task<Component> GetComponentAsync(string name, int groupId)
+            => await _cachetService.GetComponentAsync(name, groupId);
 
         /// <summary>
         /// Gets a components by name using the Cachet API.
@@ -160,10 +161,11 @@ namespace Warden.Integrations.Cachet
         /// </summary>
         /// <param name="result">Result object that will be saved using Cachet API.</param>
         /// <param name="notify">Flag determining whether to notify the system administrator(s).</param>
-        /// <param name="saveValidIncidents">Flag determining whether to save the valid incidents even if there were no errors previously reported.</param>
+        /// <param name="saveValidIncidents">Flag determining whether to save the valid incidents even if there were no errors previously reported (false by default).</param>
+        /// <param name="updateIfStatusIsTheSame">Flag determining whether to update the component and/or incident even if the previous status is the same (false by default).</param>
         /// <returns></returns>
         public async Task SaveCheckResultAsync(IWardenCheckResult result, bool notify = false,
-             bool saveValidIncidents = false)
+            bool saveValidIncidents = false, bool updateIfStatusIsTheSame = false)
         {
             var groupKey = result.WatcherCheckResult.WatcherGroup ?? string.Empty;
             var groupId = _configuration.WatcherGroups.ContainsKey(groupKey)
@@ -172,7 +174,7 @@ namespace Warden.Integrations.Cachet
             var checkResult = result.WatcherCheckResult;
             var name = checkResult.WatcherName;
             var status = checkResult.IsValid ? ComponentStatus.Operational : ComponentStatus.MajorOutage;
-            var component = await _cachetService.GetComponentAsync(checkResult.WatcherName);
+            var component = await _cachetService.GetComponentAsync(checkResult.WatcherName, groupId);
             if (component == null)
             {
                 component = await _cachetService.CreateComponentAsync(name,
@@ -181,13 +183,13 @@ namespace Warden.Integrations.Cachet
             else
             {
                 component = await _cachetService.UpdateComponentAsync(component.Id,
-                    name, status, groupId: groupId);
+                    name, status, groupId: groupId, updateIfStatusIsTheSame: updateIfStatusIsTheSame);
             }
-            await SaveIncidentAsync(component.Id, checkResult, notify, saveValidIncidents);
+            await SaveIncidentAsync(component.Id, checkResult, notify, saveValidIncidents, updateIfStatusIsTheSame);
         }
 
         private async Task SaveIncidentAsync(int componentId, IWatcherCheckResult result, bool notify = false,
-            bool saveValidIncident = false)
+            bool saveValidIncident = false, bool updateIfStatusIsTheSame = false)
         {
             var date = _configuration.DateTimeProvider().Date;
             var componentStatus = result.IsValid ? ComponentStatus.Operational : ComponentStatus.MajorOutage;
@@ -196,8 +198,9 @@ namespace Warden.Integrations.Cachet
             var existingIncidentStatus = incidents.FirstOrDefault(x => x.ComponentId == componentId)?.Status;
 
             //If there's neither failure nor previous incident reported, do not report a valid service check.
-            if (!saveValidIncident && result.IsValid &&
-                (existingIncidentStatus == null || existingIncidentStatus == incidentStatus))
+            if (!saveValidIncident && result.IsValid && existingIncidentStatus == null)
+                return;
+            if(!updateIfStatusIsTheSame && existingIncidentStatus == incidentStatus)
                 return;
 
             var name = $"{result.WatcherName} check is {(result.IsValid ? "valid" : "invalid")}";
