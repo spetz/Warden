@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Warden.Commander;
 using Warden.Integrations;
 using Warden.Utils;
 using Warden.Watchers;
@@ -71,6 +72,11 @@ namespace Warden.Core
         /// </summary>
         public Func<IWardenLogger> WardenLoggerProvider { get; protected set; }
 
+        /// <summary>
+        /// Custom provider for the IWardenCommander.
+        /// </summary>
+        public Func<IWardenCommander> WardenCommanderProvider { get; protected set; }
+
 
         protected internal WardenConfiguration()
         {
@@ -82,6 +88,7 @@ namespace Warden.Core
             DateTimeProvider = () => DateTime.UtcNow;
             IntegratorProvider = () => DefaultIntegrator;
             WardenLoggerProvider = () => new EmptyWardenLogger();
+            WardenCommanderProvider = () => new EmptyWardenCommander();
         }
 
         /// <summary>
@@ -350,6 +357,21 @@ namespace Warden.Core
                     throw new ArgumentNullException(nameof(wardenLoggerProvider), "Warden logger can not be null.");
 
                 _configuration.WardenLoggerProvider = wardenLoggerProvider;
+
+                return this;
+            }
+
+            /// <summary>
+            /// Sets the custom provider for IWardenCommander.
+            /// </summary>
+            /// <param name="wardenCommanderProvider">Custom provider for IWardenCommander.</param>
+            /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
+            public Builder SetCommander(Func<IWardenCommander> wardenCommanderProvider)
+            {
+                if (wardenCommanderProvider == null)
+                    throw new ArgumentNullException(nameof(wardenCommanderProvider), "Warden commander can not be null.");
+
+                _configuration.WardenCommanderProvider = wardenCommanderProvider;
 
                 return this;
             }

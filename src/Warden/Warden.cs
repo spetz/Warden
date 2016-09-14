@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Warden.Commander;
 using Warden.Core;
 using Warden.Utils;
 
@@ -11,6 +12,7 @@ namespace Warden
     public class Warden : IWarden
     {
         private readonly IWardenLogger _logger;
+        private readonly IWardenCommander _commander;
         private readonly WardenConfiguration _configuration;
         private long _iterationOrdinal = 1;
         private bool _running = false;
@@ -32,6 +34,7 @@ namespace Warden
             Name = name;
             _configuration = configuration;
             _logger = _configuration.WardenLoggerProvider();
+            _commander = _configuration.WardenCommanderProvider();
         }
 
         /// <summary>
@@ -86,6 +89,7 @@ namespace Warden
 
         private async Task ExecuteIterationAsync(IIterationProcessor iterationProcessor)
         {
+            await ExecuteCommands();
             _logger.Trace("Executing Warden hooks OnIterationStart.");
             _configuration.Hooks.OnIterationStart.Execute(_iterationOrdinal);
             _logger.Trace("Executing Warden hooks OnIterationStartAsync.");
@@ -139,6 +143,11 @@ namespace Warden
             _configuration.Hooks.OnStop.Execute();
             _logger.Trace("Executing Warden hooks OnStopAsync.");
             await _configuration.Hooks.OnStopAsync.ExecuteAsync();
+        }
+
+        private async Task ExecuteCommands()
+        {
+            var commands = await _commander.ReceiveAsync();
         }
     }
 }

@@ -1,0 +1,23 @@
+﻿{
+  "version": "1.2.2",
+  "description": "Example of Warden Commander using Rebus.",
+  "authors": [ "Piotr Gankiewicz" ],
+  "packOptions": {
+    "tags": [ "Warden" ],
+    "projectUrl": "https://getwarden.net",
+    "licenseUrl": "https://github.com/warden-stack/Warden/blob/master/LICENSE"
+  },
+  "buildOptions": {
+    "emitEntryPoint": true
+  },
+  "dependencies": {
+    "Warden": "1.2.2",
+    "Rebus": "0.99.73"
+  },
+  "commands": {
+    "Warden.Examples.RebusCommander": "Warden.Examples.RebusCommander"
+  },
+  "frameworks": {
+    "net461": {}
+  }
+}
