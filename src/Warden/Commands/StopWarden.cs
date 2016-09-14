@@ -1,4 +1,4 @@
-﻿namespace Warden.Commander.Commands
+﻿namespace Warden.Commands
 {
     public class StopWarden : IWardenCommand
     {

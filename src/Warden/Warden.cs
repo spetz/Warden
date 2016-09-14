@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
-using Warden.Commander;
+using Warden.Commands;
 using Warden.Core;
+using Warden.Events;
 using Warden.Utils;
 
 namespace Warden
@@ -12,7 +15,8 @@ namespace Warden
     public class Warden : IWarden
     {
         private readonly IWardenLogger _logger;
-        private readonly IWardenCommander _commander;
+        private readonly IWardenCommandHandler _commandHandler;
+        private readonly IWardenEventHandler _eventHandler;
         private readonly WardenConfiguration _configuration;
         private long _iterationOrdinal = 1;
         private bool _running = false;
@@ -34,7 +38,8 @@ namespace Warden
             Name = name;
             _configuration = configuration;
             _logger = _configuration.WardenLoggerProvider();
-            _commander = _configuration.WardenCommanderProvider();
+            _commandHandler = _configuration.WardenCommandHandlerProvider();
+            _eventHandler = _configuration.WardenEventHandlerProvider();
         }
 
         /// <summary>
@@ -145,9 +150,59 @@ namespace Warden
             await _configuration.Hooks.OnStopAsync.ExecuteAsync();
         }
 
+        //TODO: Refactor
         private async Task ExecuteCommands()
         {
-            var commands = await _commander.ReceiveAsync();
+            var commands = await _commandHandler.ReceiveAsync();
+            if (!commands.Any())
+            {
+                _logger.Trace("There are no commands to be executed.");
+
+                return;
+            }
+            
+            _logger.Trace($"There are {commands.Count()} command(s) to be executed.");
+            foreach (var command in commands)
+            {
+                var commandName = command.GetType().Name;
+                _logger.Trace($"Executing command {commandName}.");
+                if (command is StopWarden)
+                {
+                    await StopAsync();
+                    await PublishCommandExecutedEvent(commandName);
+
+                    return;
+                }
+                if (command is StartWarden)
+                {
+                    await StartAsync();
+                    await PublishCommandExecutedEvent(commandName);
+
+                    return;
+                }
+                if (command is PauseWarden)
+                {
+                    await PauseAsync();
+                    await PublishCommandExecutedEvent(commandName);
+
+                    return;
+                }
+                if (command is KillWarden)
+                {
+                    await PublishCommandExecutedEvent(commandName);
+                    Process.GetCurrentProcess().Kill();
+
+                    return;
+                }
+            }
+        }
+
+        private async Task PublishCommandExecutedEvent(string name)
+        {
+            await _eventHandler.HandleAsync(new WardenCommandExecuted
+            {
+                Name = name
+            });
         }
     }
 }

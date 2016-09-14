@@ -1,0 +1,37 @@
+﻿{
+  "version": "1.2.2",
+  "description": "Example of Warden Commands & Events app using Rebus.",
+  "authors": [ "Piotr Gankiewicz" ],
+  "packOptions": {
+    "tags": [ "Warden" ],
+    "projectUrl": "https://getwarden.net",
+    "licenseUrl": "https://github.com/warden-stack/Warden/blob/master/LICENSE"
+  },
+  "buildOptions": {
+    "emitEntryPoint": true
+  },
+  "dependencies": {
+    "Rebus": "0.99.73",
+    "Warden": "1.2.2",
+    "Warden.Integrations.Cachet": "1.2.2",
+    "Warden.Integrations.HttpApi": "1.2.2",
+    "Warden.Integrations.MsSql": "1.2.2",
+    "Warden.Integrations.SendGrid": "1.2.2",
+    "Warden.Integrations.Slack": "1.2.2",
+    "Warden.Integrations.Twilio": "1.2.2",
+    "Warden.Watchers.Disk": "1.2.2",
+    "Warden.Watchers.MongoDb": "1.2.2",
+    "Warden.Watchers.MsSql": "1.2.2",
+    "Warden.Watchers.Performance": "1.2.2",
+    "Warden.Watchers.Server": "1.2.2",
+    "Warden.Watchers.Process": "1.2.2",
+    "Warden.Watchers.Redis": "1.2.2",
+    "Warden.Watchers.Web": "1.2.2"
+  },
+  "commands": {
+    "Warden.Examples.CommandsAndEvents.App": "Warden.Examples.CommandsAndEvents.App"
+  },
+  "frameworks": {
+    "net461": {}
+  }
+}

@@ -1,6 +1,6 @@
 ﻿{
   "version": "1.2.2",
-  "description": "Example of Warden App using Rebus Commander.",
+  "description": "Example of Warden Commands & Events manager using Rebus.",
   "authors": [ "Piotr Gankiewicz" ],
   "packOptions": {
     "tags": [ "Warden" ],
@@ -15,7 +15,7 @@
     "Rebus": "0.99.73"
   },
   "commands": {
-    "Warden.Examples.RebusApp": "Warden.Examples.RebusApp"
+    "Warden.Examples.CommandsAndEvents.Manager": "Warden.Examples.CommandsAndEvents.Manager"
   },
   "frameworks": {
     "net461": {}

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Warden.Commander
+namespace Warden.Commands
 {
-    public interface IWardenCommander
+    public interface IWardenCommandHandler
     {
         Task<IEnumerable<IWardenCommand>> ReceiveAsync();
     }

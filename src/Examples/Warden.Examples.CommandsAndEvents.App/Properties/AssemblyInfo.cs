@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Warden.Examples.RebusCommander")]
+[assembly: AssemblyProduct("Warden.Examples.CommandsAndEvents.App")]
 [assembly: AssemblyTrademark("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
@@ -16,4 +16,4 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("7405d97e-043e-4ef1-8fa6-8bebade78e03")]
+[assembly: Guid("c03a000b-eec8-46ab-88fc-339e035f8a3f")]

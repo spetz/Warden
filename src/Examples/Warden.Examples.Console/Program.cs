@@ -26,8 +26,7 @@ namespace Warden.Examples.Console
         public static void Main(string[] args)
         {
             var warden = ConfigureWarden();
-            Task.Run(() => warden.StartAsync());
-            //Task.WaitAll(warden.StartAsync());
+            Task.WaitAll(warden.StartAsync());
         }
 
         private static IWarden ConfigureWarden()

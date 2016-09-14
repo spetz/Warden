@@ -3,10 +3,11 @@ using Rebus.Activation;
 using Rebus.Config;
 using Rebus.Logging;
 using Rebus.Transport.Msmq;
-using Warden.Commander.Commands;
 using Rebus.Routing.TypeBased;
+using Warden.Commands;
+using Warden.Events;
 
-namespace Warden.Examples.RebusCommander
+namespace Warden.Examples.CommandsAndEvents.Manager
 {
     public class Program
     {
@@ -14,13 +15,18 @@ namespace Warden.Examples.RebusCommander
         {
             using (var activator = new BuiltinHandlerActivator())
             {
-                Console.Title = "Warden.Examples.RebusCommander";
+                Console.Title = "Warden.Examples.CommandsAndEvents.Manager";
+                activator.Register((bus, message) => new GenericEventHandler());
                 Configure.With(activator)
                     .Logging(l => l.ColoredConsole(minLevel: LogLevel.Debug))
-                    .Transport(t => t.UseMsmq("warden-commander"))
+                    .Transport(t => t.UseMsmq("Warden.Examples.CommandsAndEvents.Manager"))
+                    .Routing(r => r.TypeBased()
+                        .Map<WardenCommandExecuted>("Warden.Examples.CommandsAndEvents.App"))
                     .Start();
 
-                Console.WriteLine("Type q to quit\n1 to send StopWarden\n2 to send PauseWarden\n3 to send StartWarden");
+                activator.Bus.Subscribe<WardenCommandExecuted>().Wait();
+
+                Console.WriteLine("Type q to quit\n1 to send StopWarden\n2 to send PauseWarden\n3 to send StartWarden\n4 to send KillWarden");
                 var isRunning = true;
                 while (isRunning)
                 {
@@ -38,6 +44,10 @@ namespace Warden.Examples.RebusCommander
                         case '3':
                             Console.WriteLine("Sending StartWarden!");
                             activator.Bus.Publish(new StartWarden()).Wait();
+                            break;
+                        case '4':
+                            Console.WriteLine("Sending KillWarden!");
+                            activator.Bus.Publish(new KillWarden()).Wait();
                             break;
                         case 'q':
                             Console.WriteLine("Bye!");

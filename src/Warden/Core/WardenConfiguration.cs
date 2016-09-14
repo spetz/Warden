@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Warden.Commander;
+using Warden.Commands;
+using Warden.Events;
 using Warden.Integrations;
 using Warden.Utils;
 using Warden.Watchers;
@@ -73,9 +74,14 @@ namespace Warden.Core
         public Func<IWardenLogger> WardenLoggerProvider { get; protected set; }
 
         /// <summary>
-        /// Custom provider for the IWardenCommander.
+        /// Custom provider for the IWardenCommandHandler.
         /// </summary>
-        public Func<IWardenCommander> WardenCommanderProvider { get; protected set; }
+        public Func<IWardenCommandHandler> WardenCommandHandlerProvider { get; protected set; }
+
+        /// <summary>
+        /// Custom provider for the IWardenEventHandler.
+        /// </summary>
+        public Func<IWardenEventHandler> WardenEventHandlerProvider { get; protected set; }
 
 
         protected internal WardenConfiguration()
@@ -88,7 +94,8 @@ namespace Warden.Core
             DateTimeProvider = () => DateTime.UtcNow;
             IntegratorProvider = () => DefaultIntegrator;
             WardenLoggerProvider = () => new EmptyWardenLogger();
-            WardenCommanderProvider = () => new EmptyWardenCommander();
+            WardenCommandHandlerProvider = () => new EmptyWardenCommandHandler();
+            WardenEventHandlerProvider = () => new EmptyWardenEventHandler();
         }
 
         /// <summary>
@@ -362,16 +369,39 @@ namespace Warden.Core
             }
 
             /// <summary>
-            /// Sets the custom provider for IWardenCommander.
+            /// Sets the custom provider for IWardenCommandHandler.
             /// </summary>
-            /// <param name="wardenCommanderProvider">Custom provider for IWardenCommander.</param>
+            /// <param name="wardenCommandHandlerProvider">Custom provider for IWardenCommandHandler.</param>
             /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
-            public Builder SetCommander(Func<IWardenCommander> wardenCommanderProvider)
+            public Builder SetCommandHandler(Func<IWardenCommandHandler> wardenCommandHandlerProvider)
             {
-                if (wardenCommanderProvider == null)
-                    throw new ArgumentNullException(nameof(wardenCommanderProvider), "Warden commander can not be null.");
+                if (wardenCommandHandlerProvider == null)
+                {
+                    throw new ArgumentNullException(nameof(wardenCommandHandlerProvider), 
+                        "Warden command handler can not be null.");
 
-                _configuration.WardenCommanderProvider = wardenCommanderProvider;
+                }
+
+                _configuration.WardenCommandHandlerProvider = wardenCommandHandlerProvider;
+
+                return this;
+            }
+
+            /// <summary>
+            /// Sets the custom provider for IWardenEventHandler.
+            /// </summary>
+            /// <param name="wardenEventHandlerProvider">Custom provider for IWardenEventHandler.</param>
+            /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
+            public Builder SetEventHandler(Func<IWardenEventHandler> wardenEventHandlerProvider)
+            {
+                if (wardenEventHandlerProvider == null)
+                {
+                    throw new ArgumentNullException(nameof(wardenEventHandlerProvider),
+                        "Warden event handler can not be null.");
+
+                }
+
+                _configuration.WardenEventHandlerProvider = wardenEventHandlerProvider;
 
                 return this;
             }

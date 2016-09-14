@@ -7,8 +7,8 @@
 
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>7405d97e-043e-4ef1-8fa6-8bebade78e03</ProjectGuid>
-    <RootNamespace>Warden.Examples.RebusCommander</RootNamespace>
+    <ProjectGuid>c03a000b-eec8-46ab-88fc-339e035f8a3f</ProjectGuid>
+    <RootNamespace>Warden.Examples.CommandsAndEvents.App</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>

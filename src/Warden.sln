@@ -60,11 +60,9 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Integrations.MsSql",
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Integrations.Cachet", "Integrations\Warden.Integrations.Cachet\Warden.Integrations.Cachet.xproj", "{59533599-205A-4878-813F-FE2044DAA79D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Commander", "Commander", "{2963ACD1-666D-494A-9454-9807D252C07B}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Examples.CommandsAndEvents.Manager", "Examples\Warden.Examples.CommandsAndEvents.Manager\Warden.Examples.CommandsAndEvents.Manager.xproj", "{75B125DA-D804-44B6-88C4-DCCA585FD438}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Examples.RebusCommander", "Examples\Commander\Warden.Examples.RebusCommander\Warden.Examples.RebusCommander.xproj", "{7405D97E-043E-4EF1-8FA6-8BEBADE78E03}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Examples.RebusApp", "Examples\Commander\Warden.Examples.RebusApp\Warden.Examples.RebusApp.xproj", "{F0812217-A4D4-4198-9586-077FA767D99F}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Examples.CommandsAndEvents.App", "Examples\Warden.Examples.CommandsAndEvents.App\Warden.Examples.CommandsAndEvents.App.xproj", "{C03A000B-EEC8-46AB-88FC-339E035F8A3F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -156,14 +154,14 @@ Global
 		{59533599-205A-4878-813F-FE2044DAA79D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59533599-205A-4878-813F-FE2044DAA79D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59533599-205A-4878-813F-FE2044DAA79D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7405D97E-043E-4EF1-8FA6-8BEBADE78E03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7405D97E-043E-4EF1-8FA6-8BEBADE78E03}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7405D97E-043E-4EF1-8FA6-8BEBADE78E03}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7405D97E-043E-4EF1-8FA6-8BEBADE78E03}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F0812217-A4D4-4198-9586-077FA767D99F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F0812217-A4D4-4198-9586-077FA767D99F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F0812217-A4D4-4198-9586-077FA767D99F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F0812217-A4D4-4198-9586-077FA767D99F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75B125DA-D804-44B6-88C4-DCCA585FD438}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75B125DA-D804-44B6-88C4-DCCA585FD438}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75B125DA-D804-44B6-88C4-DCCA585FD438}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75B125DA-D804-44B6-88C4-DCCA585FD438}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C03A000B-EEC8-46AB-88FC-339E035F8A3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C03A000B-EEC8-46AB-88FC-339E035F8A3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C03A000B-EEC8-46AB-88FC-339E035F8A3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C03A000B-EEC8-46AB-88FC-339E035F8A3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -189,8 +187,7 @@ Global
 		{6B6B14A8-33A4-42F2-A381-98C19CBAA96F} = {01B1C35B-4DC0-402B-A17B-CC278CB06913}
 		{BF9764B1-BCEE-4379-8E13-661E64784CD4} = {DB63BF6C-E9C3-4777-9F83-258AF50EC58D}
 		{59533599-205A-4878-813F-FE2044DAA79D} = {DB63BF6C-E9C3-4777-9F83-258AF50EC58D}
-		{2963ACD1-666D-494A-9454-9807D252C07B} = {E19861BB-3F4A-4FFB-9AD7-452DFBEBEED0}
-		{7405D97E-043E-4EF1-8FA6-8BEBADE78E03} = {2963ACD1-666D-494A-9454-9807D252C07B}
-		{F0812217-A4D4-4198-9586-077FA767D99F} = {2963ACD1-666D-494A-9454-9807D252C07B}
+		{75B125DA-D804-44B6-88C4-DCCA585FD438} = {E19861BB-3F4A-4FFB-9AD7-452DFBEBEED0}
+		{C03A000B-EEC8-46AB-88FC-339E035F8A3F} = {E19861BB-3F4A-4FFB-9AD7-452DFBEBEED0}
 	EndGlobalSection
 EndGlobal
