@@ -120,3 +120,6 @@ packages/
 project.lock.json
 project.fragment.lock.json
 artifacts/
+
+# Visual Studio Code
+.vscode/
