@@ -76,7 +76,7 @@ namespace Warden.Core
         /// <summary>
         /// Custom provider for the IWardenCommandHandler.
         /// </summary>
-        public Func<IWardenCommandHandler> WardenCommandHandlerProvider { get; protected set; }
+        public Func<IWardenCommandSource> WardenCommandSourceProvider { get; protected set; }
 
         /// <summary>
         /// Custom provider for the IWardenEventHandler.
@@ -94,7 +94,7 @@ namespace Warden.Core
             DateTimeProvider = () => DateTime.UtcNow;
             IntegratorProvider = () => DefaultIntegrator;
             WardenLoggerProvider = () => new EmptyWardenLogger();
-            WardenCommandHandlerProvider = () => new EmptyWardenCommandHandler();
+            WardenCommandSourceProvider = () => new EmptyWardenCommandSource();
             WardenEventHandlerProvider = () => new EmptyWardenEventHandler();
         }
 
@@ -369,20 +369,20 @@ namespace Warden.Core
             }
 
             /// <summary>
-            /// Sets the custom provider for IWardenCommandHandler.
+            /// Sets the custom provider for IWardenCommandSource.
             /// </summary>
-            /// <param name="wardenCommandHandlerProvider">Custom provider for IWardenCommandHandler.</param>
+            /// <param name="wardenCommandSourceProvider">Custom provider for IWardenCommandSource.</param>
             /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
-            public Builder SetCommandHandler(Func<IWardenCommandHandler> wardenCommandHandlerProvider)
+            public Builder SetCommandSource(Func<IWardenCommandSource> wardenCommandSourceProvider)
             {
-                if (wardenCommandHandlerProvider == null)
+                if (wardenCommandSourceProvider == null)
                 {
-                    throw new ArgumentNullException(nameof(wardenCommandHandlerProvider), 
-                        "Warden command handler can not be null.");
+                    throw new ArgumentNullException(nameof(wardenCommandSourceProvider), 
+                        "Warden command source can not be null.");
 
                 }
 
-                _configuration.WardenCommandHandlerProvider = wardenCommandHandlerProvider;
+                _configuration.WardenCommandSourceProvider = wardenCommandSourceProvider;
 
                 return this;
             }

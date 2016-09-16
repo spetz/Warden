@@ -15,7 +15,7 @@ namespace Warden
     public class Warden : IWarden
     {
         private readonly IWardenLogger _logger;
-        private readonly IWardenCommandHandler _commandHandler;
+        private readonly IWardenCommandSource _commandSource;
         private readonly IWardenEventHandler _eventHandler;
         private readonly WardenConfiguration _configuration;
         private long _iterationOrdinal = 1;
@@ -38,8 +38,9 @@ namespace Warden
             Name = name;
             _configuration = configuration;
             _logger = _configuration.WardenLoggerProvider();
-            _commandHandler = _configuration.WardenCommandHandlerProvider();
+            _commandSource = _configuration.WardenCommandSourceProvider();
             _eventHandler = _configuration.WardenEventHandlerProvider();
+            _commandSource.CommandReceivedAsync += async (command) => await HandleCommandAsync(command);
         }
 
         /// <summary>
@@ -94,7 +95,6 @@ namespace Warden
 
         private async Task ExecuteIterationAsync(IIterationProcessor iterationProcessor)
         {
-            await ExecuteCommands();
             _logger.Trace("Executing Warden hooks OnIterationStart.");
             _configuration.Hooks.OnIterationStart.Execute(_iterationOrdinal);
             _logger.Trace("Executing Warden hooks OnIterationStartAsync.");
@@ -150,51 +150,29 @@ namespace Warden
             await _configuration.Hooks.OnStopAsync.ExecuteAsync();
         }
 
-        //TODO: Refactor
-        private async Task ExecuteCommands()
+        private async Task HandleCommandAsync<T>(T command) where T : IWardenCommand
         {
-            var commands = await _commandHandler.ReceiveAsync();
-            if (!commands.Any())
+            var commandName = command.GetType().Name;
+            _logger.Trace($"Executing command {commandName}.");
+            if (command is PingWarden)
+                await PingAsync();
+            else if(command is StopWarden)
+                await StopAsync();
+            else if(command is StartWarden)
+                await StartAsync();
+            else if(command is PauseWarden)
+                await PauseAsync();
+            else if (command is KillWarden)
             {
-                _logger.Trace("There are no commands to be executed.");
-
-                return;
+                await PublishCommandExecutedEvent(commandName);
+                Process.GetCurrentProcess().Kill();
             }
-            
-            _logger.Trace($"There are {commands.Count()} command(s) to be executed.");
-            foreach (var command in commands)
-            {
-                var commandName = command.GetType().Name;
-                _logger.Trace($"Executing command {commandName}.");
-                if (command is StopWarden)
-                {
-                    await StopAsync();
-                    await PublishCommandExecutedEvent(commandName);
+            await PublishCommandExecutedEvent(commandName);
+        }
 
-                    return;
-                }
-                if (command is StartWarden)
-                {
-                    await StartAsync();
-                    await PublishCommandExecutedEvent(commandName);
-
-                    return;
-                }
-                if (command is PauseWarden)
-                {
-                    await PauseAsync();
-                    await PublishCommandExecutedEvent(commandName);
-
-                    return;
-                }
-                if (command is KillWarden)
-                {
-                    await PublishCommandExecutedEvent(commandName);
-                    Process.GetCurrentProcess().Kill();
-
-                    return;
-                }
-            }
+        private async Task PingAsync()
+        {
+            await _eventHandler.HandleAsync(new WardenPingResponded());
         }
 
         private async Task PublishCommandExecutedEvent(string name)
