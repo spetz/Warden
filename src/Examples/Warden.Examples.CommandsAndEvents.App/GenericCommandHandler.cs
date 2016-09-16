@@ -5,42 +5,36 @@ using Warden.Commands;
 
 namespace Warden.Examples.CommandsAndEvents.App
 {
-    public class GenericCommandHandler : IHandleMessages<StopWarden>, IHandleMessages<StartWarden>,  
-        IHandleMessages<PauseWarden>, IHandleMessages<KillWarden>
+    public class GenericCommandHandler : IHandleMessages<StopWarden>, IHandleMessages<StartWarden>,
+        IHandleMessages<PauseWarden>, IHandleMessages<KillWarden>, IHandleMessages<PingWarden>
     {
-        private readonly RebusWardenCommandHandler _commandHandler;
+        private readonly RebusWardenCommandSource _commandSource;
 
-        public GenericCommandHandler(RebusWardenCommandHandler commandHandler)
+        public GenericCommandHandler(RebusWardenCommandSource commandSource)
         {
-            _commandHandler = commandHandler;
+            _commandSource = commandSource;
         }
 
         public async Task Handle(StopWarden message)
-        {
-            Console.WriteLine("Received StopWarden command.");
-            _commandHandler.AddCommand(message);
-            await Task.CompletedTask;
-        }
+            => await HandleCommandAsync(message);
 
         public async Task Handle(StartWarden message)
-        {
-            Console.WriteLine("Received StartWarden command.");
-            _commandHandler.AddCommand(message);
-            await Task.CompletedTask;
-        }
+            => await HandleCommandAsync(message);
 
         public async Task Handle(PauseWarden message)
-        {
-            Console.WriteLine("Received PauseWarden command.");
-            _commandHandler.AddCommand(message);
-            await Task.CompletedTask;
-        }
+            => await HandleCommandAsync(message);
 
         public async Task Handle(KillWarden message)
+            => await HandleCommandAsync(message);
+
+        public async Task Handle(PingWarden message)
+            => await HandleCommandAsync(message);
+
+        private async Task HandleCommandAsync<T>(T command) where T : IWardenCommand
         {
-            Console.WriteLine("Received KillWarden command.");
-            _commandHandler.AddCommand(message);
-            await Task.CompletedTask;
+            var commandName = command.GetType().Name;
+            Console.WriteLine($"Received {commandName} command.");
+            await _commandSource.AddCommandAsync(command);
         }
     }
 }

@@ -5,11 +5,18 @@ using Warden.Events;
 
 namespace Warden.Examples.CommandsAndEvents.Manager
 {
-    public class GenericEventHandler : IHandleMessages<WardenCommandExecuted>
+    public class GenericEventHandler : IHandleMessages<WardenCommandExecuted>, IHandleMessages<WardenPingResponded>
     {
         public async Task Handle(WardenCommandExecuted message)
+            => await HandleEventAsync(message);
+
+        public async Task Handle(WardenPingResponded message)
+            => await HandleEventAsync(message);
+
+        private async Task HandleEventAsync<T>(T @event) where T : IWardenEvent
         {
-            Console.WriteLine("Pause");
+            var eventName = @event.GetType().Name;
+            Console.WriteLine($"Received {eventName} event.");
             await Task.CompletedTask;
         }
     }
