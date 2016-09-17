@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Rebus.Bus;
-using Warden.Events;
+using Warden.Manager.Events;
 
 namespace Warden.Examples.CommandsAndEvents.App
 {

@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
-using Warden.Commands;
 using Warden.Core;
-using Warden.Events;
 using Warden.Utils;
 
 namespace Warden
@@ -15,11 +12,11 @@ namespace Warden
     public class Warden : IWarden
     {
         private readonly IWardenLogger _logger;
-        private readonly IWardenCommandSource _commandSource;
-        private readonly IWardenEventHandler _eventHandler;
         private readonly WardenConfiguration _configuration;
         private long _iterationOrdinal = 1;
         private bool _running = false;
+        private Task _currentIterationTask;
+        private CancellationTokenSource _currentIterationCancellationTokenSource;
 
         public string Name { get; }
 
@@ -38,9 +35,6 @@ namespace Warden
             Name = name;
             _configuration = configuration;
             _logger = _configuration.WardenLoggerProvider();
-            _commandSource = _configuration.WardenCommandSourceProvider();
-            _eventHandler = _configuration.WardenEventHandlerProvider();
-            _commandSource.CommandReceivedAsync += async (command) => await HandleCommandAsync(command);
         }
 
         /// <summary>
@@ -62,11 +56,14 @@ namespace Warden
         private async Task TryExecuteIterationsAsync()
         {
             var iterationProcessor = _configuration.IterationProcessorProvider();
+            _currentIterationCancellationTokenSource = new CancellationTokenSource();
             while (CanExecuteIteration(_iterationOrdinal))
             {
                 try
                 {
-                    await ExecuteIterationAsync(iterationProcessor);
+                    _currentIterationTask = Task.Run(() => ExecuteIterationAsync(iterationProcessor),
+                        _currentIterationCancellationTokenSource.Token);
+                    await _currentIterationTask;
                     var canExecuteNextIteration = CanExecuteIteration(_iterationOrdinal + 1);
                     if (!canExecuteNextIteration)
                         break;
@@ -109,6 +106,8 @@ namespace Warden
 
         private bool CanExecuteIteration(long ordinal)
         {
+            if (_currentIterationCancellationTokenSource?.IsCancellationRequested == true)
+                return false;
             if (!_running)
                 return false;
             if (!_configuration.IterationsCount.HasValue)
@@ -128,6 +127,7 @@ namespace Warden
         {
             _logger.Info($"Pausing Warden: {Name}");
             _running = false;
+            _currentIterationCancellationTokenSource.Cancel();
             _logger.Trace("Executing Warden hooks OnPause.");
             _configuration.Hooks.OnPause.Execute();
             _logger.Trace("Executing Warden hooks OnPauseAsync.");
@@ -143,44 +143,12 @@ namespace Warden
         {
             _logger.Info($"Stopping Warden: {Name}");
             _running = false;
+            _currentIterationCancellationTokenSource.Cancel();
             _iterationOrdinal = 1;
             _logger.Trace("Executing Warden hooks OnStop.");
             _configuration.Hooks.OnStop.Execute();
             _logger.Trace("Executing Warden hooks OnStopAsync.");
             await _configuration.Hooks.OnStopAsync.ExecuteAsync();
-        }
-
-        private async Task HandleCommandAsync<T>(T command) where T : IWardenCommand
-        {
-            var commandName = command.GetType().Name;
-            _logger.Trace($"Executing command {commandName}.");
-            if (command is PingWarden)
-                await PingAsync();
-            else if(command is StopWarden)
-                await StopAsync();
-            else if(command is StartWarden)
-                await StartAsync();
-            else if(command is PauseWarden)
-                await PauseAsync();
-            else if (command is KillWarden)
-            {
-                await PublishCommandExecutedEvent(commandName);
-                Process.GetCurrentProcess().Kill();
-            }
-            await PublishCommandExecutedEvent(commandName);
-        }
-
-        private async Task PingAsync()
-        {
-            await _eventHandler.HandleAsync(new WardenPingResponded());
-        }
-
-        private async Task PublishCommandExecutedEvent(string name)
-        {
-            await _eventHandler.HandleAsync(new WardenCommandExecuted
-            {
-                Name = name
-            });
         }
     }
 }

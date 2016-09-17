@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Rebus.Handlers;
-using Warden.Commands;
+using Warden.Manager.Commands;
 
 namespace Warden.Examples.CommandsAndEvents.App
 {

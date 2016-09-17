@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Warden.Commands;
+using Warden.Manager.Commands;
 
 namespace Warden.Examples.CommandsAndEvents.App
 {

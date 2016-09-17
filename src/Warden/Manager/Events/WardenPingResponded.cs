@@ -1,4 +1,4 @@
-﻿namespace Warden.Events
+﻿namespace Warden.Manager.Events
 {
     public class WardenPingResponded : IWardenEvent
     {

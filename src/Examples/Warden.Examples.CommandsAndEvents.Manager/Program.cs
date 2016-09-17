@@ -4,8 +4,8 @@ using Rebus.Config;
 using Rebus.Logging;
 using Rebus.Transport.Msmq;
 using Rebus.Routing.TypeBased;
-using Warden.Commands;
-using Warden.Events;
+using Warden.Manager.Commands;
+using Warden.Manager.Events;
 
 namespace Warden.Examples.CommandsAndEvents.Manager
 {

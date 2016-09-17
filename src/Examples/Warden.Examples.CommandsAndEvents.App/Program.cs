@@ -5,8 +5,9 @@ using Rebus.Config;
 using Rebus.Logging;
 using Rebus.Routing.TypeBased;
 using Rebus.Transport.Msmq;
-using Warden.Commands;
 using Warden.Core;
+using Warden.Manager;
+using Warden.Manager.Commands;
 using Warden.Utils;
 using Warden.Watchers.Server;
 using Warden.Watchers.Web;
@@ -43,26 +44,31 @@ namespace Warden.Examples.CommandsAndEvents.App
                 activator.Bus.Subscribe<StartWarden>().Wait();
                 activator.Bus.Subscribe<KillWarden>().Wait();
 
-                var warden = ConfigureWarden();
-                Task.WaitAll(warden.StartAsync());
+                var wardenManager = ConfigureWardenManager();
+                Task.WaitAll(wardenManager.StartAsync());
 
                 Console.WriteLine("Stopping the bus...");
             }
         }
 
-        private static IWarden ConfigureWarden()
+        private static IWardenManager ConfigureWardenManager()
         {
             var wardenConfiguration = WardenConfiguration
                 .Create()
                 .AddWebWatcher("http://httpstat.us/200",
                     interval: TimeSpan.FromMilliseconds(1000), group: "websites")
                 .AddServerWatcher("www.google.pl", 80)
-                .SetCommandSource(() => CommandSource)
-                .SetEventHandler(() => _eventHandler)
                 .WithConsoleLogger(minLevel: WardenLoggerLevel.All, useColors: true)
                 .Build();
 
-            return WardenInstance.Create(wardenConfiguration);
+            var warden = WardenInstance.Create(wardenConfiguration);
+
+            return WardenManager.Create(warden, cfg =>
+            {
+                cfg.SetCommandSource(() => CommandSource)
+                    .SetEventHandler(() => _eventHandler)
+                    .WithConsoleLogger(minLevel: WardenLoggerLevel.All, useColors: true);
+            });
         }
     }
 }

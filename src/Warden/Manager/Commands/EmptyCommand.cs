@@ -1,4 +1,4 @@
-namespace Warden.Commands
+namespace Warden.Manager.Commands
 {
     public class EmptyCommand : IWardenCommand
     {

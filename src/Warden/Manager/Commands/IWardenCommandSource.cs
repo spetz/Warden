@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Warden.Commands
+namespace Warden.Manager.Commands
 {
     public interface IWardenCommandSource
     {

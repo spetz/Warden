@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Warden.Events
+namespace Warden.Manager.Events
 {
     public class EmptyWardenEventHandler : IWardenEventHandler
     {
