@@ -24,7 +24,7 @@
           "lib/net45/_._": {}
         }
       },
-      "Warden/1.2.2": {
+      "Warden/1.3.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
@@ -126,7 +126,7 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "Warden/1.2.2": {
+    "Warden/1.3.0": {
       "type": "project",
       "path": "../../Warden/project.json",
       "msbuildProject": "../../Warden/Warden.xproj"
@@ -135,7 +135,7 @@
   "projectFileDependencyGroups": {
     "": [
       "StackExchange.Redis >= 1.1.603",
-      "Warden >= 1.2.2"
+      "Warden >= 1.3.0"
     ],
     ".NETFramework,Version=v4.6.1": []
   },

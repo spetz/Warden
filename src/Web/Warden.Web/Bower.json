@@ -8,6 +8,6 @@
     "materialize": "^0.97.6",
     "knockout": "^3.4.0",
     "signalr": "^2.2.0",
-    "Chart.js": "1.2.2"
+    "Chart.js": "1.3.0"
   }
 }

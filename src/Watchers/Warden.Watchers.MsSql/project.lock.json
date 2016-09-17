@@ -1493,7 +1493,7 @@
           "lib/netstandard1.3/System.Xml.XmlDocument.dll": {}
         }
       },
-      "Warden/1.2.2": {
+      "Warden/1.3.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v1.0",
         "dependencies": {
@@ -1582,7 +1582,7 @@
           }
         }
       },
-      "Warden/1.2.2": {
+      "Warden/1.3.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
@@ -5131,7 +5131,7 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "Warden/1.2.2": {
+    "Warden/1.3.0": {
       "type": "project",
       "path": "../../Warden/project.json",
       "msbuildProject": "../../Warden/Warden.xproj"
@@ -5141,7 +5141,7 @@
     "": [
       "Dapper >= 1.50.1",
       "System.Data.SqlClient >= 4.1.0",
-      "Warden >= 1.2.2"
+      "Warden >= 1.3.0"
     ],
     ".NETCoreApp,Version=v1.0": [
       "Microsoft.CSharp >= 4.0.1",
