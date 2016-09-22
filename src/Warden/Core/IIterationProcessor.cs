@@ -114,7 +114,7 @@ namespace Warden.Core
             {
                 _logger.Error($"There was an error while executing Watcher: {watcher.Name}.", exception);
                 var completedAt = _configuration.DateTimeProvider();
-                wardenCheckResult = WardenCheckResult.Create(WatcherCheckResult.Create(watcher, false),
+                wardenCheckResult = WardenCheckResult.Create(WatcherCheckResult.Create(watcher, false, exception.Message),
                     startedAt, completedAt, exception);
                 results.Add(new WatcherExecutionResult(watcher, WatcherResultState.Error,
                     GetPreviousWatcherState(watcher), wardenCheckResult, exception));
