@@ -41,6 +41,7 @@ On top of that, you may use all of this information to collect the custom metric
  - **[SendGrid](https://github.com/spetz/Warden/wiki/Integration-with-SendGrid)**
  - **[Slack](https://github.com/spetz/Warden/wiki/Integration-with-Slack)**
  - **[Twilio](https://github.com/spetz/Warden/wiki/Integration-with-Twilio)**
+ - **[Seq (third party)](https://github.com/janpieterz/Warden.Integrations.Seq)**
 
 **How can I see what's happening with my system?**
 ----------------
@@ -82,6 +83,7 @@ Install-Package Warden
 | **[SendGrid Integration](https://github.com/spetz/Warden/wiki/Integration-with-SendGrid)** |        +      |        -     | _SendGrid not compatible_
 | **[Slack Integration](https://github.com/spetz/Warden/wiki/Integration-with-Slack)** |        +      |        +     | 
 | **[Twilio Integration](https://github.com/spetz/Warden/wiki/Integration-with-Twilio )** |        +      |        -     | _Twilio  not compatible_
+| **[Seq Integration (third party)](https://github.com/janpieterz/Warden.Integrations.Seq)** |        +      |        +     | 
 | **[Web Panel](https://github.com/spetz/Warden/wiki/Web-Panel)** |        +      |        -     | _Some external libs are not compatible (e.g. MongoDB Driver)_
 
 **Quick start**:
