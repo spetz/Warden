@@ -31,7 +31,9 @@ On top of that, you may use all of this information to collect the custom metric
  - **[Redis](https://github.com/spetz/Warden/wiki/Watcher-type-Redis)**
  - **[Server](https://github.com/spetz/Warden/wiki/Watcher-type-Server)**
  - **[Web](https://github.com/spetz/Warden/wiki/Watcher-type-Web)**
-
+ - **[SSL certificates (third party)](https://github.com/janpieterz/Warden.Watchers.SSL)**
+ - **[Azure Storage (third party)](https://github.com/janpieterz/Warden.Watchers.AzureStorage)**
+ - **[Azure Service Bus (third party)](https://github.com/janpieterz/Warden.Watchers.AzureServiceBus)**
 
 **What are the integrations with external services?**
 ----------------
@@ -76,6 +78,9 @@ Install-Package Warden
 | **[Redis Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Redis)**        |        +      |        -     | _StackExchange.Redis not compatible_
 | **[Server Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Server)**  |        +      |        -     | _System.Net.Sockets not compatible_
 | **[Web Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Web)**          |        +      |        +     |
+| **[SSL Watcher (third party)](https://github.com/janpieterz/Warden.Watchers.SSL)** |        +      |        +     |
+| **[Azure Storage Watcher (third party)](https://github.com/janpieterz/Warden.Watchers.AzureStorage)** |        +      |        +    |
+| **[Azure Service Bus Watcher (third party)](https://github.com/janpieterz/Warden.Watchers.AzureServiceBus)** |        +      |        -     | _Service bus library not compatible_ 
 | **[Cachet Integration](https://github.com/spetz/Warden/wiki/Integration-with-Cachet)** |        +      |        +     | 
 | **[HTTP API Integration](https://github.com/spetz/Warden/wiki/Integration-with-HTTP-API)** |        +      |        +     | 
 | **[MS SQL Integration](https://github.com/spetz/Warden/wiki/Integration-with-MSSQL)** |        +      |        +     | 
