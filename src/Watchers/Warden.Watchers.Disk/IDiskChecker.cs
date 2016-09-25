@@ -25,10 +25,10 @@ namespace Warden.Watchers.Disk
                 CheckPartitions(partitions), CheckDirectories(directories), CheckFiles(files)));
 
         private static long GetFreeSpace()
-            => DriveInfo.GetDrives().Sum(x => x.TotalFreeSpace);
+            => DriveInfo.GetDrives().Where(x => x.IsReady).Sum(x => x.TotalFreeSpace);
 
         private static long GetUsedSpace()
-            => DriveInfo.GetDrives().Sum(x => x.TotalSize) - GetFreeSpace();
+            => DriveInfo.GetDrives().Where(x => x.IsReady).Sum(x => x.TotalSize) - GetFreeSpace();
 
         private IEnumerable<PartitionInfo> CheckPartitions(IEnumerable<string> partitions = null)
             => partitions?.Select(CheckPartition) ?? Enumerable.Empty<PartitionInfo>();
