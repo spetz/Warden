@@ -31,9 +31,9 @@ On top of that, you may use all of this information to collect the custom metric
  - **[Redis](https://github.com/spetz/Warden/wiki/Watcher-type-Redis)**
  - **[Server](https://github.com/spetz/Warden/wiki/Watcher-type-Server)**
  - **[Web](https://github.com/spetz/Warden/wiki/Watcher-type-Web)**
- - **[SSL certificates (third party)](https://github.com/janpieterz/Warden.Watchers.SSL)**
- - **[Azure Storage (third party)](https://github.com/janpieterz/Warden.Watchers.AzureStorage)**
- - **[Azure Service Bus (third party)](https://github.com/janpieterz/Warden.Watchers.AzureServiceBus)**
+ - **[SSL certificates (3rd party)](https://github.com/janpieterz/Warden.Watchers.SSL)**
+ - **[Azure Storage (3rd party)](https://github.com/janpieterz/Warden.Watchers.AzureStorage)**
+ - **[Azure Service Bus (3rd party)](https://github.com/janpieterz/Warden.Watchers.AzureServiceBus)**
 
 **What are the integrations with external services?**
 ----------------
@@ -43,7 +43,7 @@ On top of that, you may use all of this information to collect the custom metric
  - **[SendGrid](https://github.com/spetz/Warden/wiki/Integration-with-SendGrid)**
  - **[Slack](https://github.com/spetz/Warden/wiki/Integration-with-Slack)**
  - **[Twilio](https://github.com/spetz/Warden/wiki/Integration-with-Twilio)**
- - **[Seq (third party)](https://github.com/janpieterz/Warden.Integrations.Seq)**
+ - **[Seq (3rd party)](https://github.com/janpieterz/Warden.Integrations.Seq)**
 
 **How can I see what's happening with my system?**
 ----------------
@@ -79,16 +79,16 @@ Install-Package Warden
 | **[Redis Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Redis)**        |        +      |        -     | _StackExchange.Redis not compatible_
 | **[Server Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Server)**  |        +      |        -     | _System.Net.Sockets not compatible_
 | **[Web Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Web)**          |        +      |        +     |
-| **[SSL Watcher (third party)](https://github.com/janpieterz/Warden.Watchers.SSL)** |        +      |        +     |
-| **[Azure Storage Watcher (third party)](https://github.com/janpieterz/Warden.Watchers.AzureStorage)** |        +      |        +    |
-| **[Azure Service Bus Watcher (third party)](https://github.com/janpieterz/Warden.Watchers.AzureServiceBus)** |        +      |        -     | _Service bus library not compatible_ 
+| **[SSL Watcher (3rd party)](https://github.com/janpieterz/Warden.Watchers.SSL)** |        +      |        +     |
+| **[Azure Storage Watcher (3rd party)](https://github.com/janpieterz/Warden.Watchers.AzureStorage)** |        +      |        +    |
+| **[Azure Service Bus Watcher (3rd party)](https://github.com/janpieterz/Warden.Watchers.AzureServiceBus)** |        +      |        -     | _Service bus library not compatible_ 
 | **[Cachet Integration](https://github.com/spetz/Warden/wiki/Integration-with-Cachet)** |        +      |        +     | 
 | **[HTTP API Integration](https://github.com/spetz/Warden/wiki/Integration-with-HTTP-API)** |        +      |        +     | 
 | **[MS SQL Integration](https://github.com/spetz/Warden/wiki/Integration-with-MSSQL)** |        +      |        +     | 
 | **[SendGrid Integration](https://github.com/spetz/Warden/wiki/Integration-with-SendGrid)** |        +      |        -     | _SendGrid not compatible_
 | **[Slack Integration](https://github.com/spetz/Warden/wiki/Integration-with-Slack)** |        +      |        +     | 
 | **[Twilio Integration](https://github.com/spetz/Warden/wiki/Integration-with-Twilio )** |        +      |        -     | _Twilio  not compatible_
-| **[Seq Integration (third party)](https://github.com/janpieterz/Warden.Integrations.Seq)** |        +      |        +     | 
+| **[Seq Integration (3rd party)](https://github.com/janpieterz/Warden.Integrations.Seq)** |        +      |        +     | 
 | **[Web Panel](https://github.com/spetz/Warden/wiki/Web-Panel)** |        +      |        -     | _Some external libs are not compatible (e.g. MongoDB Driver)_
 
 **Quick start**:
@@ -137,4 +137,3 @@ await warden.StartAsync();
 Please check out the **[examples](https://github.com/spetz/Warden/wiki/Examples)** by cloning the repository.
 
 
-Implemented functionality for configuring custom watchers intervals.
