@@ -65,6 +65,19 @@ namespace Warden.Integrations.Slack
             await _slackService.SendMessageAsync(message, channel, username);
         }
 
+        /// <summary>
+        /// Sends a message to the selected channel, using a given username.
+        /// </summary>
+        /// <param name="message">Message text. If default message has been set, it will override its value.</param>
+        /// <param name="channel">Channel name. If default channel has been set, it will override its value.</param>
+        /// <param name="username">Custom username. If default username has been set, it will override its value.</param>
+        /// <param name="iconUrl">Icon url that will be used as Slack user icon.</param>
+        /// <returns></returns>
+        public async Task SendMessageAsync(string message, string channel, string username, string iconUrl)
+        {
+            await _slackService.SendMessageAsync(message, channel, username, iconUrl);
+        }
+
 
         /// <summary>
         /// Sends a message to the default channel, using a default username.
@@ -100,6 +113,20 @@ namespace Warden.Integrations.Slack
         public async Task SendColoredMessageAsync(string message, bool isValid, string channel, string username)
         {
             await _slackService.SendColoredMessageAsync(message, isValid, channel, username);
+        }
+
+        /// <summary>
+        /// Sends a message to the selected channel, using a given username.
+        /// </summary>
+        /// <param name="message">Message text. If default message has been set, it will override its value.</param>
+        /// <param name="isValid">Make the message have a good or bad identifier in Slack</param>
+        /// <param name="channel">Channel name. If default channel has been set, it will override its value.</param>
+        /// <param name="username">Custom username. If default username has been set, it will override its value.</param>
+        /// <param name="iconUrl">Icon url that will be used as Slack user icon.</param>
+        /// <returns></returns>
+        public async Task SendColoredMessageAsync(string message, bool isValid, string channel, string username, string iconUrl)
+        {
+            await _slackService.SendColoredMessageAsync(message, isValid, channel, username, iconUrl);
         }
 
         /// <summary>

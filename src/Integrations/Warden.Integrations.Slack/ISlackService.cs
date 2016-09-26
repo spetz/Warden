@@ -17,10 +17,11 @@ namespace Warden.Integrations.Slack
         /// <param name="message">Message text.</param>
         /// <param name="channel">Optional name of channel to which the message will be sent.</param>
         /// <param name="username">Optional username that will send the message.</param>
+        /// <param name="iconUrl">Optional icon url that will be used as Slack user icon.</param>
         /// <param name="timeout">Optional timeout for the request.</param>
         /// <param name="failFast">Optional flag determining whether an exception should be thrown if received reponse is invalid (false by default).</param>
         /// <returns></returns>
-        Task SendMessageAsync(string message, string channel = null, string username = null, 
+        Task SendMessageAsync(string message, string channel = null, string username = null, string iconUrl = null,
             TimeSpan? timeout = null, bool failFast = false);
 
         /// <summary>
@@ -30,9 +31,10 @@ namespace Warden.Integrations.Slack
         /// <param name="valid">Indicates if the message should display a positive or negative color</param>
         /// <param name="channel">Optional name of channel to which the message will be sent.</param>
         /// <param name="username">Optional username that will send the message.</param>
+        /// <param name="iconUrl">Optional icon url that will be used as Slack user icon.</param>
         /// <param name="timeout">Optional timeout for the request.</param>
         /// <param name="failFast">Optional flag determining whether an exception should be thrown if received reponse is invalid (false by default).</param>
-        Task SendColoredMessageAsync(string message, bool valid, string channel = null, string username = null,
+        Task SendColoredMessageAsync(string message, bool valid, string channel = null, string username = null, string iconUrl = null,
             TimeSpan? timeout = null, bool failFast = false);
     }
 
@@ -49,7 +51,7 @@ namespace Warden.Integrations.Slack
             _webhookUrl = webhookUrl;
         }
 
-        public async Task SendMessageAsync(string message, string channel = null, string username = null,
+        public async Task SendMessageAsync(string message, string channel = null, string username = null, string iconUrl = null,
             TimeSpan? timeout = null, bool failFast = false)
         {
             SetTimeout(timeout);
@@ -57,6 +59,7 @@ namespace Warden.Integrations.Slack
             {
                 var payload = new
                 {
+                    icon_url = iconUrl,
                     text = message,
                     channel,
                     username,
@@ -83,7 +86,7 @@ namespace Warden.Integrations.Slack
             }
         }
 
-        public async Task SendColoredMessageAsync(string message, bool valid, string channel = null, string username = null,
+        public async Task SendColoredMessageAsync(string message, bool valid, string channel = null, string username = null, string iconUrl = null,
             TimeSpan? timeout = null, bool failFast = false)
         {
             SetTimeout(timeout);
@@ -97,6 +100,7 @@ namespace Warden.Integrations.Slack
                 };
                 var payload = new
                 {
+                    icon_url = iconUrl,
                     channel,
                     username,
                     attachments = new[] {attachment} 
