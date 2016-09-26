@@ -77,7 +77,7 @@ namespace Warden.Tests.Integrations.Slack
 
         It should_invoke_send_message_async_method_only_once = () => SlackServiceMock.Verify(x =>
             x.SendMessageAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<string>(), Moq.It.IsAny<string>(),
-                Moq.It.IsAny<TimeSpan?>(), Moq.It.IsAny<bool>()), Times.Once);
+                Moq.It.IsAny<string>(), Moq.It.IsAny<TimeSpan?>(), Moq.It.IsAny<bool>()), Times.Once);
 
         //TODO: Remove when MSpec works with DNX 
         [Test]
