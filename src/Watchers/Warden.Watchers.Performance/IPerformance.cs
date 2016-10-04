@@ -18,16 +18,23 @@ namespace Warden.Watchers.Performance
     public class Performance : IPerformance
     {
         private readonly TimeSpan _delay;
+        private readonly string _machineName;
 
-        public Performance(TimeSpan delay)
+        public Performance(TimeSpan delay, string machineName)
         {
             _delay = delay;
+            _machineName = machineName;
         }
 
         public async Task<ResourceUsage> GetResourceUsageAsync()
         {
             var cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
             var ramCounter = new PerformanceCounter("Memory", "Available MBytes");
+            if (!string.IsNullOrWhiteSpace(_machineName))
+            {
+                cpuCounter.MachineName = _machineName;
+                ramCounter.MachineName = _machineName;
+            }
             cpuCounter.NextValue();
             ramCounter.NextValue();
             await Task.Delay(_delay);

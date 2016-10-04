@@ -14,6 +14,11 @@ namespace Warden.Watchers.Performance
         public TimeSpan Delay { get; protected set; }
 
         /// <summary>
+        /// Optional name of the remote machine.
+        /// </summary>
+        public string MachineName { get; }
+
+        /// <summary>
         /// Predicate that has to be satisfied in order to return the valid result.
         /// </summary>
         public Func<ResourceUsage, bool> EnsureThat { get; protected set; }
@@ -28,25 +33,27 @@ namespace Warden.Watchers.Performance
         /// </summary>
         public Func<IPerformance> PerformanceProvider { get; protected set; }
 
-        protected internal PerformanceWatcherConfiguration(TimeSpan? delay = null)
+        protected internal PerformanceWatcherConfiguration(TimeSpan? delay = null, string machineName = null)
         {
             Delay = delay ?? TimeSpan.FromMilliseconds(100);
-            PerformanceProvider = () => new Performance(Delay);
+            MachineName = machineName ?? string.Empty;
+            PerformanceProvider = () => new Performance(Delay, MachineName);
         }
 
         /// <summary>
         /// Factory method for creating a new instance of fluent builder for the PerformanceWatcherConfiguration.
         /// </summary>
-        /// <param name="delay">Delay between resource usage calculation while using the default performance counter (100 ms by default).</param>
+        /// <param name="delay">Optional delay between resource usage calculation while using the default performance counter (100 ms by default).</param>
+        /// <param name="machineName">Optional name of the remote machine.</param>
         /// <returns>Instance of fluent builder for the PerformanceWatcherConfiguration.</returns>
-        public static Builder Create(TimeSpan? delay = null) => new Builder(delay);
+        public static Builder Create(TimeSpan? delay = null, string machineName = null) => new Builder(delay, machineName);
 
         public abstract class Configurator<T> : WatcherConfigurator<T, PerformanceWatcherConfiguration>
             where T : Configurator<T>
         {
-            protected Configurator(TimeSpan? delay = null)
+            protected Configurator(TimeSpan? delay = null, string machineName = null)
             {
-                Configuration = new PerformanceWatcherConfiguration(delay);
+                Configuration = new PerformanceWatcherConfiguration(delay, machineName);
             }
 
             protected Configurator(PerformanceWatcherConfiguration configuration) : base(configuration)
@@ -119,7 +126,7 @@ namespace Warden.Watchers.Performance
         /// </summary>
         public class Builder : Configurator<Builder>
         {
-            public Builder(TimeSpan? delay = null) : base(delay)
+            public Builder(TimeSpan? delay = null, string machineName = null) : base(delay, machineName)
             {
                 SetInstance(this);
             }

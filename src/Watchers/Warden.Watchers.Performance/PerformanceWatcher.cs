@@ -40,10 +40,10 @@ namespace Warden.Watchers.Performance
 
                 isValid = isValid && (_configuration.EnsureThat?.Invoke(resourceUsage) ?? true);
                 var description = $"Performance check has returned {(isValid ? "valid" : "invalid")} result for " +
-                                  $"CPU usage: {resourceUsage.Cpu.ToString("F")}%, RAM usage: {resourceUsage.Ram} MB.";
+                                  $"CPU usage: {resourceUsage.Cpu:F}%, RAM usage: {resourceUsage.Ram} MB.";
 
                 return PerformanceWatcherCheckResult.Create(this, isValid, _configuration.Delay,
-                    resourceUsage, description);
+                    _configuration.MachineName, resourceUsage, description);
             }
             catch (Exception exception)
             {
@@ -55,27 +55,31 @@ namespace Warden.Watchers.Performance
         /// Factory method for creating a new instance of PerformanceWatcher with default name of Performance Watcher.
         /// </summary>
         /// <param name="delay">Delay between resource usage calculation while using the default performance counter (100 ms by default).</param>
+        /// <param name="machineName">Optional name of the remote machine.</param>
         /// <param name="configurator">Optional lambda expression for configuring the PerformanceWatcher.</param>
         /// <param name="group">Optional name of the group that PerformanceWatcher belongs to.</param>
         /// <returns>Instance of PerformanceWatcher.</returns>
         public static PerformanceWatcher Create(TimeSpan? delay = null,
+            string machineName = null,
             Action<PerformanceWatcherConfiguration.Default> configurator = null,
             string group = null)
-            => Create(DefaultName, delay, configurator, group);
+            => Create(DefaultName, delay, machineName, configurator, group);
 
         /// <summary>
         /// Factory method for creating a new instance of PerformanceWatcher with default name of Performance Watcher.
         /// </summary>
         /// <param name="name">Name of the PerformanceWatcher.</param>
         /// <param name="delay">Delay between resource usage calculation while using the default performance counter (100 ms by default).</param>
+        /// <param name="machineName">Optional name of the remote machine.</param>
         /// <param name="configurator">Optional lambda expression for configuring the PerformanceWatcher.</param>
         /// <param name="group">Optional name of the group that PerformanceWatcher belongs to.</param>
         /// <returns>Instance of PerformanceWatcher.</returns>
         public static PerformanceWatcher Create(string name, TimeSpan? delay = null,
+            string machineName = null,
             Action<PerformanceWatcherConfiguration.Default> configurator = null,
             string group = null)
         {
-            var config = new PerformanceWatcherConfiguration.Builder(delay);
+            var config = new PerformanceWatcherConfiguration.Builder(delay, machineName);
             configurator?.Invoke((PerformanceWatcherConfiguration.Default) config);
 
             return Create(name, config.Build(), group);
