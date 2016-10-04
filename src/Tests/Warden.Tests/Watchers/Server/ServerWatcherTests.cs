@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Net;
-using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
-using NUnit.Framework;
 using Warden.Watchers;
 using Warden.Watchers.Server;
+using Machine.Specifications;
+using System.Net.NetworkInformation;
+using It = Machine.Specifications.It;
 
 namespace Warden.Tests.Watchers.Server
 {
@@ -37,16 +38,6 @@ namespace Warden.Tests.Watchers.Server
 
         It should_fail = () => Exception.Should().BeOfType<ArgumentException>();
         It should_have_a_specific_reason = () => Exception.Message.Should().StartWith("The hostname should not contain protocol.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("Server watcher initialization")]
@@ -67,16 +58,6 @@ namespace Warden.Tests.Watchers.Server
 
         It should_fail = () => Exception.Should().BeOfType<ArgumentException>();
         It should_have_a_specific_reason = () => Exception.Message.Should().StartWith("Port number can not be less than 0.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("Server watcher initialization")]
@@ -100,15 +81,6 @@ namespace Warden.Tests.Watchers.Server
         };
 
         It should_fail = () => Exception.Should().BeOfType<WatcherException>();
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-        }
     }
 
     [Subject("Server watcher initialization")]
@@ -129,15 +101,6 @@ namespace Warden.Tests.Watchers.Server
         };
 
         It should_fail = () => Exception.Should().BeOfType<WatcherException>();
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-        }
     }
 
     [Subject("Server watcher initialization")]
@@ -158,15 +121,6 @@ namespace Warden.Tests.Watchers.Server
         };
 
         It should_fail = () => Exception.Should().BeOfType<WatcherException>();
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-        }
     }
 
     [Subject("Server watcher execution")]
@@ -216,17 +170,6 @@ namespace Warden.Tests.Watchers.Server
             () => TcpClientMock.Verify(tcp => tcp.ConnectAsync(Moq.It.IsAny<IPAddress>(), Moq.It.IsAny<int>(), Moq.It.IsAny<TimeSpan?>()), Times.Once);
 
         It should_have_a_specific_description = () => CheckResult.Description.Should().StartWith("Successfully connected to the hostname");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_have_valid_check_result();
-            should_invoke_tcp_client_connect_async_method_only_once();
-            should_have_a_specific_description();
-        }
     }
 
     [Subject("Server watcher execution")]
@@ -275,17 +218,6 @@ namespace Warden.Tests.Watchers.Server
             () => TcpClientMock.Verify(tcp => tcp.ConnectAsync(Moq.It.IsAny<IPAddress>(), Moq.It.IsAny<int>(), Moq.It.IsAny<TimeSpan?>()), Times.Once);
 
         It should_have_a_specific_reason = () => CheckResult.Description.Should().StartWith("Could not resolve the hostname");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_have_valid_check_result();
-            should_invoke_tcp_client_connect_async_method_only_once();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("Server watcher execution")]
@@ -328,15 +260,5 @@ namespace Warden.Tests.Watchers.Server
 
         It should_have_valid_check_result = () => CheckResult.IsValid.Should().BeFalse();
         It should_have_a_specific_reason = () => CheckResult.Description.Should().StartWith("Could not resolve the hostname");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_have_valid_check_result();
-            should_have_a_specific_reason();
-        }      
     }
 }

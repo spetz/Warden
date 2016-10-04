@@ -1,9 +1,10 @@
 ﻿using System;
 using FluentAssertions;
 using Moq;
-using NUnit.Framework;
-using SendGrid;
 using Warden.Integrations.SendGrid;
+using Machine.Specifications;
+using SendGrid;
+using It = Machine.Specifications.It;
 
 namespace Warden.Tests.Integrations.SendGrid
 {
@@ -30,16 +31,6 @@ namespace Warden.Tests.Integrations.SendGrid
 
         It should_have_a_specific_reason =
             () => Exception.Message.Should().Contain("SendGrid Integration configuration has not been provided.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("SendGrid integration initialization")]
@@ -55,16 +46,6 @@ namespace Warden.Tests.Integrations.SendGrid
 
         It should_have_a_specific_reason =
             () => Exception.Message.Should().Contain("API key can not be empty.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("SendGrid integration initialization")]
@@ -80,16 +61,6 @@ namespace Warden.Tests.Integrations.SendGrid
 
         It should_have_a_specific_reason =
             () => Exception.Message.Should().Contain("Username can not be empty.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("SendGrid integration initialization")]
@@ -105,16 +76,6 @@ namespace Warden.Tests.Integrations.SendGrid
 
         It should_have_a_specific_reason =
             () => Exception.Message.Should().Contain("Password can not be empty.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("SendGrid integration initialization")]
@@ -130,16 +91,6 @@ namespace Warden.Tests.Integrations.SendGrid
 
         It should_have_a_specific_reason =
             () => Exception.Message.Should().Contain("Invalid email of the message sender.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("SendGrid integration initialization")]
@@ -158,16 +109,6 @@ namespace Warden.Tests.Integrations.SendGrid
 
         It should_have_a_specific_reason =
             () => Exception.Message.Should().Contain($"Invalid email(s): {InvalidReceiver}.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("SendGrid integration execution")]
@@ -193,15 +134,6 @@ namespace Warden.Tests.Integrations.SendGrid
 
         It should_invoke_send_message_async_method_only_once = () => EmailSenderMock.Verify(x =>
             x.SendMessageAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<SendGridMessage>()), Times.Once);
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_send_message_async_method_only_once();
-        }
     }
 
     [Subject("SendGrid integration execution")]
@@ -228,15 +160,6 @@ namespace Warden.Tests.Integrations.SendGrid
         It should_invoke_send_message_async_method_only_once = () => EmailSenderMock.Verify(x =>
             x.SendMessageAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<string>(),
                 Moq.It.IsAny<SendGridMessage>()), Times.Once);
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_send_message_async_method_only_once();
-        }
     }
 
     [Subject("SendGrid integration execution")]
@@ -263,17 +186,6 @@ namespace Warden.Tests.Integrations.SendGrid
 
         It should_not_invoke_send_message_async_method = () => EmailSenderMock.Verify(x =>
             x.SendMessageAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<SendGridMessage>()), Times.Never);
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-            should_not_invoke_send_message_async_method();
-        }
     }
 
     [Subject("SendGrid integration execution")]
@@ -302,16 +214,5 @@ namespace Warden.Tests.Integrations.SendGrid
         It should_not_invoke_send_message_async_method = () => EmailSenderMock.Verify(x =>
             x.SendMessageAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<string>(),
                 Moq.It.IsAny<SendGridMessage>()), Times.Never);
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-            should_not_invoke_send_message_async_method();
-        }
     }
 }

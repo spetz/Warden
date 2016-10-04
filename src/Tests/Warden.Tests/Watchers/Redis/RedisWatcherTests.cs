@@ -4,9 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
-using NUnit.Framework;
 using Warden.Watchers;
 using Warden.Watchers.Redis;
+using Machine.Specifications;
+using It = Machine.Specifications.It;
 
 namespace Warden.Tests.Watchers.Redis
 {
@@ -36,16 +37,6 @@ namespace Warden.Tests.Watchers.Redis
         It should_fail = () => Exception.Should().BeOfType<ArgumentNullException>();
 
         It should_have_a_specific_reason = () => Exception.Message.Should().Contain("Redis Watcher configuration has not been provided.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("Redis watcher execution")]
@@ -67,15 +58,6 @@ namespace Warden.Tests.Watchers.Redis
 
         It should_invoke_get_database_async_method_only_once =
             () => RedisConnectionMock.Verify(x => x.GetDatabaseAsync(Moq.It.IsAny<int>()), Times.Once);
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_get_database_async_method_only_once();
-        }
     }
 
     [Subject("Redis watcher execution")]
@@ -122,19 +104,6 @@ namespace Warden.Tests.Watchers.Redis
             RedisCheckResult.Query.Should().NotBeEmpty();
             RedisCheckResult.QueryResult.Should().NotBeEmpty();
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_get_database_async_method_only_once();
-            should_invoke_query_async_method_only_once();
-            should_have_valid_check_result();
-            should_have_check_result_of_type_redis();
-            should_have_set_values_in_redis_check_result();
-        }
     }
 
     [Subject("Redis watcher execution")]
@@ -183,20 +152,6 @@ namespace Warden.Tests.Watchers.Redis
             RedisCheckResult.Query.Should().NotBeEmpty();
             RedisCheckResult.QueryResult.Should().NotBeEmpty();
         };
-
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_get_database_async_method_only_once();
-            should_invoke_query_async_method_only_once();
-            should_have_valid_check_result();
-            should_have_check_result_of_type_redis();
-            should_have_set_values_in_redis_check_result();
-        }
     }
 
     [Subject("Redis watcher execution")]
@@ -244,19 +199,6 @@ namespace Warden.Tests.Watchers.Redis
             RedisCheckResult.Query.Should().NotBeEmpty();
             RedisCheckResult.QueryResult.Should().NotBeEmpty();
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_get_database_async_method_only_once();
-            should_invoke_query_async_method_only_once();
-            should_have_valid_check_result();
-            should_have_check_result_of_type_redis();
-            should_have_set_values_in_redis_check_result();
-        }
     }
 
     [Subject("Redis watcher execution")]
@@ -305,19 +247,6 @@ namespace Warden.Tests.Watchers.Redis
             RedisCheckResult.Query.Should().NotBeEmpty();
             RedisCheckResult.QueryResult.Should().NotBeEmpty();
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_get_database_async_method_only_once();
-            should_invoke_query_async_method_only_once();
-            should_have_invalid_check_result();
-            should_have_check_result_of_type_redis();
-            should_have_set_values_in_redis_check_result();
-        }
     }
 
     [Subject("Redis watcher execution")]
@@ -365,18 +294,5 @@ namespace Warden.Tests.Watchers.Redis
             RedisCheckResult.Query.Should().NotBeEmpty();
             RedisCheckResult.QueryResult.Should().NotBeEmpty();
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_get_database_async_method_only_once();
-            should_invoke_query_async_method_only_once();
-            should_have_invalid_check_result();
-            should_have_check_result_of_type_redis();
-            should_have_set_values_in_redis_check_result();
-        }
     }
 }

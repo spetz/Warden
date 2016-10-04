@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FluentAssertions;
 using Moq;
-using NUnit.Framework;
 using Warden.Watchers;
 using Warden.Watchers.MongoDb;
+using Machine.Specifications;
+using It = Machine.Specifications.It;
+using FluentAssertions;
 
 namespace Warden.Tests.Watchers.MongoDb
 {
@@ -38,16 +39,6 @@ namespace Warden.Tests.Watchers.MongoDb
 
         It should_have_a_specific_reason =
             () => Exception.Message.Should().Contain("MongoDB Watcher configuration has not been provided.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("MongoDB watcher execution")]
@@ -69,15 +60,6 @@ namespace Warden.Tests.Watchers.MongoDb
 
         It should_invoke_get_database_async_method_only_once =
             () => MongoDbConnectionMock.Verify(x => x.GetDatabaseAsync(), Times.Once);
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_get_database_async_method_only_once();
-        }
     }
 
     [Subject("MongoDB watcher execution")]
@@ -124,19 +106,6 @@ namespace Warden.Tests.Watchers.MongoDb
             MongoDbCheckResult.Query.Should().NotBeEmpty();
             MongoDbCheckResult.QueryResult.Should().NotBeEmpty();
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_get_database_async_method_only_once();
-            should_invoke_query_async_method_only_once();
-            should_have_valid_check_result();
-            should_have_check_result_of_type_mongodb();
-            should_have_set_values_in_mongodb_check_result();
-        }
     }
 
     [Subject("MongoDB watcher execution")]
@@ -185,19 +154,6 @@ namespace Warden.Tests.Watchers.MongoDb
             MongoDbCheckResult.Query.Should().NotBeEmpty();
             MongoDbCheckResult.QueryResult.Should().NotBeEmpty();
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_get_database_async_method_only_once();
-            should_invoke_query_async_method_only_once();
-            should_have_valid_check_result();
-            should_have_check_result_of_type_mongodb();
-            should_have_set_values_in_mongodb_check_result();
-        }
     }
 
     [Subject("MongoDB watcher execution")]
@@ -245,19 +201,6 @@ namespace Warden.Tests.Watchers.MongoDb
             MongoDbCheckResult.Query.Should().NotBeEmpty();
             MongoDbCheckResult.QueryResult.Should().NotBeEmpty();
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_get_database_async_method_only_once();
-            should_invoke_query_async_method_only_once();
-            should_have_valid_check_result();
-            should_have_check_result_of_type_mongodb();
-            should_have_set_values_in_mongodb_check_result();
-        }
     }
 
     [Subject("MongoDB watcher execution")]
@@ -306,19 +249,6 @@ namespace Warden.Tests.Watchers.MongoDb
             MongoDbCheckResult.Query.Should().NotBeEmpty();
             MongoDbCheckResult.QueryResult.Should().NotBeEmpty();
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_get_database_async_method_only_once();
-            should_invoke_query_async_method_only_once();
-            should_have_invalid_check_result();
-            should_have_check_result_of_type_mongodb();
-            should_have_set_values_in_mongodb_check_result();
-        }
     }
 
     [Subject("MongoDB watcher execution")]
@@ -366,18 +296,5 @@ namespace Warden.Tests.Watchers.MongoDb
             MongoDbCheckResult.Query.Should().NotBeEmpty();
             MongoDbCheckResult.QueryResult.Should().NotBeEmpty();
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_get_database_async_method_only_once();
-            should_invoke_query_async_method_only_once();
-            should_have_invalid_check_result();
-            should_have_check_result_of_type_mongodb();
-            should_have_set_values_in_mongodb_check_result();
-        }
     }
 }

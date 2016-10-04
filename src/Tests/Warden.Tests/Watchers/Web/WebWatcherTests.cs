@@ -4,9 +4,10 @@ using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
-using NUnit.Framework;
 using Warden.Watchers;
 using Warden.Watchers.Web;
+using Machine.Specifications;
+using It = Machine.Specifications.It;
 
 namespace Warden.Tests.Watchers.Web
 {
@@ -28,16 +29,6 @@ namespace Warden.Tests.Watchers.Web
 
         It should_fail = () => Exception.Should().BeOfType<ArgumentNullException>();
         It should_have_a_specific_reason = () => Exception.Message.Should().Contain("Web Watcher configuration has not been provided.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("Web watcher initialization")]
@@ -53,15 +44,6 @@ namespace Warden.Tests.Watchers.Web
         });
 
         It should_fail = () => Exception.Should().BeOfType<UriFormatException>();
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-        }
     }
 
     [Subject("Web watcher execution")]
@@ -106,18 +88,6 @@ namespace Warden.Tests.Watchers.Web
             WebCheckResult.Request.Should().NotBeNull();
             WebCheckResult.Response.Should().NotBeNull();
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_http_service_execute_async_method_only_once();
-            should_have_valid_check_result();
-            should_have_check_result_of_type_web();
-            should_have_set_values_in_web_check_result();
-        }
     }
 
     [Subject("Web watcher execution")]
@@ -163,18 +133,6 @@ namespace Warden.Tests.Watchers.Web
             WebCheckResult.Request.Should().NotBeNull();
             WebCheckResult.Response.Should().NotBeNull();
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_http_service_execute_async_method_only_once();
-            should_have_valid_check_result();
-            should_have_check_result_of_type_web();
-            should_have_set_values_in_web_check_result();
-        }
     }
 
     [Subject("Web watcher execution")]
@@ -220,18 +178,6 @@ namespace Warden.Tests.Watchers.Web
             WebCheckResult.Request.Should().NotBeNull();
             WebCheckResult.Response.Should().NotBeNull();
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_http_service_execute_async_method_only_once();
-            should_have_valid_check_result();
-            should_have_check_result_of_type_web();
-            should_have_set_values_in_web_check_result();
-        }
     }
 
     [Subject("Web watcher execution")]
@@ -277,18 +223,6 @@ namespace Warden.Tests.Watchers.Web
             WebCheckResult.Request.Should().NotBeNull();
             WebCheckResult.Response.Should().NotBeNull();
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_http_service_execute_async_method_only_once();
-            should_have_invalid_check_result();
-            should_have_check_result_of_type_web();
-            should_have_set_values_in_web_check_result();
-        }
     }
 
     [Subject("Web watcher execution")]
@@ -334,17 +268,5 @@ namespace Warden.Tests.Watchers.Web
             WebCheckResult.Request.Should().NotBeNull();
             WebCheckResult.Response.Should().NotBeNull();
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_http_service_execute_async_method_only_once();
-            should_have_invalid_check_result();
-            should_have_check_result_of_type_web();
-            should_have_set_values_in_web_check_result();
-        }
     }
 }

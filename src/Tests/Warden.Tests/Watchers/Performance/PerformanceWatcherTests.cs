@@ -2,9 +2,10 @@
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
-using NUnit.Framework;
 using Warden.Watchers;
 using Warden.Watchers.Performance;
+using Machine.Specifications;
+using It = Machine.Specifications.It;
 
 namespace Warden.Tests.Watchers.Performance
 {
@@ -28,16 +29,6 @@ namespace Warden.Tests.Watchers.Performance
 
         It should_fail = () => Exception.Should().BeOfType<ArgumentNullException>();
         It should_have_a_specific_reason = () => Exception.Message.Should().Contain("Performance Watcher configuration has not been provided.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("Performance watcher execution")]
@@ -81,18 +72,6 @@ namespace Warden.Tests.Watchers.Performance
             PerformanceCheckResult.ResourceUsage.Cpu.ShouldBeEquivalentTo(CpuUsage);
             PerformanceCheckResult.ResourceUsage.Ram.ShouldBeEquivalentTo(RamUsage);
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_performance_get_resource_usage_async_method_only_once();
-            should_have_valid_check_result();
-            should_have_check_result_of_type_performance();
-            should_have_set_values_in_performance_check_result();
-        }
     }
 
     [Subject("Performance watcher execution")]
@@ -137,18 +116,6 @@ namespace Warden.Tests.Watchers.Performance
             PerformanceCheckResult.ResourceUsage.Cpu.ShouldBeEquivalentTo(CpuUsage);
             PerformanceCheckResult.ResourceUsage.Ram.ShouldBeEquivalentTo(RamUsage);
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_performance_get_resource_usage_async_method_only_once();
-            should_have_valid_check_result();
-            should_have_check_result_of_type_performance();
-            should_have_set_values_in_performance_check_result();
-        }
     }
 
     [Subject("Performance watcher execution")]
@@ -193,18 +160,6 @@ namespace Warden.Tests.Watchers.Performance
             PerformanceCheckResult.ResourceUsage.Cpu.ShouldBeEquivalentTo(CpuUsage);
             PerformanceCheckResult.ResourceUsage.Ram.ShouldBeEquivalentTo(RamUsage);
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_performance_get_resource_usage_async_method_only_once();
-            should_have_valid_check_result();
-            should_have_check_result_of_type_performance();
-            should_have_set_values_in_performance_check_result();
-        }
     }
 
     [Subject("Performance watcher execution")]
@@ -248,18 +203,6 @@ namespace Warden.Tests.Watchers.Performance
             PerformanceCheckResult.ResourceUsage.Cpu.ShouldBeEquivalentTo(CpuUsage);
             PerformanceCheckResult.ResourceUsage.Ram.ShouldBeEquivalentTo(RamUsage);
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_performance_get_resource_usage_async_method_only_once();
-            should_have_invalid_check_result();
-            should_have_check_result_of_type_performance();
-            should_have_set_values_in_performance_check_result();
-        }
     }
 
     [Subject("Performance watcher execution")]
@@ -303,17 +246,5 @@ namespace Warden.Tests.Watchers.Performance
             PerformanceCheckResult.ResourceUsage.Cpu.ShouldBeEquivalentTo(CpuUsage);
             PerformanceCheckResult.ResourceUsage.Ram.ShouldBeEquivalentTo(RamUsage);
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_performance_get_resource_usage_async_method_only_once();
-            should_have_invalid_check_result();
-            should_have_check_result_of_type_performance();
-            should_have_set_values_in_performance_check_result();
-        }
     }
 }

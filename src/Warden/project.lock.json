@@ -2,7 +2,21 @@
   "locked": false,
   "version": 2,
   "targets": {
-    ".NETCoreApp,Version=v1.0": {
+    ".NETFramework,Version=v4.6.1": {
+      "System.Collections.Concurrent/4.0.12": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System"
+        ],
+        "compile": {
+          "ref/net45/_._": {}
+        },
+        "runtime": {
+          "lib/net45/_._": {}
+        }
+      }
+    },
+    ".NETStandard,Version=v1.6": {
       "Microsoft.CSharp/4.0.1": {
         "type": "package",
         "dependencies": {
@@ -651,20 +665,6 @@
         },
         "runtime": {
           "lib/netstandard1.3/System.Threading.ThreadPool.dll": {}
-        }
-      }
-    },
-    ".NETFramework,Version=v4.6.1": {
-      "System.Collections.Concurrent/4.0.12": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System"
-        ],
-        "compile": {
-          "ref/net45/_._": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
         }
       }
     }
@@ -2820,7 +2820,8 @@
     "": [
       "System.Collections.Concurrent >= 4.0.12"
     ],
-    ".NETCoreApp,Version=v1.0": [
+    ".NETFramework,Version=v4.6.1": [],
+    ".NETStandard,Version=v1.6": [
       "Microsoft.CSharp >= 4.0.1",
       "Microsoft.Extensions.Configuration.EnvironmentVariables >= 1.0.0",
       "System.Collections >= 4.0.11",
@@ -2830,8 +2831,7 @@
       "System.Runtime >= 4.1.0",
       "System.Runtime.InteropServices.RuntimeInformation >= 4.0.0",
       "System.Threading >= 4.0.11"
-    ],
-    ".NETFramework,Version=v4.6.1": []
+    ]
   },
   "tools": {},
   "projectFileToolGroups": {}

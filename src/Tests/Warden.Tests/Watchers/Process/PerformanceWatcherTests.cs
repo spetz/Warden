@@ -2,9 +2,10 @@
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
-using NUnit.Framework;
 using Warden.Watchers;
 using Warden.Watchers.Process;
+using Machine.Specifications;
+using It = Machine.Specifications.It;
 
 namespace Warden.Tests.Watchers.Process
 {
@@ -30,16 +31,6 @@ namespace Warden.Tests.Watchers.Process
 
         It should_fail = () => Exception.Should().BeOfType<ArgumentNullException>();
         It should_have_a_specific_reason = () => Exception.Message.Should().Contain("Process Watcher configuration has not been provided.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("Process watcher execution")]
@@ -85,18 +76,6 @@ namespace Warden.Tests.Watchers.Process
             ProcessCheckResult.ProcessInfo.Exists.ShouldBeEquivalentTo(ProcessExists);
             ProcessCheckResult.ProcessInfo.Responding.ShouldBeEquivalentTo(ProcessResponding);
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_process_get_process_info_async_method_only_once();
-            should_have_valid_check_result();
-            should_have_check_result_of_type_process();
-            should_have_set_values_in_process_check_result();
-        }
     }
 
     [Subject("Process watcher execution")]
@@ -143,18 +122,6 @@ namespace Warden.Tests.Watchers.Process
             ProcessCheckResult.ProcessInfo.Exists.ShouldBeEquivalentTo(ProcessExists);
             ProcessCheckResult.ProcessInfo.Responding.ShouldBeEquivalentTo(ProcessResponding);
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_process_get_process_info_async_method_only_once();
-            should_have_valid_check_result();
-            should_have_check_result_of_type_process();
-            should_have_set_values_in_process_check_result();
-        }
     }
 
     [Subject("Process watcher execution")]
@@ -204,18 +171,6 @@ namespace Warden.Tests.Watchers.Process
             ProcessCheckResult.ProcessInfo.Exists.ShouldBeEquivalentTo(ProcessExists);
             ProcessCheckResult.ProcessInfo.Responding.ShouldBeEquivalentTo(ProcessResponding);
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_process_get_process_info_async_method_only_once();
-            should_have_valid_check_result();
-            should_have_check_result_of_type_process();
-            should_have_set_values_in_process_check_result();
-        }
     }
 
     [Subject("Process watcher execution")]
@@ -265,18 +220,6 @@ namespace Warden.Tests.Watchers.Process
             ProcessCheckResult.ProcessInfo.Exists.ShouldBeEquivalentTo(ProcessExists);
             ProcessCheckResult.ProcessInfo.Responding.ShouldBeEquivalentTo(ProcessResponding);
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_process_get_process_info_async_method_only_once();
-            should_have_valid_check_result();
-            should_have_check_result_of_type_process();
-            should_have_set_values_in_process_check_result();
-        }
     }
 
     [Subject("Process watcher execution")]
@@ -325,18 +268,6 @@ namespace Warden.Tests.Watchers.Process
             ProcessCheckResult.ProcessInfo.Exists.ShouldBeEquivalentTo(false);
             ProcessCheckResult.ProcessInfo.Responding.ShouldBeEquivalentTo(false);
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_process_get_process_info_async_method_only_once();
-            should_have_invalid_check_result();
-            should_have_check_result_of_type_process();
-            should_have_set_values_in_process_check_result();
-        }
     }
 
     [Subject("Process watcher execution")]
@@ -385,17 +316,5 @@ namespace Warden.Tests.Watchers.Process
             ProcessCheckResult.ProcessInfo.Exists.ShouldBeEquivalentTo(false);
             ProcessCheckResult.ProcessInfo.Responding.ShouldBeEquivalentTo(false);
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_process_get_process_info_async_method_only_once();
-            should_have_invalid_check_result();
-            should_have_check_result_of_type_process();
-            should_have_set_values_in_process_check_result();
-        }
     }
 }

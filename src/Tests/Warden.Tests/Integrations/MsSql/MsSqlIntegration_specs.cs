@@ -5,11 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
-using NUnit.Framework;
 using Warden.Integrations;
 using Warden.Integrations.MsSql;
 using Warden.Watchers;
 using Warden.Watchers.MsSql;
+using Machine.Specifications;
+using It = Machine.Specifications.It;
 
 namespace Warden.Tests.Integrations.MsSql
 {
@@ -34,16 +35,6 @@ namespace Warden.Tests.Integrations.MsSql
 
         It should_have_a_specific_reason =
             () => Exception.Message.Should().Contain("MS SQL integration configuration has not been provided.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("MS SQL integration initialization")]
@@ -59,16 +50,6 @@ namespace Warden.Tests.Integrations.MsSql
 
         It should_have_a_specific_reason =
             () => Exception.Message.Should().Contain("MS SQL connection string is invalid.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("MS SQL integration execution")]
@@ -95,16 +76,6 @@ namespace Warden.Tests.Integrations.MsSql
 
         It should_invoke_open_method_only_once = () => DbConnectionMock.Verify(x => x.Open(), Times.Once);
         It should_fail = () => Exception.Should().BeOfType<IntegrationException>();
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_open_method_only_once();
-            should_fail();
-        }
     }
 
     [Subject("MS SQL integration execution")]
@@ -133,17 +104,6 @@ namespace Warden.Tests.Integrations.MsSql
 
         It should_invoke_open_method_only_once = () => DbConnectionMock.Verify(x => x.Open(), Times.Once);
         It should_fail = () => Exception.Should().BeOfType<IntegrationException>();
-
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_open_method_only_once();
-            should_fail();
-        }
     }
 
     [Subject("MS SQL integration execution")]
@@ -171,15 +131,5 @@ namespace Warden.Tests.Integrations.MsSql
 
         It should_invoke_open_method_only_once = () => DbConnectionMock.Verify(x => x.Open(), Times.Once);
         It should_fail = () => Exception.Should().BeOfType<IntegrationException>();
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_open_method_only_once();
-            should_fail();
-        }
     }
 }

@@ -2,9 +2,10 @@
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
-using NUnit.Framework;
 using Warden.Core;
 using Warden.Watchers;
+using Machine.Specifications;
+using It = Machine.Specifications.It;
 
 namespace Warden.Tests.Core
 {
@@ -24,16 +25,6 @@ namespace Warden.Tests.Core
 
         It should_fail = () => Exception.Should().BeOfType<ArgumentNullException>();
         It should_have_a_specific_reason = () => Exception.Message.Should().Contain("Warden configuration has not been provided.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("Warden initialization")]
@@ -44,15 +35,6 @@ namespace Warden.Tests.Core
         Because of = () => Warden = WardenInstance.Create(WardenConfiguration);
 
         It should_create_new_warden_instance = () => Warden.Should().NotBeNull();
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_create_new_warden_instance();
-        }
     }
 
     [Subject("Warden execution with watcher")]
@@ -76,14 +58,6 @@ namespace Warden.Tests.Core
 
         It should_invoke_execute_async_method_only_once = () => WatcherMock.Verify(x => x.ExecuteAsync(), Times.Once);
 
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_execute_async_method_only_once();
-        }
     }
 
     [Subject("Warden execution with watcher")]
@@ -108,15 +82,6 @@ namespace Warden.Tests.Core
         Because of = async () => await Warden.StartAsync().Await().AsTask;
 
         It should_invoke_execute_async_method_ten_thousand_times = () => WatcherMock.Verify(x => x.ExecuteAsync(), Times.Exactly(IterationsCount));
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_execute_async_method_ten_thousand_times();
-        }
     }
 
     [Subject("Warden execution with watcher")]
@@ -170,21 +135,6 @@ namespace Warden.Tests.Core
         It should_invoke_on_success_async_hook_one_thousand_times = () => OnSuccessAsyncMock.Verify(x => x(Moq.It.IsAny<IWardenCheckResult>()), Times.Exactly(IterationsCount));
         It should_invoke_on_completed_hook_one_thousand_times = () => OnCompletedMock.Verify(x => x(Moq.It.IsAny<IWardenCheckResult>()), Times.Exactly(IterationsCount));
         It should_invoke_on_completed_async_hook_one_thousand_times = () => OnCompletedAsyncMock.Verify(x => x(Moq.It.IsAny<IWardenCheckResult>()), Times.Exactly(IterationsCount));
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_execute_async_method_one_thousand_times();
-            should_invoke_on_start_hook_one_thousand_times();
-            should_invoke_on_start_async_hook_one_thousand_times();
-            should_invoke_on_success_hook_one_thousand_times();
-            should_invoke_on_success_async_hook_one_thousand_times();
-            should_invoke_on_completed_hook_one_thousand_times();
-            should_invoke_on_completed_async_hook_one_thousand_times();
-        }
     }
 
     [Subject("Warden execution with watcher")]
@@ -236,21 +186,6 @@ namespace Warden.Tests.Core
         It should_invoke_on_iteration_start_async_hook_only_once = () => OnIterationStartAsyncMock.Verify(x => x(Moq.It.IsAny<long>()), Times.Once);
         It should_invoke_on_iteration_completed_hook_only_once = () => OnIterationCompletedMock.Verify(x => x(Moq.It.IsAny<IWardenIteration>()), Times.Once);
         It should_invoke_on_iteration_completed_async_hook_only_once = () => OnIterationCompletedAsyncMock.Verify(x => x(Moq.It.IsAny<IWardenIteration>()), Times.Once);
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_execute_async_method_only_once();
-            should_invoke_on_start_hook_only_once();
-            should_invoke_on_start_async_hook_only_once();
-            should_invoke_on_iteration_start_hook_only_once();
-            should_invoke_on_iteration_start_async_hook_only_once();
-            should_invoke_on_iteration_completed_hook_only_once();
-            should_invoke_on_iteration_completed_async_hook_only_once();
-        }
     }
 
     [Subject("Warden execution with watcher")]
@@ -301,21 +236,6 @@ namespace Warden.Tests.Core
         It should_invoke_on_success_async_hook_only_once = () => OnSuccessAsyncMock.Verify(x => x(Moq.It.IsAny<IWardenCheckResult>()), Times.Once);
         It should_invoke_on_completed_hook_only_once = () => OnCompletedMock.Verify(x => x(Moq.It.IsAny<IWardenCheckResult>()), Times.Once);
         It should_invoke_on_completed_async_hook_only_once = () => OnCompletedAsyncMock.Verify(x => x(Moq.It.IsAny<IWardenCheckResult>()), Times.Once);
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_execute_async_method_only_once();
-            should_invoke_on_start_hook_only_once();
-            should_invoke_on_start_async_hook_only_once();
-            should_invoke_on_success_hook_only_once();
-            should_invoke_on_success_async_hook_only_once();
-            should_invoke_on_completed_hook_only_once();
-            should_invoke_on_completed_async_hook_only_once();
-        }
     }
 
     [Subject("Warden execution with watcher")]
@@ -367,21 +287,6 @@ namespace Warden.Tests.Core
         It should_invoke_on_success_async_hook_only_once = () => OnSuccessAsyncMock.Verify(x => x(Moq.It.IsAny<IWardenCheckResult>()), Times.Once);
         It should_invoke_on_completed_hook_only_once = () => OnCompletedMock.Verify(x => x(Moq.It.IsAny<IWardenCheckResult>()), Times.Once);
         It should_invoke_on_completed_async_hook_only_once = () => OnCompletedAsyncMock.Verify(x => x(Moq.It.IsAny<IWardenCheckResult>()), Times.Once);
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_execute_async_method_only_once();
-            should_invoke_on_start_hook_only_once();
-            should_invoke_on_start_async_hook_only_once();
-            should_invoke_on_success_hook_only_once();
-            should_invoke_on_success_async_hook_only_once();
-            should_invoke_on_completed_hook_only_once();
-            should_invoke_on_completed_async_hook_only_once();
-        }
     }
 
     [Subject("Warden execution with watcher")]
@@ -416,17 +321,6 @@ namespace Warden.Tests.Core
         It should_invoke_execute_async_method_only_once = () => WatcherMock.Verify(x => x.ExecuteAsync(), Times.Once);
         It should_invoke_on_failure_hook_only_once = () => OnFailureMock.Verify(x => x(Moq.It.IsAny<IWardenCheckResult>()), Times.Once);
         It should_invoke_on_failure_async_hook_only_once = () => OnFailureAsyncMock.Verify(x => x(Moq.It.IsAny<IWardenCheckResult>()), Times.Once);
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_execute_async_method_only_once();
-            should_invoke_on_failure_hook_only_once();
-            should_invoke_on_failure_async_hook_only_once();
-        }
     }
 
     [Subject("Warden execution with watcher")]
@@ -461,17 +355,6 @@ namespace Warden.Tests.Core
         It should_invoke_execute_async_method_only_once = () => WatcherMock.Verify(x => x.ExecuteAsync(), Times.Once);
         It should_invoke_on_error_hook_only_once = () => OnErrorMock.Verify(x => x(Moq.It.IsAny<Exception>()), Times.Once);
         It should_invoke_on_error_async_hook_only_once = () => OnErrorAsyncMock.Verify(x => x(Moq.It.IsAny<Exception>()), Times.Once);
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_execute_async_method_only_once();
-            should_invoke_on_error_hook_only_once();
-            should_invoke_on_error_async_hook_only_once();
-        }
     }
 
     [Subject("Warden execution with watcher")]
@@ -508,17 +391,6 @@ namespace Warden.Tests.Core
         It should_invoke_execute_async_method_ten_times = () => WatcherMock.Verify(x => x.ExecuteAsync(), Times.Exactly(IterationsCount));
         It should_invoke_on_first_failure_hook_only_once = () => OnFirstFailureMock.Verify(x => x(Moq.It.IsAny<IWardenCheckResult>()), Times.Once);
         It should_invoke_on_first_failure_async_hook_only_once = () => OnFirstFailureAsyncMock.Verify(x => x(Moq.It.IsAny<IWardenCheckResult>()), Times.Once);
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_execute_async_method_ten_times();
-            should_invoke_on_first_failure_hook_only_once();
-            should_invoke_on_first_failure_async_hook_only_once();
-        }
     }
 
     [Subject("Warden execution with watcher")]
@@ -555,17 +427,6 @@ namespace Warden.Tests.Core
         It should_invoke_execute_async_method_ten_times = () => WatcherMock.Verify(x => x.ExecuteAsync(), Times.Exactly(IterationsCount));
         It should_invoke_on_first_error_hook_only_once = () => OnFirstErrorMock.Verify(x => x(Moq.It.IsAny<Exception>()), Times.Once);
         It should_invoke_on_first_error_async_hook_only_once = () => OnFirstErrorAsyncMock.Verify(x => x(Moq.It.IsAny<Exception>()), Times.Once);
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_execute_async_method_ten_times();
-            should_invoke_on_first_error_hook_only_once();
-            should_invoke_on_first_error_async_hook_only_once();
-        }
     }
 
     [Subject("Warden execution with watcher")]
@@ -603,17 +464,6 @@ namespace Warden.Tests.Core
         It should_invoke_execute_async_method_ten_times = () => WatcherMock.Verify(x => x.ExecuteAsync(), Times.Exactly(IterationsCount));
         It should_invoke_on_first_success_hook_only_once = () => OnFirstSuccessMock.Verify(x => x(Moq.It.IsAny<IWardenCheckResult>()), Times.Once);
         It should_invoke_on_first_success_async_hook_only_once = () => OnFirstSuccessAsyncMock.Verify(x => x(Moq.It.IsAny<IWardenCheckResult>()), Times.Once);
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_execute_async_method_ten_times();
-            should_invoke_on_first_success_hook_only_once();
-            should_invoke_on_first_success_async_hook_only_once();
-        }
     }
 
     [Subject("Warden execution with watcher")]
@@ -655,16 +505,5 @@ namespace Warden.Tests.Core
         It should_invoke_execute_async_method_hundred_times_for_first_watcher = () => FirstWatcherMock.Verify(x => x.ExecuteAsync(), Times.Exactly(100));
         It should_invoke_execute_async_method_ten_times_for_second_watcher = () => SecondWatcherMock.Verify(x => x.ExecuteAsync(), Times.Exactly(10));
         It should_invoke_execute_async_method_once_for_third_watcher = () => ThirdWatcherMock.Verify(x => x.ExecuteAsync(), Times.Exactly(1));
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_execute_async_method_hundred_times_for_first_watcher();
-            should_invoke_execute_async_method_ten_times_for_second_watcher();
-            should_invoke_execute_async_method_once_for_third_watcher();
-        }
     }
 }

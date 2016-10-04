@@ -3,7 +3,8 @@ using Warden.Core;
 using Warden.Watchers;
 using Warden.Watchers.Web;
 using FluentAssertions;
-using NUnit.Framework;
+using Machine.Specifications;
+using It = Machine.Specifications.It;
 
 namespace Warden.Tests.EndToEnd.Watchers.Web
 {
@@ -31,16 +32,6 @@ namespace Warden.Tests.EndToEnd.Watchers.Web
 
         It should_fail = () => Exception.Should().BeOfType<WatcherException>();
         It should_have_a_specific_reason = () => Exception.Message.Should().Contain("There was an error while trying to access the Web endpoint");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("Web watcher execution")]
@@ -57,15 +48,6 @@ namespace Warden.Tests.EndToEnd.Watchers.Web
         Because of = async () => CheckResult = await Watcher.ExecuteAsync().Await().AsTask;
 
         It should_have_invalid_check_result = () => CheckResult.IsValid.Should().BeFalse();
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_have_invalid_check_result();
-        }
     }
 
     [Subject("Web watcher execution")]
@@ -90,18 +72,5 @@ namespace Warden.Tests.EndToEnd.Watchers.Web
         It should_have_check_result_with_valid_uri = () => WebCheckResult.Uri.Should().NotBeNull();
         It should_have_check_result_with_request_headers = () => WebCheckResult.Response.Headers.Should().NotBeNull();
         It should_have_check_result_with_response = () => WebCheckResult.Response.Should().NotBeNull();
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_have_valid_check_result();
-            should_have_check_result_of_type_web();
-            should_have_check_result_with_valid_uri();
-            should_have_check_result_with_request_headers();
-            should_have_check_result_with_response();
-        }
     }
 }

@@ -3,7 +3,16 @@
   "version": 2,
   "targets": {
     ".NETFramework,Version=v4.6.1": {
-      "Dapper/1.50.1": {
+      "Castle.Core/3.3.3": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Castle.Core.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Castle.Core.dll": {}
+        }
+      },
+      "Dapper/1.50.2": {
         "type": "package",
         "frameworkAssemblies": [
           "System.Data",
@@ -17,7 +26,20 @@
           "lib/net451/Dapper.dll": {}
         }
       },
-      "FluentAssertions/4.3.2": {
+      "dotnet-test-mspec/0.2.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.Xml",
+          "System.Xml.Linq"
+        ],
+        "compile": {
+          "lib/net45/dotnet-test-mspec.exe": {}
+        },
+        "runtime": {
+          "lib/net45/dotnet-test-mspec.exe": {}
+        }
+      },
+      "FluentAssertions/4.14.0": {
         "type": "package",
         "frameworkAssemblies": [
           "System.Xml",
@@ -32,19 +54,19 @@
           "lib/net45/FluentAssertions.dll": {}
         }
       },
-      "Microsoft.AspNet.SignalR.Core/2.2.0": {
+      "Machine.Specifications/0.11.0": {
         "type": "package",
-        "dependencies": {
-          "Microsoft.Owin": "2.1.0",
-          "Microsoft.Owin.Security": "2.1.0",
-          "Newtonsoft.Json": "6.0.4",
-          "Owin": "1.0.0"
-        },
+        "frameworkAssemblies": [
+          "System.Runtime.Remoting",
+          "System.Xml",
+          "System.Xml.Linq",
+          "System.Xml.Serialization"
+        ],
         "compile": {
-          "lib/net45/Microsoft.AspNet.SignalR.Core.dll": {}
+          "lib/net45/Machine.Specifications.dll": {}
         },
         "runtime": {
-          "lib/net45/Microsoft.AspNet.SignalR.Core.dll": {}
+          "lib/net45/Machine.Specifications.dll": {}
         }
       },
       "Microsoft.AspNet.WebApi.Client/5.2.3": {
@@ -83,31 +105,6 @@
           "lib/netstandard1.0/_._": {}
         }
       },
-      "Microsoft.Owin/2.1.0": {
-        "type": "package",
-        "dependencies": {
-          "Owin": "1.0.0"
-        },
-        "compile": {
-          "lib/net45/Microsoft.Owin.dll": {}
-        },
-        "runtime": {
-          "lib/net45/Microsoft.Owin.dll": {}
-        }
-      },
-      "Microsoft.Owin.Security/2.1.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Owin": "2.1.0",
-          "Owin": "1.0.0"
-        },
-        "compile": {
-          "lib/net45/Microsoft.Owin.Security.dll": {}
-        },
-        "runtime": {
-          "lib/net45/Microsoft.Owin.Security.dll": {}
-        }
-      },
       "Microsoft.Win32.Primitives/4.0.1": {
         "type": "package",
         "frameworkAssemblies": [
@@ -121,7 +118,7 @@
           "lib/net46/Microsoft.Win32.Primitives.dll": {}
         }
       },
-      "MongoDB.Bson/2.2.3": {
+      "MongoDB.Bson/2.3.0": {
         "type": "package",
         "compile": {
           "lib/net45/MongoDB.Bson.dll": {}
@@ -130,11 +127,11 @@
           "lib/net45/MongoDB.Bson.dll": {}
         }
       },
-      "MongoDB.Driver/2.2.3": {
+      "MongoDB.Driver/2.3.0": {
         "type": "package",
         "dependencies": {
-          "MongoDB.Bson": "2.2.3",
-          "MongoDB.Driver.Core": "2.2.3"
+          "MongoDB.Bson": "2.3.0",
+          "MongoDB.Driver.Core": "2.3.0"
         },
         "compile": {
           "lib/net45/MongoDB.Driver.dll": {}
@@ -143,10 +140,10 @@
           "lib/net45/MongoDB.Driver.dll": {}
         }
       },
-      "MongoDB.Driver.Core/2.2.3": {
+      "MongoDB.Driver.Core/2.3.0": {
         "type": "package",
         "dependencies": {
-          "MongoDB.Bson": "2.2.3"
+          "MongoDB.Bson": "2.3.0"
         },
         "compile": {
           "lib/net45/MongoDB.Driver.Core.dll": {}
@@ -155,13 +152,16 @@
           "lib/net45/MongoDB.Driver.Core.dll": {}
         }
       },
-      "Moq/4.2.1510.2205": {
+      "Moq/4.6.38-alpha": {
         "type": "package",
+        "dependencies": {
+          "Castle.Core": "3.3.3"
+        },
         "compile": {
-          "lib/net40/Moq.dll": {}
+          "lib/net45/Moq.dll": {}
         },
         "runtime": {
-          "lib/net40/Moq.dll": {}
+          "lib/net45/Moq.dll": {}
         }
       },
       "NETStandard.Library/1.6.0": {
@@ -222,24 +222,6 @@
           "lib/net45/Newtonsoft.Json.dll": {}
         }
       },
-      "NUnit/3.4.1": {
-        "type": "package",
-        "compile": {
-          "lib/net45/nunit.framework.dll": {}
-        },
-        "runtime": {
-          "lib/net45/nunit.framework.dll": {}
-        }
-      },
-      "Owin/1.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/net40/Owin.dll": {}
-        },
-        "runtime": {
-          "lib/net40/Owin.dll": {}
-        }
-      },
       "RestSharp/105.2.2": {
         "type": "package",
         "compile": {
@@ -274,8 +256,11 @@
           "lib/net40/SendGrid.SmtpApi.dll": {}
         }
       },
-      "StackExchange.Redis/1.1.603": {
+      "StackExchange.Redis/1.1.605": {
         "type": "package",
+        "frameworkAssemblies": [
+          "System.IO.Compression"
+        ],
         "compile": {
           "lib/net46/StackExchange.Redis.dll": {}
         },
@@ -904,7 +889,7 @@
           "lib/3.5/Twilio.Api.dll": {}
         }
       },
-      "Warden/1.3.0": {
+      "Warden/1.3.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
@@ -917,13 +902,13 @@
           "net461/Warden.dll": {}
         }
       },
-      "Warden.Integrations.Cachet/1.3.0": {
+      "Warden.Integrations.Cachet/1.3.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
           "Newtonsoft.Json": "9.0.1",
           "System.Net.Http": "4.0.0",
-          "Warden": "1.3.0"
+          "Warden": "1.3.1"
         },
         "compile": {
           "net461/Warden.Integrations.Cachet.dll": {}
@@ -932,13 +917,13 @@
           "net461/Warden.Integrations.Cachet.dll": {}
         }
       },
-      "Warden.Integrations.HttpApi/1.3.0": {
+      "Warden.Integrations.HttpApi/1.3.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
           "Newtonsoft.Json": "9.0.1",
           "System.Net.Http": "4.0.0",
-          "Warden": "1.3.0"
+          "Warden": "1.3.1"
         },
         "compile": {
           "net461/Warden.Integrations.HttpApi.dll": {}
@@ -947,13 +932,13 @@
           "net461/Warden.Integrations.HttpApi.dll": {}
         }
       },
-      "Warden.Integrations.MsSql/1.3.0": {
+      "Warden.Integrations.MsSql/1.3.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
           "Dapper": "1.50.1",
           "System.Data.SqlClient": "4.1.0",
-          "Warden": "1.3.0"
+          "Warden": "1.3.1"
         },
         "compile": {
           "net461/Warden.Integrations.MsSql.dll": {}
@@ -962,12 +947,12 @@
           "net461/Warden.Integrations.MsSql.dll": {}
         }
       },
-      "Warden.Integrations.SendGrid/1.3.0": {
+      "Warden.Integrations.SendGrid/1.3.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
           "Sendgrid": "6.3.4",
-          "Warden": "1.3.0"
+          "Warden": "1.3.1"
         },
         "compile": {
           "net461/Warden.Integrations.SendGrid.dll": {}
@@ -976,13 +961,13 @@
           "net461/Warden.Integrations.SendGrid.dll": {}
         }
       },
-      "Warden.Integrations.Slack/1.3.0": {
+      "Warden.Integrations.Slack/1.3.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
           "Newtonsoft.Json": "9.0.1",
           "System.Net.Http": "4.0.0",
-          "Warden": "1.3.0"
+          "Warden": "1.3.1"
         },
         "compile": {
           "net461/Warden.Integrations.Slack.dll": {}
@@ -991,12 +976,12 @@
           "net461/Warden.Integrations.Slack.dll": {}
         }
       },
-      "Warden.Integrations.Twilio/1.3.0": {
+      "Warden.Integrations.Twilio/1.3.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
           "Twilio": "4.7.2",
-          "Warden": "1.3.0"
+          "Warden": "1.3.1"
         },
         "compile": {
           "net461/Warden.Integrations.Twilio.dll": {}
@@ -1005,11 +990,11 @@
           "net461/Warden.Integrations.Twilio.dll": {}
         }
       },
-      "Warden.Watchers.Disk/1.3.0": {
+      "Warden.Watchers.Disk/1.3.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
-          "Warden": "1.3.0"
+          "Warden": "1.3.1"
         },
         "compile": {
           "net461/Warden.Watchers.Disk.dll": {}
@@ -1018,12 +1003,12 @@
           "net461/Warden.Watchers.Disk.dll": {}
         }
       },
-      "Warden.Watchers.MongoDb/1.3.0": {
+      "Warden.Watchers.MongoDb/1.3.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
-          "MongoDB.Driver": "2.2.3",
-          "Warden": "1.3.0"
+          "MongoDB.Driver": "2.3.0",
+          "Warden": "1.3.1"
         },
         "compile": {
           "net461/Warden.Watchers.MongoDb.dll": {}
@@ -1032,13 +1017,13 @@
           "net461/Warden.Watchers.MongoDb.dll": {}
         }
       },
-      "Warden.Watchers.MsSql/1.3.0": {
+      "Warden.Watchers.MsSql/1.3.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
-          "Dapper": "1.50.1",
+          "Dapper": "1.50.2",
           "System.Data.SqlClient": "4.1.0",
-          "Warden": "1.3.0"
+          "Warden": "1.3.1"
         },
         "compile": {
           "net461/Warden.Watchers.MsSql.dll": {}
@@ -1047,11 +1032,11 @@
           "net461/Warden.Watchers.MsSql.dll": {}
         }
       },
-      "Warden.Watchers.Performance/1.3.0": {
+      "Warden.Watchers.Performance/1.3.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
-          "Warden": "1.3.0"
+          "Warden": "1.3.1"
         },
         "compile": {
           "net461/Warden.Watchers.Performance.dll": {}
@@ -1060,11 +1045,11 @@
           "net461/Warden.Watchers.Performance.dll": {}
         }
       },
-      "Warden.Watchers.Process/1.3.0": {
+      "Warden.Watchers.Process/1.3.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
-          "Warden": "1.3.0"
+          "Warden": "1.3.1"
         },
         "compile": {
           "net461/Warden.Watchers.Process.dll": {}
@@ -1073,12 +1058,12 @@
           "net461/Warden.Watchers.Process.dll": {}
         }
       },
-      "Warden.Watchers.Redis/1.3.0": {
+      "Warden.Watchers.Redis/1.3.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
-          "StackExchange.Redis": "1.1.603",
-          "Warden": "1.3.0"
+          "StackExchange.Redis": "1.1.605",
+          "Warden": "1.3.1"
         },
         "compile": {
           "net461/Warden.Watchers.Redis.dll": {}
@@ -1087,12 +1072,12 @@
           "net461/Warden.Watchers.Redis.dll": {}
         }
       },
-      "Warden.Watchers.Server/1.3.0": {
+      "Warden.Watchers.Server/1.3.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
           "NETStandard.Library": "1.6.0",
-          "Warden": "1.3.0"
+          "Warden": "1.3.1"
         },
         "compile": {
           "net461/Warden.Watchers.Server.dll": {}
@@ -1101,13 +1086,13 @@
           "net461/Warden.Watchers.Server.dll": {}
         }
       },
-      "Warden.Watchers.Web/1.3.0": {
+      "Warden.Watchers.Web/1.3.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
           "Newtonsoft.Json": "9.0.1",
           "System.Net.Http": "4.0.0",
-          "Warden": "1.3.0"
+          "Warden": "1.3.1"
         },
         "compile": {
           "net461/Warden.Watchers.Web.dll": {}
@@ -1119,12 +1104,36 @@
     }
   },
   "libraries": {
-    "Dapper/1.50.1": {
-      "sha512": "UnvcSLoFOriBz9uMTwWmhhpvkPke91OfouxkWK+88zrFXbm38DP0MmQNjFYIsnPUnvPd/pC+nhgm+nM+mkdtTg==",
+    "Castle.Core/3.3.3": {
+      "sha512": "tvVrLbHhtAGubUUDbEkH9JlivdlJOTI25u3hlyHpPxuJdTVi/yVQKWCYvGpafGPm7G1ibdWj4brqhtSQkAmN+g==",
       "type": "package",
-      "path": "Dapper/1.50.1",
+      "path": "Castle.Core/3.3.3",
       "files": [
-        "Dapper.1.50.1.nupkg.sha512",
+        "ASL - Apache Software Foundation License.txt",
+        "BreakingChanges.txt",
+        "Castle.Core.3.3.3.nupkg.sha512",
+        "Castle.Core.nuspec",
+        "Changes.txt",
+        "License.txt",
+        "lib/net35/Castle.Core.dll",
+        "lib/net35/Castle.Core.xml",
+        "lib/net40-client/Castle.Core.dll",
+        "lib/net40-client/Castle.Core.xml",
+        "lib/net45/Castle.Core.dll",
+        "lib/net45/Castle.Core.xml",
+        "lib/sl4/Castle.Core.dll",
+        "lib/sl4/Castle.Core.xml",
+        "lib/sl5/Castle.Core.dll",
+        "lib/sl5/Castle.Core.xml",
+        "readme.txt"
+      ]
+    },
+    "Dapper/1.50.2": {
+      "sha512": "PhxIV8TI/5aYdLT4epuIZB+Evf0sv9gcQDpFGa04fSKDfNQIChRq0sKUgQbfpFWbuDW/UDDuiL3Grkhp/cvYrA==",
+      "type": "package",
+      "path": "Dapper/1.50.2",
+      "files": [
+        "Dapper.1.50.2.nupkg.sha512",
         "Dapper.nuspec",
         "lib/net40/Dapper.dll",
         "lib/net40/Dapper.xml",
@@ -1136,24 +1145,25 @@
         "lib/netstandard1.3/Dapper.xml"
       ]
     },
-    "FluentAssertions/4.3.2": {
-      "sha512": "vc85oIhwC/IW7/1ifQvOE6pffmWA6gcUUOC1J1xy+KWk1ng3C3tJGnk5GeT0k50qVkgx73KvnsS+aJQNeHJ++w==",
+    "dotnet-test-mspec/0.2.0": {
+      "sha512": "AaIRSNY6ZYMRed7oDv9oxFNT/8w5b0vRCAvIN5ZiW3PgS5SOYKrJKCqSEPnz8h43tUbtICREJaqOJAhxkcfvew==",
       "type": "package",
-      "path": "FluentAssertions/4.3.2",
+      "path": "dotnet-test-mspec/0.2.0",
       "files": [
-        "FluentAssertions.4.3.2.nupkg.sha512",
+        "dotnet-test-mspec.0.2.0.nupkg.sha512",
+        "dotnet-test-mspec.nuspec",
+        "lib/net45/dotnet-test-mspec.exe",
+        "lib/netcoreapp1.0/dotnet-test-mspec.dll",
+        "lib/netcoreapp1.0/dotnet-test-mspec.runtimeconfig.json"
+      ]
+    },
+    "FluentAssertions/4.14.0": {
+      "sha512": "QoZAKjS5d59XZCFcobNa7A0JtXKn36+ptgzMFBg4bsttpiQcDOjAAFHNIk5kt0bUStnKXOz6jZzfRqr1PGHw5g==",
+      "type": "package",
+      "path": "FluentAssertions/4.14.0",
+      "files": [
+        "FluentAssertions.4.14.0.nupkg.sha512",
         "FluentAssertions.nuspec",
-        "lib/dotnet/FluentAssertions.Core.dll",
-        "lib/dotnet/FluentAssertions.Core.pdb",
-        "lib/dotnet/FluentAssertions.dll",
-        "lib/dotnet/FluentAssertions.pdb",
-        "lib/dotnet/FluentAssertions.xml",
-        "lib/monoandroid/FluentAssertions.Core.dll",
-        "lib/monoandroid/FluentAssertions.Core.pdb",
-        "lib/monoandroid/FluentAssertions.Core.xml",
-        "lib/monotouch/FluentAssertions.Core.dll",
-        "lib/monotouch/FluentAssertions.Core.pdb",
-        "lib/monotouch/FluentAssertions.Core.xml",
         "lib/net40/FluentAssertions.Core.dll",
         "lib/net40/FluentAssertions.Core.pdb",
         "lib/net40/FluentAssertions.Core.xml",
@@ -1166,9 +1176,12 @@
         "lib/net45/FluentAssertions.dll",
         "lib/net45/FluentAssertions.pdb",
         "lib/net45/FluentAssertions.xml",
-        "lib/portable-monotouch+monoandroid+xamarin.ios/FluentAssertions.Core.dll",
-        "lib/portable-monotouch+monoandroid+xamarin.ios/FluentAssertions.Core.pdb",
-        "lib/portable-monotouch+monoandroid+xamarin.ios/FluentAssertions.Core.xml",
+        "lib/netstandard1.3/FluentAssertions.Core.XML",
+        "lib/netstandard1.3/FluentAssertions.Core.dll",
+        "lib/netstandard1.3/FluentAssertions.Core.pdb",
+        "lib/netstandard1.3/FluentAssertions.dll",
+        "lib/netstandard1.3/FluentAssertions.pdb",
+        "lib/netstandard1.3/FluentAssertions.xml",
         "lib/portable-net40+sl5+win8+wp8+wpa81/FluentAssertions.Core.dll",
         "lib/portable-net40+sl5+win8+wp8+wpa81/FluentAssertions.Core.pdb",
         "lib/portable-net40+sl5+win8+wp8+wpa81/FluentAssertions.Core.xml",
@@ -1212,6 +1225,12 @@
         "lib/sl5/zh-Hans/System.Xml.Linq.resources.dll",
         "lib/sl5/zh-Hant/Microsoft.CSharp.resources.dll",
         "lib/sl5/zh-Hant/System.Xml.Linq.resources.dll",
+        "lib/uap10.0/FluentAssertions.Core.XML",
+        "lib/uap10.0/FluentAssertions.Core.dll",
+        "lib/uap10.0/FluentAssertions.Core.pdb",
+        "lib/uap10.0/FluentAssertions.dll",
+        "lib/uap10.0/FluentAssertions.pdb",
+        "lib/uap10.0/FluentAssertions.xml",
         "lib/win81/FluentAssertions.Core.dll",
         "lib/win81/FluentAssertions.Core.pdb",
         "lib/win81/FluentAssertions.Core.xml",
@@ -1231,21 +1250,20 @@
         "lib/wpa81/FluentAssertions.dll",
         "lib/wpa81/FluentAssertions.pdb",
         "lib/wpa81/FluentAssertions.pri",
-        "lib/wpa81/FluentAssertions.xml",
-        "lib/xamarin.ios/FluentAssertions.Core.dll",
-        "lib/xamarin.ios/FluentAssertions.Core.pdb",
-        "lib/xamarin.ios/FluentAssertions.Core.xml"
+        "lib/wpa81/FluentAssertions.xml"
       ]
     },
-    "Microsoft.AspNet.SignalR.Core/2.2.0": {
-      "sha512": "y+gx2iv3Da2YIkh/m8BSitF63PAs7sDJY9td9blvgrXzCvKAb664sc/2D7kNSwEiFDLDGCoax6pqe3pRRDSDHQ==",
+    "Machine.Specifications/0.11.0": {
+      "sha512": "5U7xMfGPYZRyaVdl4nrWJ3DG7OVoPofWdjnUC/vLBPgIvwfW2pKwmkee9o1MGIYbsvbaSnJjJLCcQoALu6s8Jg==",
       "type": "package",
-      "path": "Microsoft.AspNet.SignalR.Core/2.2.0",
+      "path": "Machine.Specifications/0.11.0",
       "files": [
-        "Microsoft.AspNet.SignalR.Core.2.2.0.nupkg.sha512",
-        "Microsoft.AspNet.SignalR.Core.nuspec",
-        "lib/net45/Microsoft.AspNet.SignalR.Core.dll",
-        "lib/net45/Microsoft.AspNet.SignalR.Core.xml"
+        "Machine.Specifications.0.11.0.nupkg.sha512",
+        "Machine.Specifications.nuspec",
+        "lib/net35/Machine.Specifications.dll",
+        "lib/net40/Machine.Specifications.dll",
+        "lib/net45/Machine.Specifications.dll",
+        "lib/netstandard1.3/Machine.Specifications.dll"
       ]
     },
     "Microsoft.AspNet.WebApi.Client/5.2.3": {
@@ -1331,30 +1349,6 @@
         "runtime.json"
       ]
     },
-    "Microsoft.Owin/2.1.0": {
-      "sha512": "lk0kK64mlmcmtWX8YOYkZsnZKDoGEzMZhe8e1bcP+FFcgD4f2QfKwvu5Z8Bh8WS0VO7Rgk+DJ0hwW0k+S/UGMg==",
-      "type": "package",
-      "path": "Microsoft.Owin/2.1.0",
-      "files": [
-        "Microsoft.Owin.2.1.0.nupkg.sha512",
-        "Microsoft.Owin.nuspec",
-        "lib/net40/Microsoft.Owin.XML",
-        "lib/net40/Microsoft.Owin.dll",
-        "lib/net45/Microsoft.Owin.XML",
-        "lib/net45/Microsoft.Owin.dll"
-      ]
-    },
-    "Microsoft.Owin.Security/2.1.0": {
-      "sha512": "4n1V0p+O6W1L0xHUM8Cjp2Y+MmmUkiCZv6PvRNIDCJD9zlerBJa2HECo9lUiWC+KuasQJ3QxB1FmipNBxdXXIQ==",
-      "type": "package",
-      "path": "Microsoft.Owin.Security/2.1.0",
-      "files": [
-        "Microsoft.Owin.Security.2.1.0.nupkg.sha512",
-        "Microsoft.Owin.Security.nuspec",
-        "lib/net45/Microsoft.Owin.Security.XML",
-        "lib/net45/Microsoft.Owin.Security.dll"
-      ]
-    },
     "Microsoft.Win32.Primitives/4.0.1": {
       "sha512": "fQnBHO9DgcmkC9dYSJoBqo6sH1VJwJprUHh8F3hbcRlxiQiBUuTntdk8tUwV490OqC2kQUrinGwZyQHTieuXRA==",
       "type": "package",
@@ -1391,54 +1385,59 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "MongoDB.Bson/2.2.3": {
-      "sha512": "AwxyD8qYgy1GQkxQV2uMzymm19QwaNNAER6gf/w8f2dDjcboEve1kv9GEz7mtn2K8p6hYQjhgnvGc+xeh0KLmg==",
+    "MongoDB.Bson/2.3.0": {
+      "sha512": "ImZ8Dstc+ZUxEqgIXJtFuL2+sesc+e0SwF68Wh8P3gSYLyWRL3hacNNgmE9iUgxUyYzVg4Sr55aRsHkHw9IaDw==",
       "type": "package",
-      "path": "MongoDB.Bson/2.2.3",
+      "path": "MongoDB.Bson/2.3.0",
       "files": [
         "License.rtf",
-        "MongoDB.Bson.2.2.3.nupkg.sha512",
+        "MongoDB.Bson.2.3.0.nupkg.sha512",
         "MongoDB.Bson.nuspec",
         "lib/net45/MongoDB.Bson.XML",
-        "lib/net45/MongoDB.Bson.dll"
+        "lib/net45/MongoDB.Bson.dll",
+        "lib/netstandard1.5/MongoDB.Bson.dll",
+        "lib/netstandard1.5/MongoDB.Bson.xml"
       ]
     },
-    "MongoDB.Driver/2.2.3": {
-      "sha512": "ZgRSAv+vxCCYnL/V4mChGNnx8rBnnpDO2S8Fex+G3IrVWRRgJb3rEFOEoyuyR5C5qtOHGVMlGRSSngQwbgV2Dw==",
+    "MongoDB.Driver/2.3.0": {
+      "sha512": "wq4rHgUorkGMn66TNQ4kDlh/u1DihK4bB+LdLgklP6Z7tpq3Y5It25daKrq6zcoLheCoBqhjBsKHUzrfG0KUfQ==",
       "type": "package",
-      "path": "MongoDB.Driver/2.2.3",
+      "path": "MongoDB.Driver/2.3.0",
       "files": [
         "License.rtf",
-        "MongoDB.Driver.2.2.3.nupkg.sha512",
+        "MongoDB.Driver.2.3.0.nupkg.sha512",
         "MongoDB.Driver.nuspec",
         "lib/net45/MongoDB.Driver.XML",
-        "lib/net45/MongoDB.Driver.dll"
+        "lib/net45/MongoDB.Driver.dll",
+        "lib/netstandard1.5/MongoDB.Driver.dll",
+        "lib/netstandard1.5/MongoDB.Driver.xml"
       ]
     },
-    "MongoDB.Driver.Core/2.2.3": {
-      "sha512": "o9/7behJkN5TEG9KvRHM6HUdnsXgLl31pKRQwiCi4xgd7gAleI3sagBcujh7x40gl1NL/u4+uMPRZFpGAaGEQw==",
+    "MongoDB.Driver.Core/2.3.0": {
+      "sha512": "CaMUxfkDkTnRR5iQ/tlVRYtJyoUAl0ToSj9/fWfQb/GYt8veQzSqu6jOLE1+KT+2HMvL6kIhX08tam+xU+iycQ==",
       "type": "package",
-      "path": "MongoDB.Driver.Core/2.2.3",
+      "path": "MongoDB.Driver.Core/2.3.0",
       "files": [
         "License.rtf",
-        "MongoDB.Driver.Core.2.2.3.nupkg.sha512",
+        "MongoDB.Driver.Core.2.3.0.nupkg.sha512",
         "MongoDB.Driver.Core.nuspec",
-        "lib/net45/MongoDB.Driver.Core.dll"
+        "lib/net45/MongoDB.Driver.Core.XML",
+        "lib/net45/MongoDB.Driver.Core.dll",
+        "lib/netstandard1.5/MongoDB.Driver.Core.dll",
+        "lib/netstandard1.5/MongoDB.Driver.Core.xml"
       ]
     },
-    "Moq/4.2.1510.2205": {
-      "sha512": "nqMoHSP5f04/kyKbRUjGgzqtIb5LUUs0H6llHOkQJ5Takx4Ezr2H+59pkIgxkmpbHAcGmc/KsyRZUs1ehnPYag==",
+    "Moq/4.6.38-alpha": {
+      "sha512": "avMAfImICo7K8kkSqZDnwS7qvwyyNzNDQQFtnsI4CxAgi+ESOLFr1j5ucAE2hGoG1k5A0B1+3zfNYhHkozW1EA==",
       "type": "package",
-      "path": "Moq/4.2.1510.2205",
+      "path": "Moq/4.6.38-alpha",
       "files": [
-        "Moq.4.2.1510.2205.nupkg.sha512",
+        "Moq.4.6.38-alpha.nupkg.sha512",
         "Moq.nuspec",
-        "lib/net35/Moq.dll",
-        "lib/net35/Moq.xml",
-        "lib/net40/Moq.dll",
-        "lib/net40/Moq.xml",
-        "lib/sl5/Moq.Silverlight.dll",
-        "lib/sl5/Moq.Silverlight.xml"
+        "lib/net45/Moq.dll",
+        "lib/net45/Moq.xml",
+        "lib/netstandard1.3/Moq.dll",
+        "lib/netstandard1.3/Moq.xml"
       ]
     },
     "NETStandard.Library/1.6.0": {
@@ -1474,41 +1473,6 @@
         "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll",
         "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.xml",
         "tools/install.ps1"
-      ]
-    },
-    "NUnit/3.4.1": {
-      "sha512": "G/9h/ENn8+GvT5DvBqVNrUhIWuxtAr0/oVGN2ljKVUw50EAZYBzeWSy9s6nqMswaQACpQzljql1sWQ/peE2eJg==",
-      "type": "package",
-      "path": "NUnit/3.4.1",
-      "files": [
-        "CHANGES.txt",
-        "LICENSE.txt",
-        "NOTICES.txt",
-        "NUnit.3.4.1.nupkg.sha512",
-        "NUnit.nuspec",
-        "lib/dotnet/nunit.framework.dll",
-        "lib/dotnet/nunit.framework.xml",
-        "lib/net20/NUnit.System.Linq.dll",
-        "lib/net20/nunit.framework.dll",
-        "lib/net20/nunit.framework.xml",
-        "lib/net35/nunit.framework.dll",
-        "lib/net35/nunit.framework.xml",
-        "lib/net40/nunit.framework.dll",
-        "lib/net40/nunit.framework.xml",
-        "lib/net45/nunit.framework.dll",
-        "lib/net45/nunit.framework.xml",
-        "lib/portable-net45+win8+wp8+wpa81+Xamarin.Mac+MonoAndroid10+MonoTouch10+Xamarin.iOS10/nunit.framework.dll",
-        "lib/portable-net45+win8+wp8+wpa81+Xamarin.Mac+MonoAndroid10+MonoTouch10+Xamarin.iOS10/nunit.framework.xml"
-      ]
-    },
-    "Owin/1.0.0": {
-      "sha512": "OseTFniKmyp76mEzOBwIKGBRS5eMoYNkMKaMXOpxx9jv88+b6mh1rSaw43vjBOItNhaLFG3d0a20PfHyibH5sw==",
-      "type": "package",
-      "path": "Owin/1.0.0",
-      "files": [
-        "Owin.1.0.0.nupkg.sha512",
-        "Owin.nuspec",
-        "lib/net40/Owin.dll"
       ]
     },
     "RestSharp/105.2.2": {
@@ -1567,24 +1531,21 @@
         "lib/portable-net4+wp81/SendGrid.SmtpApi.dll"
       ]
     },
-    "StackExchange.Redis/1.1.603": {
-      "sha512": "p1r0jd4HiJHQ72ynTJ/ypNzf4xvCKtPJdqpeS8h9Raa5wakJ8a0Bxw1f8iYvqUOLC2CMfZMkHv3IlNYijktSAw==",
+    "StackExchange.Redis/1.1.605": {
+      "sha512": "3yGtfr2ihBESynl8A1Ynydk+/TEpZZsaXEPf47x48t7mwX5c+1rqtndLEnRIWDcENJKFixaWn03h1amVJcnl1Q==",
       "type": "package",
-      "path": "StackExchange.Redis/1.1.603",
+      "path": "StackExchange.Redis/1.1.605",
       "files": [
-        "StackExchange.Redis.1.1.603.nupkg.sha512",
+        "StackExchange.Redis.1.1.605.nupkg.sha512",
         "StackExchange.Redis.nuspec",
         "lib/net40/StackExchange.Redis.dll",
-        "lib/net40/StackExchange.Redis.dll.config",
-        "lib/net40/StackExchange.Redis.pdb",
         "lib/net40/StackExchange.Redis.xml",
         "lib/net45/StackExchange.Redis.dll",
-        "lib/net45/StackExchange.Redis.pdb",
         "lib/net45/StackExchange.Redis.xml",
         "lib/net46/StackExchange.Redis.dll",
-        "lib/net46/StackExchange.Redis.dll.config",
-        "lib/net46/StackExchange.Redis.pdb",
-        "lib/net46/StackExchange.Redis.xml"
+        "lib/net46/StackExchange.Redis.xml",
+        "lib/netstandard1.5/StackExchange.Redis.dll",
+        "lib/netstandard1.5/StackExchange.Redis.xml"
       ]
     },
     "System.AppContext/4.1.0": {
@@ -4305,77 +4266,77 @@
         "lib/WINDOWSPHONE8/Twilio.Api.WindowsPhone.xml"
       ]
     },
-    "Warden/1.3.0": {
+    "Warden/1.3.1": {
       "type": "project",
       "path": "../../Warden/project.json",
       "msbuildProject": "../../Warden/Warden.xproj"
     },
-    "Warden.Integrations.Cachet/1.3.0": {
+    "Warden.Integrations.Cachet/1.3.1": {
       "type": "project",
       "path": "../../Integrations/Warden.Integrations.Cachet/project.json",
       "msbuildProject": "../../Integrations/Warden.Integrations.Cachet/Warden.Integrations.Cachet.xproj"
     },
-    "Warden.Integrations.HttpApi/1.3.0": {
+    "Warden.Integrations.HttpApi/1.3.1": {
       "type": "project",
       "path": "../../Integrations/Warden.Integrations.HttpApi/project.json",
       "msbuildProject": "../../Integrations/Warden.Integrations.HttpApi/Warden.Integrations.HttpApi.xproj"
     },
-    "Warden.Integrations.MsSql/1.3.0": {
+    "Warden.Integrations.MsSql/1.3.1": {
       "type": "project",
       "path": "../../Integrations/Warden.Integrations.MsSql/project.json",
       "msbuildProject": "../../Integrations/Warden.Integrations.MsSql/Warden.Integrations.MsSql.xproj"
     },
-    "Warden.Integrations.SendGrid/1.3.0": {
+    "Warden.Integrations.SendGrid/1.3.1": {
       "type": "project",
       "path": "../../Integrations/Warden.Integrations.SendGrid/project.json",
       "msbuildProject": "../../Integrations/Warden.Integrations.SendGrid/Warden.Integrations.SendGrid.xproj"
     },
-    "Warden.Integrations.Slack/1.3.0": {
+    "Warden.Integrations.Slack/1.3.1": {
       "type": "project",
       "path": "../../Integrations/Warden.Integrations.Slack/project.json",
       "msbuildProject": "../../Integrations/Warden.Integrations.Slack/Warden.Integrations.Slack.xproj"
     },
-    "Warden.Integrations.Twilio/1.3.0": {
+    "Warden.Integrations.Twilio/1.3.1": {
       "type": "project",
       "path": "../../Integrations/Warden.Integrations.Twilio/project.json",
       "msbuildProject": "../../Integrations/Warden.Integrations.Twilio/Warden.Integrations.Twilio.xproj"
     },
-    "Warden.Watchers.Disk/1.3.0": {
+    "Warden.Watchers.Disk/1.3.1": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Disk/project.json",
       "msbuildProject": "../../Watchers/Warden.Watchers.Disk/Warden.Watchers.Disk.xproj"
     },
-    "Warden.Watchers.MongoDb/1.3.0": {
+    "Warden.Watchers.MongoDb/1.3.1": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.MongoDb/project.json",
       "msbuildProject": "../../Watchers/Warden.Watchers.MongoDb/Warden.Watchers.MongoDb.xproj"
     },
-    "Warden.Watchers.MsSql/1.3.0": {
+    "Warden.Watchers.MsSql/1.3.1": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.MsSql/project.json",
       "msbuildProject": "../../Watchers/Warden.Watchers.MsSql/Warden.Watchers.MsSql.xproj"
     },
-    "Warden.Watchers.Performance/1.3.0": {
+    "Warden.Watchers.Performance/1.3.1": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Performance/project.json",
       "msbuildProject": "../../Watchers/Warden.Watchers.Performance/Warden.Watchers.Performance.xproj"
     },
-    "Warden.Watchers.Process/1.3.0": {
+    "Warden.Watchers.Process/1.3.1": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Process/project.json",
       "msbuildProject": "../../Watchers/Warden.Watchers.Process/Warden.Watchers.Process.xproj"
     },
-    "Warden.Watchers.Redis/1.3.0": {
+    "Warden.Watchers.Redis/1.3.1": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Redis/project.json",
       "msbuildProject": "../../Watchers/Warden.Watchers.Redis/Warden.Watchers.Redis.xproj"
     },
-    "Warden.Watchers.Server/1.3.0": {
+    "Warden.Watchers.Server/1.3.1": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Server/project.json",
       "msbuildProject": "../../Watchers/Warden.Watchers.Server/Warden.Watchers.Server.xproj"
     },
-    "Warden.Watchers.Web/1.3.0": {
+    "Warden.Watchers.Web/1.3.1": {
       "type": "project",
       "path": "../../Watchers/Warden.Watchers.Web/project.json",
       "msbuildProject": "../../Watchers/Warden.Watchers.Web/Warden.Watchers.Web.xproj"
@@ -4383,28 +4344,28 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "FluentAssertions >= 4.3.2",
-      "Microsoft.AspNet.SignalR.Core >= 2.2.0",
+      "FluentAssertions >= 4.14.0",
+      "Machine.Specifications >= 0.11.0",
       "Microsoft.CSharp >= 4.0.1",
-      "Moq >= 4.2.1510.2205",
-      "NUnit >= 3.4.1",
+      "Moq >= 4.6.38-alpha",
       "System.Linq >= 4.0.1",
       "System.Linq.Queryable >= 4.0.1",
-      "Warden >= 1.3.0",
-      "Warden.Integrations.Cachet >= 1.3.0",
-      "Warden.Integrations.HttpApi >= 1.3.0",
-      "Warden.Integrations.MsSql >= 1.3.0",
-      "Warden.Integrations.SendGrid >= 1.3.0",
-      "Warden.Integrations.Slack >= 1.3.0",
-      "Warden.Integrations.Twilio >= 1.3.0",
-      "Warden.Watchers.Disk >= 1.3.0",
-      "Warden.Watchers.MongoDb >= 1.3.0",
-      "Warden.Watchers.MsSql >= 1.3.0",
-      "Warden.Watchers.Performance >= 1.3.0",
-      "Warden.Watchers.Process >= 1.3.0",
-      "Warden.Watchers.Redis >= 1.3.0",
-      "Warden.Watchers.Server >= 1.3.0",
-      "Warden.Watchers.Web >= 1.3.0"
+      "Warden >= 1.3.1",
+      "Warden.Integrations.Cachet >= 1.3.1",
+      "Warden.Integrations.HttpApi >= 1.3.1",
+      "Warden.Integrations.MsSql >= 1.3.1",
+      "Warden.Integrations.SendGrid >= 1.3.1",
+      "Warden.Integrations.Slack >= 1.3.1",
+      "Warden.Integrations.Twilio >= 1.3.1",
+      "Warden.Watchers.Disk >= 1.3.1",
+      "Warden.Watchers.MongoDb >= 1.3.1",
+      "Warden.Watchers.MsSql >= 1.3.1",
+      "Warden.Watchers.Performance >= 1.3.1",
+      "Warden.Watchers.Process >= 1.3.1",
+      "Warden.Watchers.Redis >= 1.3.1",
+      "Warden.Watchers.Server >= 1.3.1",
+      "Warden.Watchers.Web >= 1.3.1",
+      "dotnet-test-mspec"
     ],
     ".NETFramework,Version=v4.6.1": []
   },

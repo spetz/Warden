@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using FluentAssertions;
 using Moq;
-using NUnit.Framework;
 using Warden.Core;
 using Warden.Integrations.HttpApi;
+using Machine.Specifications;
+using It = Machine.Specifications.It;
 
 namespace Warden.Tests.Integrations.HttpApi
 {
@@ -30,16 +31,6 @@ namespace Warden.Tests.Integrations.HttpApi
 
         It should_have_a_specific_reason =
             () => Exception.Message.Should().Contain("HTTP API Integration configuration has not been provided.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("HttpApi integration initialization")]
@@ -52,15 +43,6 @@ namespace Warden.Tests.Integrations.HttpApi
             .Build());
 
         It should_fail = () => Exception.Should().BeOfType<UriFormatException>();
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-        }
     }
 
     [Subject("HttpApi integration execution")]
@@ -83,15 +65,6 @@ namespace Warden.Tests.Integrations.HttpApi
         It should_invoke_post_async_method_only_once = () => HttpServiceMock.Verify(x =>
             x.PostAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<string>(), Moq.It.IsAny<IDictionary<string, string>>(),
                 Moq.It.IsAny<TimeSpan?>(), Moq.It.IsAny<bool>()), Times.Once);
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_post_async_method_only_once();
-        }
     }
 
     [Subject("HttpApi integration execution")]
@@ -116,16 +89,6 @@ namespace Warden.Tests.Integrations.HttpApi
         It should_fail = () => Exception.Should().BeOfType<ArgumentNullException>();
 
         It should_have_a_specific_reason = () => Exception.Message.Should().Contain("Warden iteration can not be null.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("HttpApi integration execution")]
@@ -152,16 +115,6 @@ namespace Warden.Tests.Integrations.HttpApi
         It should_fail = () => Exception.Should().BeOfType<ArgumentException>();
 
         It should_have_a_specific_reason = () => Exception.Message.Should().Contain("Warden name can not be empty.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("HttpApi integration execution")]
@@ -191,14 +144,5 @@ namespace Warden.Tests.Integrations.HttpApi
         It should_invoke_post_async_method_only_once = () => HttpServiceMock.Verify(x =>
             x.PostAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<string>(), Moq.It.IsAny<IDictionary<string, string>>(),
                 Moq.It.IsAny<TimeSpan?>(), Moq.It.IsAny<bool>()), Times.Once);
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_post_async_method_only_once();
-        }
     }
 }

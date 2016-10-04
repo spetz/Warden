@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
-using NUnit.Framework;
 using Warden.Watchers;
 using Warden.Watchers.Disk;
+using Machine.Specifications;
+using It = Machine.Specifications.It;
 
 namespace Warden.Tests.Watchers.Disk
 {
@@ -29,16 +30,6 @@ namespace Warden.Tests.Watchers.Disk
 
         It should_fail = () => Exception.Should().BeOfType<ArgumentNullException>();
         It should_have_a_specific_reason = () => Exception.Message.Should().Contain("Disk Watcher configuration has not been provided.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("Disk watcher execution")]
@@ -85,18 +76,6 @@ namespace Warden.Tests.Watchers.Disk
             DiskCheckResult.DiskCheck.FreeSpace.ShouldBeEquivalentTo(FreeSpace);
             DiskCheckResult.DiskCheck.UsedSpace.ShouldBeEquivalentTo(UsedSpace);
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_disk_check_async_method_only_once();
-            should_have_valid_check_result();
-            should_have_check_result_of_type_disk();
-            should_have_set_values_in_disk_check_result();
-        }
     }
 
     [Subject("Disk watcher execution")]
@@ -144,18 +123,6 @@ namespace Warden.Tests.Watchers.Disk
             DiskCheckResult.DiskCheck.FreeSpace.ShouldBeEquivalentTo(FreeSpace);
             DiskCheckResult.DiskCheck.UsedSpace.ShouldBeEquivalentTo(UsedSpace);
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_disk_check_async_method_only_once();
-            should_have_valid_check_result();
-            should_have_check_result_of_type_disk();
-            should_have_set_values_in_disk_check_result();
-        }
     }
 
     [Subject("Disk watcher execution")]
@@ -203,18 +170,6 @@ namespace Warden.Tests.Watchers.Disk
             DiskCheckResult.DiskCheck.FreeSpace.ShouldBeEquivalentTo(FreeSpace);
             DiskCheckResult.DiskCheck.UsedSpace.ShouldBeEquivalentTo(UsedSpace);
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_disk_check_async_method_only_once();
-            should_have_valid_check_result();
-            should_have_check_result_of_type_disk();
-            should_have_set_values_in_disk_check_result();
-        }
     }
 
     [Subject("Disk watcher execution")]
@@ -262,18 +217,6 @@ namespace Warden.Tests.Watchers.Disk
             DiskCheckResult.DiskCheck.FreeSpace.ShouldBeEquivalentTo(FreeSpace);
             DiskCheckResult.DiskCheck.UsedSpace.ShouldBeEquivalentTo(UsedSpace);
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_disk_check_async_method_only_once();
-            should_have_invalid_check_result();
-            should_have_check_result_of_type_disk();
-            should_have_set_values_in_disk_check_result();
-        }
     }
 
     [Subject("Disk watcher execution")]
@@ -323,17 +266,5 @@ namespace Warden.Tests.Watchers.Disk
             DiskCheckResult.DiskCheck.FreeSpace.ShouldBeEquivalentTo(FreeSpace);
             DiskCheckResult.DiskCheck.UsedSpace.ShouldBeEquivalentTo(UsedSpace);
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_disk_check_async_method_only_once();
-            should_have_invalid_check_result();
-            should_have_check_result_of_type_disk();
-            should_have_set_values_in_disk_check_result();
-        }
     }
 }

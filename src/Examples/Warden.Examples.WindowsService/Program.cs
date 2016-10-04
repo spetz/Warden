@@ -7,11 +7,10 @@ namespace Warden.Examples.WindowsService
     {
         private const string ServiceName = "Warden";
 
-        public int Main(string[] args)
+        public static void Main(string[] args)
         {
             args = args.Where(a => a != ServiceName).ToArray();
-
-            return (int) HostFactory.Run(x =>
+            HostFactory.Run(x =>
             {
                 x.ApplyCommandLine(string.Join(" ", args));
                 x.Service<WardenService>(service =>

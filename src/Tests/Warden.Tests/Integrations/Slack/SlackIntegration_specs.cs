@@ -1,8 +1,9 @@
 ﻿using System;
 using FluentAssertions;
 using Moq;
-using NUnit.Framework;
 using Warden.Integrations.Slack;
+using Machine.Specifications;
+using It = Machine.Specifications.It;
 
 namespace Warden.Tests.Integrations.Slack
 {
@@ -25,16 +26,6 @@ namespace Warden.Tests.Integrations.Slack
 
         It should_have_a_specific_reason =
             () => Exception.Message.Should().Contain("Slack Integration configuration has not been provided.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("Slack integration initialization")]
@@ -47,15 +38,6 @@ namespace Warden.Tests.Integrations.Slack
             .Build());
 
         It should_fail = () => Exception.Should().BeOfType<UriFormatException>();
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-        }
     }
 
     [Subject("Slack integration execution")]
@@ -78,14 +60,5 @@ namespace Warden.Tests.Integrations.Slack
         It should_invoke_send_message_async_method_only_once = () => SlackServiceMock.Verify(x =>
             x.SendMessageAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<string>(), Moq.It.IsAny<string>(),
                 Moq.It.IsAny<string>(), Moq.It.IsAny<TimeSpan?>(), Moq.It.IsAny<bool>()), Times.Once);
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_send_message_async_method_only_once();
-        }
     }
 }

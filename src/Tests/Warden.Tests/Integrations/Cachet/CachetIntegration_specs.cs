@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using FluentAssertions;
 using Moq;
-using NUnit.Framework;
 using Warden.Integrations.Cachet;
 using Warden.Watchers;
+using Machine.Specifications;
+using It = Machine.Specifications.It;
 
 namespace Warden.Tests.Integrations.Cachet
 {
@@ -30,16 +31,6 @@ namespace Warden.Tests.Integrations.Cachet
 
         It should_have_a_specific_reason =
             () => Exception.Message.Should().Contain("Cachet Integration configuration has not been provided.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("Cachet integration initialization")]
@@ -54,16 +45,6 @@ namespace Warden.Tests.Integrations.Cachet
         It should_fail = () => Exception.Should().BeOfType<ArgumentException>();
 
         It should_have_a_specific_reason =  () => Exception.Message.Should().Contain("API URL can not be empty.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("Cachet integration initialization")]
@@ -78,16 +59,6 @@ namespace Warden.Tests.Integrations.Cachet
         It should_fail = () => Exception.Should().BeOfType<ArgumentException>();
 
         It should_have_a_specific_reason = () => Exception.Message.Should().Contain("API URL can not be empty.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
 
@@ -103,16 +74,6 @@ namespace Warden.Tests.Integrations.Cachet
         It should_fail = () => Exception.Should().BeOfType<ArgumentException>();
 
         It should_have_a_specific_reason = () => Exception.Message.Should().Contain("Access token can not be empty.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("Cachet integration initialization")]
@@ -127,16 +88,6 @@ namespace Warden.Tests.Integrations.Cachet
         It should_fail = () => Exception.Should().BeOfType<ArgumentException>();
 
         It should_have_a_specific_reason = () => Exception.Message.Should().Contain("Username can not be empty.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("Cachet integration initialization")]
@@ -151,16 +102,6 @@ namespace Warden.Tests.Integrations.Cachet
         It should_fail = () => Exception.Should().BeOfType<ArgumentException>();
 
         It should_have_a_specific_reason = () => Exception.Message.Should().Contain("Password can not be empty.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("Cachet integration initialization")]
@@ -173,16 +114,6 @@ namespace Warden.Tests.Integrations.Cachet
         Because of = () => Integration = CachetIntegration.Create(Configuration);
 
         It should_initialize_cachet_integration = () => Integration.Should().NotBeNull();
-
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_initialize_cachet_integration();
-        }
     }
 
     [Subject("Cachet integration initialization")]
@@ -195,15 +126,5 @@ namespace Warden.Tests.Integrations.Cachet
         Because of = () => Integration = CachetIntegration.Create(Configuration);
 
         It should_initialize_cachet_integration = () => Integration.Should().NotBeNull();
-
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_initialize_cachet_integration();
-        }
     }
 }

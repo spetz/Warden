@@ -5,10 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
-using NUnit.Framework;
 using Warden.Core;
 using Warden.Watchers;
 using Warden.Watchers.MsSql;
+using Machine.Specifications;
+using It = Machine.Specifications.It;
 
 namespace Warden.Tests.Watchers.MsSql
 {
@@ -41,15 +42,6 @@ namespace Warden.Tests.Watchers.MsSql
 
         It should_have_a_specific_reason =
             () => Exception.Message.Should().Contain("MSSQL Watcher configuration has not been provided.");
-
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("MSSQL watcher execution")]
@@ -93,19 +85,6 @@ namespace Warden.Tests.Watchers.MsSql
             MsSqlCheckResult.Query.Should().BeEmpty();
             MsSqlCheckResult.QueryResult.Should().BeEmpty();
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_open_method_only_once();
-            should_not_invoke_query_async_method();
-            should_have_valid_check_result();
-            should_have_check_result_of_type_mssql();
-            should_have_set_values_in_mssl_check_result();
-        }
     }
 
     [Subject("MSSQL watcher execution")]
@@ -153,19 +132,6 @@ namespace Warden.Tests.Watchers.MsSql
             MsSqlCheckResult.Query.Should().NotBeEmpty();
             MsSqlCheckResult.QueryResult.Should().NotBeEmpty();
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_open_method_only_once();
-            should_invoke_query_async_method_only_once();
-            should_have_valid_check_result();
-            should_have_check_result_of_type_mssql();
-            should_have_set_values_in_mssl_check_result();
-        }
     }
 
     [Subject("MSSQL watcher execution")]
@@ -192,16 +158,6 @@ namespace Warden.Tests.Watchers.MsSql
 
         It should_invoke_open_method_only_once = () => DbConnectionMock.Verify(x => x.Open(), Times.Once);
         It should_fail = () => Exception.Should().BeOfType<WatcherException>();
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_open_method_only_once();
-            should_fail();
-        }
     }
 
     [Subject("MSSQL watcher execution")]
@@ -230,17 +186,6 @@ namespace Warden.Tests.Watchers.MsSql
 
         It should_invoke_open_method_only_once = () => DbConnectionMock.Verify(x => x.Open(), Times.Once);
         It should_fail = () => Exception.Should().BeOfType<WatcherException>();
-
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_open_method_only_once();
-            should_fail();
-        }
     }
 
     [Subject("MSSQL watcher execution")]
@@ -289,19 +234,6 @@ namespace Warden.Tests.Watchers.MsSql
             MsSqlCheckResult.Query.Should().NotBeEmpty();
             MsSqlCheckResult.QueryResult.Should().NotBeEmpty();
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_open_method_only_once();
-            should_invoke_query_async_method_only_once();
-            should_have_valid_check_result();
-            should_have_check_result_of_type_mssql();
-            should_have_set_values_in_mssl_check_result();
-        }
     }
 
     [Subject("MSSQL watcher execution")]
@@ -350,19 +282,6 @@ namespace Warden.Tests.Watchers.MsSql
             MsSqlCheckResult.Query.Should().NotBeEmpty();
             MsSqlCheckResult.QueryResult.Should().NotBeEmpty();
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_open_method_only_once();
-            should_invoke_query_async_method_only_once();
-            should_have_valid_check_result();
-            should_have_check_result_of_type_mssql();
-            should_have_set_values_in_mssl_check_result();
-        }
     }
 
 
@@ -412,19 +331,6 @@ namespace Warden.Tests.Watchers.MsSql
             MsSqlCheckResult.Query.Should().NotBeEmpty();
             MsSqlCheckResult.QueryResult.Should().NotBeEmpty();
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_open_method_only_once();
-            should_invoke_query_async_method_only_once();
-            should_have_invalid_check_result();
-            should_have_check_result_of_type_mssql();
-            should_have_set_values_in_mssl_check_result();
-        }
     }
 
     [Subject("MSSQL watcher execution")]
@@ -473,18 +379,5 @@ namespace Warden.Tests.Watchers.MsSql
             MsSqlCheckResult.Query.Should().NotBeEmpty();
             MsSqlCheckResult.QueryResult.Should().NotBeEmpty();
         };
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_open_method_only_once();
-            should_invoke_query_async_method_only_once();
-            should_have_invalid_check_result();
-            should_have_check_result_of_type_mssql();
-            should_have_set_values_in_mssl_check_result();
-        }
     }
 }

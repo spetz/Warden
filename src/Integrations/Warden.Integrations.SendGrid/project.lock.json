@@ -64,7 +64,7 @@
           "lib/net45/_._": {}
         }
       },
-      "Warden/1.3.0": {
+      "Warden/1.3.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
@@ -96,8 +96,8 @@
     "Newtonsoft.Json/7.0.1": {
       "sha512": "q3V4KLetMLnt1gpAVWgtXnHjKs0UG/RalBc29u2ZKxd5t5Ze4JBL5WiiYIklJyK/5CRiIiNwigVQUo0FgbsuWA==",
       "type": "package",
+      "path": "Newtonsoft.Json/7.0.1",
       "files": [
-        "Newtonsoft.Json.7.0.1.nupkg",
         "Newtonsoft.Json.7.0.1.nupkg.sha512",
         "Newtonsoft.Json.nuspec",
         "lib/net20/Newtonsoft.Json.dll",
@@ -203,7 +203,7 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "Warden/1.3.0": {
+    "Warden/1.3.1": {
       "type": "project",
       "path": "../../Warden/project.json",
       "msbuildProject": "../../Warden/Warden.xproj"
@@ -212,7 +212,7 @@
   "projectFileDependencyGroups": {
     "": [
       "Sendgrid >= 6.3.4",
-      "Warden >= 1.3.0"
+      "Warden >= 1.3.1"
     ],
     ".NETFramework,Version=v4.6.1": []
   },

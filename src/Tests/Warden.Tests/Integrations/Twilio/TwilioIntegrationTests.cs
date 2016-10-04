@@ -1,8 +1,9 @@
 ﻿using System;
 using FluentAssertions;
 using Moq;
-using NUnit.Framework;
 using Warden.Integrations.Twilio;
+using Machine.Specifications;
+using It = Machine.Specifications.It;
 
 namespace Warden.Tests.Integrations.Twilio
 {
@@ -28,16 +29,6 @@ namespace Warden.Tests.Integrations.Twilio
 
         It should_have_a_specific_reason =
             () => Exception.Message.Should().Contain("Twilio Integration configuration has not been provided.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("Twilio integration initialization")]
@@ -53,16 +44,6 @@ namespace Warden.Tests.Integrations.Twilio
 
         It should_have_a_specific_reason =
             () => Exception.Message.Should().Contain("Account SID can not be empty.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("Twilio integration initialization")]
@@ -78,16 +59,6 @@ namespace Warden.Tests.Integrations.Twilio
 
         It should_have_a_specific_reason =
             () => Exception.Message.Should().Contain("Authentication token can not be empty.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("Twilio integration initialization")]
@@ -103,16 +74,6 @@ namespace Warden.Tests.Integrations.Twilio
 
         It should_have_a_specific_reason =
             () => Exception.Message.Should().Contain("SMS sender can not be empty.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("Twilio integration execution")]
@@ -133,16 +94,6 @@ namespace Warden.Tests.Integrations.Twilio
 
         It should_have_a_specific_reason =
             () => Exception.Message.Should().Contain("SMS receiver(s) have not been defined.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("Twilio integration execution")]
@@ -162,16 +113,6 @@ namespace Warden.Tests.Integrations.Twilio
 
         It should_have_a_specific_reason =
             () => Exception.Message.Should().Contain("SMS body has not been defined.");
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_fail();
-            should_have_a_specific_reason();
-        }
     }
 
     [Subject("Twilio integration execution")]
@@ -198,14 +139,5 @@ namespace Warden.Tests.Integrations.Twilio
 
         It should_invoke_send_message_async_method_twice = () => TwilioServiceMock.Verify(x =>
             x.SendSmsAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<string>(), Moq.It.IsAny<string>()), Times.Exactly(Receivers.Length));
-
-        //TODO: Remove when MSpec works with DNX 
-        [Test]
-        public void RunTest()
-        {
-            context();
-            of();
-            should_invoke_send_message_async_method_twice();
-        }
     }
 }
