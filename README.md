@@ -71,12 +71,12 @@ Install-Package Warden
 | Project              |   .NET 4.6.1  |  DotNet 5.6  |            Comment              |      
 |----------------------|:-------------:|:------------:|---------------------------------
 | **[Warden Core](https://github.com/spetz/Warden/wiki/Warden)**         |        +      |        +     |     
-| **[Disk Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Disk)**         |        +      |        -     | _System.IO not compatible_
-| **[MongoDB Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-MongoDB)**      |        +      |        -     | _MongoDB Driver not compatible_
+| **[Disk Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Disk)**         |        +      |        +     |
+| **[MongoDB Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-MongoDB)**      |        +      |        +     |
 | **[MS SQL Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-MSSQL)**        |        +      |        +     | 
 | **[Performance Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Performance)**  |        +      |        -     | _PerformanceCounter not compatible_
 | **[Process Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Process)**          |        +      |        +     |
-| **[Redis Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Redis)**        |        +      |        -     | _StackExchange.Redis not compatible_
+| **[Redis Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Redis)**        |        +      |        +     |
 | **[Server Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Server)**  |        +      |        -     | _System.Net.Sockets not compatible_
 | **[Web Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Web)**          |        +      |        +     |
 | **[SSL Watcher (3rd party)](https://github.com/janpieterz/Warden.Watchers.SSL)** |        +      |        +     |
@@ -89,7 +89,7 @@ Install-Package Warden
 | **[Slack Integration](https://github.com/spetz/Warden/wiki/Integration-with-Slack)** |        +      |        +     | 
 | **[Twilio Integration](https://github.com/spetz/Warden/wiki/Integration-with-Twilio )** |        +      |        -     | _Twilio  not compatible_
 | **[Seq Integration (3rd party)](https://github.com/janpieterz/Warden.Integrations.Seq)** |        +      |        +     | 
-| **[Web Panel](https://github.com/spetz/Warden/wiki/Web-Panel)** |        +      |        -     | _Some external libs are not compatible (e.g. MongoDB Driver)_
+| **[Web Panel](https://github.com/spetz/Warden/wiki/Web-Panel)** |        +      |        -     | _Some external libs are not compatible_
 
 **Quick start**:
 ----------------
