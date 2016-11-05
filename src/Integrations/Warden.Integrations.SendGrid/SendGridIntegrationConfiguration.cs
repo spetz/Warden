@@ -9,16 +9,6 @@ namespace Warden.Integrations.SendGrid
     public class SendGridIntegrationConfiguration
     {
         /// <summary>
-        /// Username of the SendGrid account.
-        /// </summary>
-        public string Username { get; protected set; }
-
-        /// <summary>
-        /// Password of the SendGrid account.
-        /// </summary>
-        public string Password { get; protected set; }
-
-        /// <summary>
         /// API key of the SendGrid account.
         /// </summary>
         public string ApiKey { get; protected set; }
@@ -66,31 +56,10 @@ namespace Warden.Integrations.SendGrid
         /// <summary>
         /// Factory method for creating a new instance of fluent builder for the SendGridIntegrationConfiguration.
         /// </summary>
-        /// <param name="username">Username of the SendGrid account.</param>
-        /// <param name="password">Password of the SendGrid account.</param>
-        /// <param name="sender">email address of the message sender.</param>
-        /// <returns>Instance of fluent builder for the SendGridIntegrationConfiguration.</returns>
-        public static Builder Create(string username, string password, string sender) => new Builder(username, password, sender);
-
-        /// <summary>
-        /// Factory method for creating a new instance of fluent builder for the SendGridIntegrationConfiguration.
-        /// </summary>
         /// <param name="apiKey">API key of the SendGrid account.</param>
         /// <param name="sender">Email address of the message sender.</param>
         /// <returns>Instance of fluent builder for the SendGridIntegrationConfiguration.</returns>
         public static Builder Create(string apiKey, string sender) => new Builder(apiKey, sender);
-
-        protected SendGridIntegrationConfiguration(string username, string password, string sender)
-        {
-            if (string.IsNullOrWhiteSpace(username))
-                throw new ArgumentException("Username can not be empty.", nameof(username));
-            if (string.IsNullOrWhiteSpace(password))
-                throw new ArgumentException("Password can not be empty.", nameof(password));
-
-            ValidateAndSetDefaultParameters(sender);
-            Username = username;
-            Password = password;
-        }
 
         protected SendGridIntegrationConfiguration(string apiKey, string sender)
         {
@@ -120,11 +89,6 @@ namespace Warden.Integrations.SendGrid
         public class Builder
         {
             protected readonly SendGridIntegrationConfiguration Configuration;
-
-            public Builder(string username, string password, string sender)
-            {
-                Configuration = new SendGridIntegrationConfiguration(username, password, sender);
-            }
 
             public Builder(string apiKey, string sender)
             {

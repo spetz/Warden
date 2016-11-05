@@ -3,7 +3,6 @@ using FluentAssertions;
 using Moq;
 using Warden.Integrations.SendGrid;
 using Machine.Specifications;
-using SendGrid;
 using It = Machine.Specifications.It;
 
 namespace Warden.Tests.Integrations.SendGrid
@@ -15,8 +14,6 @@ namespace Warden.Tests.Integrations.SendGrid
         protected static Exception Exception { get; set; }
         protected static string Sender = "noreply@email.com";
         protected static string ApiKey = "api-key";
-        protected static string Username = "test";
-        protected static string Password = "test";
         protected static string[] Receivers = { "test1@email.com", "test2@email.com" };
     }
 
@@ -46,36 +43,6 @@ namespace Warden.Tests.Integrations.SendGrid
 
         It should_have_a_specific_reason =
             () => Exception.Message.Should().Contain("API key can not be empty.");
-    }
-
-    [Subject("SendGrid integration initialization")]
-    public class when_initializing_with_empty_username : SendGridIntegration_specs
-    {
-        Establish context = () => { };
-
-        Because of = () => Exception = Catch.Exception(() => Configuration = SendGridIntegrationConfiguration
-            .Create(string.Empty, Password, Sender)
-            .Build());
-
-        It should_fail = () => Exception.Should().BeOfType<ArgumentException>();
-
-        It should_have_a_specific_reason =
-            () => Exception.Message.Should().Contain("Username can not be empty.");
-    }
-
-    [Subject("SendGrid integration initialization")]
-    public class when_initializing_with_empty_password : SendGridIntegration_specs
-    {
-        Establish context = () => { };
-
-        Because of = () => Exception = Catch.Exception(() => Configuration = SendGridIntegrationConfiguration
-            .Create(Username, string.Empty, Sender)
-            .Build());
-
-        It should_fail = () => Exception.Should().BeOfType<ArgumentException>();
-
-        It should_have_a_specific_reason =
-            () => Exception.Message.Should().Contain("Password can not be empty.");
     }
 
     [Subject("SendGrid integration initialization")]
@@ -133,7 +100,7 @@ namespace Warden.Tests.Integrations.SendGrid
         };
 
         It should_invoke_send_message_async_method_only_once = () => EmailSenderMock.Verify(x =>
-            x.SendMessageAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<SendGridMessage>()), Times.Once);
+            x.SendMessageAsync(ApiKey, Moq.It.IsAny<SendGridEmailMessage>()), Times.Once);
     }
 
     [Subject("SendGrid integration execution")]
@@ -145,7 +112,7 @@ namespace Warden.Tests.Integrations.SendGrid
         {
             EmailSenderMock = new Mock<IEmailSender>();
             Configuration = SendGridIntegrationConfiguration
-                .Create(Username, Password, Sender)
+                .Create(ApiKey, Sender)
                 .WithDefaultReceivers(Receivers)
                 .WithEmailSenderProvider(() => EmailSenderMock.Object)
                 .Build();
@@ -158,8 +125,7 @@ namespace Warden.Tests.Integrations.SendGrid
         };
 
         It should_invoke_send_message_async_method_only_once = () => EmailSenderMock.Verify(x =>
-            x.SendMessageAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<string>(),
-                Moq.It.IsAny<SendGridMessage>()), Times.Once);
+            x.SendMessageAsync(ApiKey, Moq.It.IsAny<SendGridEmailMessage>()), Times.Once);
     }
 
     [Subject("SendGrid integration execution")]
@@ -185,7 +151,7 @@ namespace Warden.Tests.Integrations.SendGrid
             () => Exception.Message.Should().Contain("Email message receivers have not been defined.");
 
         It should_not_invoke_send_message_async_method = () => EmailSenderMock.Verify(x =>
-            x.SendMessageAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<SendGridMessage>()), Times.Never);
+            x.SendMessageAsync(ApiKey, Moq.It.IsAny<SendGridEmailMessage>()), Times.Never);
     }
 
     [Subject("SendGrid integration execution")]
@@ -198,7 +164,7 @@ namespace Warden.Tests.Integrations.SendGrid
         {
             EmailSenderMock = new Mock<IEmailSender>();
             Configuration = SendGridIntegrationConfiguration
-                .Create(Username, Password, Sender)
+                .Create(ApiKey, Sender)
                 .WithEmailSenderProvider(() => EmailSenderMock.Object)
                 .Build();
             Integration = SendGridIntegration.Create(Configuration);
@@ -212,7 +178,6 @@ namespace Warden.Tests.Integrations.SendGrid
             () => Exception.Message.Should().Contain("Email message receivers have not been defined.");
 
         It should_not_invoke_send_message_async_method = () => EmailSenderMock.Verify(x =>
-            x.SendMessageAsync(Moq.It.IsAny<string>(), Moq.It.IsAny<string>(),
-                Moq.It.IsAny<SendGridMessage>()), Times.Never);
+            x.SendMessageAsync(ApiKey, Moq.It.IsAny<SendGridEmailMessage>()), Times.Never);
     }
 }

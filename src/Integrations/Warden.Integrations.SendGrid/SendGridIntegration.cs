@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mail;
 using System.Threading.Tasks;
-using SendGrid;
 
 namespace Warden.Integrations.SendGrid
 {
@@ -67,10 +65,15 @@ namespace Warden.Integrations.SendGrid
         {
             var emailMessage = CreateMessage(subject, receivers);
             var body = _configuration.DefaultMessage + message;
-            if (_configuration.UseHtmlBody)
-                emailMessage.Html = body;
-            else
-                emailMessage.Text = body;
+            var content = new SendGridEmailMessage.MessageContent
+            {
+                Value = body,
+                Type = _configuration.UseHtmlBody ? "text/plain" : "text/html"
+            };
+            emailMessage.Content = new List<SendGridEmailMessage.MessageContent>
+            {
+                content
+            };
 
             await SendMessageAsync(emailMessage);
         }
@@ -163,10 +166,8 @@ namespace Warden.Integrations.SendGrid
         {
             var emailMessage = CreateMessage(subject, receivers);
             var emailTemplateId = templateId.Or(_configuration.DefaultTemplateId);
-            //Space and some empty html tag are required if the template is being used
-            emailMessage.Text = " ";
-            emailMessage.Html = "<span></span>";
-            emailMessage.EnableTemplateEngine(emailTemplateId);
+            emailMessage.TemplateId = emailTemplateId;
+            emailMessage.Personalizations.First().Substitutions = new Dictionary<string, List<string>>();
             var customParameters = parameters ?? Enumerable.Empty<EmailTemplateParameter>();
             var templateParameters = (_configuration.DefaultTemplateParameters.Any()
                 ? _configuration.DefaultTemplateParameters.Union(customParameters)
@@ -174,13 +175,13 @@ namespace Warden.Integrations.SendGrid
 
             foreach (var parameter in templateParameters)
             {
-                emailMessage.AddSubstitution(parameter.ReplacementTag, parameter.Values.ToList());
+                emailMessage.Personalizations.First().Substitutions[parameter.ReplacementTag] = parameter.Values.ToList();
             }
 
             await SendMessageAsync(emailMessage);
         }
 
-        private SendGridMessage CreateMessage(string subject = null, params string[] receivers)
+        private SendGridEmailMessage CreateMessage(string subject = null, params string[] receivers)
         {
             var customReceivers = receivers ?? Enumerable.Empty<string>();
             var emailReceivers = (_configuration.DefaultReceivers.Any()
@@ -190,44 +191,29 @@ namespace Warden.Integrations.SendGrid
                 throw new ArgumentException("Email message receivers have not been defined.", nameof(emailReceivers));
 
             emailReceivers.ValidateEmails(nameof(receivers));
-            var message = new SendGridMessage
+            var emailMessage = new SendGridEmailMessage
             {
-                From = new MailAddress(_configuration.Sender),
-                Subject = subject.Or(_configuration.DefaultSubject)
+                Subject = subject,
+                From = new SendGridEmailMessage.Person
+                {
+                    Email = _configuration.Sender
+                }
             };
-            message.AddTo(emailReceivers);
+            emailMessage.Personalizations.Add(new SendGridEmailMessage.Personalization
+            {
+                To = receivers.Select(x => new SendGridEmailMessage.Person
+                {
+                    Email = x
+                }).ToList()
+            });
 
-            return message;
+            return emailMessage;
         }
 
-        private async Task SendMessageAsync(SendGridMessage message)
+        private async Task SendMessageAsync(SendGridEmailMessage message)
         {
             var emailSender = _configuration.EmailSenderProvider();
-            if (string.IsNullOrWhiteSpace(_configuration.ApiKey))
-            {
-                await emailSender.SendMessageAsync(_configuration.Username, _configuration.Password, message);
-
-                return;
-            }
-
             await emailSender.SendMessageAsync(_configuration.ApiKey, message);
-        }
-
-        /// <summary>
-        /// Factory method for creating a new instance of SendGridIntegration.
-        /// </summary>
-        /// <param name="username">Username of the SendGrid account.</param>
-        /// <param name="password">Password of the SendGrid account.</param>
-        /// <param name="sender">Email address of the message sender.</param>
-        /// <param name="configurator">Lambda expression for configuring the SendGrid integration.</param>
-        /// <returns>Instance of SendGridIntegration.</returns>
-        public static SendGridIntegration Create(string username, string password, string sender, 
-            Action<SendGridIntegrationConfiguration.Builder> configurator)
-        {
-            var config = new SendGridIntegrationConfiguration.Builder(username, password, sender);
-            configurator?.Invoke(config);
-
-            return Create(config.Build());
         }
 
         /// <summary>

@@ -21,25 +21,6 @@ namespace Warden.Integrations.SendGrid
         /// Extension method for adding the SendGrid integration to the the WardenConfiguration.
         /// </summary>
         /// <param name="builder">Instance of the Warden configuration builder.</param>
-        /// <param name="username">Username of the SendGrid account.</param>
-        /// <param name="password">Password of the SendGrid account.</param>
-        /// <param name="sender">Email address of the message sender.</param>
-        /// <param name="configurator">Optional lambda expression for configuring the SendGridIntegration.</param>
-        /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
-        public static WardenConfiguration.Builder IntegrateWithSendGrid(
-            this WardenConfiguration.Builder builder,
-            string username, string password, string sender,
-            Action<SendGridIntegrationConfiguration.Builder> configurator = null)
-        {
-            builder.AddIntegration(SendGridIntegration.Create(username, password, sender, configurator));
-
-            return builder;
-        }
-
-        /// <summary>
-        /// Extension method for adding the SendGrid integration to the the WardenConfiguration.
-        /// </summary>
-        /// <param name="builder">Instance of the Warden configuration builder.</param>
         /// <param name="apiKey">API key of the SendGrid account.</param>
         /// <param name="sender">Email address of the message sender.</param>
         /// <param name="configurator">Optional lambda expression for configuring the SendGridIntegration.</param>

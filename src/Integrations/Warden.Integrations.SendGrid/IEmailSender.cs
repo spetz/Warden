@@ -1,6 +1,8 @@
-﻿using System.Net;
+﻿using System;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
-using SendGrid;
+using Newtonsoft.Json;
 
 namespace Warden.Integrations.SendGrid
 {
@@ -10,38 +12,32 @@ namespace Warden.Integrations.SendGrid
     public interface IEmailSender
     {
         /// <summary>
-        /// Sends the SendGrid message with usage of the credentials.
-        /// </summary>
-        /// <param name="username">Username of the SendGrid account.</param>
-        /// <param name="password">Password of the SendGrid account.</param>
-        /// <param name="message">SendGrid message.</param>
-        /// <returns></returns>
-        Task SendMessageAsync(string username, string password, SendGridMessage message);
-
-        /// <summary>
         /// Sends the SendGrid message with usage of the API key.
         /// </summary>
         /// <param name="apiKey">API key of the SendGrid account.</param>
         /// <param name="message">SendGrid message.</param>
         /// <returns></returns>
-        Task SendMessageAsync(string apiKey, SendGridMessage message);
+        Task SendMessageAsync(string apiKey, SendGridEmailMessage message);
     }
 
     /// <summary>
-    /// Default implementation of the IEmailSender based on SendGrid.Web.
+    /// Default implementation of the IEmailSender based on HttpClient.
     /// </summary>
     public class EmailSender : IEmailSender
     {
-        public async Task SendMessageAsync(string username, string password, SendGridMessage message)
+        private readonly HttpClient _httpClient = new HttpClient
         {
-            var transportWeb = new Web(new NetworkCredential(username, password));
-            await transportWeb.DeliverAsync(message);
-        }
+            BaseAddress = new Uri("https://api.sendgrid.com/v3/")
+        };
 
-        public async Task SendMessageAsync(string apiKey, SendGridMessage message)
+        public async Task SendMessageAsync(string apiKey, SendGridEmailMessage message)
         {
-            var transportWeb = new Web(apiKey);
-            await transportWeb.DeliverAsync(message);
+            _httpClient.DefaultRequestHeaders.Remove("Authorization");
+            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
+
+            var payload = JsonConvert.SerializeObject(message);
+            var content = new StringContent(payload, Encoding.UTF8, "application/json");
+            await _httpClient.PostAsync("mail/send", content);
         }
     }
 }
