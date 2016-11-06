@@ -190,10 +190,11 @@ namespace Warden.Integrations.SendGrid
             if (!emailReceivers.Any())
                 throw new ArgumentException("Email message receivers have not been defined.", nameof(emailReceivers));
 
+            var emailSubject = string.IsNullOrWhiteSpace(subject) ? _configuration.DefaultSubject : subject;
             emailReceivers.ValidateEmails(nameof(receivers));
             var emailMessage = new SendGridEmailMessage
             {
-                Subject = subject,
+                Subject = emailSubject,
                 From = new SendGridEmailMessage.Person
                 {
                     Email = _configuration.Sender
@@ -201,7 +202,7 @@ namespace Warden.Integrations.SendGrid
             };
             emailMessage.Personalizations.Add(new SendGridEmailMessage.Personalization
             {
-                To = receivers.Select(x => new SendGridEmailMessage.Person
+                To = emailReceivers.Select(x => new SendGridEmailMessage.Person
                 {
                     Email = x
                 }).ToList()

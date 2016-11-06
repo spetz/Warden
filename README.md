@@ -85,7 +85,7 @@ Install-Package Warden
 | **[Cachet Integration](https://github.com/spetz/Warden/wiki/Integration-with-Cachet)** |        +      |        +     | 
 | **[HTTP API Integration](https://github.com/spetz/Warden/wiki/Integration-with-HTTP-API)** |        +      |        +     | 
 | **[MS SQL Integration](https://github.com/spetz/Warden/wiki/Integration-with-MSSQL)** |        +      |        +     | 
-| **[SendGrid Integration](https://github.com/spetz/Warden/wiki/Integration-with-SendGrid)** |        +      |        -     | _SendGrid not compatible_
+| **[SendGrid Integration](https://github.com/spetz/Warden/wiki/Integration-with-SendGrid)** |        +      |        +     |
 | **[Slack Integration](https://github.com/spetz/Warden/wiki/Integration-with-Slack)** |        +      |        +     | 
 | **[Twilio Integration](https://github.com/spetz/Warden/wiki/Integration-with-Twilio )** |        +      |        -     | _Twilio  not compatible_
 | **[Seq Integration (3rd party)](https://github.com/janpieterz/Warden.Integrations.Seq)** |        +      |        +     | 
@@ -137,3 +137,7 @@ await warden.StartAsync();
 Please check out the **[examples](https://github.com/spetz/Warden/wiki/Examples)** by cloning the repository.
 
 
+**Contribute**
+----------------
+
+Want to contribute? Please check the **[contribution guidelines](https://github.com/warden-stack/Warden/blob/master/CONTRIBUTING.md)**. 
