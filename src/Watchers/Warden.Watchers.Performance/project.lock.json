@@ -32,7 +32,7 @@
   },
   "libraries": {
     "System.Collections.Concurrent/4.0.12": {
-      "sha512": "2gBcbb3drMLgxlI0fBfxMA31ec6AEyYCHygGse4vxceJan8mRIWeKJ24BFzN7+bi/NFTgdIgufzb94LWO5EERQ==",
+      "sha512": "A5ZYAaz6V2PTRHO+f0/82CBAewzYSYzMntBN5hB4PdsQ7HXyEpC1naoSZwPOoUnSoOyEYCyqO9g7Ck3iGZq5tw==",
       "type": "package",
       "path": "System.Collections.Concurrent/4.0.12",
       "files": [

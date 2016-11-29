@@ -24,7 +24,7 @@ namespace Warden.Watchers.MsSql
             TimeSpan? interval = null,
             string group = null)
         {
-            builder.AddWatcher(MsSqlWatcher.Create(connectionString, group), hooks, interval);
+            builder.AddWatcher(MsSqlWatcher.Create(connectionString, group: group), hooks, interval);
 
             return builder;
         }
@@ -47,7 +47,7 @@ namespace Warden.Watchers.MsSql
             TimeSpan? interval = null,
             string group = null)
         {
-            builder.AddWatcher(MsSqlWatcher.Create(connectionString, group), hooks, interval);
+            builder.AddWatcher(MsSqlWatcher.Create(name, connectionString, group: group), hooks, interval);
 
             return builder;
         }
