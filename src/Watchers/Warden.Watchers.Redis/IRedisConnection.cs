@@ -22,6 +22,11 @@ namespace Warden.Watchers.Redis
         /// </summary>
         /// <returns>Instance of IRedis.</returns>
         Task<IRedis> GetDatabaseAsync(int database);
+
+        /// <summary>
+        /// Closes the connection to Redis
+        /// </summary>
+        Task CloseConnectionAsync();
     }
 
     /// <summary>
@@ -44,13 +49,23 @@ namespace Warden.Watchers.Redis
         {
             _connectionMultiplexer = await ConnectionMultiplexer.ConnectAsync(new ConfigurationOptions
             {
-                EndPoints = { ConnectionString},
+                EndPoints = { ConnectionString },
                 ConnectTimeout = (int)Timeout.TotalMilliseconds
             });
 
             var database = _connectionMultiplexer.GetDatabase(databaseId);
 
             return new Redis(database);
+        }
+
+        public Task CloseConnectionAsync()
+        {
+            if (_connectionMultiplexer.IsConnected)
+            {
+                return _connectionMultiplexer.CloseAsync();
+            }
+
+            return Task.CompletedTask;
         }
     }
 }

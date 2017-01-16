@@ -45,7 +45,7 @@ namespace Warden.Watchers.Redis
                 if (string.IsNullOrWhiteSpace(_configuration.Query))
                 {
                     return RedisWatcherCheckResult.Create(this, true, _configuration.Database,
-                        _configuration.ConnectionString, 
+                        _configuration.ConnectionString,
                         $"Database: {_configuration.Database} has been sucessfully checked.");
                 }
 
@@ -59,6 +59,10 @@ namespace Warden.Watchers.Redis
             catch (Exception exception)
             {
                 throw new WatcherException("There was an error while trying to access the Redis.", exception);
+            }
+            finally
+            {
+                await _connection.CloseConnectionAsync();
             }
         }
 
