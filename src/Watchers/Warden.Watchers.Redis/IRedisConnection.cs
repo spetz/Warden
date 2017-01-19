@@ -58,14 +58,12 @@ namespace Warden.Watchers.Redis
             return new Redis(database);
         }
 
-        public Task CloseConnectionAsync()
+        public async Task CloseConnectionAsync()
         {
-            if (_connectionMultiplexer.IsConnected)
+            if (_connectionMultiplexer != null && _connectionMultiplexer.IsConnected)
             {
-                return _connectionMultiplexer.CloseAsync();
+                await _connectionMultiplexer.CloseAsync();
             }
-
-            return Task.CompletedTask;
         }
     }
 }
