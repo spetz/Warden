@@ -11,8 +11,9 @@ namespace Warden
     /// </summary>
     public class Warden : IWarden
     {
-        private readonly IWardenLogger _logger;
-        private readonly WardenConfiguration _configuration;
+        private readonly WardenConfiguration.Builder _configurator;
+        private IWardenLogger _logger;
+        private WardenConfiguration _configuration;
         private long _iterationOrdinal = 1;
         private bool _running = false;
         private Task _currentIterationTask;
@@ -21,20 +22,24 @@ namespace Warden
         public string Name { get; }
 
         /// <summary>
-        /// Initialize a new instance of the Warden using the provided configuration.
+        /// Initialize a new instance of the Warden using the provided configuration builder.
         /// </summary>
         /// <param name="name">Customizable name of the Warden.</param>
         /// <param name="configuration">Configuration of Warden</param>
-        internal Warden(string name, WardenConfiguration configuration)
+        internal Warden(string name, WardenConfiguration.Builder configurator)
         {
             if (string.IsNullOrWhiteSpace(name))
+            {
                 throw new ArgumentException("Warden name can not be empty.", nameof(name));
-            if (configuration == null)
-                throw new ArgumentNullException(nameof(configuration), "Warden configuration has not been provided.");
+            }
+            if (configurator == null)
+            {
+                throw new ArgumentNullException(nameof(configurator), "Warden configuration builder has not been provided.");
+            }
 
+            _configurator = configurator;
             Name = name;
-            _configuration = configuration;
-            _logger = _configuration.WardenLoggerProvider();
+            ApplyConfiguration();
         }
 
         /// <summary>
@@ -149,6 +154,18 @@ namespace Warden
             _configuration.Hooks.OnStop.Execute();
             _logger.Trace("Executing Warden hooks OnStopAsync.");
             await _configuration.Hooks.OnStopAsync.ExecuteAsync();
+        }
+
+        public void Reconfigure(Action<WardenConfiguration.Builder> configurator)
+        {
+            configurator(_configurator);
+            ApplyConfiguration();
+        }
+
+        private void ApplyConfiguration()
+        {
+            _configuration = _configurator.Build();
+            _logger = _configuration.WardenLoggerProvider();
         }
     }
 }

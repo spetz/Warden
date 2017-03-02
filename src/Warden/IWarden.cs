@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using Warden.Core;
 
 namespace Warden
 {
@@ -29,5 +31,11 @@ namespace Warden
         /// </summary>
         /// <returns></returns>
         Task StopAsync();
+
+        /// <summary>
+        /// Reconfigure the Warden based on the currently used configuration.
+        /// </summary>
+        /// <returns></returns>
+        void Reconfigure(Action<WardenConfiguration.Builder> configurator);
     }
 }

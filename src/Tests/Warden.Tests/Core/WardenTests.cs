@@ -506,4 +506,65 @@ namespace Warden.Tests.Core
         It should_invoke_execute_async_method_ten_times_for_second_watcher = () => SecondWatcherMock.Verify(x => x.ExecuteAsync(), Times.Exactly(10));
         It should_invoke_execute_async_method_once_for_third_watcher = () => ThirdWatcherMock.Verify(x => x.ExecuteAsync(), Times.Exactly(1));
     }
+
+    [Subject("Warden reconfiguration")]
+    public class when_reconfiguring_warden_by_adding_new_watcher : Warden_specs
+    {
+        static Mock<IWatcher> FirstWatcherMock { get; set; }
+        static Mock<IWatcher> SecondWatcherMock { get; set; }
+        static TimeSpan FirstWatcherInterval;
+        static TimeSpan SecondWatcherInterval;
+
+        Establish context = () =>
+        {
+            FirstWatcherMock = new Mock<IWatcher>();
+            SecondWatcherMock = new Mock<IWatcher>();
+            FirstWatcherMock.SetupGet(x => x.Name).Returns("First watcher mock");
+            SecondWatcherMock.SetupGet(x => x.Name).Returns("Second watcher mock");
+            FirstWatcherInterval = TimeSpan.FromMilliseconds(10);
+            SecondWatcherInterval = TimeSpan.FromMilliseconds(100);
+            FirstWatcherMock.Setup(x => x.ExecuteAsync()).ReturnsAsync(WatcherCheckResult.Create(FirstWatcherMock.Object, true));
+            SecondWatcherMock.Setup(x => x.ExecuteAsync()).ReturnsAsync(WatcherCheckResult.Create(SecondWatcherMock.Object, true));
+            WardenConfiguration = WardenConfiguration
+                .Create()
+                .AddWatcher(FirstWatcherMock.Object, interval: FirstWatcherInterval)
+                .RunOnlyOnce()
+                .Build();
+            Warden = WardenInstance.Create(WardenConfiguration);
+        };
+
+        It should_add_second_watcher_to_the_warden_configuration = () 
+            => WardenConfiguration.Watchers.Any(x => x.Name == SecondWatcherMock.Object.Name).ShouldBeTrue();
+    }    
+
+    [Subject("Warden reconfiguration")]
+    public class when_reconfiguring_warden_by_removing_existing_watcher : Warden_specs
+    {
+        static Mock<IWatcher> FirstWatcherMock { get; set; }
+        static Mock<IWatcher> SecondWatcherMock { get; set; }
+        static TimeSpan FirstWatcherInterval;
+        static TimeSpan SecondWatcherInterval;
+
+        Establish context = () =>
+        {
+            FirstWatcherMock = new Mock<IWatcher>();
+            SecondWatcherMock = new Mock<IWatcher>();
+            FirstWatcherMock.SetupGet(x => x.Name).Returns("First watcher mock");
+            SecondWatcherMock.SetupGet(x => x.Name).Returns("Second watcher mock");
+            FirstWatcherInterval = TimeSpan.FromMilliseconds(10);
+            SecondWatcherInterval = TimeSpan.FromMilliseconds(100);
+            FirstWatcherMock.Setup(x => x.ExecuteAsync()).ReturnsAsync(WatcherCheckResult.Create(FirstWatcherMock.Object, true));
+            SecondWatcherMock.Setup(x => x.ExecuteAsync()).ReturnsAsync(WatcherCheckResult.Create(SecondWatcherMock.Object, true));
+            WardenConfiguration = WardenConfiguration
+                .Create()
+                .AddWatcher(FirstWatcherMock.Object, interval: FirstWatcherInterval)
+                .AddWatcher(SecondWatcherMock.Object, interval: SecondWatcherInterval)
+                .RunOnlyOnce()
+                .Build();
+            Warden = WardenInstance.Create(WardenConfiguration);
+        };
+
+        It should_reomve_existing_watcher_from_the_warden_configuration = () 
+            => WardenConfiguration.Watchers.Any(x => x.Name == SecondWatcherMock.Object.Name).ShouldBeFalse();
+    }     
 }

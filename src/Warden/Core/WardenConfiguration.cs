@@ -16,6 +16,10 @@ namespace Warden.Core
         private static readonly TimeSpan MinimalInterval = TimeSpan.FromMilliseconds(1);
         private static readonly TimeSpan DefaultInterval = TimeSpan.FromSeconds(5);
 
+        /// Configurator used to build configuration.
+        /// Made as a required fallback inorder to handle the compatibility with a new Reconfigure() functionality.
+        internal WardenConfiguration.Builder Configurator { get; }
+
         /// <summary>
         /// Set of unique watcher configurations.
         /// </summary>
@@ -71,8 +75,15 @@ namespace Warden.Core
         /// </summary>
         public Func<IWardenLogger> WardenLoggerProvider { get; protected set; }
 
-        protected internal WardenConfiguration()
+
+        /// <summary>
+        /// Initialize a new instance of the WardenConfiguration using the provided configuration builder.
+        /// </summary>
+        /// <param name="name">Customizable name of the Warden.</param>
+        /// <param name="configuration">Configuration of Warden</param>
+        protected internal WardenConfiguration(WardenConfiguration.Builder configurator)
         {
+            Configurator = configurator;
             Hooks = WardenHooksConfiguration.Empty;
             GlobalWatcherHooks = WatcherHooksConfiguration.Empty;
             AggregatedWatcherHooks = AggregatedWatcherHooksConfiguration.Empty;
@@ -94,7 +105,12 @@ namespace Warden.Core
         /// </summary>
         public class Builder
         {
-            private readonly WardenConfiguration _configuration = new WardenConfiguration();
+            private readonly WardenConfiguration _configuration;
+
+            public Builder()
+            {
+                _configuration = new WardenConfiguration(this);
+            }
 
             /// <summary>
             /// Adds the watcher to the collection. 
@@ -121,6 +137,23 @@ namespace Warden.Core
                     .Build();
 
                 _configuration.Watchers.Add(watcherConfiguration);
+
+                return this;
+            }
+
+            /// <summary>
+            /// Removes the watcher from the collection. 
+            /// </summary>
+            /// <param name="watcher">Name of IWatcher (case sensitive).</param>
+            /// <returns>Instance of fluent builder for the WardenConfiguration.</returns>
+            public Builder RemoveWatcher(string name)
+            {
+                var watcher = _configuration.Watchers.FirstOrDefault(x => x.Watcher.Name == name);
+                if(watcher == null)
+                {
+                    throw new ArgumentException($"Watcher: '{name}' was not found.", nameof(name));
+                }
+                _configuration.Watchers.Remove(watcher);
 
                 return this;
             }
@@ -230,7 +263,9 @@ namespace Warden.Core
             public Builder WithInterval(TimeSpan interval, bool overrideCustomIntervals = false)
             {
                 if (interval < MinimalInterval)
+                {
                     throw new ArgumentException("Interval can not be less than 1 ms.", nameof(interval));
+                }
 
                 _configuration.Interval = interval;
                 _configuration.OverrideCustomIntervals = overrideCustomIntervals;
@@ -301,7 +336,9 @@ namespace Warden.Core
             public Builder SetDateTimeProvider(Func<DateTime> dateTimeProvider)
             {
                 if (dateTimeProvider == null)
+                {
                     throw new ArgumentNullException(nameof(dateTimeProvider), "DateTime provider can not be null.");
+                }
 
                 _configuration.DateTimeProvider = dateTimeProvider;
 
@@ -316,7 +353,9 @@ namespace Warden.Core
             public Builder SetIterationProcessorProvider(Func<IIterationProcessor> iterationProcessorProvider)
             {
                 if (iterationProcessorProvider == null)
+                {
                     throw new ArgumentNullException(nameof(iterationProcessorProvider), "Iteration processor provider can not be null.");
+                }
 
                 _configuration.IterationProcessorProvider = iterationProcessorProvider;
 
@@ -331,7 +370,9 @@ namespace Warden.Core
             public Builder SetIntegratorProvider(Func<IIntegrator> integratorProvider)
             {
                 if (integratorProvider == null)
+                {
                     throw new ArgumentNullException(nameof(integratorProvider), "Integrator processor can not be null.");
+                }
 
                 _configuration.IntegratorProvider = integratorProvider;
 
@@ -346,7 +387,9 @@ namespace Warden.Core
             public Builder SetLogger(Func<IWardenLogger> wardenLoggerProvider)
             {
                 if (wardenLoggerProvider == null)
+                {
                     throw new ArgumentNullException(nameof(wardenLoggerProvider), "Warden logger can not be null.");
+                }
 
                 _configuration.WardenLoggerProvider = wardenLoggerProvider;
 
