@@ -41,7 +41,7 @@ namespace Warden
         /// <param name="name">Name of the Warden.</param>
         /// <param name="configuration">Configuration of Warden.</param>
         /// <returns>Instance of IWarden.</returns>
-        public static IWarden Create(string name, WardenConfiguration configuration) => new Warden(name, configuration.Configurator);
+        public static IWarden Create(string name, WardenConfiguration configuration) => new Warden(name, configuration?.Configurator);
 
         /// <summary>
         /// Factory method for creating a new Warden instance with default name of "Warden @{COMPUTER NAME}",

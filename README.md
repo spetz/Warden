@@ -68,7 +68,7 @@ Install-Package Warden
 **Cross-platform support**
 ----------------
 
-| Project              |   .NET 4.6.1  |  DotNet 5.6  |            Comment              |      
+| Project              |   .NET 4.6.1  |  .NET Core   |            Comment              |      
 |----------------------|:-------------:|:------------:|---------------------------------
 | **[Warden Core](https://github.com/spetz/Warden/wiki/Warden)**         |        +      |        +     |     
 | **[Disk Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Disk)**         |        +      |        +     |

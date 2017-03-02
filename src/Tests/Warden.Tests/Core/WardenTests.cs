@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
@@ -24,7 +25,7 @@ namespace Warden.Tests.Core
         Because of = () => Exception = Catch.Exception(() => Warden = WardenInstance.Create(WardenConfiguration));
 
         It should_fail = () => Exception.Should().BeOfType<ArgumentNullException>();
-        It should_have_a_specific_reason = () => Exception.Message.Should().Contain("Warden configuration has not been provided.");
+        It should_have_a_specific_reason = () => Exception.Message.Should().Contain("Warden configuration builder has not been provided.");
     }
 
     [Subject("Warden initialization")]
@@ -533,8 +534,10 @@ namespace Warden.Tests.Core
             Warden = WardenInstance.Create(WardenConfiguration);
         };
 
+        Because of = () => Warden.Reconfigure(x => x.AddWatcher(SecondWatcherMock.Object, interval: SecondWatcherInterval));
+
         It should_add_second_watcher_to_the_warden_configuration = () 
-            => WardenConfiguration.Watchers.Any(x => x.Name == SecondWatcherMock.Object.Name).ShouldBeTrue();
+            => WardenConfiguration.Watchers.Any(x => x.Watcher.Name == SecondWatcherMock.Object.Name).Should.BeTrue();
     }    
 
     [Subject("Warden reconfiguration")]
@@ -564,7 +567,9 @@ namespace Warden.Tests.Core
             Warden = WardenInstance.Create(WardenConfiguration);
         };
 
+        Because of = () => Warden.Reconfigure(x => x.RemoveWatcher(SecondWatcherMock.Object.Name));
+
         It should_reomve_existing_watcher_from_the_warden_configuration = () 
-            => WardenConfiguration.Watchers.Any(x => x.Name == SecondWatcherMock.Object.Name).ShouldBeFalse();
+            => WardenConfiguration.Watchers.Any(x => x.Name == SecondWatcherMock.Object.Name).Should.BeFalse();
     }     
 }
