@@ -537,7 +537,7 @@ namespace Warden.Tests.Core
         Because of = () => Warden.Reconfigure(x => x.AddWatcher(SecondWatcherMock.Object, interval: SecondWatcherInterval));
 
         It should_add_second_watcher_to_the_warden_configuration = () 
-            => WardenConfiguration.Watchers.Any(x => x.Watcher.Name == SecondWatcherMock.Object.Name).Should.BeTrue();
+            => WardenConfiguration.Watchers.Any(x => x.Watcher.Name == SecondWatcherMock.Object.Name).Should().BeTrue();
     }    
 
     [Subject("Warden reconfiguration")]
@@ -570,6 +570,6 @@ namespace Warden.Tests.Core
         Because of = () => Warden.Reconfigure(x => x.RemoveWatcher(SecondWatcherMock.Object.Name));
 
         It should_reomve_existing_watcher_from_the_warden_configuration = () 
-            => WardenConfiguration.Watchers.Any(x => x.Name == SecondWatcherMock.Object.Name).Should.BeFalse();
+            => WardenConfiguration.Watchers.Any(x => x.Watcher.Name == SecondWatcherMock.Object.Name).Should().BeFalse();
     }     
 }
