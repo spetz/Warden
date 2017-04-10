@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{E19861BB-3F4A-4FFB-9AD7-452DFBEBEED0}"
 EndProject
@@ -11,58 +11,55 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integrations", "Integration
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Watchers", "Watchers", "{01B1C35B-4DC0-402B-A17B-CC278CB06913}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden", "Warden\Warden.xproj", "{B98EAA8E-1CA3-4F61-9ECC-52047E1759CF}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Watchers.Web", "Watchers\Warden.Watchers.Web\Warden.Watchers.Web.xproj", "{5251958C-6A0C-4B14-B41B-B66409A151B5}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D30DA262-9AE2-4C01-93E6-2C29DD3C25C7}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Examples.Console", "Examples\Warden.Examples.Console\Warden.Examples.Console.xproj", "{7E6BE198-D6CD-4CA4-B3BA-7B8FD81FADA1}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Watchers.MongoDb", "Watchers\Warden.Watchers.MongoDb\Warden.Watchers.MongoDb.xproj", "{CF59DAE7-3F6D-4795-8BA8-296FAA0ECC76}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Watchers.MsSql", "Watchers\Warden.Watchers.MsSql\Warden.Watchers.MsSql.xproj", "{345C0FCC-8D10-423E-B50F-AC3C2794B265}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Watchers.Redis", "Watchers\Warden.Watchers.Redis\Warden.Watchers.Redis.xproj", "{56BCC5AF-7E4A-4DEF-AB68-EB220C8F2FA4}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Watchers.Performance", "Watchers\Warden.Watchers.Performance\Warden.Watchers.Performance.xproj", "{B0914764-2190-47BD-B3D5-8C1D324D360E}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Watchers.Disk", "Watchers\Warden.Watchers.Disk\Warden.Watchers.Disk.xproj", "{774E4A5C-835B-4E79-8514-F512D32DA2D7}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Integrations.SendGrid", "Integrations\Warden.Integrations.SendGrid\Warden.Integrations.SendGrid.xproj", "{0ACC2E25-F24D-4196-A69C-6CAFEF93E32C}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Examples.WindowsService", "Examples\Warden.Examples.WindowsService\Warden.Examples.WindowsService.xproj", "{0E55EEC7-2B49-436E-8207-4E50BDB4112A}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Tests", "Tests\Warden.Tests\Warden.Tests.xproj", "{56222D25-9BAB-459B-870C-BCD24D4841A6}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Tests.EndToEnd", "Tests\Warden.Tests.EndToEnd\Warden.Tests.EndToEnd.xproj", "{273F698A-09D5-4A4C-B7CD-D7A9509AA53E}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Integrations.HttpApi", "Integrations\Warden.Integrations.HttpApi\Warden.Integrations.HttpApi.xproj", "{6C99AEF7-64BB-4B76-9F43-91E2942E1455}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{78FDC1DA-DDD5-4756-B377-23CD93AB62E0}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Web", "Web\Warden.Web\Warden.Web.xproj", "{F2995E4F-67C8-40C3-BB01-0B4315E554F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warden", "Warden\Warden.csproj", "{B98EAA8E-1CA3-4F61-9ECC-52047E1759CF}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Web.Core", "Web\Warden.Web.Core\Warden.Web.Core.xproj", "{B2F4058C-E459-492E-B40F-1BB92C63CC95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warden.Watchers.Web", "Watchers\Warden.Watchers.Web\Warden.Watchers.Web.csproj", "{5251958C-6A0C-4B14-B41B-B66409A151B5}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Integrations.Twilio", "Integrations\Warden.Integrations.Twilio\Warden.Integrations.Twilio.xproj", "{75173643-6FA8-4DCA-B1BF-3360CC58AC35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warden.Examples.Console", "Examples\Warden.Examples.Console\Warden.Examples.Console.csproj", "{7E6BE198-D6CD-4CA4-B3BA-7B8FD81FADA1}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Watchers.Process", "Watchers\Warden.Watchers.Process\Warden.Watchers.Process.xproj", "{E66F4313-6747-4201-B49C-3093031CFB7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warden.Watchers.MongoDb", "Watchers\Warden.Watchers.MongoDb\Warden.Watchers.MongoDb.csproj", "{CF59DAE7-3F6D-4795-8BA8-296FAA0ECC76}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Integrations.Slack", "Integrations\Warden.Integrations.Slack\Warden.Integrations.Slack.xproj", "{42F2E9A8-81BD-485A-B099-DD6A92DF22E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warden.Watchers.MsSql", "Watchers\Warden.Watchers.MsSql\Warden.Watchers.MsSql.csproj", "{345C0FCC-8D10-423E-B50F-AC3C2794B265}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Watchers.Server", "Watchers\Warden.Watchers.Server\Warden.Watchers.Server.xproj", "{6B6B14A8-33A4-42F2-A381-98C19CBAA96F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warden.Watchers.Redis", "Watchers\Warden.Watchers.Redis\Warden.Watchers.Redis.csproj", "{56BCC5AF-7E4A-4DEF-AB68-EB220C8F2FA4}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Integrations.MsSql", "Integrations\Warden.Integrations.MsSql\Warden.Integrations.MsSql.xproj", "{BF9764B1-BCEE-4379-8E13-661E64784CD4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warden.Watchers.Performance", "Watchers\Warden.Watchers.Performance\Warden.Watchers.Performance.csproj", "{B0914764-2190-47BD-B3D5-8C1D324D360E}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Integrations.Cachet", "Integrations\Warden.Integrations.Cachet\Warden.Integrations.Cachet.xproj", "{59533599-205A-4878-813F-FE2044DAA79D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warden.Watchers.Disk", "Watchers\Warden.Watchers.Disk\Warden.Watchers.Disk.csproj", "{774E4A5C-835B-4E79-8514-F512D32DA2D7}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Examples.CommandsAndEvents.Manager", "Examples\Warden.Examples.CommandsAndEvents.Manager\Warden.Examples.CommandsAndEvents.Manager.xproj", "{75B125DA-D804-44B6-88C4-DCCA585FD438}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warden.Integrations.SendGrid", "Integrations\Warden.Integrations.SendGrid\Warden.Integrations.SendGrid.csproj", "{0ACC2E25-F24D-4196-A69C-6CAFEF93E32C}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Warden.Examples.CommandsAndEvents.App", "Examples\Warden.Examples.CommandsAndEvents.App\Warden.Examples.CommandsAndEvents.App.xproj", "{C03A000B-EEC8-46AB-88FC-339E035F8A3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warden.Examples.WindowsService", "Examples\Warden.Examples.WindowsService\Warden.Examples.WindowsService.csproj", "{0E55EEC7-2B49-436E-8207-4E50BDB4112A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warden.Tests", "Tests\Warden.Tests\Warden.Tests.csproj", "{56222D25-9BAB-459B-870C-BCD24D4841A6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warden.Tests.EndToEnd", "Tests\Warden.Tests.EndToEnd\Warden.Tests.EndToEnd.csproj", "{273F698A-09D5-4A4C-B7CD-D7A9509AA53E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warden.Integrations.HttpApi", "Integrations\Warden.Integrations.HttpApi\Warden.Integrations.HttpApi.csproj", "{6C99AEF7-64BB-4B76-9F43-91E2942E1455}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warden.Web", "Web\Warden.Web\Warden.Web.csproj", "{F2995E4F-67C8-40C3-BB01-0B4315E554F2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warden.Web.Core", "Web\Warden.Web.Core\Warden.Web.Core.csproj", "{B2F4058C-E459-492E-B40F-1BB92C63CC95}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warden.Integrations.Twilio", "Integrations\Warden.Integrations.Twilio\Warden.Integrations.Twilio.csproj", "{75173643-6FA8-4DCA-B1BF-3360CC58AC35}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warden.Watchers.Process", "Watchers\Warden.Watchers.Process\Warden.Watchers.Process.csproj", "{E66F4313-6747-4201-B49C-3093031CFB7C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warden.Integrations.Slack", "Integrations\Warden.Integrations.Slack\Warden.Integrations.Slack.csproj", "{42F2E9A8-81BD-485A-B099-DD6A92DF22E5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warden.Watchers.Server", "Watchers\Warden.Watchers.Server\Warden.Watchers.Server.csproj", "{6B6B14A8-33A4-42F2-A381-98C19CBAA96F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warden.Integrations.MsSql", "Integrations\Warden.Integrations.MsSql\Warden.Integrations.MsSql.csproj", "{BF9764B1-BCEE-4379-8E13-661E64784CD4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warden.Integrations.Cachet", "Integrations\Warden.Integrations.Cachet\Warden.Integrations.Cachet.csproj", "{59533599-205A-4878-813F-FE2044DAA79D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warden.Examples.CommandsAndEvents.Manager", "Examples\Warden.Examples.CommandsAndEvents.Manager\Warden.Examples.CommandsAndEvents.Manager.csproj", "{75B125DA-D804-44B6-88C4-DCCA585FD438}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warden.Examples.CommandsAndEvents.App", "Examples\Warden.Examples.CommandsAndEvents.App\Warden.Examples.CommandsAndEvents.App.csproj", "{C03A000B-EEC8-46AB-88FC-339E035F8A3F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
