@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Example of Warden Console Application.</Description>
+    <VersionPrefix>1.3.1</VersionPrefix>
+    <Authors>Piotr Gankiewicz</Authors>
+    <TargetFramework>net461</TargetFramework>
+    <AssemblyName>Warden.Examples.Console</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <PackageId>Warden.Examples.Console</PackageId>
+    <PackageTags>Warden</PackageTags>
+    <PackageProjectUrl>https://getwarden.net</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/warden-stack/Warden/blob/master/LICENSE</PackageLicenseUrl>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Warden\Warden.csproj" />
+    <ProjectReference Include="..\..\Integrations\Warden.Integrations.Cachet\Warden.Integrations.Cachet.csproj" />
+    <ProjectReference Include="..\..\Integrations\Warden.Integrations.HttpApi\Warden.Integrations.HttpApi.csproj" />
+    <ProjectReference Include="..\..\Integrations\Warden.Integrations.MsSql\Warden.Integrations.MsSql.csproj" />
+    <ProjectReference Include="..\..\Integrations\Warden.Integrations.SendGrid\Warden.Integrations.SendGrid.csproj" />
+    <ProjectReference Include="..\..\Integrations\Warden.Integrations.Slack\Warden.Integrations.Slack.csproj" />
+    <ProjectReference Include="..\..\Integrations\Warden.Integrations.Twilio\Warden.Integrations.Twilio.csproj" />
+    <ProjectReference Include="..\..\Watchers\Warden.Watchers.Disk\Warden.Watchers.Disk.csproj" />
+    <ProjectReference Include="..\..\Watchers\Warden.Watchers.MongoDb\Warden.Watchers.MongoDb.csproj" />
+    <ProjectReference Include="..\..\Watchers\Warden.Watchers.MsSql\Warden.Watchers.MsSql.csproj" />
+    <ProjectReference Include="..\..\Watchers\Warden.Watchers.Performance\Warden.Watchers.Performance.csproj" />
+    <ProjectReference Include="..\..\Watchers\Warden.Watchers.Server\Warden.Watchers.Server.csproj" />
+    <ProjectReference Include="..\..\Watchers\Warden.Watchers.Process\Warden.Watchers.Process.csproj" />
+    <ProjectReference Include="..\..\Watchers\Warden.Watchers.Redis\Warden.Watchers.Redis.csproj" />
+    <ProjectReference Include="..\..\Watchers\Warden.Watchers.Web\Warden.Watchers.Web.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+</Project>
