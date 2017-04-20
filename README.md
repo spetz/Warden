@@ -1,7 +1,7 @@
 ![Warden](http://spetz.github.io/img/warden_logo.png)
 
-####**OPEN SOURCE & CROSS-PLATFORM TOOL FOR SIMPLIFIED MONITORING**
-####**[getwarden.net](http://getwarden.net)**
+#### **OPEN SOURCE & CROSS-PLATFORM TOOL FOR SIMPLIFIED MONITORING**
+#### **[getwarden.net](http://getwarden.net)**
 
 [![Build status](https://ci.appveyor.com/api/projects/status/47l3ldatuj526tf5/branch/master?svg=true)](https://ci.appveyor.com/project/spetz/Warden/branch/master)
 
@@ -20,6 +20,13 @@ Each **[watcher](https://github.com/spetz/Warden/wiki/watcher)** might have its 
 
 On top of that, you may use all of this information to collect the custom metrics thanks to the **[hooks](https://github.com/spetz/Warden/wiki/Hooks)**.
 
+
+**Roadmap**
+----------------
+
+- Migrate fully to the .NET Core (NET Standard).
+- Move all of the extensions (Wardens and Integrations) into the separate repositiories.
+ - Apply new features.
 
 **What kind of monitoring is available?**
 ----------------
