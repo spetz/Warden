@@ -7,6 +7,7 @@ using Warden.Integrations.Cachet;
 using Warden.Integrations.HttpApi;
 using Warden.Integrations.MsSql;
 using Warden.Integrations.Slack;
+using Warden.Integrations.Smtp;
 using Warden.Utils;
 using Warden.Watchers;
 using Warden.Watchers.Disk;
@@ -86,6 +87,21 @@ namespace Warden.Examples.Console
                 //        integrations.SendGrid().SendEmailAsync("Monitoring errors have occured."))
                 //        .OnFirstSuccessAsync(results =>
                 //            integrations.SendGrid().SendEmailAsync("Everything is up and running again!"));
+                //})
+                //Set SMTP Details 
+                //.IntegrateWithSmtp("smtp.office365.com", 587, true, cfg => 
+                //{
+                //    cfg.WithCredentials("notifications@domain.domin", "mySecretPassword")
+                //    .WithDefaultSubject("Notification Email from Warden")
+                //    .WithDefaultToAddress("monitoring@domain.com")
+                //    .WithDefaultFromAddress("notifications@domain.com");
+                //})
+                //.SetAggregatedWatcherHooks((hooks, integrations) =>
+                //{
+                //    hooks.OnFirstFailureAsync(result =>
+                //        integrations.Smtp().SendEmailAsync("Monitoring errors have occured."))
+                //        .OnFirstSuccessAsync(results =>
+                //            integrations.Smtp().SendEmailAsync("Everything is up and running again!"));
                 //})
                 //Set proper URL of the Warden Web API
                 .IntegrateWithHttpApi("https://panel.getwarden.net/api",
