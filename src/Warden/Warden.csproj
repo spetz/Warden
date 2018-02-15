@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <Description>Warden is an open source library built to solve the problem of monitoring the resources.</Description>
-    <VersionPrefix>2.0.0-beta-1</VersionPrefix>
+    <VersionPrefix>2.0.0</VersionPrefix>
     <Authors>Piotr Gankiewicz</Authors>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <AssemblyName>Warden</AssemblyName>
+    <Title>Warden</Title>
     <PackageId>Warden</PackageId>
     <PackageTags>Warden</PackageTags>
     <PackageProjectUrl>https://getwarden.net</PackageProjectUrl>
@@ -17,5 +17,4 @@
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
   </PropertyGroup>
-
 </Project>

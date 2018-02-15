@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Warden tests.</Description>
-    <VersionPrefix>2.0-beta-1</VersionPrefix>
+    <VersionPrefix>2.0.0</VersionPrefix>
     <Authors>Piotr Gankiewicz</Authors>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyName>Warden.Tests</AssemblyName>
@@ -18,13 +18,13 @@
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Warden\Warden.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Machine.Specifications.Runner.VisualStudio" Version="2.6.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
     <PackageReference Include="FluentAssertions" Version="5.1.1" />
     <PackageReference Include="Moq" Version="4.8.1" />
     <PackageReference Include="Machine.Specifications" Version="0.12.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Warden\Warden.csproj" />
   </ItemGroup>
 </Project>
