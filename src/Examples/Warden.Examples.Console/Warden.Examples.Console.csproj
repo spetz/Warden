@@ -26,6 +26,7 @@
     <ProjectReference Include="..\..\Integrations\Warden.Integrations.MsSql\Warden.Integrations.MsSql.csproj" />
     <ProjectReference Include="..\..\Integrations\Warden.Integrations.SendGrid\Warden.Integrations.SendGrid.csproj" />
     <ProjectReference Include="..\..\Integrations\Warden.Integrations.Slack\Warden.Integrations.Slack.csproj" />
+    <ProjectReference Include="..\..\Integrations\Warden.Integrations.Smtp\Warden.Integrations.Smtp.csproj" />
     <ProjectReference Include="..\..\Integrations\Warden.Integrations.Twilio\Warden.Integrations.Twilio.csproj" />
     <ProjectReference Include="..\..\Watchers\Warden.Watchers.Disk\Warden.Watchers.Disk.csproj" />
     <ProjectReference Include="..\..\Watchers\Warden.Watchers.MongoDb\Warden.Watchers.MongoDb.csproj" />
