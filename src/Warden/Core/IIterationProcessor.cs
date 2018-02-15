@@ -248,7 +248,7 @@ namespace Warden.Core
 
         private async Task InvokeAggregatedOnFailureHooksAsync(IEnumerable<WatcherExecutionResult> results)
         {
-            var invalidResults = results.Select(x => x.WardenCheckResult).Where(x => x.IsValid);
+            var invalidResults = results.Select(x => x.WardenCheckResult).Where(x => !x.IsValid);
             _logger.Trace("Executing Aggregated Global Watcher hooks OnFailure.");
             _configuration.AggregatedGlobalWatcherHooks.OnFailure.Execute(invalidResults);
             _logger.Trace("Executing Aggregated Global Watcher hooks OnFailureAsync.");
