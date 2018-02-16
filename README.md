@@ -49,6 +49,7 @@ On top of that, you may use all of this information to collect the custom metric
  - **[MS SQL](https://github.com/warden-stack/Warden.Integrations.MSSQL)**
  - **[SendGrid](https://github.com/warden-stack/Warden.Integrations.SendGrid)**
  - **[Slack](https://github.com/warden-stack/Warden.Integrations.Slack)**
+ - **[SMTP](https://github.com/warden-stack/Warden.Integrations.Smtp)**
  - **[Twilio](https://github.com/warden-stack/Warden.Integrations.Twilio)**
  - **[Seq (3rd party)](https://github.com/janpieterz/Warden.Integrations.Seq)**
 
