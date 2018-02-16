@@ -24,32 +24,32 @@ On top of that, you may use all of this information to collect the custom metric
 **Roadmap**
 ----------------
 
-- Migrate fully to the .NET Core (NET Standard).
-- Move all of the extensions (Wardens and Integrations) into the separate repositiories.
- - Apply new features.
+- [x] Migrate fully to the .NET Core (NET Standard).
+- [x] Move all of the extensions (Wardens and Integrations) into the separate repositiories.
+- [ ] Apply new features.
 
 **What kind of monitoring is available?**
 ----------------
- - **[Disk](https://github.com/spetz/Warden/wiki/Watcher-type-Disk)**
- - **[MongoDB](https://github.com/spetz/Warden/wiki/Watcher-type-MongoDB)**
- - **[MSSQL](https://github.com/spetz/Warden/wiki/Watcher-type-MSSQL)**
- - **[Performance](https://github.com/spetz/Warden/wiki/Watcher-type-Performance)**
- - **[Process](https://github.com/spetz/Warden/wiki/Watcher-type-Process)**
- - **[Redis](https://github.com/spetz/Warden/wiki/Watcher-type-Redis)**
- - **[Server](https://github.com/spetz/Warden/wiki/Watcher-type-Server)**
- - **[Web](https://github.com/spetz/Warden/wiki/Watcher-type-Web)**
+ - **[Disk](https://github.com/warden-stack/Warden.Watchers.Disk)**
+ - **[MongoDB](https://github.com/warden-stack/Warden.Watchers.MongoDB)**
+ - **[MSSQL](https://github.com/warden-stack/Warden.Watchers.MSSQL)**
+ - **[Performance](https://github.com/warden-stack/Warden.Watchers.Performance)**
+ - **[Process](https://github.com/warden-stack/Warden.Watchers.Process)**
+ - **[Redis](https://github.com/warden-stack/Warden.Watchers.Redis)**
+ - **[Server](https://github.com/warden-stack/Warden.Watchers.Server)**
+ - **[Web](https://github.com/warden-stack/Warden.Watchers.Web)**
  - **[SSL certificates (3rd party)](https://github.com/janpieterz/Warden.Watchers.SSL)**
  - **[Azure Storage (3rd party)](https://github.com/janpieterz/Warden.Watchers.AzureStorage)**
  - **[Azure Service Bus (3rd party)](https://github.com/janpieterz/Warden.Watchers.AzureServiceBus)**
 
 **What are the integrations with external services?**
 ----------------
- - **[Cachet](https://github.com/spetz/Warden/wiki/Integration-with-Cachet)**
- - **[HTTP API](https://github.com/spetz/Warden/wiki/Integration-with-HTTP-API)**
- - **[MS SQL](https://github.com/spetz/Warden/wiki/Integration-with-MSSQL)**
- - **[SendGrid](https://github.com/spetz/Warden/wiki/Integration-with-SendGrid)**
- - **[Slack](https://github.com/spetz/Warden/wiki/Integration-with-Slack)**
- - **[Twilio](https://github.com/spetz/Warden/wiki/Integration-with-Twilio)**
+ - **[Cachet](https://github.com/warden-stack/Warden.Integrations.Cachet)**
+ - **[HTTP API](https://github.com/warden-stack/Warden.Integrations.HTTP-API)**
+ - **[MS SQL](https://github.com/warden-stack/Warden.Integrations.MSSQL)**
+ - **[SendGrid](https://github.com/warden-stack/Warden.Integrations.SendGrid)**
+ - **[Slack](https://github.com/warden-stack/Warden.Integrations.Slack)**
+ - **[Twilio](https://github.com/warden-stack/Warden.Integrations.Twilio)**
  - **[Seq (3rd party)](https://github.com/janpieterz/Warden.Integrations.Seq)**
 
 **How can I see what's happening with my system?**
@@ -67,36 +67,10 @@ Yes, please navigate to the **[wiki](https://github.com/spetz/Warden/wiki)** pag
 
 Available as a **[NuGet package](https://www.nuget.org/packages/Warden/)**. 
 ```
-Install-Package Warden
+dotnet add package Warden
 ```
 
-**Watchers** and **integrations** are available as a separate _NuGet packages_ listed **[here](https://www.nuget.org/profiles/Spetz)**.
-
-**Cross-platform support**
-----------------
-
-| Project              |   .NET Framework  |  .NET Standard   |            Comment              |      
-|----------------------|:-------------:|:------------:|---------------------------------
-| **[Warden Core](https://github.com/spetz/Warden/wiki/Warden)**         |        +      |        +     |     
-| **[Disk Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Disk)**         |        +      |        +     |
-| **[MongoDB Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-MongoDB)**      |        +      |        +     |
-| **[MS SQL Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-MSSQL)**        |        +      |        +     | 
-| **[Performance Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Performance)**  |        +      |        -     | _PerformanceCounter not compatible_
-| **[Process Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Process)**          |        +      |        +     |
-| **[Redis Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Redis)**        |        +      |        +     |
-| **[Server Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Server)**  |        +      |        -     | _System.Net.Sockets not compatible_
-| **[Web Watcher](https://github.com/spetz/Warden/wiki/Watcher-type-Web)**          |        +      |        +     |
-| **[SSL Watcher (3rd party)](https://github.com/janpieterz/Warden.Watchers.SSL)** |        +      |        +     |
-| **[Azure Storage Watcher (3rd party)](https://github.com/janpieterz/Warden.Watchers.AzureStorage)** |        +      |        +    |
-| **[Azure Service Bus Watcher (3rd party)](https://github.com/janpieterz/Warden.Watchers.AzureServiceBus)** |        +      |        -     | _Service bus library not compatible_ 
-| **[Cachet Integration](https://github.com/spetz/Warden/wiki/Integration-with-Cachet)** |        +      |        +     | 
-| **[HTTP API Integration](https://github.com/spetz/Warden/wiki/Integration-with-HTTP-API)** |        +      |        +     | 
-| **[MS SQL Integration](https://github.com/spetz/Warden/wiki/Integration-with-MSSQL)** |        +      |        +     | 
-| **[SendGrid Integration](https://github.com/spetz/Warden/wiki/Integration-with-SendGrid)** |        +      |        +     |
-| **[Slack Integration](https://github.com/spetz/Warden/wiki/Integration-with-Slack)** |        +      |        +     | 
-| **[Twilio Integration](https://github.com/spetz/Warden/wiki/Integration-with-Twilio )** |        +      |        -     | _Twilio  not compatible_
-| **[Seq Integration (3rd party)](https://github.com/janpieterz/Warden.Integrations.Seq)** |        +      |        +     | 
-| **[Web Panel](https://github.com/spetz/Warden/wiki/Web-Panel)** |        +      |        -     | _Some external libs are not compatible_
+**Watchers** and **Integrations** are available as a separate _NuGet packages_ listed **[here](https://www.nuget.org/packages?q=warden)**.
 
 **Quick start**:
 ----------------
