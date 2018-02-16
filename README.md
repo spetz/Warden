@@ -115,7 +115,7 @@ Start the **Warden** and let him do his job - now **you have the full control** 
 var warden = WardenInstance.Create(configuration);
 await warden.StartAsync();
 ```
-Please check out the **[examples](https://github.com/spetz/Warden/wiki/Examples)** by cloning the repository.
+Please check out the **[examples](https://github.com/spetz/Warden/wiki/Examples)** by cloning the [repository](https://github.com/warden-stack/Warden.Examples).
 
 
 **Contribute**
